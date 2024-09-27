@@ -1,13 +1,7 @@
-Welcome to Lumache's documentation!
+Welcome to HPC4 documentation!
 ===================================
 
-**Lumache** (/lu'make/) is a Python library for cooks and food lovers
-that creates recipes mixing random ingredients.
-It pulls data from the `Open Food Facts database <https://world.openfoodfacts.org/>`_
-and offers a *simple* and *intuitive* API.
-
-Check out the :doc:`usage` section for further information, including
-how to :ref:`installation` the project.
+HPC4 is a high-performance computing (HPC) cluster at the Hong Kong University of Science and Technology (HKUST).
 
 .. note::
 
@@ -18,5 +12,5 @@ Contents
 
 .. toctree::
 
-   usage
-   api
+   migration-from-hpc3
+
