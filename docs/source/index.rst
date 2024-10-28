@@ -14,6 +14,5 @@ Contents
    :maxdepth: 2
    :caption: Contents:
 
-   clusters/index
-   slurm/index
-   migration-from-hpc3/index
+   quick-start/hpc4/c
+   quick-start/hpc4/python

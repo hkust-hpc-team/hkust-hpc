@@ -11,7 +11,7 @@ This guide briefly showcase the recommended workflow on HPC4 for compiling and r
 
 
 Step 2: Running an interactive sessions
----------------------------
+-----------------------------------------
 Use SLURM to access a node of the correct CPU and GPU type.
 
 For AMD node (256 cores):
@@ -27,7 +27,7 @@ For Intel node (128 cores):
    srun -A jiy -p cpu -C intel --nodes=1 --ntasks-per-node=1 --cpus-per-task=128 --pty bash
 
 Step 3: Compiling Code
---------------------
+-----------------------
 Use the appropriate compiler based on the CPU type.
 
 For AMD:
@@ -68,7 +68,7 @@ Example:
    cat output.txt
 
 Step 5: Production Run with SLURM
-----------------------------
+-----------------------------------
 Use ``sbatch`` command with a script for larger runs.
 
 Create a SLURM job script (``job.sh``):

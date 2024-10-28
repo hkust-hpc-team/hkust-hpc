@@ -3,7 +3,7 @@ Python Quick Start in HPC4
 
 Overview
 --------
-This guide provides recommended and fail-safe practice for using SLURM in HPC4.
+This guide provides recommended practice 
 
 .. note::
    TODO: Make below a warning note:
@@ -16,7 +16,7 @@ This guide provides recommended and fail-safe practice for using SLURM in HPC4.
 5. `Accepted commandline parameters <#step-5-production-run-with-slurm>`_
 
 Step 2: Running an interactive sessions
----------------------------
+-----------------------------------------
 Use SLURM to access a node of the correct CPU type.
 
 For AMD node (256 cores):
@@ -32,7 +32,7 @@ For Intel node (128 cores):
    srun -A jiy -p cpu -C intel --nodes=1 --ntasks-per-node=1 --cpus-per-task=128 --pty bash
 
 Step 3: Compiling Code
---------------------
+-----------------------
 Use the appropriate compiler based on the CPU type.
 
 For AMD:
@@ -73,7 +73,7 @@ Example:
    cat output.txt
 
 Step 5: Production Run with SLURM
-----------------------------
+-----------------------------------
 Use ``sbatch`` command with a script for larger runs.
 
 Create a SLURM job script (``job.sh``):

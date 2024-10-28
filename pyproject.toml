@@ -7,7 +7,7 @@ dynamic = ["version", "description"]
 requires-python = ">=3.10"
 dependencies = [
     "sphinx>=7",
-    "sphinx-rtd-theme>=1",
+    "sphinx-rtd-theme>=3.0.1",
 ]
 version = "1.0.0"
 description = "Documentation for HPC4"
@@ -16,3 +16,11 @@ license = {text = "MIT"}
 
 [tool.pdm]
 distribution = false
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "esbonio>=0.16.5",
+    "doc8>=1.1.2",
+    "restructuredtext-lint>=1.4.0",
+    "rstcheck>=6.2.4",
+]
