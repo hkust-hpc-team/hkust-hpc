@@ -11,6 +11,9 @@ Contents
 --------
 
 .. toctree::
+   :maxdepth: 2
+   :caption: Contents:
 
-   migration-from-hpc3
-
+   clusters/index
+   slurm/index
+   migration-from-hpc3/index
