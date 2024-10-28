@@ -1,8 +1,18 @@
-[build-system]
-requires = ["flit_core >=3.2,<4"]
-build-backend = "flit_core.buildapi"
-
 [project]
-name = "lumache"
-authors = [{name = "Graziella", email = "graziella@lumache"}]
+name = "hpc4-tutorial"
+authors = [
+    {name = "kftse", email = "kftse@ust.hk"},
+]
 dynamic = ["version", "description"]
+requires-python = ">=3.10"
+dependencies = [
+    "sphinx>=7",
+    "sphinx-rtd-theme>=1",
+]
+version = "1.0.0"
+description = "Documentation for HPC4"
+readme = "README.md"
+license = {text = "MIT"}
+
+[tool.pdm]
+distribution = false
