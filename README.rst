@@ -1,21 +1,23 @@
 HKUST HPC Documentation
 ========================
 
-This is a collection of documentations for AI / HPC users using central HPC resources at the Hong Kong University of Science and Technology (HKUST).
+Latest doc: `hkust-hpc-docs.readthedocs.io <https://hkust-hpc-docs.readthedocs.io/>`_
 
-The documentation is available at https://hkust-hpc-docs.readthedocs.io/
+**Tutorials, docs and knowledge base** for both AI / HPC users using central HPC resources at the Hong Kong University of Science and Technology (HKUST).
 
-Main HPC facilities currently maintained by the HKUST Information Technology Services (ITSC)
+This doc is mainly for the newer generations of HPCs maintained by Information Technology Services Center (ITSC) of HKUST.
+
 - Superpod
-- HPC3
 - HPC4
+
+However, you may find some useful techniques for the older generations of HPCs or other HPC clusters as well.
 
 Contributor's Guide
 --------------------
 
-The documentation is written in reStructuredText format and built using Sphinx.
+The doc is written in reStructuredText format and built using Sphinx.
 
-All the documentation source files are located in the ``docs/source`` directory.
+All the doc source files are located in the ``docs/source`` directory.
 
 Getting started
 ~~~~~~~~~~~~~~~~
@@ -38,18 +40,23 @@ Standard ``pdm`` workflows can be used.
 Editor Recommendations
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-We recommend using vscode for editing the documentation.
+We recommend using vscode for editing the doc.
 
 The following extensions are recommended:
 
-- Python
-  - ms-python.vscode-pylance
-  - ms-python.black-formatter
-  - ms-python.isort
+- python
+
+  - ``ms-python.vscode-pylance``
+  - ``ms-python.black-formatter``
+  - ``ms-python.isort``
+
 - reStructuredText
-  - `lextudio.restructuredtext` for syntax highlighting
-  - `swyddfa.esbonio` for reStructuredText preview
-- Misc
-  - `aaron-bond.better-comments` for comments
-  - `eamodio.gitlens` better version control
-  - `EditorConfig.EditorConfig` for vscode to use the `.editorconfig` file
+
+  - ``lextudio.restructuredtext`` for syntax highlighting
+  - ``swyddfa.esbonio`` for reStructuredText preview
+
+- misc
+
+  - ``aaron-bond.better-comments`` for comments
+  - ``eamodio.gitlens`` better version control
+  - ``EditorConfig.EditorConfig`` for vscode to use the `.editorconfig` file
