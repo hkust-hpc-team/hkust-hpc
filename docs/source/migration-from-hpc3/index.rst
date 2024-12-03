@@ -1,5 +1,5 @@
 Migration from HPC3 to HPC4
-===============================================
+===========================
 
 Overview
 --------
@@ -35,19 +35,19 @@ Follow these steps to transfer files from your HPC3 home directory:
    # 1. Create a mount point on HPC4 for HPC3 files
    #
    #[itsc@login1 ~]$
-   mkdir ~/hpc3-storage 
+   mkdir ~/hpc3-storage
 
 
    # 2. Mount HPC3's file system
    #
    #[itsc@login1 ~]$
    sshfs $USER@hpc3.ust.hk:/home/$USER ~/hpc3-storage
-   #.. (itsc@hpc3.ust.hk) Password: 
+   #.. (itsc@hpc3.ust.hk) Password:
    #.. (itsc@hpc3.ust.hk) Duo two-factor login for itsc
    #.. Enter a passcode or select one of the following options:
    #.. 1. Duo Push to +XXX XXXX 9092
    #.. 2. SMS passcodes to +XXX XXXX 9092 (next code starts with: 1)
-   #.. 
+   #..
    #.. Passcode or option (1-2): 1
 
 
@@ -92,7 +92,7 @@ Follow these steps to transfer files from your HPC3 home directory:
    #.. 1727407162 <=== [QMGR] Done submitting jobs. Waiting for them to finish.
    #.. 1727407163 <= [QMGR] Job 41793:12:local finished
    #.. 1727407163 <= [QMGR] Job 41806:13:local finished
-   #.. ... 
+   #.. ...
    #.. 1727407443 <=== [QMGR] Queue processed
    #.. 1727407443 <=== Parts done: 13/13 (100%), remaining: 0
    #.. 1727407443 <=== Time elapsed: 12s, remaining: 0s (~1s/job)
@@ -110,6 +110,7 @@ Transferring Large Datasets from Scratch Space
 For larger datasets stored in the scratch space, it's crucial to first estimate the data size:
 
 .. code-block:: bash
+
    # Run on >>> HPC3 <<<
    # ===================
 
@@ -122,7 +123,7 @@ For larger datasets stored in the scratch space, it's crucial to first estimate 
 This command will display the total size of the specified directory and its contents.
 
 .. note::
-   If your total data size exceeds 500GB, you'll need to request additional quota. Please email `cchelp@ust.hk <mailto:cchelp@ust.hk>`_ with the following information:
+   If your total data size exceeds 500GB, you'll need to request additional quota. Please email `cchelp@ust.hk`_ with the following information:
 
    - Your Principal Investigator's username
    - Current data size in HPC3 (as determined by the ``du -sh`` command)
@@ -156,6 +157,7 @@ Transferring Data from Scratch Space
 Once you've estimated your data size and requested additional quota if necessary, follow these steps to transfer data from the scratch space:
 
 .. code-block:: bash
+
    # Run on >>> HPC4 <<<
    # ===================
    # [PLACEHOLDERS] are shown in square brackets:
@@ -196,10 +198,10 @@ Optimizing fpsync Performance
 The ``fpsync`` command offers several options to optimize transfer performance:
 
 - ``-vv``: Displays detailed progress of the file transfer.
-- ``-f 2048``: Sets the maximum number of files per batch to 2048. 
+- ``-f 2048``: Sets the maximum number of files per batch to 2048.
    - Increase this value for numerous small files
    - Decrease for a small number of large files
-- ``-s 10G``: Sets the approximate total file size per batch to 10GB. 
+- ``-s 10G``: Sets the approximate total file size per batch to 10GB.
    - Consider increasing for very large files (e.g., video datasets)
 - ``-n 16``: Utilizes 16 parallel processes for faster copying. Please maintain this setting.
 
@@ -224,7 +226,8 @@ For Intel node (128 cores):
    srun -A jiy -p cpu -C intel --nodes=1 --ntasks-per-node=1 --cpus-per-task=128 --pty bash
 
 Step 3: Compiling Code
---------------------
+-----------------------
+
 Use the appropriate compiler based on the CPU type.
 
 For AMD:

@@ -1,5 +1,5 @@
 Welcome to HPC4 documentation!
-===================================
+==============================
 
 HPC4 is a high-performance computing (HPC) cluster at the Hong Kong University of Science and Technology (HKUST).
 
@@ -7,10 +7,10 @@ HPC4 is a high-performance computing (HPC) cluster at the Hong Kong University o
 
    This project is under active development.
 
-Contents
---------
-
 .. toctree::
+    :caption: Contents
+    :maxdepth: 1
+    :glob:
 
-   migration-from-hpc3
-
+    migration-from-hpc3/index
+    kb/index
