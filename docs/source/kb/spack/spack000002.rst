@@ -4,8 +4,8 @@ How can I share spack compiled program in a project group?
 
 .. container:: header
 
-  | Last Updated: 2024-11-28
-  | *Not Verified*
+  | Last updated: 2024-11-28
+  | *Solution under review*
 
 .. index:: spack, module, shared libraries
 

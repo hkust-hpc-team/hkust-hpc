@@ -1,25 +1,51 @@
-.. TODO: title
-==============
+.. Please complete the article below using proper wordings in reStructuredText format.
+.. Guidelines and TODOs are marked as comment, those should be removed in the refined article.
+.. Subdomain name should be replaced with generic term, e.g. "hpcname", if it is not necessary for the context.
+.. Any username should be replaced with generic term "username".
+.. Truncate directory paths and filenames if it is not necessary for the context of the article.
 
+.. TODO: Update the title to reflect the article's content
+
+How to create a knowledgebase article using LLM
+===============================================
+
+.. TODO: Update "Last updated" to today's date
+.. Article should be *Solution under review* until verified
+.. When verified, change to "Solution verified: YYYY-MM-DD"
 
 .. container:: header
 
-  | Last Updated: .. TODO: today's date
-  | *Not Verified*
+  | Last updated: YYYY-MM-DD
+  | *Solution under review*
 
-.. index:: .. TODO suggest at least 3 index
+.. TODO: Update index to add at least 3 relevant index tags
+.. index:: knowledgebase, article, template, workflow
 
 Environment
 -----------
 
-  - Superpod
-  - SSH with X11
+  .. TODO: Update solution's applicable environment details
+  .. Include e.g. software name; applicable version(s) if needed
+  .. If it is a hardware specific issues, include hardware / OS details
+  .. For clarity, should be in point-form, 1 indent level
+
+  - restructured text (rst) format
+  - sphinx (readthedocs.io)
 
 Issue
 -----
 
-  .. TODO: Describe the issue
-     E.g.
+  .. TODO: Describe the procedure to reproduce the issue
+  .. For clarity, all text should start with 1 indent level
+
+  - When creating a knowledgebase article, it is time consuming to
+
+    - follow template structure
+    - ensure all sections are complete
+    - describe all steps in detail
+    - include masked sample outputs for users to follow
+
+  - Some simple FAQs may need more efforts to write-up than working out the solution.
 
 Resolution
 ----------
@@ -39,91 +65,34 @@ Resolution
    - Indent the paragraph of resolution section
    - Explain technical details in this section, technical details should go to "Root Cause" section
 
-If you have compiled the libraries and program in the default user's Spack directory, you must recompile program and libraries in a shared Spack directory, and have other group members to use the same shared Spack instance.
+Large language model can help the process of writing articles. Here is a simple workflow outline:
 
-Managing shared Spack directory
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-To relocate Spack onto a shared directory, you need to set the environment variables ``SPACK_USER_CONFIG_PATH`` and ``SPACK_USER_CACHE_PATH`` and reload the spack environment.
-
-.. warning::
-
-  Please assign a member as the **owner (writable)** of the shared Spack instance.Having multiple users to modify software in the same shared Spack directory may cause conflicts.
-
-  If there is need for multiple users to modify the software, consider sharing ``spack env`` yaml definition instead.
-
-Create a shared Spack instance
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Create a directory for Spack under ``/project`` of your group.
-
-.. code-block:: bash
-
-  mkdir -p /project/my-research-group/spack
-
-Set the environment variables and reload the spack environment
-
-.. code-block:: bash
-
-  export SPACK_USER_CONFIG_PATH="/project/my-research-group/spack"
-  export SPACK_USER_CACHE_PATH="/project/my-research-group/spack"
-  . /opt/shared/spack/share/spack/setup-env.sh
-
-This will initialize the shared Spack instance in ``/project/my-research-group/spack``
-
-Recompile program and libraries
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-You should set and reload the spack environment whenever you need to modify this shared Spack instance, instead of the default user's Spack instance.
-
-.. code-block:: bash
-
-  export SPACK_USER_CONFIG_PATH="/project/my-research-group/spack"
-  export SPACK_USER_CACHE_PATH="/project/my-research-group/spack"
-  . /opt/shared/spack/share/spack/setup-env.sh
-
-After setting the environment variables, any spack command can be used as usual.
-
-.. code-block:: bash
-
-  # spack install cmake
-
-Using shared executables and libraries
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-All spack executables and libraries can be accessed via ``module`` command.
-
-.. code-block:: bash
-
-  module use /project/my-research-group/spack/lmod/Core
-
-You should find the installed software listed under the shared Spack instance's path.
-
-.. code-block:: shell-session
-
-  user@host:~ ]$ module avail
-  ------------------- /project/my-research-group/spack/lmod/Core --------------------
-  cmake/3.xx.x-abcdefg
-
-  ------------------------ /opt/shared/modulefiles/Core -----------------------------
-  ...
-
-Use ``module load`` to load software and libraries as usual.
-
-.. note::
-
-  In case another version is available at other module locations, you should specify the ``version`` and ``hash`` to ensure the correct software is loaded.
-
-.. code-block:: bash
-
-  module load cmake/3.xx.x-abcdefg
+1. Make a copy of this template
+2. Fill in minimal working details in the template, including necessary code details
+3. Paste the whole draft to LLM, supplied with another sample article
+4. Iteratively refine parts to give more details
+5. Instruct to LLM to refine wordings for general audience
 
 Root Cause
------------
+----------
 
-The default location of Spack user installation is ``$HOME/.spack`` directory.
+.. TODO: If there is a root technical cause, describe it.
+.. TODO: If not required, remove this section.
 
-It is not possible to share anything inside ``$HOME`` directory with your group members.
+It is sometimes harder to communication a solution than implement it.
+
+Diagnosis
+---------
+
+.. TODO: A diagnosis section is only needed if
+    - User may be required to further check the details instead of a straightforward solution
+    - There are methods for users to check if the solution is applicable to their case if they find multiple similar solutions
+.. TODO: If session not required, remove this section.
+
+Reference
+---------
+
+.. TODO: If not required, remove this section.
 
 ----
 
@@ -135,5 +104,5 @@ It is not possible to share anything inside ``$HOME`` directory with your group 
     | Web: https://itsc.ust.hk
 
   **Article Info**
-    | Issued: 2024-12-03
-    | Issued by: kftse (at) ust.hk
+    | Issued: YYYY-MM-DD
+    | Issued by: user (at) ust.hk
