@@ -6,7 +6,7 @@
 
 .. TODO: Update the title to reflect the article's content
 
-How to create a knowledgebase article using LLM
+.. Example: How to create a knowledgebase article using LLM
 ===============================================
 
 .. TODO: Update "Last updated" to today's date
@@ -19,7 +19,9 @@ How to create a knowledgebase article using LLM
   | *Solution under review*
 
 .. TODO: Update index to add at least 3 relevant index tags
-.. index:: knowledgebase, article, template, workflow
+.. Example: 
+   index:: knowledgebase, article, template, workflow
+.. index:: 
 
 Environment
 -----------
@@ -29,23 +31,23 @@ Environment
   .. If it is a hardware specific issues, include hardware / OS details
   .. For clarity, should be in point-form, 1 indent level
 
-  - restructured text (rst) format
-  - sphinx (readthedocs.io)
+  .. Example:
+    - restructured text (rst) format
+    - sphinx (readthedocs.io)
 
 Issue
 -----
 
   .. TODO: Describe the procedure to reproduce the issue
   .. For clarity, all text should start with 1 indent level
-
+  .. Example:
   - When creating a knowledgebase article, it is time consuming to
-
     - follow template structure
     - ensure all sections are complete
     - describe all steps in detail
     - include masked sample outputs for users to follow
 
-  - Some simple FAQs may need more efforts to write-up than working out the solution.
+  .. - Some simple FAQs may need more efforts to write-up than working out the solution.
 
 Resolution
 ----------
@@ -65,13 +67,13 @@ Resolution
    - Indent the paragraph of resolution section
    - Explain technical details in this section, technical details should go to "Root Cause" section
 
-Large language model can help the process of writing articles. Here is a simple workflow outline:
-
-1. Make a copy of this template
-2. Fill in minimal working details in the template, including necessary code details
-3. Paste the whole draft to LLM, supplied with another sample article
-4. Iteratively refine parts to give more details
-5. Instruct to LLM to refine wordings for general audience
+.. Example:
+  Large language model can help the process of writing articles. Here is a simple workflow outline:
+    1. Make a copy of this template
+    2. Fill in minimal working details in the template, including necessary code details
+    3. Paste the whole draft to LLM, supplied with another sample article
+    4. Iteratively refine parts to give more details
+    5. Instruct to LLM to refine wordings for general audience
 
 Root Cause
 ----------
@@ -79,7 +81,8 @@ Root Cause
 .. TODO: If there is a root technical cause, describe it.
 .. TODO: If not required, remove this section.
 
-It is sometimes harder to communication a solution than implement it.
+.. Example:
+  It is sometimes harder to communication a solution than implement it.
 
 Diagnosis
 ---------
@@ -97,6 +100,7 @@ Reference
 ----
 
 .. container:: footer
+  .. TODO: Do not change the HPC Support Team information, and ask the author to fill in the email
 
   **HPC Support Team**
     | ITSC, HKUST
@@ -105,4 +109,4 @@ Reference
 
   **Article Info**
     | Issued: YYYY-MM-DD
-    | Issued by: user (at) ust.hk
+    | Issued by: user (at) ust.hk 

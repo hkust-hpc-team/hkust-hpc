@@ -1,0 +1,70 @@
+How to resolve QOSMinGRES error when submitting GPU jobs
+========================================================
+
+.. container:: header
+
+  | Last updated: 2024-12-06
+  | *Solution verified: 2024-12-06*
+
+.. index:: gpu, slurm, error, qos, gres
+
+Environment
+-----------
+
+  - ITSC HPC4 or SuperPOD cluster
+
+Issue
+-----
+
+  When submitting jobs to GPU nodes without explicitly requesting GPU resources, users may encounter the following error:
+
+  .. code-block:: shell-session
+
+    sbatch: error: Batch job submission failed: Job violates accounting/QOS policy (job submit limit, user's size and/or time limits)
+
+Resolution
+----------
+
+To resolve this error, specify GPU requirements using one of these Slurm options when submitting jobs:
+
+- Use ``--gres=gpu:N`` where ``N`` is the number of GPUs needed.
+- Use ``--gpus-per-node=N`` to request ``N`` GPUs per allocated node.  
+- Use ``--gpus-per-task=N`` to request ``N`` GPUs per task.
+
+Example job submission:
+
+.. code-block:: shell-session
+
+    $ sbatch --gres=gpu:1 job.sh
+    Submitted batch job 12345
+
+.. note::
+   Choose the most appropriate option based on your job's requirements:
+   
+   - ``--gpus-per-node``: Use when you need a specific GPU count per node.
+   - ``--gpus-per-task``: Use when the GPU count should scale with tasks.
+   - ``--gres``: Use for fine-grained control (not recommended).
+
+Root Cause
+----------
+
+The cluster's QOS (Quality of Service) policy requires explicit GPU resource requests when submitting jobs to GPU nodes. This policy prevents resource wastage by ensuring users consciously allocate GPU resources only when needed.
+
+Reference
+---------
+
+- `Slurm GRES Guide <https://slurm.schedmd.com/gres.html>`_
+- `HKUST HPC4 Slurm Guide <https://itsc.hkust.edu.hk/services/academic-teaching-support/high-performance-computing/hpc4/slurm>`_
+
+----
+
+.. container:: footer
+
+  **HPC Support Team**
+    | ITSC, HKUST
+    | Email: cchelp@ust.hk
+    | Web: https://itsc.ust.hk
+
+  **Article Info**
+    | Issued: 2024-12-06
+    | Issued by: chtaihei@ust.hk
