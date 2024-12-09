@@ -1,5 +1,5 @@
 Running GROMACS on HPC Systems
-=============================
+==============================
 
 .. container:: header
 
@@ -11,7 +11,7 @@ Running GROMACS on HPC Systems
 Environment
 -----------
 
-  - ITSC HPC4 Cluster 
+  - ITSC HPC4 Cluster
   - GROMACS versions:
     - Container-based: 2023.2 (NGC)
     - Source build: 2024.1
@@ -50,14 +50,14 @@ Create a SLURM job script with appropriate resource requests:
     #SBATCH --time=01:00:00
 
 1. Using NGC Container (Recommended for Single-Node Jobs)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * Add these commands to your SLURM script:
 
 .. code-block:: bash
 
     export GMX_ENABLE_DIRECT_GPU_COMM=1
-    
+
     singularity run --nv \
       -B <simulation_dir>:/host_pwd \
       --pwd /host_pwd \
@@ -70,7 +70,7 @@ Create a SLURM job script with appropriate resource requests:
     NGC container provides superior performance for single-node jobs
 
 2. Building from Source with Spack (For Multi-Node Jobs)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * Set up Spack environment:
 
@@ -78,7 +78,7 @@ Create a SLURM job script with appropriate resource requests:
 
     spack env create gromacs
     spack env activate gromacs
-    
+
     # Install GROMACS
     spack add gromacs@2024.1%gcc@13.2.0 +mpi +cuda cuda_arch=89 ^cuda@12.4.0 ^openmpi
     spack concretize -fU && spack install --only-concrete
@@ -86,12 +86,12 @@ Create a SLURM job script with appropriate resource requests:
 * Add these commands to your SLURM script:
 
 .. code-block:: bash
-    
+
     spack env activate gromacs
-    gmx_mpi <commands>
+    gmx_mpi "<command>"
 
 Performance Considerations
-~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * Hardware Performance Comparison:
 

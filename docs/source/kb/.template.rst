@@ -6,8 +6,8 @@
 
 .. TODO: Update the title to reflect the article's content
 
-.. Example: How to create a knowledgebase article using LLM
-===============================================
+Example: How to create a knowledgebase article using LLM
+========================================================
 
 .. TODO: Update "Last updated" to today's date
 .. Article should be *Solution under review* until verified
@@ -18,10 +18,11 @@
   | Last updated: YYYY-MM-DD
   | *Solution under review*
 
-.. TODO: Update index to add at least 3 relevant index tags
-.. Example: 
+
+.. Example:
    index:: knowledgebase, article, template, workflow
-.. index:: 
+
+.. index:: .. TODO: Update index to add at least 3 relevant index tags
 
 Environment
 -----------
@@ -41,11 +42,11 @@ Issue
   .. TODO: Describe the procedure to reproduce the issue
   .. For clarity, all text should start with 1 indent level
   .. Example:
-  - When creating a knowledgebase article, it is time consuming to
-    - follow template structure
-    - ensure all sections are complete
-    - describe all steps in detail
-    - include masked sample outputs for users to follow
+    - When creating a knowledgebase article, it is time consuming to
+      - follow template structure
+      - ensure all sections are complete
+      - describe all steps in detail
+      - include masked sample outputs for users to follow
 
   .. - Some simple FAQs may need more efforts to write-up than working out the solution.
 
@@ -100,6 +101,7 @@ Reference
 ----
 
 .. container:: footer
+
   .. TODO: Do not change the HPC Support Team information, and ask the author to fill in the email
 
   **HPC Support Team**
@@ -109,4 +111,4 @@ Reference
 
   **Article Info**
     | Issued: YYYY-MM-DD
-    | Issued by: user (at) ust.hk 
+    | Issued by: user (at) ust.hk

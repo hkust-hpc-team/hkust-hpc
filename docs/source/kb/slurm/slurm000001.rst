@@ -16,45 +16,43 @@ Environment
 Issue
 -----
 
-  When submitting jobs to GPU nodes without explicitly requesting GPU resources, users may encounter the following error:
+  - When submitting jobs to GPU nodes without explicitly requesting GPU resources, users may encounter the following error:
 
-  .. code-block:: shell-session
+    .. code-block:: shell-session
 
-    sbatch: error: Batch job submission failed: Job violates accounting/QOS policy (job submit limit, user's size and/or time limits)
+      sbatch: error: Batch job submission failed: Job violates accounting/QOS policy (job submit limit, user's size and/or time limits)
 
 Resolution
 ----------
 
-To resolve this error, specify GPU requirements using one of these Slurm options when submitting jobs:
-
-- Use ``--gres=gpu:N`` where ``N`` is the number of GPUs needed.
-- Use ``--gpus-per-node=N`` to request ``N`` GPUs per allocated node.  
-- Use ``--gpus-per-task=N`` to request ``N`` GPUs per task.
-
-Example job submission:
+Specify the number of GPU needed using the ``--gpus-per-node`` option when submitting the job.
 
 .. code-block:: shell-session
 
-    $ sbatch --gres=gpu:1 job.sh
+    $ sbatch --nodes=1 --gpus-per-node=4 --tasks-per-node=4 --cpus-per-task=16 --account=my-proj-name --partition=gpu-part-name job.sh
     Submitted batch job 12345
 
 .. note::
-   Choose the most appropriate option based on your job's requirements:
-   
-   - ``--gpus-per-node``: Use when you need a specific GPU count per node.
-   - ``--gpus-per-task``: Use when the GPU count should scale with tasks.
-   - ``--gres``: Use for fine-grained control (not recommended).
+
+  Most applications e.g. pytorch or Gromacs can detect and allocate GPU resources automatically.
+
+  Explicitly specifying ``--gpus-per-task`` is only necessary in specific cases.
+  - to bind GPU to process when program's auto-detection failed
+  - to optimize NUMA locality when using multiple GPUs
+
+  .. code-block:: bash
+
+      $ sbatch --gpus-per-node=4 --gpus-per-task=1 --cpu-bind=ldom --tasks-per-node=4 --nodes=1 --cpus-per-task=16 --account=my-proj-name --partition=gpu-part-name job.sh
 
 Root Cause
 ----------
 
-The cluster's QOS (Quality of Service) policy requires explicit GPU resource requests when submitting jobs to GPU nodes. This policy prevents resource wastage by ensuring users consciously allocate GPU resources only when needed.
+The cluster's QOS (Quality of Service) policy requires requesting at least 1 GPU submitting jobs to GPU nodes. This helps ensure proper resource utilization and avoid unnecessary surcharge if applicable.
 
 Reference
 ---------
 
 - `Slurm GRES Guide <https://slurm.schedmd.com/gres.html>`_
-- `HKUST HPC4 Slurm Guide <https://itsc.hkust.edu.hk/services/academic-teaching-support/high-performance-computing/hpc4/slurm>`_
 
 ----
 
