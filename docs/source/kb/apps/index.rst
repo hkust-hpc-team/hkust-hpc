@@ -1,9 +1,9 @@
-SLURM
-=====
+HPC Applications
+================
 
 .. toctree::
     :glob:
     :maxdepth: 1
     :titlesonly:
 
-    slurm*
+    apps*
