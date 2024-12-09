@@ -6,4 +6,4 @@ SSH
     :maxdepth: 1
     :titlesonly:
 
-    ssh*
+    slurm*

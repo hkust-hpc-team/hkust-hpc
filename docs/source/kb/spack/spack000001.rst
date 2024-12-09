@@ -3,8 +3,8 @@ When using spack generated module, error while loading shared libraries
 
 .. container:: header
 
-  | Last Updated: 2024-11-25
-  | Verified: 2024-11-25
+  | Last updated: 2024-11-25
+  | Solution verified: 2024-11-25
 
 .. index:: spack, module, shared libraries, compiler
 
