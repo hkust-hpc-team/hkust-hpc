@@ -12,6 +12,10 @@ version = "1.0.0"
 [tool.pdm]
 distribution = false
 
+[tool.doc8]
+ignore = 'D001'
+max-line-length = 10000
+
 [tool.docstrfmt]
 docstring-trailing-line = true
 line-length = 10000
@@ -19,7 +23,7 @@ line-length = 10000
 [dependency-groups]
 dev = [
   "doc8>=1.1.2",
-  "docstrfmt>=1.9.0",
+  "git+https://github.com/kftsehk/docstrfmt.git",
   "esbonio>=0.16.5",
   "restructuredtext-lint>=1.4.0",
   "rstcheck>=6.2.4",

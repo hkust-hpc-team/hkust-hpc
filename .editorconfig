@@ -5,6 +5,7 @@ end_of_line = lf
 insert_final_newline = true
 indent_style = space
 indent_size = 2
+tab_width = 2
 
 [{M,m}akefile]
 indent_style = tab
@@ -18,4 +19,7 @@ indent_size = 4
 indent_size = 4
 
 [*.rst]
-indent_size = 2
+max_line_length = 10000
+
+[*.yaml]
+max_line_length = 10000

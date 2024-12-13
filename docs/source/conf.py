@@ -1,10 +1,9 @@
-# Configuration file for the Sphinx documentation builder.
+"""Configuration file for the Sphinx documentation builder."""
 
 # -- Project information
 
 project = "HPC Handbook"
 copyright = "2024, The Hong Kong University of Science and Technology"
-author = "HKUST HPC Team"
 
 release = "0.1"
 version = "0.1.0"
@@ -26,13 +25,14 @@ intersphinx_mapping = {
 intersphinx_disabled_domains = ["std"]
 
 templates_path = ["_templates"]
+html_static_path = ["_static"]
 
 # -- Options for HTML output
 
 html_theme = "sphinx_rtd_theme"
-html_static_path = ["_static"]
-html_css_files = [
-    "css/kb.css",
-]
+html_last_updated_fmt = "%b %d, %Y"
+
 # -- Options for EPUB output
 epub_show_urls = "footnote"
+
+# -- Custom options

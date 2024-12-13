@@ -1,11 +1,11 @@
-Welcome to HPC4 documentation!
-==============================
+Welcome to HKUST HPC documentation!
+===================================
 
-HPC4 is a high-performance computing (HPC) cluster at the Hong Kong University of Science and Technology (HKUST).
+HPC4 and Superpod are high-performance computing (HPC) clusters at the Hong Kong University of Science and Technology (HKUST).
 
 .. note::
 
-   This project is under active development.
+    This project is under active development.
 
 .. toctree::
     :caption: Contents

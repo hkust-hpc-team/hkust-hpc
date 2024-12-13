@@ -1,34 +1,39 @@
 How to Run Overlap Jobs in SLURM
-===============================
+================================
 
 .. container:: header
 
-  | Last updated: 2024-12-06
-  | *Solution verified 2024-12-06*
+    | Last updated: 2024-12-06
+    | *Solution verified 2024-12-06*
 
-.. index:: slurm, overlap, job, srun, hpc
+.. meta::
+    :description: How to run overlap jobs within an existing SLURM allocation
+    :keywords: slurm, overlap, job, srun, hpc
+    :author: chtaihei <chtaihei@ust.hk>
 
 Environment
 -----------
 
-  - ITSC HPC clusters
+    - ITSC HPC clusters
 
 Issue
 -----
 
-  - Users need to run overlap jobs within an existing SLURM allocation (e.g. monitoring, debugging, etc.)
-  - Standard job submission may not allow sharing resources with existing jobs
+    - Users need to run overlap jobs within an existing SLURM allocation (e.g. monitoring, debugging, etc.)
+    - Standard job submission may not allow sharing resources with existing jobs
 
 Resolution
 ----------
 
 To run an overlap job within an existing SLURM allocation:
 
-* Find your current job ID:
+- Find your current job ID:
+
 .. code-block:: bash
 
     squeue -u $USER
-* Use srun with the --overlap flag:
+
+- Use srun with the --overlap flag:
 
 .. code-block:: bash
 
@@ -41,9 +46,11 @@ Example usage:
     $ srun -A myproject --overlap --jobid 12345 --pty bash
 
 .. note::
+
     The --overlap flag allows the new job to share resources with the existing job specified by --jobid
 
 .. warning::
+
     Ensure you have sufficient resources in your original allocation to run the overlap job
 
 Root Cause
@@ -51,8 +58,8 @@ Root Cause
 
 SLURM by default prevents multiple jobs from using the same resources simultaneously. The --overlap flag explicitly allows resource sharing between jobs when needed for workflow efficiency.
 
-Reference
----------
+References
+----------
 
 - `Slurm srun Guide <https://slurm.schedmd.com/srun.html>`_
 - `HKUST HPC4 Slurm Guide <https://itsc.hkust.edu.hk/services/academic-teaching-support/high-performance-computing/hpc4/slurm>`_
@@ -61,11 +68,11 @@ Reference
 
 .. container:: footer
 
-  **HPC Support Team**
-    | ITSC, HKUST
-    | Email: cchelp@ust.hk
-    | Web: https://itsc.ust.hk
+    **HPC Support Team**
+      | ITSC, HKUST
+      | Email: cchelp@ust.hk
+      | Web: https://itsc.ust.hk
 
-  **Article Info**
-    | Issued: 2024-12-06
-    | Issued by: chtaihei@ust.hk
+    **Article Info**
+      | Issued: 2024-12-06
+      | Issued by: chtaihei@ust.hk

@@ -12,8 +12,8 @@ As an example, if you encounter the following error message when using the comma
 
 .. code-block:: shell-session
 
-  user@my-pc ~]$ ssh superpod
-  ssh: Could not resolve hostname superpod: Name or service not known
+    user@my-pc ~]$ ssh superpod
+    ssh: Could not resolve hostname superpod: Name or service not known
 
 You may try to search for ``Could not resolve hostname`` or ``Name or service not known``.
 
@@ -22,24 +22,25 @@ Technical support
 
 If you need further assistance, please feel free to contact us.
 
-.. container:: contact
+.. container::
+    :name: contact
 
-  | ITSC, HKUST
-  | Email: cchelp@ust.hk
-  | Web: https://itsc.ust.hk
+    | ITSC, HKUST
+    | Email: cchelp@ust.hk
+    | Web: https://itsc.ust.hk
 
 List of articles by software
 ----------------------------
 
 .. note::
 
-  The list below is generated automatically based on available articles. Some supported software are not listed if there is not yet an article for the software.
+    The list below is generated automatically based on available articles. Some supported software are not listed if there is not yet an article for the software.
 
-  Please try to search through the whole doc, or contact us, if you need help with some software or topic that is not listed here.
+    Please try to search through the whole doc, or contact us, if you need help with some software or topic that is not listed here.
 
 .. toctree::
-  :glob:
-  :maxdepth: 1
-  :titlesonly:
+    :glob:
+    :maxdepth: 1
+    :titlesonly:
 
-  */index
+    */index
