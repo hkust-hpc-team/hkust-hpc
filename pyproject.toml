@@ -1,6 +1,6 @@
 [project]
 authors = [{ name = "kftse", email = "kftse@ust.hk" }]
-dependencies = ["sphinx-rtd-theme>=3.0.2", "sphinx>=8.1.3"]
+dependencies = ["sphinx-rtd-theme>=3.0.2", "sphinx>=8.1.3", "sphinx-copybutton>=0.5.2"]
 description = "Documentation for HPC4"
 dynamic = ["description", "version"]
 license = { text = "MIT" }
