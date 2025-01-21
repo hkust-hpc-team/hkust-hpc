@@ -7,6 +7,12 @@ indent_style = space
 indent_size = 2
 tab_width = 2
 
+[*.yaml]
+max_line_length = 10000
+
+[*.toml]
+indent_size = 4
+
 [{M,m}akefile]
 indent_style = tab
 indent_size = 4
@@ -17,9 +23,3 @@ indent_size = 4
 
 [*.py]
 indent_size = 4
-
-[*.rst]
-max_line_length = 10000
-
-[*.yaml]
-max_line_length = 10000
