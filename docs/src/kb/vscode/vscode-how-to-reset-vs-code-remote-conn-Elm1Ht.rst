@@ -52,7 +52,7 @@ Quick Clean-up
 
        .. code-block:: bash
 
-           kill $(pgrep -u $USER -f code)
+           pgrep -u $USER -f '(code|node)\s' | xargs -r -t -i kill {}
 
 2. Close VS Code on your local machine
 3. Attempt to reestablish connection on remote as usual.
