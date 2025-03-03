@@ -38,9 +38,9 @@ Start an interactive container session using the following command:
         --gpus-per-node=1 \
         --container-writable \
         --container-remap-root \
-        --container-no-mount-home \
+        --no-container-mount-home \
         --container-image nvcr.io#nvidia/nvhpc:24.3-devel-cuda12.3-ubuntu22.04 \
-        --container-save $HOME/my-container.sqsh
+        --container-save $HOME/my-container.sqsh \
         --pty bash
 
 .. note::
