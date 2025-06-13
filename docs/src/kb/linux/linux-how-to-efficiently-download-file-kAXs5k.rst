@@ -28,7 +28,8 @@ Issue
 Resolution
 ----------
 
-Use ``sshfs`` to mount remote directory locally, then use ``fpsync`` for parallel downloads.
+Use ``sshfs`` to mount remote directory locally, then use ``fpsync`` for parallel
+downloads.
 
 Install Required Packages
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -119,4 +120,4 @@ References
 
     **Article Info**
       | Issued: 2025-02-17
-      | Issued by: kftse (at) ust.hk
+      | Issued by: kftse <kftse@ust.hk>
