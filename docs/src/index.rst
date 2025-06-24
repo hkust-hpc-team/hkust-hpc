@@ -15,10 +15,10 @@ Table of Contents
 
 .. toctree::
     :glob:
-    :maxdepth: 1
     :titlesonly:
 
     kb/index
+    sysadmin/index
     contrib/index
 
 Acknowledgement
