@@ -12,3 +12,5 @@ respective subsystem.
     :maxdepth: 1
 
     subsystems/cpu/amd
+    subsystems/networking/index
+    subsystems/nfs-client
