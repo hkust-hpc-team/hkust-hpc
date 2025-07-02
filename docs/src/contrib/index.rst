@@ -56,7 +56,4 @@ The following extensions are recommended:
   - ``eamodio.gitlens`` better version control
   - ``EditorConfig.EditorConfig`` for vscode to use the ``.editorconfig`` file
 
-.. toctree::
-   :maxdepth: 2
 
-   github-vscode-integration
