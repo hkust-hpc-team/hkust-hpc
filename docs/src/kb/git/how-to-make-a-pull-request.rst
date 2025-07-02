@@ -42,6 +42,65 @@ Before creating a pull request, ensure you have:
    - Fork access to the target repository (for external contributions)
    - Direct push access (for internal team members)
 
+Basic Git Workflow for PR Creation
+----------------------------------
+
+.. important::
+   
+   **Never commit directly to the main branch!** Always create a feature branch for your changes.
+   This keeps the main branch clean and allows for proper code review.
+
+Quick Start Workflow
+~~~~~~~~~~~~~~~~~~~~
+
+For those familiar with Git, here's the essential workflow:
+
+.. code-block:: bash
+
+    # 1. Create a new branch from main
+    git checkout -b <branch-name>
+    
+    # 2. Make your changes, then stage them
+    git add <filename>  # or git add . for all files
+    
+    # 3. Commit your changes
+    git commit -m "descriptive commit message"
+    
+    # 4. Push your branch to GitHub
+    git push origin <branch-name>
+    
+    # 5. Create a Pull Request on GitHub web interface
+    # Navigate to the repository and click "Compare & pull request"
+
+Essential Git Commands
+~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: bash
+
+    # Check current status and see what has changed
+    git status
+    
+    # View commit history
+    git log --oneline -10  # Show last 10 commits
+    
+    # List all branches (local and remote)
+    git branch -a
+    
+    # Switch to an existing branch
+    git checkout <branch-name>
+    
+    # Create and switch to a new branch
+    git checkout -b <new-branch-name>
+
+.. tip::
+   
+   Use ``git status`` frequently to understand what Git sees. It shows:
+   
+   - Modified files (in red)
+   - Staged files ready for commit (in green)
+   - Current branch name
+   - Whether you're ahead/behind the remote branch
+
 Step-by-Step Guide
 ------------------
 
@@ -69,11 +128,27 @@ Method 1: Fork and Pull Request (External Contributors)
    
    .. code-block:: bash
    
-       # Create and switch to a new branch
+       # Modern Git: Create and switch to a new branch (Git 2.23+)
+       git switch -c feature/your-feature-name
+       
+       # Traditional method: Create and switch to a new branch
        git checkout -b feature/your-feature-name
        
-       # Or for bug fixes
-       git checkout -b fix/issue-description
+       # For bug fixes
+       git switch -c fix/issue-description
+       
+       # Verify you're on the correct branch
+       git branch  # Shows current branch with *
+       git status  # Shows current branch and working directory status
+
+   .. note::
+      
+      **Why create a branch?** Working directly on ``main`` is risky because:
+      
+      - Your changes immediately affect the main codebase
+      - Multiple people working on main creates conflicts
+      - No opportunity for code review before changes are merged
+      - Harder to track and revert specific features
 
 4. **Make Your Changes**
    
@@ -445,6 +520,127 @@ Advanced Tips
        
        # View PR in browser
        gh pr view --web
+
+Quick Reference Guide
+---------------------
+
+Complete Workflow Cheat Sheet
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: bash
+
+    # 1. Start: Create branch from main
+    git checkout main
+    git pull origin main  # Get latest changes
+    git checkout -b feature/my-new-feature
+    
+    # 2. Work: Make changes and commit
+    # Edit your files...
+    git status           # See what changed
+    git add .            # Stage all changes (or specify files)
+    git commit -m "Add feature: descriptive message"
+    
+    # 3. Share: Push branch and create PR
+    git push origin feature/my-new-feature
+    # Then create PR on GitHub web interface
+    
+    # 4. Update: After PR feedback
+    # Make more changes...
+    git add .
+    git commit -m "Address review feedback"
+    git push origin feature/my-new-feature
+    
+    # 5. Clean up: After PR is merged
+    git checkout main
+    git pull origin main  # Get updated main
+    git branch -d feature/my-new-feature  # Delete local branch
+
+Essential Commands Reference
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: bash
+
+    # Branch management
+    git branch -a              # List all branches
+    git checkout <branch>      # Switch to branch
+    git checkout -b <branch>   # Create and switch to branch
+    git switch <branch>        # Modern way to switch (Git 2.23+)
+    git switch -c <branch>     # Modern way to create and switch
+    
+    # Checking status
+    git status                 # Current status
+    git log --oneline -10      # Recent commits
+    git diff                   # See unstaged changes
+    git diff --staged          # See staged changes
+    
+    # Working with changes
+    git add <file>             # Stage specific file
+    git add .                  # Stage all changes
+    git commit -m "message"    # Commit with message
+    git push origin <branch>   # Push branch to remote
+    
+    # Syncing with remote
+    git fetch origin           # Get remote changes (don't merge)
+    git pull origin main       # Get and merge main branch changes
+    git rebase main            # Reapply your commits on top of main
+
+Common Mistakes to Avoid
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+1. **Don't commit to main directly**
+   
+   .. code-block:: bash
+   
+       # WRONG - Don't do this!
+       git checkout main
+       git add .
+       git commit -m "changes"
+       git push origin main
+
+2. **Don't forget to create a branch**
+   
+   .. code-block:: bash
+   
+       # WRONG - Working on main
+       # Make changes...
+       git add .
+       git commit -m "changes"
+       
+       # CORRECT - Create branch first
+       git checkout -b feature/my-feature
+       # Make changes...
+       git add .
+       git commit -m "changes"
+
+3. **Don't push without checking status**
+   
+   .. code-block:: bash
+   
+       # GOOD - Always check first
+       git status
+       git diff
+       git add .
+       git commit -m "descriptive message"
+       git push origin feature/my-feature
+
+Troubleshooting Quick Fixes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: bash
+
+    # Forgot to create branch and already made changes?
+    git stash                    # Save changes temporarily
+    git checkout -b new-branch   # Create proper branch
+    git stash pop                # Restore changes
+    
+    # Accidentally committed to main?
+    git reset --soft HEAD~1      # Undo last commit, keep changes
+    git checkout -b new-branch   # Create proper branch
+    git commit -m "message"      # Commit to new branch
+    
+    # Need to see what branches exist?
+    git branch -a                # All branches
+    git remote -v                # Remote repositories
 
 Additional Resources
 --------------------
