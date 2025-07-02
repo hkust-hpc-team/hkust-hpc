@@ -17,7 +17,7 @@ Environment
 
 This guide applies to:
 
-- **Visual Studio Code**: Version 1.60.0 or later
+- **Visual Studio Code**: Version 1.74.0 or later (Version 1.99+ for Agent mode features)
 - **GitHub Copilot**: Latest extension version
 - **Operating Systems**: Windows, macOS, Linux
 - **GitHub Account**: Active subscription to GitHub Copilot
@@ -29,15 +29,27 @@ Before installing GitHub Copilot, ensure you have:
 
 1. **Active GitHub Copilot Subscription**
    
-   - Individual subscription ($10/month or $100/year)
+   - Individual subscription (pricing varies by region, check GitHub's current rates)
+   - GitHub Copilot for Business (for organizations)
    - GitHub Pro, Team, or Enterprise Cloud subscription
    - Student access through GitHub Student Developer Pack
    - Free trial (if available)
+   
+   .. note::
+      
+      Pricing may vary by region and is subject to change. 
+      Visit `GitHub Copilot pricing page <https://github.com/features/copilot#pricing>`_ for current rates.
 
 2. **Visual Studio Code**
    
-   - Version 1.60.0 or later (recommended: latest stable version)
+   - Version 1.74.0 or later (recommended: latest stable version)
+   - Version 1.99.0+ required for GitHub Copilot Agent mode features
    - Download from `official VS Code website <https://code.visualstudio.com/>`_
+   
+   .. tip::
+      
+      While older versions may work for basic Copilot features, VS Code 1.99+ 
+      provides enhanced Agent mode capabilities and better Copilot integration.
 
 3. **Internet Connection**
    
@@ -124,19 +136,24 @@ Important Considerations
 Version Compatibility
 ~~~~~~~~~~~~~~~~~~~~~
 
-- **VS Code Minimum Version**: 1.60.0 (released August 2021)
-- **Node.js**: Not directly required, but some features may need Node.js 16.x or later
+- **VS Code Minimum Version**: 1.74.0 for basic features, 1.99.0+ for Agent mode
+- **Node.js**: Not directly required, but some features may need Node.js 18.x or later
 - **Extension Updates**: Enable automatic updates for the latest features and security patches
 
+.. note::
+   
+   GitHub Copilot Agent mode (available in VS Code 1.99+) provides enhanced 
+   conversational capabilities and improved code understanding.
+
 Performance Considerations
-~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - **Memory Usage**: Copilot may increase VS Code's memory consumption by 100-200MB
 - **Network Usage**: Requires constant internet connection for AI suggestions
 - **CPU Impact**: Minimal CPU overhead during normal operation
 
 Security and Privacy
-~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~
 
 - **Code Privacy**: Your code is sent to GitHub's servers for processing
 - **Data Retention**: GitHub may retain code snippets for service improvement
@@ -146,7 +163,7 @@ Troubleshooting
 ---------------
 
 Common Issues and Solutions
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 **Issue: Copilot not showing suggestions**
 
@@ -173,8 +190,28 @@ Common Issues and Solutions
 2. Use descriptive variable and function names
 3. Write clear, well-structured code for better AI understanding
 
+**Issue: Extension conflicts**
+
+1. Disable other AI coding assistants temporarily
+2. Check for conflicting extensions in the Extensions panel
+3. Try running VS Code in safe mode: ``code --disable-extensions``
+
+**Issue: Slow suggestions**
+
+1. Check your internet connection speed
+2. Restart VS Code to refresh the connection
+3. Consider using GitHub Copilot for Business for better performance
+4. Clear VS Code workspace cache if performance issues persist
+
+**Issue: Agent mode features not working**
+
+1. Ensure you have VS Code 1.99.0 or later installed
+2. Update GitHub Copilot extension to the latest version
+3. Restart VS Code after updating
+4. Check that Agent mode is enabled in Copilot settings
+
 Verification Commands
-~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
 
 To verify your installation:
 
@@ -195,6 +232,11 @@ Usage Tips
 3. **Dismiss Suggestions**: Press ``Esc`` to dismiss current suggestions
 4. **Inline Chat**: Use ``Ctrl+I`` (Windows/Linux) or ``Cmd+I`` (macOS) for inline chat
 5. **Copilot Chat**: Open the chat panel for conversational coding assistance
+6. **Enable/Disable for Specific Languages**: Configure which file types should use Copilot
+7. **Use Copilot Labs**: Install GitHub Copilot Labs for experimental features
+8. **Multi-line Suggestions**: Press ``Ctrl+Enter`` (Windows/Linux) or ``Cmd+Enter`` (macOS) for multi-line completions
+9. **Agent Mode**: Use ``@workspace`` in Copilot Chat to ask questions about your entire codebase (VS Code 1.99+)
+10. **Context-Aware Chat**: Use ``#file`` or ``#selection`` in chat to reference specific code (VS Code 1.99+)
 
 Best Practices
 --------------
@@ -204,9 +246,14 @@ Best Practices
 3. **Review Suggestions**: Always review and test generated code
 4. **Combine with Testing**: Use Copilot with proper testing practices
 5. **Stay Updated**: Keep the extension updated for latest features and improvements
+6. **Respect Licensing**: Be aware that suggestions may be similar to existing code
+7. **Use with Documentation**: Combine Copilot with proper code documentation
+8. **Regular Extension Updates**: Keep both Copilot extensions updated for best performance
+9. **Customize Settings**: Adjust Copilot settings based on your coding preferences and project needs
+10. **Leverage Agent Mode**: If using VS Code 1.99+, take advantage of Agent mode for enhanced workspace understanding and context-aware assistance
 
 Additional Resources
--------------------
+--------------------
 
 - `GitHub Copilot Documentation <https://docs.github.com/en/copilot>`_
 - `VS Code Extension Marketplace <https://marketplace.visualstudio.com/items?itemName=GitHub.copilot>`_
