@@ -1,8 +1,6 @@
 Integrating GitHub with VS Code
 ===============================
 
-Visual Studio Code provides a seamless integration with Git and GitHub, making it a powerful tool for developers. This guide will walk you through the process of using GitHub within VS Code.
-
 Prerequisites
 -------------
 
@@ -14,12 +12,17 @@ Prerequisites
 Cloning a Repository
 --------------------
 
-1.  **Open the Terminal**: Press ``Ctrl+J`` (or ``Cmd+J`` on macOS).
-2.  **Run Git: Clone**: Type `git clone` and press Enter.
-3.  **Enter Repository URL**: Paste the URL of the GitHub repository you want to clone. You can find this on the repository's main page on GitHub by clicking the green "Code" button.
-4.  **Select a local folder**: Choose a directory on your local machine to store the project.
+1.  **Open the Terminal**: Press ``Ctrl+J`` (or ``Cmd+J`` on macOS) to open the integrated terminal in VS Code.
+2.  **Navigate to your project folder**: Use the `cd` command to navigate to the directory where you want to store the project.
+3.  **Run the clone command**: Type `git clone` followed by the URL of the repository you want to clone. For example:
 
-VS Code will clone the repository and ask if you want to open it.
+    .. code-block:: bash
+
+        git clone https://github.com/owner/repository.git
+
+    You can find this URL on the repository's main page on GitHub by clicking the green "Code" button.
+
+VS Code will clone the repository into a new folder in your current directory. You can then open this folder to start working.
 
 Authenticating with GitHub
 --------------------------
