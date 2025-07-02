@@ -29,15 +29,26 @@ Before installing GitHub Copilot, ensure you have:
 
 1. **Active GitHub Copilot Subscription**
    
-   - Individual subscription ($10/month or $100/year)
+   - Individual subscription (pricing varies by region, check GitHub's current rates)
+   - GitHub Copilot for Business (for organizations)
    - GitHub Pro, Team, or Enterprise Cloud subscription
    - Student access through GitHub Student Developer Pack
    - Free trial (if available)
+   
+   .. note::
+      
+      Pricing may vary by region and is subject to change. 
+      Visit `GitHub Copilot pricing page <https://github.com/features/copilot#pricing>`_ for current rates.
 
 2. **Visual Studio Code**
    
-   - Version 1.60.0 or later (recommended: latest stable version)
+   - Version 1.74.0 or later (recommended: latest stable version)
    - Download from `official VS Code website <https://code.visualstudio.com/>`_
+   
+   .. tip::
+      
+      While older versions may work, newer VS Code versions provide better 
+      Copilot integration and performance improvements.
 
 3. **Internet Connection**
    
@@ -129,14 +140,14 @@ Version Compatibility
 - **Extension Updates**: Enable automatic updates for the latest features and security patches
 
 Performance Considerations
-~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - **Memory Usage**: Copilot may increase VS Code's memory consumption by 100-200MB
 - **Network Usage**: Requires constant internet connection for AI suggestions
 - **CPU Impact**: Minimal CPU overhead during normal operation
 
 Security and Privacy
-~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~
 
 - **Code Privacy**: Your code is sent to GitHub's servers for processing
 - **Data Retention**: GitHub may retain code snippets for service improvement
@@ -146,7 +157,7 @@ Troubleshooting
 ---------------
 
 Common Issues and Solutions
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 **Issue: Copilot not showing suggestions**
 
@@ -173,8 +184,21 @@ Common Issues and Solutions
 2. Use descriptive variable and function names
 3. Write clear, well-structured code for better AI understanding
 
+**Issue: Extension conflicts**
+
+1. Disable other AI coding assistants temporarily
+2. Check for conflicting extensions in the Extensions panel
+3. Try running VS Code in safe mode: ``code --disable-extensions``
+
+**Issue: Slow suggestions**
+
+1. Check your internet connection speed
+2. Restart VS Code to refresh the connection
+3. Consider using GitHub Copilot for Business for better performance
+4. Clear VS Code workspace cache if performance issues persist
+
 Verification Commands
-~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
 
 To verify your installation:
 
@@ -195,6 +219,9 @@ Usage Tips
 3. **Dismiss Suggestions**: Press ``Esc`` to dismiss current suggestions
 4. **Inline Chat**: Use ``Ctrl+I`` (Windows/Linux) or ``Cmd+I`` (macOS) for inline chat
 5. **Copilot Chat**: Open the chat panel for conversational coding assistance
+6. **Enable/Disable for Specific Languages**: Configure which file types should use Copilot
+7. **Use Copilot Labs**: Install GitHub Copilot Labs for experimental features
+8. **Multi-line Suggestions**: Press ``Ctrl+Enter`` (Windows/Linux) or ``Cmd+Enter`` (macOS) for multi-line completions
 
 Best Practices
 --------------
@@ -204,9 +231,13 @@ Best Practices
 3. **Review Suggestions**: Always review and test generated code
 4. **Combine with Testing**: Use Copilot with proper testing practices
 5. **Stay Updated**: Keep the extension updated for latest features and improvements
+6. **Respect Licensing**: Be aware that suggestions may be similar to existing code
+7. **Use with Documentation**: Combine Copilot with proper code documentation
+8. **Regular Extension Updates**: Keep both Copilot extensions updated for best performance
+9. **Customize Settings**: Adjust Copilot settings based on your coding preferences and project needs
 
 Additional Resources
--------------------
+--------------------
 
 - `GitHub Copilot Documentation <https://docs.github.com/en/copilot>`_
 - `VS Code Extension Marketplace <https://marketplace.visualstudio.com/items?itemName=GitHub.copilot>`_

@@ -69,11 +69,14 @@ Method 1: Fork and Pull Request (External Contributors)
    
    .. code-block:: bash
    
-       # Create and switch to a new branch
+       # Using modern git switch command (Git 2.23+)
+       git switch -c feature/your-feature-name
+       
+       # Or traditional checkout method
        git checkout -b feature/your-feature-name
        
-       # Or for bug fixes
-       git checkout -b fix/issue-description
+       # For bug fixes
+       git switch -c fix/issue-description
 
 4. **Make Your Changes**
    
@@ -295,8 +298,13 @@ Squashing Commits (if requested)
     # Interactive rebase to squash commits
     git rebase -i HEAD~n  # n = number of commits to squash
     
-    # Force push after squashing
+    # Force push after squashing (safer than --force)
     git push --force-with-lease origin feature/your-feature-name
+
+.. note::
+   
+   ``--force-with-lease`` is safer than ``--force`` as it checks that no one else
+   has pushed to the branch since your last fetch, preventing accidental overwrites.
 
 Syncing with Upstream
 ~~~~~~~~~~~~~~~~~~~~~
@@ -337,19 +345,22 @@ Common Issues and Solutions
 
 **Issue: Large PR with many changes**
 
-1. Consider splitting into smaller, focused PRs
+1. Consider splitting into smaller, focused PRs (recommended: <400 lines of changes)
 2. Use draft PRs for work-in-progress
 3. Communicate with maintainers about the scope
+4. Break complex features into logical, reviewable chunks
 
-**Issue: Outdated branch**
+**Issue: Sensitive data in commits**
 
 .. code-block:: bash
 
-    # Rebase on latest main
-    git checkout main
-    git pull origin main
-    git checkout feature/your-feature-name
-    git rebase main
+    # If you accidentally committed sensitive data
+    # Remove the file and commit the removal
+    git rm sensitive-file.txt
+    git commit -m "Remove sensitive data"
+    
+    # For data in previous commits, use git filter-branch or BFG
+    # Contact repository administrators for help with history rewriting
 
 PR Templates and Automation
 ---------------------------
@@ -445,6 +456,23 @@ Advanced Tips
        
        # View PR in browser
        gh pr view --web
+
+6. **Use GitHub Web Editor**
+   
+   - For small changes, use GitHub's web interface
+   - Click the pencil icon on any file to edit directly
+   - Useful for quick documentation fixes or typos
+
+7. **Consider Signed Commits**
+   
+   .. code-block:: bash
+   
+       # Configure GPG signing (one-time setup)
+       git config --global user.signingkey YOUR_GPG_KEY_ID
+       git config --global commit.gpgsign true
+       
+       # Sign individual commits
+       git commit -S -m "Add signed commit"
 
 Additional Resources
 --------------------
