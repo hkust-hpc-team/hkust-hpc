@@ -8,7 +8,7 @@ How to Efficiently Upload Files to HPC Cluster
 
 .. container:: header
 
-    | Last updated: 2025-06-13
+    | Last updated: 2025-07-02
     | Keywords: fpsync, rsync, file transfer, parallel upload
     | *Solution verified*
 
@@ -39,39 +39,46 @@ compared to traditional methods.
 Installation
 ~~~~~~~~~~~~
 
-1. Install fpart package on your local machine:
+1.  Install fpart package on your local machine:
 
-.. code-block:: shell-session
+    For Ubuntu/Debian:
 
-    # Ubuntu/Debian:
-    $ sudo apt install fpart
+    .. code-block:: shell-session
 
-    # macOS:
-    $ brew install fpart
+        sudo apt install fpart
 
-    # CentOS/RHEL:
-    $ sudo yum install fpart
+    For macOS:
+
+    .. code-block:: shell-session
+
+        brew install fpart
+
+    For CentOS/RHEL:
+
+    .. code-block:: shell-session
+
+        sudo yum install fpart
 
 Basic Usage
 ~~~~~~~~~~~
 
-1. Transfer a directory to cluster:
+1.  Transfer a directory to cluster:
 
-.. code-block:: shell-session
+    .. code-block:: shell-session
 
-    $ fpsync -n 8 ~/local_directory username@hpc.university.edu:~/remote_directory
+        fpsync -n 8 ~/local_directory username@hpc.university.edu:~/remote_directory
 
-2. Transfer with specific options:
+2.  Transfer with specific options:
 
-.. code-block:: shell-session
+    .. code-block:: shell-session
 
-    $ fpsync -n 8 -v -x -o "-a" ~/local_directory username@hpc.university.edu:~/remote_directory
+        fpsync -n 8 -v -x -o "-a" ~/local_directory username@hpc.university.edu:~/remote_directory
 
-Options Explained:
-    - ``-n 8``: Use 8 parallel transfer processes
-    - ``-v``: Verbose output
-    - ``-x``: Cross filesystem boundaries
-    - ``-o "-a"``: Pass rsync archive option
+    Options Explained:
+        - ``-n 8``: Use 8 parallel transfer processes
+        - ``-v``: Verbose output
+        - ``-x``: Cross filesystem boundaries
+        - ``-o "-a"``: Pass rsync archive option
 
 .. note::
 
