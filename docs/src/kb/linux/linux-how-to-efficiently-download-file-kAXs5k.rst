@@ -8,7 +8,7 @@ How to Efficiently Download Files from Cluster
 
 .. container:: header
 
-    | Last updated: 2025-02-17
+    | Last updated: 2025-07-02
     | *Solution under review*
 
 Environment
@@ -34,55 +34,69 @@ downloads.
 Install Required Packages
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-1. Install ``sshfs`` and ``fpart``:
+1.  Install ``sshfs`` and ``fpart``:
 
-.. code-block:: shell-session
+    For Ubuntu/Debian:
 
-    # Ubuntu/Debian:
-    $ sudo apt install sshfs fpart
+    .. code-block:: shell-session
 
-    # macOS:
-    $ brew install sshfs fpart
+        sudo apt install sshfs fpart
 
-    # CentOS/RHEL:
-    $ sudo dnf install fuse-sshfs fpart
+    For macOS:
+
+    .. code-block:: shell-session
+
+        brew install sshfs fpart
+
+    For CentOS/RHEL:
+
+    .. code-block:: shell-session
+
+        sudo dnf install fuse-sshfs fpart
 
 Mount Remote Directory
 ~~~~~~~~~~~~~~~~~~~~~~
 
-1. Create local mount point:
+1.  Create local mount point:
 
 .. code-block:: shell-session
 
-    $ mkdir -p ~/cluster_data
+    mkdir -p ~/cluster_data
 
-2. Mount remote directory:
+2.  Mount remote directory:
 
 .. code-block:: shell-session
 
-    $ sshfs username@hpc.ust.hk:/path/to/dataset ~/cluster_data
+    sshfs username@hpc.ust.hk:/path/to/dataset ~/cluster_data
 
 Download Using fpsync
 ~~~~~~~~~~~~~~~~~~~~~
 
-1. Create local destination directory:
+1.  Create local destination directory:
 
 .. code-block:: shell-session
 
-    $ mkdir -p ~/local_dataset
+    mkdir -p ~/local_dataset
 
-2. Transfer files using parallel processes:
-
-.. code-block:: shell-session
-
-    $ fpsync -t $HOME/.fpsync -n 8 -vv ~/cluster_data/ ~/local_dataset/
-
-3. Unmount after transfer:
+2.  Transfer files using parallel processes:
 
 .. code-block:: shell-session
 
-    $ fusermount -u ~/cluster_data    # Linux
-    $ umount ~/cluster_data          # macOS
+    fpsync -t $HOME/.fpsync -n 8 -vv ~/cluster_data/ ~/local_dataset/
+
+3.  Unmount after transfer.
+
+    For Linux:
+
+    .. code-block:: shell-session
+
+        fusermount -u ~/cluster_data
+
+    For macOS:
+
+    .. code-block:: shell-session
+
+        umount ~/cluster_data
 
 .. note::
 
