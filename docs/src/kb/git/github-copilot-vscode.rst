@@ -26,7 +26,7 @@ This guide applies to:
 Issue
 -----
 
-    - How can I use GitHub Copilot into Visual Studio Code?
+    - How can I use GitHub Copilot in Visual Studio Code?
 
 Prerequisites
 -------------
