@@ -1,4 +1,4 @@
-How to Login to HPC4 Cluster Passwordlessly
+Login to HPC Cluster Without Using Password
 ===========================================
 
 .. meta::
@@ -14,14 +14,14 @@ How to Login to HPC4 Cluster Passwordlessly
 Environment
 -----------
 
-- Windows 10/11, macOS, or Linux
-- SSH client (e.g., PowerShell, MobaXterm, or terminal)
+  - Windows 10/11, macOS, or Linux
+  - SSH client (e.g., PowerShell, MobaXterm, or terminal)
 
 Issue
 -----
 
-- How to log in to the HPC4 cluster without entering a password and Duo authentication for every connection.
-- How to simplify file transfers (e.g., with ``scp`` or ``rsync``) by avoiding interactive authentication.
+  - How to log in to the HPC4 cluster without entering a password and Duo authentication for every connection.
+  - How to simplify file transfers (e.g., with ``scp`` or ``rsync``) by avoiding interactive authentication.
 
 Resolution
 ----------
