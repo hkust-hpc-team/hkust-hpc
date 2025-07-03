@@ -55,5 +55,3 @@ The following extensions are recommended:
   - ``aaron-bond.better-comments`` for comments
   - ``eamodio.gitlens`` better version control
   - ``EditorConfig.EditorConfig`` for vscode to use the ``.editorconfig`` file
-
-
