@@ -4,8 +4,8 @@ Setting Up Git and GitHub
 =========================
 
 .. meta::
-    :description: A simple guide on how to set up Git and connect it to your GitHub account, following The Odin Project's foundational lesson.
-    :keywords: git, github, setup, configuration, ssh, the odin project
+    :description: A simple guide on how to set up Git and connect it to your GitHub account
+    :keywords: git, github, setup, configuration, ssh
 
 This guide will walk you through the basic setup for Git and connecting it to your GitHub account, based on the instructions from The Odin Project.
 
@@ -17,18 +17,6 @@ This guide is applicable to various environments, including:
 -   **Operating Systems**: Windows, macOS, and Linux (including WSL).
 -   **HPC Environments**: Instructions are adaptable for clusters using environment modules.
 -   **Shells**: Commands are primarily for Bash-like shells, but concepts apply to others like PowerShell.
-
-Common Scenarios and Issues
----------------------------
-
-This guide addresses the following core needs and potential challenges:
-
--   **Goal**: To configure Git locally and securely connect to GitHub using SSH.
--   **Common Hurdles**:
-    -   Initial setup of user credentials.
-    -   Generating and adding SSH keys to GitHub. 
-    -   Navigating potential network restrictions (firewalls, proxies).
-    -   OS-specific configurations (e.g., ``.DS_Store`` files on macOS).
 
 
 Step 1: Install Git
@@ -87,7 +75,9 @@ Step 2: Create a GitHub Account
 
 If you don't have one already, head over to `GitHub <https://github.com/>`_ and sign up for a free account. During the account setup, you will be asked for an email address. This needs to be a real email, and will be used by default to identify your contributions.
 
-If you are privacy conscious, you can choose to keep your email address private on the `Email Settings <https://github.com/settings/emails>`_ page after you have signed in. To prevent exposing your personal email, ensure both "Keep my email addresses private" and "Block command line pushes that expose my email" are checked. You can use the private GitHub email address provided on that page when configuring Git in the next step.
+If you are privacy conscious, you can choose to keep your email address private on the `Email Settings <https://github.com/settings/emails>`_ page after you have signed in. 
+To prevent exposing your personal email, ensure both "Keep my email addresses private" and "Block command line pushes that expose my email" are checked. 
+You can use the private GitHub email address provided on that page when configuring Git in the next step.
 
 Step 3: Setup Git
 ---------------------
