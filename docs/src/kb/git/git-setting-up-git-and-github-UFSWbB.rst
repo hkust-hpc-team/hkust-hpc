@@ -68,7 +68,7 @@ Download and run the official installer from the Git website.
 The installer will guide you through the process. The default options are suitable for most users. This installation also includes **Git Bash**, a terminal that is highly recommended for using Git.
 
 .. note::
-    **ChromeOS users**: You can enable the Linux development environment in your settings and follow the **Linux** instructions.
+    **Chrome OS users**: You can enable the Linux development environment in your settings and follow the **Linux** instructions.
 
 Step 2: Create a GitHub Account
 -------------------------------
