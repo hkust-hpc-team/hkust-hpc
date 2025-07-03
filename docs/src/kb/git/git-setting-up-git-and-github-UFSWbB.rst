@@ -137,7 +137,7 @@ To securely connect to GitHub from your computer, it's best to use SSH (Secure S
 
     .. code-block:: bash
 
-        ssh-keygen -t ed25519 
+        ssh-keygen -t ed25519
 
     When you're prompted to "Enter a file in which to save the key," you can press Enter to accept the default file location. You can optionally enter a passphrase for extra security.
 
