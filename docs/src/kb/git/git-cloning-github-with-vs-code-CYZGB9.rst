@@ -34,7 +34,7 @@ Before you begin, please ensure you have the following setup:
 
 2.  **GitHub Account**
     
-    - An GitHub account.
+    - A GitHub account.
     - You should be logged into your account.
 
 3.  **Visual Studio Code**
