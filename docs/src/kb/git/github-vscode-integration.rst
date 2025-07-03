@@ -2,8 +2,8 @@ Cloning GitHub with VS Code
 ===============================
 
 .. meta::
-    :description: A comprehensive guide to cloning GitHub repositories and managing Git branches within Visual Studio Code for an efficient development workflow.
-    :keywords: VS Code, Git, GitHub, clone, branch, checkout, version control, source control
+    :description: A comprehensive guide to cloning GitHub repositories with Visual Studio Code for an efficient development workflow.
+    :keywords: VS Code, Git, GitHub, clone, version control, source control
     :author: HKUST HPC Team <hpc@ust.hk>
 
 .. container::
@@ -96,16 +96,16 @@ Troubleshooting Common Issues
 **Issue: "fatal: repository not found" when cloning.**
 - **Solution**: Double-check that the repository URL is correct and that you have permission to access it. If it's a private repository, ensure you are properly authenticated to GitHub.
 
-**Issue: "Permission denied (publickey)" when cloning.**
-- **Solution**: This usually means your SSH key is not set up correctly. 
-Ensure you have added your SSH key to your GitHub account. You can follow the instructions in the `GitHub documentation <https://docs.github.com/en/authentication/connecting-to-github-with-ssh>` to set up SSH keys.
+**Issue: "Permission denied (publickey)" when cloning with SSH.**
+- **Solution**: This error indicates your SSH key is not set up correctly with GitHub.
+  Ensure you have added your SSH key to your GitHub account by following the instructions in the `GitHub documentation <https://docs.github.com/en/authentication/connecting-to-github-with-ssh>`.
 
 **Issue: "fatal: destination path 'repository-name' already exists and is not an empty directory."**
 - **Solution**: This means that a folder with the same name already exists in the current directory. You can either delete that folder or choose a different name for the cloned repository.
 
-**Issue: "fatal: unable to access '
-- **Solution**: This error can occur if there is a network issue or if the URL is incorrect. Check your internet connection and ensure the URL is correct. 
-If you are behind a proxy, you may need to configure Git to use the proxy settings.
+**Issue: "fatal: unable to access '<repository-url>': <error-details>"**
+- **Solution**: This error can be caused by a network issue or an incorrect URL.
+  Check your internet connection and the URL. If you are behind a proxy, you may need to configure Git's proxy settings.
 
 Recommended Extensions for Git
 ------------------------------
