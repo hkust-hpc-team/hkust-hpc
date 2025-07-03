@@ -13,11 +13,15 @@ workloads
 - **Improved NUMA topology**: Better memory locality with configurable NUMA domains
 - **Enhanced security**: Hardware-level security features without performance penalty
 
+.. contents:: Table of Contents
+    :local:
+    :depth: 2
+
 BIOS Config
 -----------
 
 Optimal BIOS configuration is crucial for achieving maximum performance from AMD EPYC
-processors in HPC environments.
+processors in HPC environments [1]_ [2]_ [3]_ .
 
 The settings below are tuned for based on a variety of HPC/AI benchmarks, this should
 serve as a good starting point for most workloads. For optimal performance on specific
@@ -141,8 +145,8 @@ Kernel Parameters
 -----------------
 
 To optimize the performance of AMD EPYC processors, you can use specific kernel
-parameters. These parameters can be added to the kernel command line in your bootloader
-configuration (e.g., GRUB).
+parameters [2]_ . These parameters can be added to the kernel command line in your
+bootloader configuration (e.g., GRUB).
 
 .. code-block::
 
@@ -172,7 +176,7 @@ versions.
       - Required Kernel Version
       - RHEL 9 Backport (Kernel 5.14)
     - - ``amd_atl``
-      - 6.1
+      - 6.8
       - el9_4
     - - ``ptdma``
       - 6.8 (TBC)
@@ -184,9 +188,16 @@ versions.
 References
 ----------
 
-- `AMD EPYC 9004 Tuning Guide
-  <https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/tuning-guides/58011-epyc-9004-tg-bios-and-workload.pdf>`_
-- `AMD EPYC 9004 HPC Tuning Guide
-  <https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/tuning-guides/58002_amd-epyc-9004-tg-hpc.pdf>`_
-- `NVIDIA NGC Multi-node Performance Tuning
-  <https://github.com/Mellanox/ngc_multinode_perf?tab=readme-ov-file#tuning-instructions-and-hwfw-requirements>`_
+.. [1] AMD EPYC 9004 Tuning Guide.
+    https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/tuning-guides/58011-epyc-9004-tg-bios-and-workload.pdf
+
+.. [2] AMD EPYC 9004 HPC Tuning Guide.
+    https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/tuning-guides/58002_amd-epyc-9004-tg-hpc.pdf
+
+.. [3] NVIDIA NGC Multi-node Performance Tuning.
+    https://github.com/Mellanox/ngc_multinode_perf?tab=readme-ov-file#tuning-instructions-and-hwfw-requirements
+
+.. [4] https://www.phoronix.com/news/AMD-Address-Translation-Library
+
+.. [5] kernel-headers-5.14.0-585.el9 From CentOS Stream 9 AppStream.
+    https://fr.rpmfind.net/linux/RPM/centos-stream/9/appstream/x86_64/kernel-headers-5.14.0-585.el9.x86_64.html
