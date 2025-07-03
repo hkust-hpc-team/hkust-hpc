@@ -50,18 +50,17 @@ These steps show how to use Windows PowerShell to generate an SSH key pair.
     - Type ``powershell`` into the Run dialog.
     - Press **Ctrl + Shift + Enter** to run it as an administrator.
 
-2.  Ensure the OpenSSH client and server are installed.
+2.  Ensure the OpenSSH client is installed.
 
     .. code-block:: shell-session
 
         Add-WindowsCapability -Online -Name OpenSSH.Client~~~~0.0.1.0
-        Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
 
 3.  Set the SSH agent to start automatically and start the service.
 
     .. code-block:: shell-session
 
-        Set-Service ssh-agent -StartupType Manual
+        Set-Service ssh-agent -StartupType Automatic
         Start-Service ssh-agent
 
 4.  Generate a new SSH key pair. You can choose between the modern ``ed25519`` algorithm or the widely-used ``rsa`` algorithm. ``ed25519`` is newer and considered stronger, while ``rsa`` has broader compatibility with older systems.
@@ -80,23 +79,37 @@ These steps show how to use Windows PowerShell to generate an SSH key pair.
 
     You will be prompted to enter a file in which to save the key. Press Enter to accept the default location. You will also be asked to enter a passphrase, which is optional but highly recommended for security.
 
-5.  Copy your public key to the HPC4 cluster. Replace ``<username>`` with your ITSC account name.
+5.  Add your new key to the SSH agent.
 
     If you generated an **Ed25519** key:
 
     .. code-block:: shell-session
 
-        cat $HOME\.ssh\id_ed25519.pub | ssh <username>@hpc4.ust.hk "mkdir -p ~/.ssh && chmod 700 ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
+        ssh-add $HOME\.ssh\id_ed25519
 
     If you generated an **RSA** key:
 
     .. code-block:: shell-session
 
-        cat $HOME\.ssh\id_rsa.pub | ssh <username>@hpc4.ust.hk "mkdir -p ~/.ssh && chmod 700 ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
+        ssh-add $HOME\.ssh\id_rsa
+
+6.  Copy your public key to the HPC4 cluster. Replace ``<username>`` with your ITSC account name.
+
+    If you generated an **Ed25519** key:
+
+    .. code-block:: shell-session
+
+        Get-Content $HOME\.ssh\id_ed25519.pub | ssh <username>@hpc4.ust.hk "mkdir -p ~/.ssh && chmod 700 ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
+
+    If you generated an **RSA** key:
+
+    .. code-block:: shell-session
+
+        Get-Content $HOME\.ssh\id_rsa.pub | ssh <username>@hpc4.ust.hk "mkdir -p ~/.ssh && chmod 700 ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
 
     This command reads your public key, connects to HPC4, creates the ``.ssh`` directory if it doesn't exist, sets the correct permissions, and appends your key to the ``authorized_keys`` file.
 
-6.  You can now log in to the HPC4 cluster without a password.
+7.  You can now log in to the HPC4 cluster without a password.
 
     .. code-block:: shell-session
 
@@ -125,7 +138,21 @@ The process is similar for macOS and Linux.
 
     Press Enter to accept the default file location and enter a secure passphrase when prompted.
 
-3.  Copy the public key to the HPC4 cluster using the ``ssh-copy-id`` utility. Replace ``<username>`` with your ITSC account name.
+3.  Add your new key to the SSH agent.
+
+    If you generated an **Ed25519** key:
+
+    .. code-block:: shell-session
+
+        ssh-add ~/.ssh/id_ed25519
+
+    If you generated an **RSA** key:
+
+    .. code-block:: shell-session
+
+        ssh-add ~/.ssh/id_rsa
+
+4.  Copy the public key to the HPC4 cluster using the ``ssh-copy-id`` utility. Replace ``<username>`` with your ITSC account name.
 
     .. code-block:: shell-session
 
@@ -133,7 +160,7 @@ The process is similar for macOS and Linux.
 
     This command automatically handles creating the ``.ssh`` directory and setting the correct file permissions on the remote server.
 
-4.  You can now log in to the HPC4 cluster without a password.
+5.  You can now log in to the HPC4 cluster without a password.
 
     .. code-block:: shell-session
 
