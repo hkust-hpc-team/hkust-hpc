@@ -18,7 +18,7 @@ kb-rename.%: $(KB_DIR)/%
 		title="$$(echo -n $$title_text | tr '[:upper:]' '[:lower:]' | tr -d '\n' | tr -c '[:alnum:]' '-' | cut -c1-$(KB_TITLE_LEN))"; \
 		hash="$$(echo -n $$title_text | openssl dgst -binary -sha256 | base64 | tr '/+' '_-' | tr -d '=' | cut -c1-$(KB_HASH_LEN))"; \
 		name="$(LVAR_KB_KEY)-$$title-$${hash}.rst"; \
-		if [ "$$filepath" == "$(LVAR_KB_DIR)/$$name" ]; then \
+		if [ "$$filepath" = "$(LVAR_KB_DIR)/$$name" ]; then \
 			continue; \
 		fi; \
 		echo mv $$filepath $(LVAR_KB_DIR)/$$name; \
