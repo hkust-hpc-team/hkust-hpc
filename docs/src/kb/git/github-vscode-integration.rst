@@ -1,60 +1,138 @@
-Integrating GitHub with VS Code
+Cloning GitHub with VS Code
 ===============================
 
-Prerequisites
--------------
+.. meta::
+    :description: A comprehensive guide to cloning GitHub repositories and managing Git branches within Visual Studio Code for an efficient development workflow.
+    :keywords: VS Code, Git, GitHub, clone, branch, checkout, version control, source control
+    :author: HKUST HPC Team <hpc@ust.hk>
 
-- Git installed on your system.
-- A GitHub account.
-- Visual Studio Code installed.
-- The `GitHub Pull Requests and Issues` extension for VS Code (`GitHub.vscode-pull-request-github`).
+.. container::
+    :name: header
+
+    | Last updated: 2025-07-03
+    | *Guide verified: 2025-07-03*
+
+
+Environment
+~~~~~~~~~~~~~~~~~~~
+
+.. tip::
+   For working on remote HPC systems, it is recommended to first connect to the remote server using the **Remote - SSH** extension. 
+   You can connect to ``<username>@hpc4.ust.hk`` and then perform the clone operation. This will clone the repository directly onto the HPC system.
+
+Before you begin, please ensure you have the following setup:
+
+1.  **Git Installed**
+    
+    - Git must be installed on your local system.
+    - Configure your Git username and email:
+    
+    .. code-block:: bash
+    
+        git config --global user.name "Your Name"
+        git config --global user.email "your.email@example.com"
+
+2.  **GitHub Account**
+    
+    - A GitHub account.
+    - You should be logged into your account.
+
+3.  **Visual Studio Code**
+    
+    - VS Code installed.
+    - The built-in Git extension is enabled by default.
 
 Cloning a Repository
---------------------
+----------------------------
 
-1.  **Open the Terminal**: Press ``Ctrl+J`` (or ``Cmd+J`` on macOS) to open the integrated terminal in VS Code.
-2.  **Navigate to your project folder**: Use the `cd` command to navigate to the directory where you want to store the project.
-3.  **Run the clone command**: Type `git clone` followed by the URL of the repository you want to clone. For example:
+Cloning creates a local copy of a remote repository on your machine.
 
+Step-by-Step Guide to Cloning
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+**Method 1: Using the VS Code Terminal**
+
+This is the traditional command-line approach, which works in any terminal.
+
+1.  **Open the Terminal**: In VS Code, open the integrated terminal with ``Ctrl+J`` (or ``Cmd+J`` on macOS).
+2.  **Navigate to Your Projects Directory**: Go to the folder where you want to store the project.
+    
     .. code-block:: bash
+    
+        # Example: navigate to your home directory's 'name' folder
+        cd ~/<folder-name>
+    
+    .. tip::
+        If the directory doesn't exist, you can create it with `mkdir ~/projects`.
 
-        git clone https://github.com/owner/repository.git
+3.  **Run the `git clone` Command**: Use the `git clone` command followed by the repository URL.
+    
+    .. code-block:: console
+    
+        $ git clone https://github.com/hkust-hpc-team/hkust-hpc.git
+    
+    You can get the URL from the repository's page on GitHub by clicking the green "Code" button.
 
-    You can find this URL on the repository's main page on GitHub by clicking the green "Code" button.
+4.  **Open the Repository in VS Code**:
+    
+    .. code-block:: bash
+    
+        code hkust-hpc
 
-VS Code will clone the repository into a new folder in your current directory. You can then open this folder to start working.
+**Method 2: Using the Command Palette**
 
-Authenticating with GitHub
---------------------------
+This method uses VS Code's interface to guide you.
 
-The first time you try to push to a repository or perform other actions that require authentication, VS Code will prompt you to sign in to GitHub. Follow the prompts to authorize VS Code with your GitHub account. This usually involves opening a browser window and logging in to GitHub.
+1.  **Open the Command Palette**: Press ``Ctrl+Shift+P`` (or ``Cmd+Shift+P`` on macOS).
+2.  **Run the Git Clone Command**: Type `Git: Clone` and press Enter.
+3.  **Provide Repository URL**: Paste the repository URL into the prompt.
+4.  **Select Local Directory**: VS Code will then ask you where you want to save the cloned project. Choose a directory on your local machine.
+5.  **Open the Repository**: Once cloned, VS Code will ask if you want to open the repository. Click "Open".
 
-Making Changes and Committing
+
+Troubleshooting Common Issues
 -----------------------------
 
-1.  **View Changes**: Open the Source Control view by clicking on the corresponding icon in the Activity Bar on the side of VS Code. You will see a list of modified files.
-2.  **Stage Changes**: Click the `+` icon next to a file to stage it, or use the `+` icon at the top of the Changes section to stage all files.
-3.  **Commit**: Enter a commit message in the text box at the top of the Source Control view and press ``Ctrl+Enter`` (or ``Cmd+Enter`` on macOS) to commit the staged changes.
+**Issue: "fatal: repository not found" when cloning.**
+- **Solution**: Double-check that the repository URL is correct and that you have permission to access it. If it's a private repository, ensure you are properly authenticated to GitHub.
 
-Pushing to GitHub
------------------
+**Issue: "Permission denied (publickey)" when cloning.**
+- **Solution**: This usually means your SSH key is not set up correctly. 
+Ensure you have added your SSH key to your GitHub account. You can follow the instructions in the `GitHub documentation <https://docs.github.com/en/authentication/connecting-to-github-with-ssh>` to set up SSH keys.
 
-After committing your changes, you can push them to your remote repository on GitHub.
+**Issue: "fatal: destination path 'repository-name' already exists and is not an empty directory."**
+- **Solution**: This means that a folder with the same name already exists in the current directory. You can either delete that folder or choose a different name for the cloned repository.
 
-- Click the Synchronize Changes button in the status bar at the bottom of the window. This will pull any remote changes and push your local commits.
-- Alternatively, you can open the Command Palette (``Ctrl+Shift+P`` or ``Cmd+Shift+P``) and use the `Git: Push` command.
+**Issue: "fatal: unable to access '
+- **Solution**: This error can occur if there is a network issue or if the URL is incorrect. Check your internet connection and ensure the URL is correct. 
+If you are behind a proxy, you may need to configure Git to use the proxy settings.
 
-Working with Pull Requests
---------------------------
+Recommended Extensions for Git
+------------------------------
 
-With the `GitHub Pull Requests and Issues` extension, you can manage pull requests directly in VS Code.
+1.  **GitLens**: Supercharges the Git capabilities built into VS Code. It helps you visualize code authorship with Git blame annotations, navigate and explore Git repositories, and much more.
+    - `Extension ID: eamodio.gitlens`
+2.  **Git Graph**: View a Git Graph of your repository, and easily perform Git actions from the graph.
+    - `Extension ID: mhutchie.git-graph`
 
-1.  **View Pull Requests**: Open the GitHub view from the Activity Bar. Here you can see open pull requests.
-2.  **Create a Pull Request**: After pushing a new branch, you can create a pull request from the GitHub view or by following the prompt that appears in VS Code.
-3.  **Review Pull Requests**: You can check out pull request branches, view diffs, and add comments all within the editor.
+Additional Resources
+--------------------
 
-Useful Extensions
------------------
+- `VS Code Version Control Documentation <https://code.visualstudio.com/docs/editor/versioncontrol>`_
+- `Git Official Documentation <https://git-scm.com/doc>`_
+- `GitHub Docs <https://docs.github.com/en>`_
 
-- **GitHub Pull Requests and Issues** (`GitHub.vscode-pull-request-github`): Essential for working with pull requests and issues.
-- **GitLens** (`eamodio.gitlens`): Supercharges the Git capabilities built into VS Code. It helps you to visualize code authorship at a glance via Git blame annotations and code lens, seamlessly navigate and explore Git repositories, gain valuable insights via powerful comparison commands, and so much more.
+----
+
+.. container::
+    :name: footer
+
+    **HPC Support Team**
+      | ITSC, HKUST
+      | Email: cchelp@ust.hk
+      | Web: https://itsc.ust.hk
+
+    **Article Info**
+      | Issued: 2025-07-03
+      | Issued by: HKUST HPC Team
+
