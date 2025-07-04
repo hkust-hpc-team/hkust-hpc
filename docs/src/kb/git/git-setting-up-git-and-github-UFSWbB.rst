@@ -169,4 +169,21 @@ To securely connect to GitHub from your computer, it's best to use SSH (Secure S
 
         Hi username! You’ve successfully authenticated, but GitHub does not provide shell access.
 
+.. important::
+
+Some networks, such as those on HPC clusters, may block the standard SSH port (22). If you have trouble connecting, you can configure SSH to use the HTTPS port (443) instead.
+
+1.  **Test your connection** by running ``ssh -T -p 443 git@ssh.github.com``. A successful test will show the same authentication message as above.
+
+2.  **Make the change permanent** by adding the following to your ``~/.ssh/config`` file (create the file if it doesn't exist):
+
+    .. code-block:: text
+
+        Host github.com
+            Hostname ssh.github.com
+            Port 443
+            User git
+
+    This ensures all your ``git`` commands for ``github.com`` will automatically use the correct port. For more details, refer to the `official GitHub documentation <https://docs.github.com/en/authentication/troubleshooting-ssh/using-ssh-over-the-https-port>`_.
+
 You're all set! You can now start using Git and GitHub to manage your projects.
