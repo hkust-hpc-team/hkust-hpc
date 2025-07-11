@@ -8,7 +8,7 @@ Login to HPC Cluster Without Using Password
 
 .. container:: header
 
-    | Last updated: 2025-07-03
+    | Last updated: 2025-07-11
     | *Solution under review*
 
 Environment
@@ -135,7 +135,14 @@ Generating SSH Keys on macOS and Linux
 The process is similar for macOS and Linux.
 
 1. Open a terminal.
-2. Generate a new SSH key pair. You can choose between the modern ``ed25519`` algorithm
+
+2. Start the SSH agent in the background.
+
+   .. code-block:: shell-session
+
+       eval "$(ssh-agent -s)"
+
+3. Generate a new SSH key pair. You can choose between the modern ``ed25519`` algorithm
    or the widely-used ``rsa`` algorithm. ``ed25519`` is newer and considered stronger,
    while ``rsa`` has broader compatibility with older systems.
 
@@ -154,7 +161,7 @@ The process is similar for macOS and Linux.
    Press Enter to accept the default file location and enter a secure passphrase when
    prompted.
 
-3. Add your new key to the SSH agent.
+4. Add your new key to the SSH agent.
 
    If you generated an **Ed25519** key:
 
@@ -168,7 +175,7 @@ The process is similar for macOS and Linux.
 
        ssh-add ~/.ssh/id_rsa
 
-4. Copy the public key to the HPC cluster using the ``ssh-copy-id`` utility. Replace
+5. Copy the public key to the HPC cluster using the ``ssh-copy-id`` utility. Replace
    ``<username>`` with your account name and ``<hpc-address>`` with your cluster's
    address (e.g., ``hpc4.ust.hk``).
 
@@ -179,7 +186,7 @@ The process is similar for macOS and Linux.
    This command automatically handles creating the ``.ssh`` directory and setting the
    correct file permissions on the remote server.
 
-5. You can now log in to the HPC cluster without a password.
+6. You can now log in to the HPC cluster without a password.
 
    .. code-block:: shell-session
 
@@ -211,5 +218,5 @@ interactive password and Duo prompts.
       | Web: https://itsc.ust.hk
 
     **Article Info**
-      | Issued: 2025-07-03
+      | Issued: 2025-07-11
       | Issued by: yhclamab@connect.ust.hk
