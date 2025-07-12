@@ -686,9 +686,12 @@ For environments requiring encryption in transit:
         vers=4.2,proto=tcp,port=2049,xprtsec=tls, \
         rsize=262144,wsize=262144,nconnect=16 0 0
 
-Performance considerations: - TLS adds CPU overhead for encryption/decryption - Reduce
-buffer sizes to balance security and performance - Monitor CPU utilization on both
-client and server - Consider hardware acceleration for cryptographic operations
+Performance considerations:
+
+- TLS adds CPU overhead for encryption/decryption
+- Reduce buffer sizes to balance security and performance
+- Monitor CPU utilization on both client and server
+- Consider hardware acceleration for cryptographic operations
 
 Troubleshooting
 ---------------
