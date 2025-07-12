@@ -17,9 +17,8 @@ specific bottlenecks in your environment.
 
 .. warning::
 
-    The following section is summarized by LLM based on other orginal content.
-
-    A comprehensive review is currently being conducted.
+    The following section is summarized by LLM based on other original content. A
+    comprehensive review is currently being conducted.
 
 Assessment and Baseline Philosophy
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -54,7 +53,7 @@ Systematic identification of bottlenecks:
     - Identify whether bottlenecks are client-side, network, or server-side
 
 **Workload Characterization**
-    - Determine dominant access patterns (sequential vsrandom)
+    - Determine dominant access patterns (sequential vs random)
     - Assess read/write ratio for your workloads
     - Identify metadata-intensive vs data-intensive operations
     - Understand file size distribution and access frequency
@@ -144,9 +143,8 @@ performance and validate optimization efforts.
 
 .. warning::
 
-    The following section is summarized by LLM based on other orginal content.
-
-    A comprehensive review is currently being conducted.
+    The following section is summarized by LLM based on other original content. A
+    comprehensive review is currently being conducted.
 
 Baseline Performance Testing
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -692,9 +690,8 @@ beyond just performance problems.
 
 .. warning::
 
-    The following section is summarized by LLM based on other orginal content.
-
-    A comprehensive review is currently being conducted.
+    The following section is summarized by LLM based on other original content. A
+    comprehensive review is currently being conducted.
 
 Performance Issues
 ~~~~~~~~~~~~~~~~~~
