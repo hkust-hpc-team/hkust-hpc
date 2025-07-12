@@ -15,12 +15,113 @@ This section provides a systematic approach to NFS performance tuning. Rather th
 applying all optimizations blindly, follow this methodology to identify and address
 specific bottlenecks in your environment.
 
-Baseline Performance Assessment
+Assessment and Baseline Philosophy
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Before making any changes, establish a comprehensive understanding of your environment:
+
+**1. Network Performance Baseline** - Measure raw network performance between client and
+server - Test both bandwidth and latency characteristics - For RDMA-capable networks,
+compare TCP vs RDMA performance - Document baseline measurements for comparison
+
+**2. Local Storage Performance Reference** - Establish local disk performance as a
+reference point - Test both sequential and random I/O patterns - This helps distinguish
+NFS-specific issues from general I/O limitations
+
+**3. NFS Performance Baseline** - Test with minimal mount options to establish baseline
+- Measure large file sequential I/O performance - Assess metadata operation performance
+- Test small file operations representative of your workload
+
+Performance Profiling Strategy
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Systematic identification of bottlenecks:
+
+**Resource Utilization Analysis** - Monitor NFS client statistics to identify operation
+patterns - Track system resource utilization (CPU, memory, network) - Identify whether
+bottlenecks are client-side, network, or server-side
+
+**Workload Characterization** - Determine dominant access patterns (sequential vs
+random) - Assess read/write ratio for your workloads - Identify metadata-intensive vs
+data-intensive operations - Understand file size distribution and access frequency
+
+**Bottleneck Identification** - Use profiling tools to identify specific performance
+limitations - Correlate performance metrics with system behavior - Distinguish between
+throughput and latency issues
+
+Iterative Optimization Strategy
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Before making any changes, establish baseline measurements:
+Follow this systematic approach to optimize performance:
 
-**1. Network Performance Testing**
+**Phase 1: Network and Transport Optimization**
+
+Focus on basic connectivity and data transfer efficiency: - Optimize buffer sizes based
+on network characteristics and workload - Enable multiple connections for increased
+parallelism - Tune timeout values for your network conditions - Evaluate RDMA if
+available for high-performance networks
+
+**Phase 2: Caching and Attribute Optimization**
+
+Leverage caching mechanisms to reduce server round-trips: - Tune attribute caching based
+on data stability and consistency requirements - Enable client-side caching for
+appropriate workloads - Optimize directory operations based on access patterns
+
+**Phase 3: Kernel and System Tuning**
+
+Address system-level limitations: - Tune kernel RPC parameters for high-concurrency
+environments - Optimize memory management for large-scale I/O operations - Consider CPU
+affinity for NUMA systems
+
+**Phase 4: Workload-Specific Optimization**
+
+Tailor optimizations to specific use cases: - Optimize for read-heavy vs write-heavy
+workloads - Address metadata-intensive vs data-intensive patterns - Balance multiple
+competing workload requirements
+
+Validation and Testing Philosophy
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+After each optimization phase:
+
+**Performance Verification Approach** - Re-run baseline tests using consistent
+methodology - Document all changes and their measured impact - Maintain a performance
+log for trend analysis
+
+**Stability and Regression Testing** - Conduct extended stress testing to validate
+stability - Implement automated monitoring for performance regression detection - Test
+under realistic load conditions, not just synthetic benchmarks
+
+**Iterative Refinement** - Make incremental changes and measure impact - Avoid applying
+multiple optimizations simultaneously - Validate each change before proceeding to the
+next
+
+Workload-Specific Optimization Patterns
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+**Large File Sequential I/O (Data Processing)** - Prioritize large buffer sizes and
+connection parallelism - Minimize metadata overhead through extended caching - Consider
+disabling features that add overhead for large transfers
+
+**Small File Metadata Operations (Compilation, Scripts)** - Focus on attribute caching
+and metadata operation efficiency - Optimize directory listing operations for access
+patterns - Enable client-side caching to reduce server round-trips
+
+**Mixed HPC Workloads** - Balance competing requirements across different operation
+types - Use moderate settings that provide good overall performance - Monitor and adjust
+based on dominant operation characteristics - Monitor and adjust based on dominant
+operation type
+
+Benchmarking Tools
+------------------
+
+This section provides comprehensive benchmarking methodologies to evaluate NFS
+performance and validate optimization efforts.
+
+Baseline Performance Testing
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+**Network Performance Testing**
 
 Test raw network performance between client and server:
 
@@ -36,24 +137,24 @@ Test raw network performance between client and server:
     ib_write_bw -D 60 nfs.server.address
     ib_read_lat nfs.server.address
 
-**2. Disk I/O Performance Testing**
+**Local Disk I/O Performance Testing**
 
 Test local disk performance for comparison:
 
 .. code-block:: bash
 
-    # Test sequential read performance
+    # Test sequential write performance
     dd if=/dev/zero of=/tmp/testfile bs=1M count=1024 oflag=direct
-    
+
     # Test sequential read performance
     dd if=/tmp/testfile of=/dev/null bs=1M iflag=direct
-    
+
     # Test random I/O with fio
     fio --name=random-rw --ioengine=libaio --iodepth=16 --rw=randrw \
         --bs=4k --direct=1 --size=1G --numjobs=4 --runtime=60 \
         --group_reporting --filename=/tmp/fiotest
 
-**3. NFS Baseline Testing**
+**NFS Baseline Testing**
 
 Establish NFS performance baseline with default settings:
 
@@ -76,10 +177,8 @@ Establish NFS performance baseline with default settings:
         --direct=1 --size=4k --numjobs=100 --filename_format='f.$jobnum' \
         --directory=/mnt/nfs/smallfiles --create_serialize=0
 
-Performance Profiling and Bottleneck Identification
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Use these tools to identify where bottlenecks occur:
+Performance Profiling Tools
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 **NFS Statistics Monitoring**
 
@@ -104,7 +203,7 @@ Use these tools to identify where bottlenecks occur:
 
     # Monitor network utilization
     iftop -i eth0
-    
+
     # Monitor CPU usage by NFS processes
     top -p $(pgrep "nfs|rpc")
 
@@ -122,41 +221,8 @@ Use these tools to identify where bottlenecks occur:
     # Monitor system calls during NFS operations
     strace -c -p $(pgrep nfs)
 
-Iterative Optimization Process
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Follow this systematic approach to optimize performance:
-
-**Phase 1: Network and Transport Optimization**
-
-1. **Increase buffer sizes** - Start with larger rsize/wsize
-2. **Enable multiple connections** - Use nconnect for parallel streams
-3. **Optimize timeouts** - Reduce timeout values for faster failure detection
-4. **Test RDMA** - If available, compare TCP vs RDMA performance
-
-**Phase 2: Caching and Attribute Optimization**
-
-1. **Tune attribute caching** - Increase cache times for stable workloads
-2. **Enable client-side caching** - Add fsc option and tune cachefilesd
-3. **Optimize directory operations** - Test rdirplus vs nordirplus
-
-**Phase 3: Kernel and System Tuning**
-
-1. **Increase RPC slots** - Tune sunrpc parameters for high concurrency
-2. **Optimize memory** - Increase socket buffers for high-bandwidth workloads
-3. **CPU affinity** - Pin NFS processes to specific CPU cores if needed
-
-**Phase 4: Workload-Specific Optimization**
-
-1. **Read-heavy workloads** - Focus on read-ahead and caching
-2. **Write-heavy workloads** - Optimize write buffers and sync behavior
-3. **Metadata-intensive** - Tune attribute caching and directory operations
-4. **Mixed workloads** - Balance read/write optimizations
-
-Validation and Testing
-~~~~~~~~~~~~~~~~~~~~~~
-
-After each optimization phase:
+Validation Testing Scripts
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 **Performance Verification**
 
@@ -183,81 +249,6 @@ After each optimization phase:
     # Monitor for errors during stress testing
     watch -n 5 'dmesg | tail -20'
 
-Common Optimization Patterns by Workload
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-**Large File Sequential I/O (Data Processing)**
-
-- Increase rsize/wsize to 1MB or larger
-- Use nconnect=4-16 depending on server capability
-- Enable read-ahead: ``echo 15360 > /sys/class/bdi/0:\*/read_ahead_kb``
-- Consider disabling attribute caching for write-heavy: ``actimeo=0``
-
-**Small File Metadata Operations (Compilation, Scripts)**
-
-- Increase attribute cache times: acregmin=60,acdirmin=60
-- Enable aggressive caching: lookupcache=all
-- Test nordirplus for filename-only scanning workloads
-- Enable client-side caching with fsc
-
-**Mixed HPC Workloads**
-
-- Use moderate buffer sizes: rsize=262144,wsize=262144
-- Balance attribute caching: acregmin=10,acdirmin=30
-- Enable multiple connections: nconnect=8
-- Monitor and adjust based on dominant operation type
-
-Mount Options
-~~~~~~~~~~~~~
-
-Example options for HPC workloads (NFSv3):
-
-.. code-block::
-
-    your.nfs.server:/export /mount/point nfs defaults,vers=3,rsize=1048576,wsize=1048576,nconnect=16,hard,timeo=50,retrans=2,acregmin=10,acdirmin=30,lookupcache=all,_netdev 0 0
-
-Option Explanations:
-
-- ``rw``: Read-write access
-- ``relatime``: Update access times relative to modify time (reduces I/O)
-- ``vers=3``: Use NFSv3 (change to ``vers=4.1`` for pNFS environments)
-- ``rsize=1048576,wsize=1048576``: 1MB read/write buffer sizes for better throughput
-- ``acregmin=10``: Minimum time to cache file attributes (seconds)
-- ``acdirmin=30``: Minimum time to cache directory attributes (seconds)
-- ``hard``: Hard mount - operations will retry indefinitely on failure. The ``intr``
-  option is obsolete on modern kernels, as operations on ``hard`` mounts can be
-  interrupted by signals.
-- ``nconnect=16``: Sets the maximum number of TCP connections (up to 16 in this case)
-  that the client can establish to the server. The actual number is negotiated.
-- ``timeo=50``: Timeout for RPC requests in tenths of a second (5 seconds), reduced for
-  faster failure detection
-- ``retrans=2``: Number of retransmissions before timeout
-- ``lookupcache=all``: Cache all lookups for better performance
-- ``_netdev``: Wait for network before mounting (essential for cluster environments)
-- ``local_lock=none``: Disable local locking. This is often recommended for NFSv3 to
-  avoid issues with its legacy locking mechanism, especially in read-only or
-  single-writer scenarios.
-
-Directory Listing
-~~~~~~~~~~~~~~~~~
-
-- ``rdirplus`` (Default): Recommended for general use. Efficiently fetches file names
-  and their metadata together, which benefits most common operations (e.g., ``ls -l``).
-- ``nordirplus``: A niche optimization for specific workloads, such as a read-only
-  software mount where applications frequently scan for filenames only.
-
-.. warning::
-
-    Only use ``nordirplus`` after thorough testing with your specific NFS server
-    implementation and workload to confirm a performance benefit. This option will
-    degrade performance for most other operations.
-
-Benchmarking Tools
-------------------
-
-This section provides comprehensive benchmarking methodologies to evaluate NFS performance
-and validate optimization efforts.
-
 Performance Monitoring Setup
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -269,30 +260,30 @@ Create monitoring scripts to track NFS performance over time:
 
     #!/bin/bash
     # /usr/local/bin/nfs-monitor.sh
-    
+
     LOGFILE="/var/log/nfs-performance.log"
     MOUNTPOINT="/mnt/nfs"
-    
+
     # Function to log with timestamp
     log_metric() {
         echo "$(date '+%Y-%m-%d %H:%M:%S') $1" >> $LOGFILE
     }
-    
+
     # Test sequential read performance
     read_perf=$(dd if=$MOUNTPOINT/testfile of=/dev/null bs=1M count=100 2>&1 | \
                 grep -o '[0-9.]* MB/s')
     log_metric "sequential_read: $read_perf"
-    
+
     # Test metadata operations
     meta_time=$(time (ls -la $MOUNTPOINT/large_dir > /dev/null) 2>&1 | \
                 grep real | awk '{print $2}')
     log_metric "metadata_ops: $meta_time"
-    
+
     # Check NFS statistics
     nfsstat -c | grep -E "read|write|getattr" | while read line; do
         log_metric "nfs_stat: $line"
     done
-    
+
     # Check for errors
     error_count=$(dmesg | grep -c "nfs.*error\|rpc.*error")
     log_metric "error_count: $error_count"
@@ -306,61 +297,61 @@ Create a standardized benchmark to compare configurations:
 
     #!/bin/bash
     # /usr/local/bin/nfs-benchmark.sh
-    
+
     TESTDIR="/mnt/nfs/benchmark"
     RESULTS="/tmp/nfs-benchmark-$(date +%Y%m%d-%H%M%S).log"
-    
+
     echo "NFS Benchmark Results - $(date)" > $RESULTS
     echo "Mount options: $(mount | grep $TESTDIR)" >> $RESULTS
     echo "=================================" >> $RESULTS
-    
+
     # Test 1: Large file sequential I/O
     echo "Test 1: Sequential I/O" >> $RESULTS
     sync && echo 3 > /proc/sys/vm/drop_caches
-    
+
     # Write test
     write_result=$(dd if=/dev/zero of=$TESTDIR/seq_write_test bs=1M count=1024 \
                    oflag=direct 2>&1 | grep -o '[0-9.]* MB/s')
     echo "Sequential write: $write_result" >> $RESULTS
-    
+
     # Read test
     read_result=$(dd if=$TESTDIR/seq_write_test of=/dev/null bs=1M \
                   iflag=direct 2>&1 | grep -o '[0-9.]* MB/s')
     echo "Sequential read: $read_result" >> $RESULTS
-    
+
     # Test 2: Random I/O with fio
     echo "Test 2: Random I/O" >> $RESULTS
     fio --name=random-rw --ioengine=libaio --iodepth=16 --rw=randrw \
         --rwmixread=70 --bs=4k --direct=1 --size=1G --numjobs=4 \
         --runtime=60 --group_reporting --directory=$TESTDIR \
         --output-format=normal,json --output=$TESTDIR/fio_results.json
-    
+
     random_read=$(jq '.jobs[0].read.bw' $TESTDIR/fio_results.json)
     random_write=$(jq '.jobs[0].write.bw' $TESTDIR/fio_results.json)
     echo "Random read: ${random_read} KB/s" >> $RESULTS
     echo "Random write: ${random_write} KB/s" >> $RESULTS
-    
+
     # Test 3: Metadata operations
     echo "Test 3: Metadata operations" >> $RESULTS
     mkdir -p $TESTDIR/metadata_test
-    
+
     # File creation
     start_time=$(date +%s.%N)
     for i in {1..1000}; do touch $TESTDIR/metadata_test/file$i; done
     end_time=$(date +%s.%N)
     create_time=$(echo "$end_time - $start_time" | bc)
     echo "1000 file creates: ${create_time}s" >> $RESULTS
-    
+
     # Directory listing
     start_time=$(date +%s.%N)
     ls -la $TESTDIR/metadata_test > /dev/null
     end_time=$(date +%s.%N)
     list_time=$(echo "$end_time - $start_time" | bc)
     echo "Directory listing: ${list_time}s" >> $RESULTS
-    
+
     # Cleanup
     rm -rf $TESTDIR/metadata_test $TESTDIR/seq_write_test
-    
+
     echo "Benchmark complete. Results in: $RESULTS"
 
 Regression Testing
@@ -372,18 +363,18 @@ Automate performance regression detection:
 
     #!/bin/bash
     # /usr/local/bin/nfs-regression-test.sh
-    
+
     BASELINE_FILE="/var/lib/nfs-baseline.txt"
     THRESHOLD=10  # 10% performance degradation threshold
-    
+
     # Run benchmark
     current_perf=$(/usr/local/bin/nfs-benchmark.sh | grep "Sequential read" | \
                    awk '{print $3}' | sed 's/MB\/s//')
-    
+
     if [ -f "$BASELINE_FILE" ]; then
         baseline_perf=$(cat $BASELINE_FILE)
         degradation=$(echo "scale=2; (($baseline_perf - $current_perf) / $baseline_perf) * 100" | bc)
-        
+
         if (( $(echo "$degradation > $THRESHOLD" | bc -l) )); then
             echo "ALERT: NFS performance degraded by ${degradation}%" | \
                  mail -s "NFS Performance Alert" admin@company.com
@@ -499,7 +490,7 @@ To enable caching for an NFS mount, add the ``fsc`` option to the mount command 
     your.nfs.server:/export /mount/point nfs defaults,fsc 0 0
 
 Tuning Cachefilesd
-*******************
+++++++++++++++++++
 
 For demanding HPC workloads, the default ``cachefilesd`` configuration may be
 insufficient. One common limitation is the maximum number of open file descriptors.
@@ -526,7 +517,7 @@ Commercial NFS implementations may offer additional features
 - **Quality of Service**: Traffic prioritization and bandwidth management
 
 Compatibility Considerations
-****************************
+++++++++++++++++++++++++++++
 
 When using proprietary NFS solutions
 
@@ -534,6 +525,68 @@ When using proprietary NFS solutions
 - Test interoperability with standard NFS clients
 - Understand licensing implications for compute nodes
 - Plan for failover and redundancy scenarios
+
+Mount Options
+~~~~~~~~~~~~~
+
+Mount options are fundamental tuning parameters that control NFS client behavior.
+
+**Basic Mount Options for HPC Workloads**
+
+Example configuration for NFSv3:
+
+.. code-block::
+
+    your.nfs.server:/export /mount/point nfs defaults,vers=3,rsize=1048576,wsize=1048576,nconnect=16,hard,timeo=50,retrans=2,acregmin=10,acdirmin=30,lookupcache=all,_netdev 0 0
+
+**Critical Option Explanations:**
+
+- ``vers=3``: Use NFSv3 (change to ``vers=4.1`` for pNFS environments)
+- ``rsize=1048576,wsize=1048576``: 1MB read/write buffer sizes for better throughput
+- ``nconnect=16``: Sets the maximum number of TCP connections that the client can
+  establish to the server. The actual number is negotiated.
+- ``hard``: Hard mount - operations will retry indefinitely on failure. The ``intr``
+  option is obsolete on modern kernels.
+- ``timeo=50``: Timeout for RPC requests in tenths of a second (5 seconds)
+- ``retrans=2``: Number of retransmissions before timeout
+- ``acregmin=10``: Minimum time to cache file attributes (seconds)
+- ``acdirmin=30``: Minimum time to cache directory attributes (seconds)
+- ``lookupcache=all``: Cache all lookups for better performance
+- ``_netdev``: Wait for network before mounting (essential for cluster environments)
+- ``local_lock=none``: Disable local locking (recommended for NFSv3 in read-only or
+  single-writer scenarios)
+
+**Performance vs Reliability Trade-offs:**
+
+- ``hard`` vs ``soft``: Hard mounts ensure data integrity but can hang; soft mounts fail
+  faster but may cause data corruption
+- ``sync`` vs ``async``: Synchronous writes are safer but slower
+- Large ``rsize``/``wsize`` improve throughput but increase memory usage
+
+Directory Listing Optimization
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Directory listing behavior significantly impacts metadata-intensive workloads.
+
+**rdirplus vs nordirplus:**
+
+- ``rdirplus`` (Default): Fetches file names and metadata together, efficient for
+  operations like ``ls -l`` that need both names and attributes
+- ``nordirplus``: Fetches only file names, optimized for filename-only scanning
+  workloads such as read-only software mounts where applications frequently scan for
+  filenames
+
+**When to Use nordirplus:**
+
+- Read-only software mounts with frequent directory scanning
+- Workloads that primarily need filenames without attributes
+- Large directories where metadata fetching is a bottleneck
+
+.. warning::
+
+    Only use ``nordirplus`` after thorough testing with your specific NFS server
+    implementation and workload. This option will degrade performance for most
+    operations that require file attributes.
 
 Other Considerations
 --------------------
@@ -555,7 +608,7 @@ Kerberos provides strong authentication but adds overhead:
 
     # Basic Kerberos mount
     nfs.server:/export /mnt/secure nfs sec=krb5,rsize=1048576,wsize=1048576 0 0
-    
+
     # Performance-optimized Kerberos mount
     nfs.server:/export /mnt/secure nfs \
         sec=krb5,rsize=1048576,wsize=1048576,nconnect=8, \
@@ -564,7 +617,7 @@ Kerberos provides strong authentication but adds overhead:
 Performance impact mitigation:
 
 - Use ticket caching to reduce authentication overhead
-- Increase attribute cache times to reduce authenticated metadata operations  
+- Increase attribute cache times to reduce authenticated metadata operations
 - Consider ``sec=krb5i`` only when data integrity is critical (adds ~15% overhead)
 - Avoid ``sec=krb5p`` unless encryption in transit is required (adds ~25% overhead)
 
@@ -579,11 +632,9 @@ For environments requiring encryption in transit:
         vers=4.2,proto=tcp,port=2049,xprtsec=tls, \
         rsize=262144,wsize=262144,nconnect=4 0 0
 
-Performance considerations:
-- TLS adds CPU overhead for encryption/decryption
-- Reduce buffer sizes to balance security and performance
-- Monitor CPU utilization on both client and server
-- Consider hardware acceleration for cryptographic operations
+Performance considerations: - TLS adds CPU overhead for encryption/decryption - Reduce
+buffer sizes to balance security and performance - Monitor CPU utilization on both
+client and server - Consider hardware acceleration for cryptographic operations
 
 Best Practices for HPC Environments
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -627,18 +678,18 @@ For Slurm and other job schedulers:
     #SBATCH --job-name=nfs_optimized_job
     #SBATCH --time=04:00:00
     #SBATCH --nodes=1
-    
+
     # Verify NFS mount before job starts
     if ! mountpoint -q /shared/data; then
         echo "ERROR: NFS mount not available"
         exit 1
     fi
-    
+
     # Pre-load data into local cache if using client-side caching
     if mount | grep -q "fsc"; then
         find /shared/data/input -type f -exec cat {} > /dev/null \;
     fi
-    
+
     # Run application with optimized temporary directory
     export TMPDIR=/dev/shm
     ./my_application --input-dir=/shared/data/input --output-dir=/shared/data/output
@@ -647,38 +698,33 @@ For Slurm and other job schedulers:
 
 When performance limits are reached:
 
-1. **Horizontal Scaling**:
-   - Add multiple NFS servers with load balancing
-   - Use different mounts for different workload types
-   - Implement client-side load distribution
-
-2. **Vertical Scaling**:
-   - Upgrade network infrastructure (1GbE → 10GbE → 100GbE)
-   - Increase server resources (CPU, memory, storage)
-   - Optimize server-side NFS configuration
-
-3. **Alternative Solutions**:
-   - Consider parallel file systems (Lustre, BeeGFS)
-   - Implement object storage for unstructured data
-   - Use local caching solutions (bcache, dm-cache)
+1. **Horizontal Scaling**: - Add multiple NFS servers with load balancing - Use
+   different mounts for different workload types - Implement client-side load
+   distribution
+2. **Vertical Scaling**: - Upgrade network infrastructure (1GbE → 10GbE → 100GbE) -
+   Increase server resources (CPU, memory, storage) - Optimize server-side NFS
+   configuration
+3. **Alternative Solutions**: - Consider parallel file systems (Lustre, BeeGFS) -
+   Implement object storage for unstructured data - Use local caching solutions (bcache,
+   dm-cache)
 
 Common Pitfalls and Solutions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**Pitfall**: Applying all optimizations without testing
-**Solution**: Use iterative optimization with performance measurement at each step
+**Pitfall**: Applying all optimizations without testing **Solution**: Use iterative
+optimization with performance measurement at each step
 
-**Pitfall**: Using same mount options for all workloads
-**Solution**: Create workload-specific mounts with appropriate optimizations
+**Pitfall**: Using same mount options for all workloads **Solution**: Create
+workload-specific mounts with appropriate optimizations
 
-**Pitfall**: Ignoring server-side bottlenecks
-**Solution**: Monitor both client and server performance; coordinate tuning efforts
+**Pitfall**: Ignoring server-side bottlenecks **Solution**: Monitor both client and
+server performance; coordinate tuning efforts
 
-**Pitfall**: Not monitoring for regression
-**Solution**: Implement automated performance tracking and alerting
+**Pitfall**: Not monitoring for regression **Solution**: Implement automated performance
+tracking and alerting
 
-**Pitfall**: Over-optimizing for benchmarks vs. real workloads
-**Solution**: Test with actual application workloads, not just synthetic benchmarks
+**Pitfall**: Over-optimizing for benchmarks vs. real workloads **Solution**: Test with
+actual application workloads, not just synthetic benchmarks
 
 Troubleshooting
 ---------------
@@ -697,13 +743,13 @@ Diagnostic steps:
 
     # Check current mount options
     mount | grep nfs
-    
+
     # Check actual buffer sizes being used
     nfsstat -m | grep -E "rsize|wsize"
-    
+
     # Test different buffer sizes
     mount -o remount,rsize=1048576,wsize=1048576 /mnt/nfs
-    
+
     # Compare with network bandwidth capacity
     iperf3 -c nfs.server -P 1
 
@@ -722,10 +768,10 @@ Diagnostic steps:
 
     # Monitor metadata operations
     nfsstat -c | grep -E "getattr|lookup|readdir"
-    
+
     # Test directory listing performance
     time ls -la /mnt/nfs/large_directory/
-    
+
     # Check attribute cache effectiveness
     echo 3 > /proc/sys/vm/drop_caches
     time ls -la /mnt/nfs/large_directory/  # First run
@@ -747,7 +793,7 @@ Filesystem Soft Lockups
 
     # Check for soft lockup messages
     dmesg | grep -i "soft lockup\|hung task"
-    
+
     # Monitor NFS-related kernel threads
     ps aux | grep "\[nfs\|rpc\]"
 
@@ -760,7 +806,7 @@ Filesystem Soft Lockups
        # Reduce directory scan operations
        # Use find with -maxdepth to limit recursion
        find /mnt/nfs -maxdepth 2 -name "*.txt"
-       
+
        # Break large operations into smaller chunks
        ls /mnt/nfs/large_dir | head -1000
 
@@ -770,7 +816,7 @@ Filesystem Soft Lockups
 
        # Use soft mounts for non-critical data
        mount -o soft,timeo=30,retrans=2 nfs.server:/export /mnt/nfs
-       
+
        # For critical data, ensure proper timeout values
        mount -o hard,timeo=50,retrans=3,intr nfs.server:/export /mnt/nfs
 
@@ -780,7 +826,7 @@ Filesystem Soft Lockups
 
        # Monitor memory usage during NFS operations
        watch -n 1 'cat /proc/meminfo | grep -E "MemFree|Cached|Dirty"'
-       
+
        # Tune dirty memory thresholds
        echo 5 > /proc/sys/vm/dirty_background_ratio
        echo 10 > /proc/sys/vm/dirty_ratio
@@ -794,10 +840,10 @@ Process Deadlocks on NFS
 
     # Identify hung processes
     ps aux | grep " D "  # Processes in uninterruptible sleep
-    
+
     # Check process stack traces
     cat /proc/PID/stack  # Replace PID with actual process ID
-    
+
     # Monitor NFS operations
     cat /proc/PID/mountstats
 
@@ -809,7 +855,7 @@ Process Deadlocks on NFS
 
        # Disable locking for read-only or single-writer scenarios
        mount -o nolock nfs.server:/export /mnt/nfs
-       
+
        # Use local locking only
        mount -o local_lock=all nfs.server:/export /mnt/nfs
 
@@ -819,10 +865,10 @@ Process Deadlocks on NFS
 
        # Check for stale handles
        dmesg | grep -i "stale"
-       
+
        # Remount the filesystem
        umount /mnt/nfs && mount /mnt/nfs
-       
+
        # For persistent issues, restart applications accessing the mount
 
 3. **Server-side lock manager issues**:
@@ -831,7 +877,7 @@ Process Deadlocks on NFS
 
        # Check lock manager status on server
        systemctl status nfs-lock.service
-       
+
        # Clear lock state (server-side, use with caution)
        systemctl restart nfs-lock.service
 
@@ -844,10 +890,10 @@ NFS Data Inconsistency
 
     # Check mount options for caching behavior
     mount | grep nfs
-    
+
     # Compare file checksums across clients
     md5sum /mnt/nfs/testfile  # Run on multiple clients
-    
+
     # Check file timestamps and sizes
     stat /mnt/nfs/testfile
 
@@ -859,10 +905,10 @@ NFS Data Inconsistency
 
        # Reduce attribute cache times for frequently changing data
        mount -o acregmin=3,acdirmin=3 nfs.server:/export /mnt/nfs
-       
+
        # Disable attribute caching entirely (impacts performance)
        mount -o actimeo=0 nfs.server:/export /mnt/nfs
-       
+
        # Force immediate synchronization
        sync && echo 3 > /proc/sys/vm/drop_caches
 
@@ -872,7 +918,7 @@ NFS Data Inconsistency
 
        # Use synchronous writes for critical data
        mount -o sync nfs.server:/export /mnt/nfs
-       
+
        # Force write-through for specific operations
        dd if=sourcefile of=/mnt/nfs/destfile oflag=sync
 
@@ -882,7 +928,7 @@ NFS Data Inconsistency
 
        # Check time synchronization
        chrony sources -v  # or ntpq -pn
-       
+
        # Verify timezone consistency
        timedatectl status
 
@@ -892,7 +938,7 @@ NFS Data Inconsistency
 
        # Implement file locking in applications
        # Use advisory locks with flock or fcntl
-       
+
        # Example: exclusive access pattern
        (
            flock -x 200
@@ -901,7 +947,7 @@ NFS Data Inconsistency
        ) 200>/mnt/nfs/lockfile
 
 Network and Connectivity Issues
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 **Symptom: Intermittent hangs, timeout errors**
 
@@ -909,10 +955,10 @@ Network and Connectivity Issues
 
     # Check for network errors
     dmesg | grep -i "nfs.*timeout\|rpc.*timeout"
-    
+
     # Monitor network connectivity
     ping -c 1000 nfs.server | grep -E "packet loss|rtt"
-    
+
     # Check for network interface errors
     cat /proc/net/dev | grep eth0
 
@@ -924,7 +970,7 @@ Network and Connectivity Issues
 
        # Long-term connectivity test
        mtr --report --report-cycles 100 nfs.server
-       
+
        # Check for network congestion
        iperf3 -c nfs.server -t 300 -i 10
 
@@ -934,10 +980,10 @@ Network and Connectivity Issues
 
        # Enable RPC debugging (use sparingly)
        echo 1 > /proc/sys/sunrpc/rpc_debug
-       
+
        # Monitor RPC statistics
        nfsstat -r  # Client RPC statistics
-       
+
        # Disable debugging after troubleshooting
        echo 0 > /proc/sys/sunrpc/rpc_debug
 
@@ -947,15 +993,15 @@ Network and Connectivity Issues
 
        # Check NFS port accessibility
        telnet nfs.server 2049
-       
+
        # For NFSv3, check additional ports
        rpcinfo -p nfs.server
-       
+
        # Test UDP connectivity (NFSv3)
        nc -u nfs.server 2049
 
 Server-Side Issues
-~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~
 
 **Identifying Server-Side Bottlenecks**
 
@@ -963,10 +1009,10 @@ Server-Side Issues
 
     # Monitor server from client side
     nfsstat -s  # Server statistics (if accessible)
-    
+
     # Check server response times
     time ls /mnt/nfs/ > /dev/null
-    
+
     # Monitor for server busy errors
     dmesg | grep -i "server.*busy"
 
@@ -978,7 +1024,7 @@ Server-Side Issues
 
        # Check current thread count (server-side)
        cat /proc/fs/nfsd/threads
-       
+
        # Increase thread count (server-side)
        echo 64 > /proc/fs/nfsd/threads
 
@@ -988,7 +1034,7 @@ Server-Side Issues
 
        # Verify export visibility (server-side)
        exportfs -v
-       
+
        # Test export accessibility
        showmount -e nfs.server
 
@@ -1002,10 +1048,10 @@ Recovery and Maintenance Procedures
     # Graceful unmount procedure
     # 1. Stop applications using the mount
     lsof +D /mnt/nfs  # Identify processes using NFS
-    
+
     # 2. Sync pending writes
     sync
-    
+
     # 3. Unmount with force if necessary
     umount /mnt/nfs
     # If busy: umount -f /mnt/nfs
@@ -1018,13 +1064,13 @@ Recovery and Maintenance Procedures
     # Clear stuck mount state
     # 1. Kill processes accessing NFS (last resort)
     fuser -km /mnt/nfs
-    
+
     # 2. Force unmount
     umount -f /mnt/nfs
-    
+
     # 3. Clear mount cache
     echo 3 > /proc/sys/vm/drop_caches
-    
+
     # 4. Restart NFS client services if needed
     systemctl restart nfs-client.target
 
@@ -1035,20 +1081,20 @@ Recovery and Maintenance Procedures
     # Regular health checks
     #!/bin/bash
     # /usr/local/bin/nfs-health-check.sh
-    
+
     MOUNT_POINT="/mnt/nfs"
-    
+
     # Test basic connectivity
     if ! timeout 10 ls $MOUNT_POINT > /dev/null 2>&1; then
         echo "ALERT: NFS mount $MOUNT_POINT not responsive"
         # Add notification logic here
     fi
-    
+
     # Check for error conditions
     error_count=$(dmesg | grep -c "nfs.*error\|rpc.*error")
     if [ $error_count -gt 10 ]; then
         echo "ALERT: High NFS error count: $error_count"
     fi
-    
+
     # Monitor performance degradation
     # Add performance threshold checks here
