@@ -95,6 +95,7 @@ Address system-level limitations:
 Tailor optimizations to specific use cases:
     - Optimize for read-heavy vs write-heavy workloads
     - Address metadata-intensive vs data-intensive patterns
+    - Optimize for random I/O patterns
     - Balance multiple competing workload requirements
 
 Validation and Testing Philosophy
@@ -127,13 +128,19 @@ Workload-Specific Optimization Patterns
 
 **Small File Metadata Operations (Compilation, Scripts)**
     - Focus on attribute caching and metadata operation efficiency
-    - Optimize directory listing operations for access patterns
-    - Enable client-side caching to reduce server round-trips
+    - Optimize directory listing operations (e.g., ``nordirplus``)
+    - Enable client-side caching (e.g., ``fsc``) to reduce server round-trips
+
+**Random I/O (Databases, Checkpointing)**
+    - Use smaller ``rsize`` and ``wsize`` values (e.g., 65536) to reduce latency
+    - Disable read-ahead mechanisms if they cause performance degradation
+    - Ensure ``sync`` or direct I/O is used for data integrity if required by the
+      application
 
 **Mixed HPC Workloads**
     - Balance competing requirements across different operation types
     - Use moderate settings that provide good overall performance
-    - Monitor and adjust based on dominant operation characteristics and types
+    - Monitor and adjust based on dominant workload characteristics
 
 Benchmarking Tools
 ------------------
@@ -180,7 +187,7 @@ Test local disk performance for comparison:
     # Test random I/O with fio
     fio --name=random-rw --ioengine=libaio --iodepth=16 --rw=randrw \
         --bs=4k --direct=1 --size=1G --numjobs=4 --runtime=60 \
-        --group_reporting --filename=/tmp/fiotest
+        --group_reporting --filename=/mnt/nfs/fiotest
 
 **NFS Baseline Testing**
 
@@ -201,9 +208,10 @@ Establish NFS performance baseline with default settings:
           ls -la > /dev/null && rm -rf /mnt/nfs/test)
 
     # Test many small files
-    fio --name=small-files --ioengine=sync --rw=write --bs=4k \
+    fio --name=small-files --ioengine=libaio --rw=write --bs=4k \
         --direct=1 --size=4k --numjobs=100 --filename_format='f.$jobnum' \
         --directory=/mnt/nfs/smallfiles --create_serialize=0
+    rm -rf /mnt/nfs/smallfiles/*
 
 Performance Profiling Tools
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -532,7 +540,7 @@ The following table summarizes essential NFS mount options for HPC environments:
         |   Should match rsize for balanced performance.
     - - ``nconnect``
       - 4-16
-      - |   Number of TCP connections to establish (NFSv3/4.0).
+      - |   Number of TCP connections to establish (NFSv3/4.x with TCP).
         |   Higher values improve parallelism but increase server load.
     - - ``hard``
       - hard
@@ -592,16 +600,16 @@ Basic high-performance configuration for NFSv3:
 .. code-block::
 
     your.nfs.server:/export /mount/point nfs \
-        vers=3,rsize=1048576,wsize=1048576,nconnect=8,hard,timeo=50,retrans=2, \
-        acregmin=30,acdirmin=60,lookupcache=all,local_lock=none,_netdev 0 0
+        vers=3,rsize=1048576,wsize=1048576,nconnect=16,hard,timeo=50,retrans=2, \
+        acregmin=30,acdirmin=60,lookupcache=all,local_lock=none,nocto,_netdev 0 0
 
 For NFSv4.1 with pNFS support:
 
 .. code-block::
 
     your.nfs.server:/export /mount/point nfs \
-        vers=4.1,rsize=1048576,wsize=1048576,hard,timeo=100,retrans=3, \
-        acregmin=60,acdirmin=300,lookupcache=all,_netdev 0 0
+        vers=4.1,rsize=1048576,wsize=1048576,nconnect=16,hard,timeo=100,retrans=3, \
+        acregmin=60,acdirmin=300,lookupcache=all,nocto,_netdev 0 0
 
 Specialized Workload Optimizations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -657,7 +665,7 @@ Kerberos provides strong authentication but adds overhead:
 
     # Performance-optimized Kerberos mount
     nfs.server:/export /mnt/secure nfs \
-        sec=krb5,rsize=1048576,wsize=1048576,nconnect=8, \
+        sec=krb5,rsize=1048576,wsize=1048576,nconnect=16, \
         acregmin=60,acdirmin=60,_netdev 0 0
 
 Performance impact mitigation:
@@ -676,7 +684,7 @@ For environments requiring encryption in transit:
     # NFSv4.2 with TLS
     nfs.server:/export /mnt/encrypted nfs \
         vers=4.2,proto=tcp,port=2049,xprtsec=tls, \
-        rsize=262144,wsize=262144,nconnect=4 0 0
+        rsize=262144,wsize=262144,nconnect=16 0 0
 
 Performance considerations: - TLS adds CPU overhead for encryption/decryption - Reduce
 buffer sizes to balance security and performance - Monitor CPU utilization on both
@@ -779,7 +787,7 @@ Filesystem Soft Lockups
        mount -o soft,timeo=30,retrans=2 nfs.server:/export /mnt/nfs
 
        # For critical data, ensure proper timeout values
-       mount -o hard,timeo=50,retrans=3,intr nfs.server:/export /mnt/nfs
+       mount -o hard,timeo=50,retrans=3 nfs.server:/export /mnt/nfs
 
 3. **Memory pressure during large I/O operations**:
 
@@ -1017,6 +1025,12 @@ Recovery and Maintenance Procedures
     umount /mnt/nfs
     # If busy: umount -f /mnt/nfs
     # If still busy: umount -l /mnt/nfs  # Lazy unmount
+
+.. warning::
+
+    Using ``umount -f`` (force) or ``umount -l`` (lazy) can lead to data corruption if
+    there are pending writes. These options should be used with extreme caution as a
+    last resort when a graceful unmount is not possible.
 
 **Emergency Recovery**
 
