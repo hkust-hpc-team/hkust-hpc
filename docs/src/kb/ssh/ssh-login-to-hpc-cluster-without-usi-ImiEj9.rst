@@ -111,7 +111,7 @@ These steps show how to use Windows PowerShell to generate an SSH key pair.
 
    .. code-block:: shell-session
 
-       Get-Content $HOME\.ssh\id_ed25519.pub | ssh <username>@<hpc-address> "mkdir -p ~/.ssh && chmod 700 ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
+       Get-Content $HOME\.ssh\id_ed25519.pub | ssh <username>@<hpc-address> 'mkdir -p ~/.ssh && chmod 700 ~/.ssh && pubkey=$(cat) && if ! grep -qF -- "$pubkey" ~/.ssh/authorized_keys 2>/dev/null; then echo "$pubkey" >> ~/.ssh/authorized_keys; fi && chmod 600 ~/.ssh/authorized_keys'
 
    If you generated an **RSA** key:
 
