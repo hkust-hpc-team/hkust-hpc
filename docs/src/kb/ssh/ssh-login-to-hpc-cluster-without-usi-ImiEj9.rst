@@ -175,16 +175,22 @@ The process is similar for macOS and Linux.
 
        ssh-add ~/.ssh/id_rsa
 
-5. Copy the public key to the HPC cluster using the ``ssh-copy-id`` utility. Replace
-   ``<username>`` with your account name and ``<hpc-address>`` with your cluster's
-   address (e.g., ``hpc4.ust.hk``).
+5. Copy the public key to the HPC cluster using the ``ssh-copy-id`` utility. This
+   command automatically handles creating the ``.ssh`` directory and setting the
+   correct file permissions on the remote server. To avoid ambiguity, it is best
+   to specify which key to copy.
+
+   If you generated an **Ed25519** key:
 
    .. code-block:: shell-session
 
-       ssh-copy-id <username>@<hpc-address>
+       ssh-copy-id -i ~/.ssh/id_ed25519.pub <username>@<hpc-address>
 
-   This command automatically handles creating the ``.ssh`` directory and setting the
-   correct file permissions on the remote server.
+   If you generated an **RSA** key:
+
+   .. code-block:: shell-session
+
+       ssh-copy-id -i ~/.ssh/id_rsa.pub <username>@<hpc-address>
 
 6. You can now log in to the HPC cluster without a password.
 
