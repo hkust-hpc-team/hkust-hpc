@@ -1,6 +1,6 @@
 list-file-targets:
 	@echo $(.FILE_TARGETS)
-	
+
 list-phony-targets:
 	@echo $(.PHONY_TARGETS)
 
