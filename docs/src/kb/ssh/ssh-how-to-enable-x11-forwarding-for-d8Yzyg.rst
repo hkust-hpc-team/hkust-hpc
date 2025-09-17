@@ -6,7 +6,7 @@ How to enable X11 forwarding for remote access
     :keywords: x11, ssh, display, forwarding, remote access
     :author: kftse <kftse@ust.hk>
 
-.. container:: header
+.. rst-class:: header
 
     | Last updated: 2024-12-05
     | *Solution under review*
@@ -110,7 +110,7 @@ X11 forwarding requires client support, which is disabled by default.
 
 ----
 
-.. container:: footer
+.. rst-class:: footer
 
     **HPC Support Team**
       | ITSC, HKUST

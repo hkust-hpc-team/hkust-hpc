@@ -28,8 +28,7 @@ Technical support
 
 If you need further assistance, please feel free to contact us.
 
-.. container::
-    :name: contact
+.. rst-class:: contact
 
     | ITSC, HKUST
     | Email: cchelp@ust.hk

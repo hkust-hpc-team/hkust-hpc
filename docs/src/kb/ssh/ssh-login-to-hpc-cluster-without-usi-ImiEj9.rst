@@ -6,7 +6,7 @@ Login to HPC Cluster Without Using Password
     :keywords: ssh, ssh key, login, hpc, duo, authentication
     :author: yhclamab@connect.ust.hk
 
-.. container:: header
+.. rst-class:: header
 
     | Last updated: 2025-07-11
     | *Solution under review*
@@ -135,7 +135,6 @@ Generating SSH Keys on macOS and Linux
 The process is similar for macOS and Linux.
 
 1. Open a terminal.
-
 2. Start the SSH agent in the background.
 
    .. code-block:: shell-session
@@ -176,9 +175,9 @@ The process is similar for macOS and Linux.
        ssh-add ~/.ssh/id_rsa
 
 5. Copy the public key to the HPC cluster using the ``ssh-copy-id`` utility. This
-   command automatically handles creating the ``.ssh`` directory and setting the
-   correct file permissions on the remote server. To avoid ambiguity, it is best
-   to specify which key to copy.
+   command automatically handles creating the ``.ssh`` directory and setting the correct
+   file permissions on the remote server. To avoid ambiguity, it is best to specify
+   which key to copy.
 
    If you generated an **Ed25519** key:
 
@@ -216,7 +215,7 @@ interactive password and Duo prompts.
 
 ----
 
-.. container:: footer
+.. rst-class:: footer
 
     **HPC Support Team**
       | ITSC, HKUST

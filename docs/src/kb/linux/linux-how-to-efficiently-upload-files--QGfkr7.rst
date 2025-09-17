@@ -6,7 +6,7 @@ How to Efficiently Upload Files to HPC Cluster
     :keywords: fpsync, rsync, file transfer, parallel upload
     :author: kftse <kftse@ust.hk>
 
-.. container:: header
+.. rst-class:: header
 
     | Last updated: 2025-06-13
     | Keywords: fpsync, rsync, file transfer, parallel upload
@@ -102,9 +102,7 @@ Related Articles
 - `How to Efficiently Remove Large Directories
   <linux-how-to-efficiently-remove-large--xY2yHF>`_
 
-----
-
-.. container:: footer
+.. rst-class:: footer
 
     **HPC Support Team**
       | ITSC, HKUST

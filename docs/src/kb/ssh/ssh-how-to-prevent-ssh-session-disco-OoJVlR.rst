@@ -6,7 +6,7 @@ How to Prevent SSH Session Disconnects and Timeouts
     :keywords: ssh, timeout, keepalive, screen, tmux, connection, putty, mobaxterm
     :author: chtaihei <chtaihei@ust.hk>
 
-.. container:: header
+.. rst-class:: header
 
     | Last updated: 2024-12-06
     | *Solution verified: 2024-12-06*
@@ -130,7 +130,7 @@ References
 
 ----
 
-.. container:: footer
+.. rst-class:: footer
 
     **HPC Support Team**
       | ITSC, HKUST

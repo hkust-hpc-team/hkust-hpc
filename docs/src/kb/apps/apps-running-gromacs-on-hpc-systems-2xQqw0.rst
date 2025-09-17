@@ -6,7 +6,7 @@ Running GROMACS on HPC Systems
     :keywords: gromacs, gpu, molecular dynamics, hpc, cuda, singularity, spack
     :author: chtaihei <chtaihei@ust.hk>
 
-.. container:: header
+.. rst-class:: header
 
     | Last updated: 2024-12-06
     | *Solution under review*
@@ -138,14 +138,13 @@ References
 
 ----
 
-.. container::
-    :name: footer
+.. rst-class:: footer
 
-      **HPC Support Team**
-        | ITSC, HKUST
-        | Email: cchelp@ust.hk
-        | Web: https://itsc.ust.hk
+    **HPC Support Team**
+      | ITSC, HKUST
+      | Email: cchelp@ust.hk
+      | Web: https://itsc.ust.hk
 
-      **Article Info**
-        | Issued: 2024-12-06
-        | Issued by: chtaihei@ust.hk
+    **Article Info**
+      | Issued: 2024-12-06
+      | Issued by: chtaihei@ust.hk

@@ -6,7 +6,7 @@ Running Interactive Container Sessions on HPC
     :keywords: container, development, interactive, nvidia, enroot
     :author: kftse <kftse@ust.hk>
 
-.. container:: header
+.. rst-class:: header
 
     | Last updated: 2025-06-13
     | Keywords: container, interactive, development, nvidia, enroot
@@ -119,8 +119,7 @@ References
 
 ----
 
-.. container::
-    :name: footer
+.. rst-class:: footer
 
     **HPC Support Team**
       | ITSC, HKUST

@@ -6,8 +6,7 @@ How to speed up Spack package installation
     :keywords: spack, parallel, build, installation, performance, package
     :author: kftse <kftse@ust.hk>
 
-.. container::
-    :name: header
+.. rst-class:: header
 
     | Last updated: 2024-12-05
     | *Solution under review*
@@ -94,8 +93,7 @@ Spack's default behavior has several performance limitations:
 
 ----
 
-.. container::
-    :name: footer
+.. rst-class:: footer
 
     **HPC Support Team**
       | ITSC, HKUST

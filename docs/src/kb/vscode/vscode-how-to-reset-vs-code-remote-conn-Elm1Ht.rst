@@ -6,7 +6,7 @@ How to Reset VS Code Remote Connections
     :keywords: vscode, remote-ssh, remote-tunnel, connection, troubleshooting
     :author: kftse <kftse@ust.hk>
 
-.. container:: header
+.. rst-class:: header
 
     | Last updated: 2025-01-07
     | *Solution under review*
@@ -117,7 +117,7 @@ mismatch between local and remote instances.
 
 ----
 
-.. container:: footer
+.. rst-class:: footer
 
     **HPC Support Team**
       | ITSC, HKUST

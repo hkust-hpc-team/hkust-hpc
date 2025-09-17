@@ -6,7 +6,7 @@ Running Container in Batch Mode on HPC
     :keywords: container, batch, slurm, sbatch, nvidia, enroot
     :author: kftse <kftse@ust.hk>
 
-.. container:: header
+.. rst-class:: header
 
     | Last updated: 2025-06-13
     | Keywords: container, batch, slurm, sbatch, nvidia, enroot
@@ -118,8 +118,7 @@ References
 
 ----
 
-.. container::
-    :name: footer
+.. rst-class:: footer
 
     **HPC Support Team**
       | ITSC, HKUST

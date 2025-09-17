@@ -6,8 +6,7 @@ How to Efficiently Remove Large Number of Files
     :keywords: file deletion, parallel, fd, xargs, rm, nfs
     :author: kftse <kftse@ust.hk>
 
-.. container::
-    :name: header
+.. rst-class:: header
 
     | Last updated: 2024-12-13
     | *Solution under review*
@@ -98,8 +97,7 @@ References
 
 ----
 
-.. container::
-    :name: footer
+.. rst-class:: footer
 
     **HPC Support Team**
       | ITSC, HKUST

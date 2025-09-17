@@ -1,0 +1,34 @@
+ci:
+  autofix_commit_msg: 'chore(pre-commit): auto fixes'
+  autofix_prs: true
+  autoupdate_commit_msg: 'chore(pre-commit): update hook revs'
+  autoupdate_schedule: quarterly
+minimum_pre_commit_version: '3.6.0'
+repos:
+  - hooks:
+      - id: check-added-large-files
+      - id: check-executables-have-shebangs
+      - id: check-merge-conflict
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+      - id: trailing-whitespace
+    repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+  - hooks:
+      - entry: uv run docstrfmt
+        exclude: |-
+          (?x)^(
+            docs/src/kb/.*vscode.*\.rst
+          )$
+        fail_fast: false
+        id: docstrfmt
+        language: system
+        name: Format RST with docstrfmt
+        types: [rst]
+        verbose: true
+      - entry: uv run yq -i -S -Y .
+        id: sort-yaml
+        language: system
+        name: Normalize YAML with yq
+        types: [yaml]
+    repo: local

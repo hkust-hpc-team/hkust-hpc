@@ -6,7 +6,7 @@ When using spack generated module, error while loading shared libraries
     :keywords: spack, module, shared libraries, compiler
     :author: kftse <kftse@ust.hk>
 
-.. container:: header
+.. rst-class:: header
 
     | Last updated: 2024-11-25
     | Solution verified: 2024-11-25
@@ -145,7 +145,7 @@ Diagnosis
 
 ----
 
-.. container:: footer
+.. rst-class:: footer
 
     **HPC Support Team**
       | ITSC, HKUST

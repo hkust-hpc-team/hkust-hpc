@@ -6,7 +6,7 @@ How to resolve X11 authentication error
     :keywords: x11, authentication, xauthority, display, ssh
     :author: kftse <kftse@ust.hk>
 
-.. container:: header
+.. rst-class:: header
 
     | Last updated: 2024-12-05
     | *Solution under review*
@@ -55,7 +55,7 @@ applications may require setting the XAUTHORITY environment variable explicitly.
 
 ----
 
-.. container:: footer
+.. rst-class:: footer
 
     **HPC Support Team**
       | ITSC, HKUST

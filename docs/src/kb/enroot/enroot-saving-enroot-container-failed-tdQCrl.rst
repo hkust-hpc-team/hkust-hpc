@@ -6,8 +6,7 @@ Saving Enroot container failed
     :keywords: enroot, container, export, error, hpc, slurm, squashfs
     :author: kftse <kftse@ust.hk>
 
-.. container::
-    :name: header
+.. rst-class:: header
 
     | Last updated: 2025-02-12
     | *Solution under review*
@@ -84,8 +83,7 @@ References
 
 ----
 
-.. container::
-    :name: footer
+.. rst-class:: footer
 
     **HPC Support Team**
       | ITSC, HKUST

@@ -6,7 +6,7 @@ How to Efficiently Download Files from Cluster
     :keywords: sshfs, fpsync, dataset, download, hpc, cluster
     :author: kftse <kftse@ust.hk>
 
-.. container:: header
+.. rst-class:: header
 
     | Last updated: 2025-02-17
     | *Solution under review*
@@ -111,7 +111,7 @@ References
 
 ----
 
-.. container:: footer
+.. rst-class:: footer
 
     **HPC Support Team**
       | ITSC, HKUST

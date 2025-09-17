@@ -6,7 +6,7 @@ Error when downloading NVIDIA NGC Containers
     :keywords: container, slurm, nvidia, ngc, enroot, pyxis
     :author: kftse <kftse@ust.hk>
 
-.. container:: header
+.. rst-class:: header
 
     | Last updated: 2025-02-12
     | *Solution under review*
@@ -74,8 +74,7 @@ References
 
 ----
 
-.. container::
-    :name: footer
+.. rst-class:: footer
 
     **HPC Support Team**
       | ITSC, HKUST

@@ -1,7 +1,7 @@
 How to resolve QOSMinGRES error when submitting GPU jobs
 ========================================================
 
-.. container:: header
+.. rst-class:: header
 
     | Last updated: 2024-12-06
     | *Solution verified: 2024-12-06*
@@ -64,7 +64,7 @@ References
 
 ----
 
-.. container:: footer
+.. rst-class:: footer
 
     **HPC Support Team**
       | ITSC, HKUST

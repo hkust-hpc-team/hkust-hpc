@@ -6,7 +6,7 @@ How can I share spack compiled program in a project group?
     :keywords: spack, module, shared libraries
     :author: kftse <kftse@ust.hk>
 
-.. container:: header
+.. rst-class:: header
 
     | Last updated: 2024-11-28
     | *Solution under review*
@@ -122,7 +122,7 @@ It is not possible to share anything inside ``$HOME`` directory with your group 
 
 ----
 
-.. container:: footer
+.. rst-class:: footer
 
     **HPC Support Team**
       | ITSC, HKUST
