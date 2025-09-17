@@ -25,8 +25,7 @@ Environment
 Issue
 -----
 
-    - SSH sessions disconnect during long operations due to network inactivity timeouts
-      (e.g., 15-30 minutes).
+    - SSH sessions disconnect during long operations due to network inactivity timeouts (e.g., 15-30 minutes).
 
 Resolution
 ----------
@@ -107,8 +106,8 @@ Best Practices for Long Operations
 Root Cause
 ----------
 
-ITSC HPC clusters drop inactive SSH connections after a certain period to free up
-resources. This is a security measure to prevent unauthorized access to idle sessions.
+ITSC HPC clusters drop inactive SSH connections after a certain period to free up resources. This is a security measure
+to prevent unauthorized access to idle sessions.
 
 Diagnosis
 ---------
@@ -127,8 +126,6 @@ References
 - Tmux Documentation: https://github.com/tmux/tmux/wiki
 - PuTTY Documentation: https://tartarus.org/~simon/putty-snapshots/htmldoc/
 - MobaXterm Documentation: https://mobaxterm.mobatek.net/documentation.html
-
-----
 
 .. rst-class:: footer
 

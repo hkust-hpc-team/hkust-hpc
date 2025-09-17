@@ -19,8 +19,7 @@ Environment
 Issue
 -----
 
-    - Users need to run overlap jobs within an existing SLURM allocation (e.g.
-      monitoring, debugging, etc.)
+    - Users need to run overlap jobs within an existing SLURM allocation (e.g. monitoring, debugging, etc.)
     - Standard job submission may not allow sharing resources with existing jobs
 
 Resolution
@@ -48,20 +47,17 @@ Example usage:
 
 .. note::
 
-    The --overlap flag allows the new job to share resources with the existing job
-    specified by --jobid
+    The --overlap flag allows the new job to share resources with the existing job specified by --jobid
 
 .. warning::
 
-    Ensure you have sufficient resources in your original allocation to run the overlap
-    job
+    Ensure you have sufficient resources in your original allocation to run the overlap job
 
 Root Cause
 ----------
 
-SLURM by default prevents multiple jobs from using the same resources simultaneously.
-The --overlap flag explicitly allows resource sharing between jobs when needed for
-workflow efficiency.
+SLURM by default prevents multiple jobs from using the same resources simultaneously. The --overlap flag explicitly
+allows resource sharing between jobs when needed for workflow efficiency.
 
 References
 ----------
@@ -69,8 +65,6 @@ References
 - `Slurm srun Guide <https://slurm.schedmd.com/srun.html>`_
 - `HKUST HPC4 Slurm Guide
   <https://itsc.hkust.edu.hk/services/academic-teaching-support/high-performance-computing/hpc4/slurm>`_
-
-----
 
 .. rst-class:: footer
 

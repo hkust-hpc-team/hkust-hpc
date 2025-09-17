@@ -29,12 +29,11 @@ Issue
 Resolution
 ----------
 
-Cluster spack instance by default uses ``-j $(nproc)`` each time ``spack install`` is
-invoked, and use ``/dev/shm`` as temporary directory for build artifacts to speed up
-builds.
+Cluster spack instance by default uses ``-j $(nproc)`` each time ``spack install`` is invoked, and use ``/dev/shm`` as
+temporary directory for build artifacts to speed up builds.
 
-You may find these optimizations useful to further improve Spack build speed when
-installing packages with large number of dependencies.
+You may find these optimizations useful to further improve Spack build speed when installing packages with large number
+of dependencies.
 
 Parallel Package Installation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -50,8 +49,7 @@ Install multiple packages simultaneously using background processes
 
 .. warning::
 
-    We do no recommend having > 4 concurrent installations to avoid deadlock or system
-    overload.
+    We do no recommend having > 4 concurrent installations to avoid deadlock or system overload.
 
 Local Lock File
 ~~~~~~~~~~~~~~~
@@ -86,12 +84,9 @@ Root Cause
 
 Spack's default behavior has several performance limitations:
 
-- Package installations are in serial, parallelization only occurs during the build
-  phase of each package.
+- Package installations are in serial, parallelization only occurs during the build phase of each package.
 - Configure scripts run serially and are not parallelizable.
 - NFS lock operations can become a bottleneck when handling many concurrent range locks
-
-----
 
 .. rst-class:: footer
 

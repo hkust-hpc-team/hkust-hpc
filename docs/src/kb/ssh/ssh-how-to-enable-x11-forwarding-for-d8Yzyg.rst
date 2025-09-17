@@ -38,11 +38,10 @@ Enable X11 Forwarding
 
 .. note::
 
-    X11 forwarding must be enabled when connecting to the remote system via SSH. Please
-    disconnect your current SSH session and reconnect after applying the changes.
+    X11 forwarding must be enabled when connecting to the remote system via SSH. Please disconnect your current SSH
+    session and reconnect after applying the changes.
 
-X11 forwarding can be enabled ad-hoc at command-line or persistently by modifying SSH
-client config.
+X11 forwarding can be enabled ad-hoc at command-line or persistently by modifying SSH client config.
 
 One-time Connection
 +++++++++++++++++++
@@ -107,8 +106,6 @@ Root Cause
 ----------
 
 X11 forwarding requires client support, which is disabled by default.
-
-----
 
 .. rst-class:: footer
 

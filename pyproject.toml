@@ -35,4 +35,4 @@ dev = [
 
 [tool.docstrfmt]
 docstring-trailing-line = true
-line-length = 88
+line-length = 120

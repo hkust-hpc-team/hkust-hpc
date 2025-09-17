@@ -33,8 +33,7 @@ Issue
 Resolution
 ----------
 
-Use ``fpsync`` for parallel file transfers, which significantly improves transfer speed
-compared to traditional methods.
+Use ``fpsync`` for parallel file transfers, which significantly improves transfer speed compared to traditional methods.
 
 Installation
 ~~~~~~~~~~~~
@@ -61,7 +60,7 @@ Basic Usage
 
     $ fpsync -n 8 ~/local_directory username@hpc.university.edu:~/remote_directory
 
-2. Transfer with specific options:
+1. Transfer with specific options:
 
 .. code-block:: shell-session
 
@@ -75,8 +74,7 @@ Options Explained:
 
 .. note::
 
-    Choose number of parallel processes (``-n``) based on your network connection and
-    system capabilities
+    Choose number of parallel processes (``-n``) based on your network connection and system capabilities
 
 .. warning::
 
@@ -86,10 +84,9 @@ Options Explained:
 Root Cause
 ----------
 
-Traditional file transfer tools process files sequentially. When transferring many small
-files, the overhead of establishing connections and handshaking for each file becomes
-significant. Parallel transfer tools like fpsync divide the workload among multiple
-processes, utilizing available bandwidth more efficiently.
+Traditional file transfer tools process files sequentially. When transferring many small files, the overhead of
+establishing connections and handshaking for each file becomes significant. Parallel transfer tools like fpsync divide
+the workload among multiple processes, utilizing available bandwidth more efficiently.
 
 References
 ----------
@@ -99,8 +96,7 @@ References
 Related Articles
 ----------------
 
-- `How to Efficiently Remove Large Directories
-  <linux-how-to-efficiently-remove-large--xY2yHF>`_
+- `How to Efficiently Remove Large Directories <linux-how-to-efficiently-remove-large--xY2yHF>`_
 
 .. rst-class:: footer
 

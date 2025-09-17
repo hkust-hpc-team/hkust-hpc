@@ -24,8 +24,7 @@ Issue
 
     When using pyxis/enroot container, saving fails with errors such as
 
-        - ``slurmstepd: error: pyxis: [ERROR] No such file or directory:
-          /home/username/example/nvhpc:24.3.sqsh``
+        - ``slurmstepd: error: pyxis: [ERROR] No such file or directory: /home/username/example/nvhpc:24.3.sqsh``
         - ``slurmstepd: error: pyxis: failed to export container pyxis_174632.0 to
           /home/username/example/nvhpc:24.3.sqsh``
 
@@ -38,7 +37,7 @@ Resolution
 
     $ mkdir -p $HOME/containers
 
-2. Run container with correct save path:
+1. Run container with correct save path:
 
 .. code-block:: console
 
@@ -55,7 +54,7 @@ Resolution
     - Ensure sufficient disk quota before saving large containers
     - Container names should not contain special characters
 
-3. Verify saved container:
+1. Verify saved container:
 
 .. code-block:: console
 
@@ -80,8 +79,6 @@ References
 ----------
 
 - `Pyxis/Enroot Usage <https://github.com/NVIDIA/pyxis?tab=readme-ov-file#usage>`_
-
-----
 
 .. rst-class:: footer
 

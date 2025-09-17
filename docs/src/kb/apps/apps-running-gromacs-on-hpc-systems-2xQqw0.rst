@@ -118,25 +118,20 @@ Key findings:
 
 .. warning::
 
-    Always benchmark your specific simulation setup to determine optimal resource
-    allocation
+    Always benchmark your specific simulation setup to determine optimal resource allocation
 
 Root Cause
 ----------
 
-GROMACS performance depends heavily on build configuration and runtime parameters. NGC
-containers are pre-optimized for single-node performance, while source builds provide
-flexibility needed for multi-node runs.
+GROMACS performance depends heavily on build configuration and runtime parameters. NGC containers are pre-optimized for
+single-node performance, while source builds provide flexibility needed for multi-node runs.
 
 References
 ----------
 
-- NVIDIA NGC GROMACS Container:
-  https://catalog.ngc.nvidia.com/orgs/hpc/containers/gromacs
+- NVIDIA NGC GROMACS Container: https://catalog.ngc.nvidia.com/orgs/hpc/containers/gromacs
 - GROMACS Documentation: http://manual.gromacs.org/
 - Spack Documentation: https://spack.readthedocs.io/
-
-----
 
 .. rst-class:: footer
 

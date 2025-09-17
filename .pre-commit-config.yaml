@@ -32,3 +32,16 @@ repos:
         name: Normalize YAML with yq
         types: [yaml]
     repo: local
+  - hooks:
+      - args: ["--max-line-length=120"]
+        id: doc8
+        name: Check RST doc style with doc8
+    repo: https://github.com/PyCQA/doc8
+    rev: v2.0.0
+  - hooks:
+      - additional_dependencies:
+          - rstcheck[sphinx, toml]
+        id: rstcheck
+        name: Check RST syntax with rstcheck
+    repo: https://github.com/rstcheck/rstcheck
+    rev: v6.2.0

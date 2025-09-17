@@ -28,8 +28,7 @@ Issue
 Resolution
 ----------
 
-Use ``sshfs`` to mount remote directory locally, then use ``fpsync`` for parallel
-downloads.
+Use ``sshfs`` to mount remote directory locally, then use ``fpsync`` for parallel downloads.
 
 Install Required Packages
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -56,7 +55,7 @@ Mount Remote Directory
 
     $ mkdir -p ~/cluster_data
 
-2. Mount remote directory:
+1. Mount remote directory:
 
 .. code-block:: shell-session
 
@@ -71,13 +70,13 @@ Download Using fpsync
 
     $ mkdir -p ~/local_dataset
 
-2. Transfer files using parallel processes:
+1. Transfer files using parallel processes:
 
 .. code-block:: shell-session
 
     $ fpsync -t $HOME/.fpsync -n 8 -vv ~/cluster_data/ ~/local_dataset/
 
-3. Unmount after transfer:
+1. Unmount after transfer:
 
 .. code-block:: shell-session
 
@@ -98,8 +97,7 @@ Download Using fpsync
 Root Cause
 ----------
 
-Outbound SSH is not permitted. Use ``sshfs`` to mount a local directory using an inbound
-SSH connection to HPC cluster.
+Outbound SSH is not permitted. Use ``sshfs`` to mount a local directory using an inbound SSH connection to HPC cluster.
 
 For parallel transfer, use fpsync to efficiently download files.
 
@@ -108,8 +106,6 @@ References
 
 - `SSHFS Documentation <https://github.com/libfuse/sshfs>`_
 - `fpsync Documentation <https://github.com/martymac/fpart>`_
-
-----
 
 .. rst-class:: footer
 

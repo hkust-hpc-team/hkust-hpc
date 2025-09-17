@@ -97,8 +97,8 @@ When finished:
 Root Cause
 ----------
 
-Direct access to compute nodes is restricted for security. SSH tunneling provides a
-secure way to access services running on compute nodes through the login node.
+Direct access to compute nodes is restricted for security. SSH tunneling provides a secure way to access services
+running on compute nodes through the login node.
 
 References
 ----------
@@ -108,8 +108,6 @@ References
   <https://itsc.hkust.edu.hk/services/academic-teaching-support/high-performance-computing/hpc4/slurm>`_
 - `HKUST SuperPOD Website
   <https://itsc.hkust.edu.hk/services/academic-teaching-support/high-performance-computing/superpod>`_
-
-----
 
 .. rst-class:: footer
 

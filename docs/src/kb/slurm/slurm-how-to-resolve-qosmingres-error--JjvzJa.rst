@@ -19,8 +19,8 @@ Environment
 Issue
 -----
 
-    - When submitting jobs to GPU nodes without explicitly requesting GPU resources,
-      users may encounter the following error:
+    - When submitting jobs to GPU nodes without explicitly requesting GPU resources, users may encounter the following
+      error:
 
       .. code-block:: shell-session
 
@@ -29,8 +29,7 @@ Issue
 Resolution
 ----------
 
-Specify the number of GPU needed using the ``--gpus-per-node`` option when submitting
-the job.
+Specify the number of GPU needed using the ``--gpus-per-node`` option when submitting the job.
 
 .. code-block:: shell-session
 
@@ -39,12 +38,10 @@ the job.
 
 .. note::
 
-    Most applications e.g. pytorch or Gromacs can detect and allocate GPU resources
-    automatically.
+    Most applications e.g. pytorch or Gromacs can detect and allocate GPU resources automatically.
 
-    Explicitly specifying ``--gpus-per-task`` is only necessary in specific cases. - to
-    bind GPU to process when program's auto-detection failed - to optimize NUMA locality
-    when using multiple GPUs
+    Explicitly specifying ``--gpus-per-task`` is only necessary in specific cases. - to bind GPU to process when
+    program's auto-detection failed - to optimize NUMA locality when using multiple GPUs
 
     .. code-block:: bash
 
@@ -53,16 +50,13 @@ the job.
 Root Cause
 ----------
 
-The cluster's QOS (Quality of Service) policy requires requesting at least 1 GPU
-submitting jobs to GPU nodes. This helps ensure proper resource utilization and avoid
-unnecessary surcharge if applicable.
+The cluster's QOS (Quality of Service) policy requires requesting at least 1 GPU submitting jobs to GPU nodes. This
+helps ensure proper resource utilization and avoid unnecessary surcharge if applicable.
 
 References
 ----------
 
 - `Slurm GRES Guide <https://slurm.schedmd.com/gres.html>`_
-
-----
 
 .. rst-class:: footer
 

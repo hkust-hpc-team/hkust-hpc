@@ -116,7 +116,8 @@ Diagnosis
 ..
     TODO: A diagnosis section is only needed if
     - User may be required to further check the details instead of a straightforward solution
-    - There are methods for users to check if the solution is applicable to their case if they find multiple similar solutions
+    - There are methods for users to check if the solution is applicable to their case if they find
+      multiple similar solutions
 
 .. TODO: If section not required, remove this section.
 
@@ -124,8 +125,6 @@ References
 ----------
 
 .. TODO: If not required, remove this section.
-
-----
 
 .. rst-class:: footer
 

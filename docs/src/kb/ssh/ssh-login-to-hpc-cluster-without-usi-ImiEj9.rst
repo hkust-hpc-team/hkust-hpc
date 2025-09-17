@@ -20,26 +20,21 @@ Environment
 Issue
 -----
 
-    - How to log in to an HPC cluster without entering a password and Duo authentication
-      for every connection.
-    - How to simplify file transfers (e.g., with ``scp`` or ``rsync``) by avoiding
-      interactive authentication.
+    - How to log in to an HPC cluster without entering a password and Duo authentication for every connection.
+    - How to simplify file transfers (e.g., with ``scp`` or ``rsync``) by avoiding interactive authentication.
 
 Resolution
 ----------
 
-You can use SSH keys to authenticate to an HPC cluster, which bypasses the need for a
-password and Duo authentication. This method is more secure and convenient for both
-interactive logins and automated file transfers.
+You can use SSH keys to authenticate to an HPC cluster, which bypasses the need for a password and Duo authentication.
+This method is more secure and convenient for both interactive logins and automated file transfers.
 
 The process involves three main steps:
 
-1. **Create an SSH key pair** on your local machine. This consists of a private key
-   (which you must keep secret) and a public key (which you can share).
-2. **Copy the public key** to the HPC cluster and add it to the
-   ``~/.ssh/authorized_keys`` file.
-3. **Configure your SSH client** to use the private key when connecting to your HPC
-   cluster (e.g., ``hpc4.ust.hk``).
+1. **Create an SSH key pair** on your local machine. This consists of a private key (which you must keep secret) and a
+   public key (which you can share).
+2. **Copy the public key** to the HPC cluster and add it to the ``~/.ssh/authorized_keys`` file.
+3. **Configure your SSH client** to use the private key when connecting to your HPC cluster (e.g., ``hpc4.ust.hk``).
 
 For platform-specific instructions, please use the links below:
 
@@ -70,9 +65,8 @@ These steps show how to use Windows PowerShell to generate an SSH key pair.
        Set-Service ssh-agent -StartupType Automatic
        Start-Service ssh-agent
 
-4. Generate a new SSH key pair. You can choose between the modern ``ed25519`` algorithm
-   or the widely-used ``rsa`` algorithm. ``ed25519`` is newer and considered stronger,
-   while ``rsa`` has broader compatibility with older systems.
+4. Generate a new SSH key pair. You can choose between the modern ``ed25519`` algorithm or the widely-used ``rsa``
+   algorithm. ``ed25519`` is newer and considered stronger, while ``rsa`` has broader compatibility with older systems.
 
    **For Ed25519 (recommended):**
 
@@ -86,9 +80,8 @@ These steps show how to use Windows PowerShell to generate an SSH key pair.
 
        ssh-keygen -t rsa -b 4096
 
-   You will be prompted to enter a file in which to save the key. Press Enter to accept
-   the default location. You will also be asked to enter a passphrase, which is optional
-   but highly recommended for security.
+   You will be prompted to enter a file in which to save the key. Press Enter to accept the default location. You will
+   also be asked to enter a passphrase, which is optional but highly recommended for security.
 
 5. Add your new key to the SSH agent.
 
@@ -104,8 +97,8 @@ These steps show how to use Windows PowerShell to generate an SSH key pair.
 
        ssh-add $HOME\.ssh\id_rsa
 
-6. Copy your public key to the HPC cluster. Replace ``<username>`` with your account
-   name and ``<hpc-address>`` with your cluster's address (e.g., ``hpc4.ust.hk``).
+6. Copy your public key to the HPC cluster. Replace ``<username>`` with your account name and ``<hpc-address>`` with
+   your cluster's address (e.g., ``hpc4.ust.hk``).
 
    If you generated an **Ed25519** key:
 
@@ -119,9 +112,8 @@ These steps show how to use Windows PowerShell to generate an SSH key pair.
 
        Get-Content $HOME\.ssh\id_rsa.pub | ssh <username>@<hpc-address> 'mkdir -p ~/.ssh && chmod 700 ~/.ssh && pubkey=$(cat) && if ! grep -qF -- "$pubkey" ~/.ssh/authorized_keys 2>/dev/null; then echo "$pubkey" >> ~/.ssh/authorized_keys; fi && chmod 600 ~/.ssh/authorized_keys'
 
-   This command reads your public key, connects to the HPC cluster, creates the ``.ssh``
-   directory if it doesn't exist, sets the correct permissions, and appends your key to
-   the ``authorized_keys`` file.
+   This command reads your public key, connects to the HPC cluster, creates the ``.ssh`` directory if it doesn't exist,
+   sets the correct permissions, and appends your key to the ``authorized_keys`` file.
 
 7. You can now log in to the HPC cluster without a password.
 
@@ -141,9 +133,8 @@ The process is similar for macOS and Linux.
 
        eval "$(ssh-agent -s)"
 
-3. Generate a new SSH key pair. You can choose between the modern ``ed25519`` algorithm
-   or the widely-used ``rsa`` algorithm. ``ed25519`` is newer and considered stronger,
-   while ``rsa`` has broader compatibility with older systems.
+3. Generate a new SSH key pair. You can choose between the modern ``ed25519`` algorithm or the widely-used ``rsa``
+   algorithm. ``ed25519`` is newer and considered stronger, while ``rsa`` has broader compatibility with older systems.
 
    **For Ed25519 (recommended):**
 
@@ -157,8 +148,7 @@ The process is similar for macOS and Linux.
 
        ssh-keygen -t rsa -b 4096
 
-   Press Enter to accept the default file location and enter a secure passphrase when
-   prompted.
+   Press Enter to accept the default file location and enter a secure passphrase when prompted.
 
 4. Add your new key to the SSH agent.
 
@@ -174,10 +164,9 @@ The process is similar for macOS and Linux.
 
        ssh-add ~/.ssh/id_rsa
 
-5. Copy the public key to the HPC cluster using the ``ssh-copy-id`` utility. This
-   command automatically handles creating the ``.ssh`` directory and setting the correct
-   file permissions on the remote server. To avoid ambiguity, it is best to specify
-   which key to copy.
+5. Copy the public key to the HPC cluster using the ``ssh-copy-id`` utility. This command automatically handles creating
+   the ``.ssh`` directory and setting the correct file permissions on the remote server. To avoid ambiguity, it is best
+   to specify which key to copy.
 
    If you generated an **Ed25519** key:
 
@@ -200,20 +189,16 @@ The process is similar for macOS and Linux.
 Using SSH Keys with MobaXterm
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If you use MobaXterm, you can follow this guide to set up key-based authentication:
-`Generating SSH keys with MobaXterm
+If you use MobaXterm, you can follow this guide to set up key-based authentication: `Generating SSH keys with MobaXterm
 <https://vlaams-supercomputing-centrum-vscdocumentation.readthedocs-hosted.com/en/latest/access/generating_keys_with_mobaxterm.html>`_
 
 Root Cause
 ----------
 
-Interactive logins to HPC clusters require both a password and Duo two-factor
-authentication for security. This can be cumbersome for frequent logins or for use with
-scripts and file transfer tools. SSH key-based authentication provides a secure
-alternative by using a cryptographic key pair to verify your identity, bypassing the
-interactive password and Duo prompts.
-
-----
+Interactive logins to HPC clusters require both a password and Duo two-factor authentication for security. This can be
+cumbersome for frequent logins or for use with scripts and file transfer tools. SSH key-based authentication provides a
+secure alternative by using a cryptographic key pair to verify your identity, bypassing the interactive password and Duo
+prompts.
 
 .. rst-class:: footer
 

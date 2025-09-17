@@ -64,15 +64,13 @@ Example working command:
 Root Cause
 ----------
 
-Pyxis container runtime requires different URL formatting than Docker: - Docker uses:
-nvcr.io/nvidia/... - Pyxis requires: nvcr.io#nvidia/...
+Pyxis container runtime requires different URL formatting than Docker: - Docker uses: nvcr.io/nvidia/... - Pyxis
+requires: nvcr.io#nvidia/...
 
 References
 ----------
 
 - `NGC container repositoryt <https://catalog.ngc.nvidia.com/>`_
-
-----
 
 .. rst-class:: footer
 

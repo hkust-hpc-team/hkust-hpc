@@ -115,8 +115,6 @@ connections fail. These remnants can interfere with new connection attempts.
 It is also a known bug that updating VS Code can cause connection issues due to version
 mismatch between local and remote instances.
 
-----
-
 .. rst-class:: footer
 
     **HPC Support Team**

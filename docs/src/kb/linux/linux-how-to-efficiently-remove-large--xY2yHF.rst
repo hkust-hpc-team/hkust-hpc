@@ -20,8 +20,8 @@ Environment
 Issue
 -----
 
-    When dealing with large directories containing numerous files or subdirectories,
-    standard removal commands like `rm -rf` or `conda env remove` can be extremely slow.
+    When dealing with large directories containing numerous files or subdirectories, standard removal commands like `rm
+    -rf` or `conda env remove` can be extremely slow.
 
     This is particularly noticeable when
 
@@ -41,8 +41,8 @@ Use parallel file deletion to significantly speed up the removal process
 
 .. note::
 
-    For Ubuntu systems, the command is ``fdfind`` instead of ``fd``. You may alias
-    ``fdfind`` to ``fd`` for compatibility if needed.
+    For Ubuntu systems, the command is ``fdfind`` instead of ``fd``. You may alias ``fdfind`` to ``fd`` for
+    compatibility if needed.
 
 Command Details
 ~~~~~~~~~~~~~~~
@@ -66,27 +66,26 @@ Command Details
 
 .. note::
 
-    Running deletion in parallel can significantly impact I/O performance. Consider
-    running during off-peak hours for large deletions.
+    Running deletion in parallel can significantly impact I/O performance. Consider running during off-peak hours for
+    large deletions.
 
 .. warning::
 
-    Double-check the target directory path before execution - this operation cannot be
-    undone.
+    Double-check the target directory path before execution - this operation cannot be undone.
 
 Root Cause
 ----------
 
-Sequential file deletion becomes inefficient when dealing with large numbers of files.
-There are several contributing factors:
+Sequential file deletion becomes inefficient when dealing with large numbers of files. There are several contributing
+factors:
 
 - File system metadata updates for each deletion
 - Single-threaded operation in standard removal commands
 - Directory entry updates
 - Inode management overhead
 
-By parallelizing the deletion process and using efficient file finding, we can
-significantly reduce the total time required for bulk file removal.
+By parallelizing the deletion process and using efficient file finding, we can significantly reduce the total time
+required for bulk file removal.
 
 References
 ----------
@@ -94,8 +93,6 @@ References
 - ``fd`` help or manual: ``fd --help`` or ``man fd``
 - ``fd`` Github Repository: https://github.com/sharkdp/fd
 - ``xargs`` help or manual: ``xargs --help`` or ``man xargs``
-
-----
 
 .. rst-class:: footer
 
