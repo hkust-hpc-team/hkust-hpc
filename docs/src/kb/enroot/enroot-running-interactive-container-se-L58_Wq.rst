@@ -6,7 +6,7 @@ Running Interactive Container Sessions on HPC
     :keywords: container, development, interactive, nvidia, enroot
     :author: kftse <kftse@ust.hk>
 
-.. container:: header
+.. rst-class:: header
 
     | Last updated: 2025-06-13
     | Keywords: container, interactive, development, nvidia, enroot
@@ -30,7 +30,7 @@ Issue
 Resolution
 ----------
 
-1. Basic Interactive Container Session
+#. Basic Interactive Container Session
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Start an interactive container session using the following command:
@@ -52,15 +52,13 @@ Start an interactive container session using the following command:
 
 .. note::
 
-    - Changes will be lost without ``--container-save``, see
-      :doc:`enroot-saving-enroot-container-failed-tdQCrl` for more details.
+    - Changes will be lost without ``--container-save``, see :doc:`enroot-saving-enroot-container-failed-tdQCrl` for
+      more details.
     - Root access requires ``--container-remap-root`` and ``--container-writable``
-    - Interactive sessions have a maximum walltime of 4 hours on HPC4 and 2 hours on
-      SuperPOD
-    - Create the target directory first: ``mkdir -p $HOME/containers`` if saving to a
-      subdirectory
+    - Interactive sessions have a maximum walltime of 4 hours on HPC4 and 2 hours on SuperPOD
+    - Create the target directory first: ``mkdir -p $HOME/containers`` if saving to a subdirectory
 
-2. Container Customization and Package Installation
+#. Container Customization and Package Installation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Once inside the container, update and install packages:
@@ -77,11 +75,11 @@ Common packages for development:
     root@node:/# apt install -y vim git wget curl build-essential python3-pip
     root@node:/# pip3 install numpy matplotlib jupyter
 
-3. Using Previously Saved Containers
+#. Using Previously Saved Containers
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To start with a previously saved container, use ``--container-image
-/path/to/container/image.sqsh`` instead of pulling from a registry:
+To start with a previously saved container, use ``--container-image /path/to/container/image.sqsh`` instead of pulling
+from a registry:
 
 .. code-block:: console
 
@@ -109,23 +107,18 @@ Best Practices
 References
 ----------
 
-- `CUDA Containers for Deep Learning
-  <https://catalog.ngc.nvidia.com/orgs/nvidia/containers/cuda-dl-base>`_
+- `CUDA Containers for Deep Learning <https://catalog.ngc.nvidia.com/orgs/nvidia/containers/cuda-dl-base>`_
 - `NGC Container Registry <https://catalog.ngc.nvidia.com/>`_
 - `Pyxis/Enroot Usage <https://github.com/NVIDIA/pyxis?tab=readme-ov-file#usage>`_
 - `Slurm srun Documentation <https://slurm.schedmd.com/srun.html>`_
-- `Container Best Practices
-  <https://docs.nvidia.com/deeplearning/frameworks/user-guide/index.html>`_
+- `Container Best Practices <https://docs.nvidia.com/deeplearning/frameworks/user-guide/index.html>`_
 
-----
-
-.. container::
-    :name: footer
+.. rst-class:: footer
 
     **HPC Support Team**
-      | ITSC, HKUST
+      | ITSO, HKUST
       | Email: cchelp@ust.hk
-      | Web: https://itsc.ust.hk
+      | Web: https://itso.hkust.edu.hk/
 
     **Article Info**
       | Issued: 2025-06-13

@@ -6,7 +6,7 @@ How to Efficiently Upload Files to HPC Cluster
     :keywords: fpsync, rsync, file transfer, parallel upload
     :author: kftse <kftse@ust.hk>
 
-.. container:: header
+.. rst-class:: header
 
     | Last updated: 2025-06-13
     | Keywords: fpsync, rsync, file transfer, parallel upload
@@ -33,13 +33,12 @@ Issue
 Resolution
 ----------
 
-Use ``fpsync`` for parallel file transfers, which significantly improves transfer speed
-compared to traditional methods.
+Use ``fpsync`` for parallel file transfers, which significantly improves transfer speed compared to traditional methods.
 
 Installation
 ~~~~~~~~~~~~
 
-1. Install fpart package on your local machine:
+#. Install fpart package on your local machine:
 
 .. code-block:: shell-session
 
@@ -55,13 +54,13 @@ Installation
 Basic Usage
 ~~~~~~~~~~~
 
-1. Transfer a directory to cluster:
+#. Transfer a directory to cluster:
 
 .. code-block:: shell-session
 
     $ fpsync -n 8 ~/local_directory username@hpc.university.edu:~/remote_directory
 
-2. Transfer with specific options:
+#. Transfer with specific options:
 
 .. code-block:: shell-session
 
@@ -75,8 +74,7 @@ Options Explained:
 
 .. note::
 
-    Choose number of parallel processes (``-n``) based on your network connection and
-    system capabilities
+    Choose number of parallel processes (``-n``) based on your network connection and system capabilities
 
 .. warning::
 
@@ -86,10 +84,9 @@ Options Explained:
 Root Cause
 ----------
 
-Traditional file transfer tools process files sequentially. When transferring many small
-files, the overhead of establishing connections and handshaking for each file becomes
-significant. Parallel transfer tools like fpsync divide the workload among multiple
-processes, utilizing available bandwidth more efficiently.
+Traditional file transfer tools process files sequentially. When transferring many small files, the overhead of
+establishing connections and handshaking for each file becomes significant. Parallel transfer tools like fpsync divide
+the workload among multiple processes, utilizing available bandwidth more efficiently.
 
 References
 ----------
@@ -99,17 +96,14 @@ References
 Related Articles
 ----------------
 
-- `How to Efficiently Remove Large Directories
-  <linux-how-to-efficiently-remove-large--xY2yHF>`_
+- `How to Efficiently Remove Large Directories <linux-how-to-efficiently-remove-large--xY2yHF>`_
 
-----
-
-.. container:: footer
+.. rst-class:: footer
 
     **HPC Support Team**
-      | ITSC, HKUST
+      | ITSO, HKUST
       | Email: cchelp@ust.hk
-      | Web: https://itsc.ust.hk
+      | Web: https://itso.hkust.edu.hk/
 
     **Article Info**
       | Issued: 2025-01-07
