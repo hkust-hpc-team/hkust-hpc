@@ -70,7 +70,7 @@ requires: nvcr.io#nvidia/...
 References
 ----------
 
-- `NGC container repositoryt <https://catalog.ngc.nvidia.com/>`_
+- `NGC container repository <https://catalog.ngc.nvidia.com/>`_
 
 .. rst-class:: footer
 
