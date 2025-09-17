@@ -85,7 +85,7 @@ References
     **HPC Support Team**
       | ITSO, HKUST
       | Email: cchelp@ust.hk
-      | Web: https://ITSO.ust.hk
+      | Web: https://itso.hkust.edu.hk/
 
     **Article Info**
       | Issued: 2025-02-12

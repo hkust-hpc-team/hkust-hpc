@@ -28,7 +28,7 @@ If you need further assistance, please feel free to contact us.
 
     | ITSO, HKUST
     | Email: cchelp@ust.hk
-    | Web: https://ITSO.ust.hk
+    | Web: https://itso.hkust.edu.hk/
 
 List of articles by software
 ----------------------------
