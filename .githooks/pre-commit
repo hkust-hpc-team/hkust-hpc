@@ -1,7 +1,0 @@
-#!/bin/bash
-
-set -eou pipefail
-
-. .venv/bin/activate
-git ls-files '*.rst' | xargs -rt -P $(nproc) -i docstrfmt {}
-git ls-files '*.yml' '*.yaml' | xargs -rt -P $(nproc) -i yq -w 10000 -i -S -Y . {}
