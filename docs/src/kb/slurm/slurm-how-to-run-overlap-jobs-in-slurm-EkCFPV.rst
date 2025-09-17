@@ -14,7 +14,7 @@ How to Run Overlap Jobs in SLURM
 Environment
 -----------
 
-    - ITSC HPC clusters
+    - ITSO HPC clusters
 
 Issue
 -----
@@ -64,14 +64,14 @@ References
 
 - `Slurm srun Guide <https://slurm.schedmd.com/srun.html>`_
 - `HKUST HPC4 Slurm Guide
-  <https://itsc.hkust.edu.hk/services/academic-teaching-support/high-performance-computing/hpc4/slurm>`_
+  <https://ITSO.hkust.edu.hk/services/academic-teaching-support/high-performance-computing/hpc4/slurm>`_
 
 .. rst-class:: footer
 
     **HPC Support Team**
-      | ITSC, HKUST
+      | ITSO, HKUST
       | Email: cchelp@ust.hk
-      | Web: https://itsc.ust.hk
+      | Web: https://ITSO.ust.hk
 
     **Article Info**
       | Issued: 2024-12-06

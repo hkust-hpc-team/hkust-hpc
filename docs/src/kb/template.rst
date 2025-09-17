@@ -131,9 +131,9 @@ References
     .. TODO: Do not change the HPC Support Team information, and ask the author to fill in the email
 
     **HPC Support Team**
-      | ITSC, HKUST
+      | ITSO, HKUST
       | Email: cchelp@ust.hk
-      | Web: https://itsc.ust.hk
+      | Web: https://ITSO.ust.hk
 
     **Article Info**
       | Issued: YYYY-MM-DD

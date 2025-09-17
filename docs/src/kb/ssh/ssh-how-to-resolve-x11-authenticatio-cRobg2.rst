@@ -55,9 +55,9 @@ the XAUTHORITY environment variable explicitly.
 .. rst-class:: footer
 
     **HPC Support Team**
-      | ITSC, HKUST
+      | ITSO, HKUST
       | Email: cchelp@ust.hk
-      | Web: https://itsc.ust.hk
+      | Web: https://ITSO.ust.hk
 
     **Article Info**
       | Issued: 2024-12-05

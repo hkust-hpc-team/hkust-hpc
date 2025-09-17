@@ -14,7 +14,7 @@ How to Run JupyterLab on HPC Compute Nodes
 Environment
 -----------
 
-    - ITSC HPC clusters
+    - ITSO HPC clusters
     - SLURM workload manager
     - Python/Conda environment with JupyterLab installed
     - SSH client
@@ -105,16 +105,16 @@ References
 
 - `Slurm Documentation <https://slurm.schedmd.com/documentation.html>`_
 - `HKUST HPC4 Slurm Guide
-  <https://itsc.hkust.edu.hk/services/academic-teaching-support/high-performance-computing/hpc4/slurm>`_
+  <https://ITSO.hkust.edu.hk/services/academic-teaching-support/high-performance-computing/hpc4/slurm>`_
 - `HKUST SuperPOD Website
-  <https://itsc.hkust.edu.hk/services/academic-teaching-support/high-performance-computing/superpod>`_
+  <https://ITSO.hkust.edu.hk/services/academic-teaching-support/high-performance-computing/superpod>`_
 
 .. rst-class:: footer
 
     **HPC Support Team**
-      | ITSC, HKUST
+      | ITSO, HKUST
       | Email: cchelp@ust.hk
-      | Web: https://itsc.ust.hk
+      | Web: https://ITSO.ust.hk
 
     **Article Info**
       | Issued: 2024-12-06

@@ -6,7 +6,7 @@ Searchable doc at `readthedocs.io <https://hkust-hpc-docs.readthedocs.io/>`_.
 **Tutorials, docs and knowledge base** for AI / HPC users using central HPC resources at the Hong Kong University of
 Science and Technology (HKUST).
 
-Despite this doc is tailored for Superpod and HPC4 maintained by Information Technology Services Center (ITSC), you may
+Despite this doc is tailored for Superpod and HPC4 maintained by Information Technology Services Center (ITSO), you may
 find some useful techniques in general and works on other HPC systems as well.
 
 Table of Contents
@@ -19,6 +19,20 @@ Table of Contents
     kb/index
     sysadmin/index
     contrib/index
+
+Building the Documentation
+--------------------------
+
+To build the documentation locally, first set up the development environment
+by following the :doc:`contributor's guide </contrib/index>`.
+
+Once set up, you can build the HTML pages by running:
+
+.. code-block:: bash
+
+    make
+
+The output will be located in the ``build/html`` directory.
 
 Acknowledgement
 ---------------

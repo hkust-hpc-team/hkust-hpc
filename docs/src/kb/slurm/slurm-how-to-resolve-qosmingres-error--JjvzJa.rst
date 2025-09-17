@@ -14,7 +14,7 @@ How to resolve QOSMinGRES error when submitting GPU jobs
 Environment
 -----------
 
-    - ITSC HPC4 or SuperPOD cluster
+    - ITSO HPC4 or SuperPOD cluster
 
 Issue
 -----
@@ -61,9 +61,9 @@ References
 .. rst-class:: footer
 
     **HPC Support Team**
-      | ITSC, HKUST
+      | ITSO, HKUST
       | Email: cchelp@ust.hk
-      | Web: https://itsc.ust.hk
+      | Web: https://ITSO.ust.hk
 
     **Article Info**
       | Issued: 2024-12-06

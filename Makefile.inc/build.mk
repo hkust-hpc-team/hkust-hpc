@@ -4,7 +4,7 @@ SPHINXOUTPUT         = html
 SPHINXBUILDS        = $(SPHINXOUTPUT:%=$(BUILDDIR)/%)
 .SOURCE_FILES_SPHINX = $(shell (find docs -type f && find . -type f -name '*.rst') | sort -u)
 
-build: $(SPHINXBUILDS)
+build: clean $(SPHINXBUILDS)
 	@true
 
 $(SPHINXBUILDS): $(.SOURCE_FILES_PYPROJECT) $(.SOURCE_FILES_MK) $(.SOURCE_FILES_SPHINX_CONFIG) $(.SOURCE_FILES_SPHINX)

@@ -14,7 +14,7 @@ Running GROMACS on HPC Systems
 Environment
 -----------
 
-    - ITSC HPC4 Cluster
+    - ITSO HPC4 Cluster
     - GROMACS versions: - Container-based: 2023.2 (NGC) - Source build: 2024.1
     - CUDA 12.4.0
     - GCC 13.2.0
@@ -136,9 +136,9 @@ References
 .. rst-class:: footer
 
     **HPC Support Team**
-      | ITSC, HKUST
+      | ITSO, HKUST
       | Email: cchelp@ust.hk
-      | Web: https://itsc.ust.hk
+      | Web: https://ITSO.ust.hk
 
     **Article Info**
       | Issued: 2024-12-06

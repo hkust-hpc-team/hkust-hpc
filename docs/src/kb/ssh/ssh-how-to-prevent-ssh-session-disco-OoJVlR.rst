@@ -20,7 +20,7 @@ Environment
       - PuTTY (Windows)
       - MobaXterm (Windows)
 
-    - ITSC HPC clusters
+    - ITSO HPC clusters
 
 Issue
 -----
@@ -106,7 +106,7 @@ Best Practices for Long Operations
 Root Cause
 ----------
 
-ITSC HPC clusters drop inactive SSH connections after a certain period to free up resources. This is a security measure
+ITSO HPC clusters drop inactive SSH connections after a certain period to free up resources. This is a security measure
 to prevent unauthorized access to idle sessions.
 
 Diagnosis
@@ -130,9 +130,9 @@ References
 .. rst-class:: footer
 
     **HPC Support Team**
-      | ITSC, HKUST
+      | ITSO, HKUST
       | Email: cchelp@ust.hk
-      | Web: https://itsc.ust.hk
+      | Web: https://ITSO.ust.hk
 
     **Article Info**
       | Issued: 2024-12-06
