@@ -1,7 +1,7 @@
 How to Run JupyterLab on HPC Compute Nodes
 ==========================================
 
-.. container:: header
+.. rst-class:: header
 
     | Last updated: 2024-12-06
     | *Solution verified 2024-12-06*
@@ -14,7 +14,7 @@ How to Run JupyterLab on HPC Compute Nodes
 Environment
 -----------
 
-    - ITSC HPC clusters
+    - ITSO HPC clusters
     - SLURM workload manager
     - Python/Conda environment with JupyterLab installed
     - SSH client
@@ -31,7 +31,7 @@ Resolution
 
 The process involves four main steps:
 
-1. Requesting Compute Resources
+#. Requesting Compute Resources
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Request an interactive session on a compute node:
@@ -45,7 +45,7 @@ Request an interactive session on a compute node:
 
     Interactive jobs have a maximum walltime of 4 hours on HPC4 and 2 hours on SuperPOD.
 
-2. Starting JupyterLab Server
+#. Starting JupyterLab Server
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 After allocation is granted, activate your environment and launch JupyterLab:
@@ -59,7 +59,7 @@ After allocation is granted, activate your environment and launch JupyterLab:
 
     Save the token or URL from the output. It will be needed for authentication.
 
-3. Creating SSH Tunnel
+#. Creating SSH Tunnel
 ~~~~~~~~~~~~~~~~~~~~~~
 
 On your local machine, establish an SSH tunnel:
@@ -74,7 +74,7 @@ On your local machine, establish an SSH tunnel:
     - Replace <compute_node> with the allocated compute node name from step 1
     - Replace username with your HKUST HPC Cluster username
 
-4. Accessing JupyterLab Interface
+#. Accessing JupyterLab Interface
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - Open a web browser on your local machine
@@ -90,33 +90,31 @@ Cleanup
 
 When finished:
 
-1. Close your browser
-2. Terminate the SSH tunnel (Ctrl+C)
-3. Exit the Slurm session
+#. Close your browser
+#. Terminate the SSH tunnel (Ctrl+C)
+#. Exit the Slurm session
 
 Root Cause
 ----------
 
-Direct access to compute nodes is restricted for security. SSH tunneling provides a
-secure way to access services running on compute nodes through the login node.
+Direct access to compute nodes is restricted for security. SSH tunneling provides a secure way to access services
+running on compute nodes through the login node.
 
 References
 ----------
 
 - `Slurm Documentation <https://slurm.schedmd.com/documentation.html>`_
 - `HKUST HPC4 Slurm Guide
-  <https://itsc.hkust.edu.hk/services/academic-teaching-support/high-performance-computing/hpc4/slurm>`_
+  <https://itso.hkust.edu.hk/services/academic-teaching-support/high-performance-computing/hpc4/slurm>`_
 - `HKUST SuperPOD Website
-  <https://itsc.hkust.edu.hk/services/academic-teaching-support/high-performance-computing/superpod>`_
+  <https://itso.hkust.edu.hk/services/academic-teaching-support/high-performance-computing/superpod>`_
 
-----
-
-.. container:: footer
+.. rst-class:: footer
 
     **HPC Support Team**
-      | ITSC, HKUST
+      | ITSO, HKUST
       | Email: cchelp@ust.hk
-      | Web: https://itsc.ust.hk
+      | Web: https://itso.hkust.edu.hk/
 
     **Article Info**
       | Issued: 2024-12-06

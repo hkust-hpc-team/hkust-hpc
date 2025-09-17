@@ -6,7 +6,7 @@ Error when downloading NVIDIA NGC Containers
     :keywords: container, slurm, nvidia, ngc, enroot, pyxis
     :author: kftse <kftse@ust.hk>
 
-.. container:: header
+.. rst-class:: header
 
     | Last updated: 2025-02-12
     | *Solution under review*
@@ -64,23 +64,20 @@ Example working command:
 Root Cause
 ----------
 
-Pyxis container runtime requires different URL formatting than Docker: - Docker uses:
-nvcr.io/nvidia/... - Pyxis requires: nvcr.io#nvidia/...
+Pyxis container runtime requires different URL formatting than Docker: - Docker uses: nvcr.io/nvidia/... - Pyxis
+requires: nvcr.io#nvidia/...
 
 References
 ----------
 
-- `NGC container repositoryt <https://catalog.ngc.nvidia.com/>`_
+- `NGC container repository <https://catalog.ngc.nvidia.com/>`_
 
-----
-
-.. container::
-    :name: footer
+.. rst-class:: footer
 
     **HPC Support Team**
-      | ITSC, HKUST
+      | ITSO, HKUST
       | Email: cchelp@ust.hk
-      | Web: https://itsc.ust.hk
+      | Web: https://itso.hkust.edu.hk/
 
     **Article Info**
       | Issued: 2025-02-12

@@ -1,8 +1,8 @@
 Linux NFS Client
 ================
 
-Network File System (NFS) is commonly used in HPC environments for shared storage.
-Proper configuration is essential for optimal performance and reliability.
+Network File System (NFS) is commonly used in HPC environments for shared storage. Proper configuration is essential for
+optimal performance and reliability.
 
 .. contents:: Table of Contents
     :local:
@@ -11,14 +11,13 @@ Proper configuration is essential for optimal performance and reliability.
 Performance Optimization Methodology
 ------------------------------------
 
-This section provides a systematic approach to NFS performance tuning. Rather than
-applying all optimizations blindly, follow this methodology to identify and address
-specific bottlenecks in your environment.
+This section provides a systematic approach to NFS performance tuning. Rather than applying all optimizations blindly,
+follow this methodology to identify and address specific bottlenecks in your environment.
 
 .. warning::
 
-    The following section is summarized by LLM based on other original content. A
-    comprehensive review is currently being conducted.
+    The following section is summarized by LLM based on other original content. A comprehensive review is currently
+    being conducted.
 
 Assessment and Baseline Philosophy
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -134,8 +133,7 @@ Workload-Specific Optimization Patterns
 **Random I/O (Databases, Checkpointing)**
     - Use smaller ``rsize`` and ``wsize`` values (e.g., 65536) to reduce latency
     - Disable read-ahead mechanisms if they cause performance degradation
-    - Ensure ``sync`` or direct I/O is used for data integrity if required by the
-      application
+    - Ensure ``sync`` or direct I/O is used for data integrity if required by the application
 
 **Mixed HPC Workloads**
     - Balance competing requirements across different operation types
@@ -145,13 +143,13 @@ Workload-Specific Optimization Patterns
 Benchmarking Tools
 ------------------
 
-This section provides comprehensive benchmarking methodologies to evaluate NFS
-performance and validate optimization efforts.
+This section provides comprehensive benchmarking methodologies to evaluate NFS performance and validate optimization
+efforts.
 
 .. warning::
 
-    The following section is summarized by LLM based on other original content. A
-    comprehensive review is currently being conducted.
+    The following section is summarized by LLM based on other original content. A comprehensive review is currently
+    being conducted.
 
 Baseline Performance Testing
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -297,81 +295,75 @@ Regression Testing
 General Optimization Dimensions
 -------------------------------
 
-This section presents NFS optimization dimensions in a logical progression from
-macroscopic to detailed configuration. The optimization hierarchy follows this order:
+This section presents NFS optimization dimensions in a logical progression from macroscopic to detailed configuration.
+The optimization hierarchy follows this order:
 
-1. **Protocol and Transport** - Fundamental architectural choices that determine the
-   performance envelope available to your deployment
-2. **System-Wide Kernel Tuning** - Global parameters affecting all NFS operations
-3. **System-Wide Caching** - Infrastructure-level caching solutions
-4. **Per-Mount Configuration** - Mount-specific tuning based on workload characteristics
-5. **Specialized Optimizations** - Targeted settings for specific operation types
+#. **Protocol and Transport** - Fundamental architectural choices that determine the performance envelope available to
+   your deployment
+#. **System-Wide Kernel Tuning** - Global parameters affecting all NFS operations
+#. **System-Wide Caching** - Infrastructure-level caching solutions
+#. **Per-Mount Configuration** - Mount-specific tuning based on workload characteristics
+#. **Specialized Optimizations** - Targeted settings for specific operation types
 
-This hierarchy ensures that broad, high-impact optimizations are applied first, followed
-by progressively more specific tuning based on detailed workload analysis.
+This hierarchy ensures that broad, high-impact optimizations are applied first, followed by progressively more specific
+tuning based on detailed workload analysis.
 
 NFS Protocol and Transport Layer
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-These choices fundamentally determine the performance envelope and capabilities
-available to your NFS deployment.
+These choices fundamentally determine the performance envelope and capabilities available to your NFS deployment.
 
 **NFS Version Selection**
 
 The NFS version choice affects all subsequent optimization strategies:
 
 - **NFSv3**: Widely supported and stable, but has limitations with locking mechanisms
-- **NFSv4.0**: Introduces improved locking mechanisms and supports ACLs, but may have
-  compatibility issues with older servers
-- **NFSv4.1**: Supports pNFS (parallel NFS), enabling parallel access across multiple
-  servers for better performance
-- **NFSv4.2**: Adds features like server-side copy, sparse files, and application data
-  block support
+- **NFSv4.0**: Introduces improved locking mechanisms and supports ACLs, but may have compatibility issues with older
+  servers
+- **NFSv4.1**: Supports pNFS (parallel NFS), enabling parallel access across multiple servers for better performance
+- **NFSv4.2**: Adds features like server-side copy, sparse files, and application data block support
 
 **High-Performance Network Transport**
 
 For InfiniBand or RoCE networks with RDMA-capable NFS servers:
 
-.. code-block::
+.. code-block:: bash
 
     proto=rdma,port=20049
 
 .. note::
 
-    The default RDMA port for NFS is 20049, but verify your server configuration. For
-    NFSv4.1 with pNFS and RDMA, you may need additional configuration.
+    The default RDMA port for NFS is 20049, but verify your server configuration. For NFSv4.1 with pNFS and RDMA, you
+    may need additional configuration.
 
 .. tip::
 
     - Verify that both client and server support NFS over RDMA
-    - Ensure your HCA (Host Channel Adapter) drivers and RDMA stack are properly
-      configured
+    - Ensure your HCA (Host Channel Adapter) drivers and RDMA stack are properly configured
     - Test connectivity with ``rping`` before mounting NFS over RDMA
 
 Kernel Tuning
 ~~~~~~~~~~~~~
 
-These parameters affect all NFS operations system-wide and should be tuned based on your
-overall infrastructure characteristics.
+These parameters affect all NFS operations system-wide and should be tuned based on your overall infrastructure
+characteristics.
 
 **Understanding the SunRPC Subsystem**
 
-NFS relies on the SunRPC (Remote Procedure Call) framework for all client-server
-communication. The kernel's ``sunrpc`` subsystem manages connection pools, request
-queuing, transport protocols, and memory registration for NFS operations. Key
-performance aspects include:
+NFS relies on the SunRPC (Remote Procedure Call) framework for all client-server communication. The kernel's ``sunrpc``
+subsystem manages connection pools, request queuing, transport protocols, and memory registration for NFS operations.
+Key performance aspects include:
 
-- **RPC Slot Tables**: Control the maximum number of concurrent outstanding requests,
-  directly affecting parallelism and preventing server overload
-- **Transport Management**: Handles TCP, UDP, and RDMA connections with different
-  performance characteristics and resource requirements
-- **Memory Registration**: For RDMA transports, manages efficient memory region
-  registration to minimize latency for high-speed networks
-- **Flow Control**: Balances client request rates with server capacity and network
-  bandwidth to prevent congestion
+- **RPC Slot Tables**: Control the maximum number of concurrent outstanding requests, directly affecting parallelism and
+  preventing server overload
+- **Transport Management**: Handles TCP, UDP, and RDMA connections with different performance characteristics and
+  resource requirements
+- **Memory Registration**: For RDMA transports, manages efficient memory region registration to minimize latency for
+  high-speed networks
+- **Flow Control**: Balances client request rates with server capacity and network bandwidth to prevent congestion
 
-Understanding these subsystems helps explain why tuning RPC parameters can dramatically
-impact NFS performance, especially in high-concurrency or high-bandwidth environments.
+Understanding these subsystems helps explain why tuning RPC parameters can dramatically impact NFS performance,
+especially in high-concurrency or high-bandwidth environments.
 
 **RPC and Network Stack Parameters**
 
@@ -413,9 +405,8 @@ The following table summarizes the key SunRPC parameters for NFS performance tun
 
 .. note::
 
-    **RDMA Parameters**: The RDMA-specific parameters only apply when using NFS over
-    RDMA transport. For TCP-only deployments, focus on the TCP slot table and network
-    buffer settings.
+    **RDMA Parameters**: The RDMA-specific parameters only apply when using NFS over RDMA transport. For TCP-only
+    deployments, focus on the TCP slot table and network buffer settings.
 
 **Example Configuration**
 
@@ -449,39 +440,35 @@ To apply the settings without rebooting, run ``sysctl --system``.
 
 .. tip::
 
-    **Incremental Tuning**: Start with conservative values and increase gradually while
-    monitoring performance and memory usage. Higher slot table entries improve
-    concurrency but increase memory consumption.
+    **Incremental Tuning**: Start with conservative values and increase gradually while monitoring performance and
+    memory usage. Higher slot table entries improve concurrency but increase memory consumption.
 
 Caching Infrastructure
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Client-side caching provides system-wide performance benefits for frequently accessed
-data patterns.
+Client-side caching provides system-wide performance benefits for frequently accessed data patterns.
 
 **Standard Client-Side Caching**
 
-Cachefilesd enables local caching of NFS files, significantly improving performance for
-frequently accessed and infrequently changed data.
+Cachefilesd enables local caching of NFS files, significantly improving performance for frequently accessed and
+infrequently changed data.
 
 .. code-block:: bash
 
     systemctl enable --now cachefilesd
 
-To enable caching for an NFS mount, add the ``fsc`` option to the mount command in
-``/etc/fstab``.
+To enable caching for an NFS mount, add the ``fsc`` option to the mount command in ``/etc/fstab``.
 
-.. code-block::
+.. code-block:: bash
 
     your.nfs.server:/export /mount/point nfs defaults,fsc 0 0
 
 **Tuning Cachefilesd for HPC Workloads**
 
-For demanding HPC workloads, the default ``cachefilesd`` configuration may be
-insufficient. One common limitation is the maximum number of open file descriptors.
+For demanding HPC workloads, the default ``cachefilesd`` configuration may be insufficient. One common limitation is the
+maximum number of open file descriptors.
 
-To increase this limit, create a systemd override file
-``/etc/systemd/system/cachefilesd.service.d/limits.conf``:
+To increase this limit, create a systemd override file ``/etc/systemd/system/cachefilesd.service.d/limits.conf``:
 
 .. code-block:: ini
 
@@ -511,9 +498,8 @@ When using proprietary NFS solutions:
 Per-Mount Configuration and Tuning
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-After establishing protocol choices, system-wide kernel tuning, and caching
-infrastructure, these mount-specific settings provide fine-grained control tailored to
-individual workload characteristics and requirements.
+After establishing protocol choices, system-wide kernel tuning, and caching infrastructure, these mount-specific
+settings provide fine-grained control tailored to individual workload characteristics and requirements.
 
 **Core NFS Mount Options**
 
@@ -577,18 +563,17 @@ The following table summarizes essential NFS mount options for HPC environments:
 
 .. warning::
 
-    **Kernel Version Compatibility**: These mount options are verified for Linux kernel
-    5.x NFS implementation. Proprietary NFS client drivers (e.g., vendor-specific
-    solutions) may support additional options or have different defaults. Linux kernel
-    6.x introduces some new options like ``xprtsec`` for NFSv4.2 TLS support and
-    enhanced RDMA capabilities.
+    **Kernel Version Compatibility**: These mount options are verified for Linux kernel 5.x NFS implementation.
+    Proprietary NFS client drivers (e.g., vendor-specific solutions) may support additional options or have different
+    defaults. Linux kernel 6.x introduces some new options like ``xprtsec`` for NFSv4.2 TLS support and enhanced RDMA
+    capabilities.
 
 .. note::
 
     **Performance vs Reliability Trade-offs**:
 
-    - ``hard`` vs ``soft``: Hard mounts ensure data integrity but can hang; soft mounts
-      fail faster but may cause data corruption
+    - ``hard`` vs ``soft``: Hard mounts ensure data integrity but can hang; soft mounts fail faster but may cause data
+      corruption
     - ``sync`` vs ``async``: Synchronous writes are safer but slower
     - Large ``rsize``/``wsize`` improve throughput but increase memory usage
     - Higher cache times reduce server load but may impact data consistency
@@ -597,7 +582,7 @@ The following table summarizes essential NFS mount options for HPC environments:
 
 Basic high-performance configuration for NFSv3:
 
-.. code-block::
+.. code-block:: bash
 
     your.nfs.server:/export /mount/point nfs \
         vers=3,rsize=1048576,wsize=1048576,nconnect=16,hard,timeo=50,retrans=2, \
@@ -605,7 +590,7 @@ Basic high-performance configuration for NFSv3:
 
 For NFSv4.1 with pNFS support:
 
-.. code-block::
+.. code-block:: bash
 
     your.nfs.server:/export /mount/point nfs \
         vers=4.1,rsize=1048576,wsize=1048576,nconnect=16,hard,timeo=100,retrans=3, \
@@ -614,9 +599,8 @@ For NFSv4.1 with pNFS support:
 Specialized Workload Optimizations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The final optimization layer targets specific operation types and access patterns. These
-optimizations should be applied selectively based on detailed workload analysis and
-represent the most specialized tuning options available.
+The final optimization layer targets specific operation types and access patterns. These optimizations should be applied
+selectively based on detailed workload analysis and represent the most specialized tuning options available.
 
 **Directory Listing Optimization**
 
@@ -624,11 +608,10 @@ Directory listing behavior significantly impacts metadata-intensive workloads.
 
 **rdirplus vs nordirplus:**
 
-- ``rdirplus`` (Default): Fetches file names and metadata together, efficient for
-  operations like ``ls -l`` that need both names and attributes
-- ``nordirplus``: Fetches only file names, optimized for filename-only scanning
-  workloads such as read-only software mounts where applications frequently scan for
-  filenames
+- ``rdirplus`` (Default): Fetches file names and metadata together, efficient for operations like ``ls -l`` that need
+  both names and attributes
+- ``nordirplus``: Fetches only file names, optimized for filename-only scanning workloads such as read-only software
+  mounts where applications frequently scan for filenames
 
 **When to Use nordirplus:**
 
@@ -638,27 +621,25 @@ Directory listing behavior significantly impacts metadata-intensive workloads.
 
 .. warning::
 
-    Only use ``nordirplus`` after thorough testing with your specific NFS server
-    implementation and workload. This option will degrade performance for most
-    operations that require file attributes.
+    Only use ``nordirplus`` after thorough testing with your specific NFS server implementation and workload. This
+    option will degrade performance for most operations that require file attributes.
 
 Other Considerations
 --------------------
 
-This section covers additional factors that impact NFS performance and deployment in
-production environments.
+This section covers additional factors that impact NFS performance and deployment in production environments.
 
 Performance and Security Trade-offs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Security measures can impact NFS performance. This section helps balance security
-requirements with performance optimization.
+Security measures can impact NFS performance. This section helps balance security requirements with performance
+optimization.
 
 **Kerberos Authentication**
 
 Kerberos provides strong authentication but adds overhead:
 
-.. code-block::
+.. code-block:: bash
 
     # Basic Kerberos mount
     nfs.server:/export /mnt/secure nfs sec=krb5,rsize=1048576,wsize=1048576 0 0
@@ -679,7 +660,7 @@ Performance impact mitigation:
 
 For environments requiring encryption in transit:
 
-.. code-block::
+.. code-block:: bash
 
     # NFSv4.2 with TLS
     nfs.server:/export /mnt/encrypted nfs \
@@ -696,13 +677,12 @@ Performance considerations:
 Troubleshooting
 ---------------
 
-This section provides comprehensive troubleshooting guidance for various NFS issues
-beyond just performance problems.
+This section provides comprehensive troubleshooting guidance for various NFS issues beyond just performance problems.
 
 .. warning::
 
-    The following section is summarized by LLM based on other original content. A
-    comprehensive review is currently being conducted.
+    The following section is summarized by LLM based on other original content. A comprehensive review is currently
+    being conducted.
 
 Performance Issues
 ~~~~~~~~~~~~~~~~~~
@@ -771,7 +751,7 @@ Filesystem Soft Lockups
 
 **Common Causes and Solutions**:
 
-1. **Long-running metadata operations on large directories**:
+#. **Long-running metadata operations on large directories**:
 
    .. code-block:: bash
 
@@ -782,7 +762,7 @@ Filesystem Soft Lockups
        # Break large operations into smaller chunks
        ls /mnt/nfs/large_dir | head -1000
 
-2. **Uninterruptible I/O operations**:
+#. **Uninterruptible I/O operations**:
 
    .. code-block:: bash
 
@@ -792,7 +772,7 @@ Filesystem Soft Lockups
        # For critical data, ensure proper timeout values
        mount -o hard,timeo=50,retrans=3 nfs.server:/export /mnt/nfs
 
-3. **Memory pressure during large I/O operations**:
+#. **Memory pressure during large I/O operations**:
 
    .. code-block:: bash
 
@@ -821,7 +801,7 @@ Process Deadlocks on NFS
 
 **Common Scenarios and Solutions**:
 
-1. **Lock conflicts in NFSv3**:
+#. **Lock conflicts in NFSv3**:
 
    .. code-block:: bash
 
@@ -831,7 +811,7 @@ Process Deadlocks on NFS
        # Use local locking only
        mount -o local_lock=all nfs.server:/export /mnt/nfs
 
-2. **Stale file handles**:
+#. **Stale file handles**:
 
    .. code-block:: bash
 
@@ -843,7 +823,7 @@ Process Deadlocks on NFS
 
        # For persistent issues, restart applications accessing the mount
 
-3. **Server-side lock manager issues**:
+#. **Server-side lock manager issues**:
 
    .. code-block:: bash
 
@@ -871,7 +851,7 @@ NFS Data Inconsistency
 
 **Common Causes and Solutions**:
 
-1. **Aggressive client-side caching**:
+#. **Aggressive client-side caching**:
 
    .. code-block:: bash
 
@@ -884,7 +864,7 @@ NFS Data Inconsistency
        # Force immediate synchronization
        sync && echo 3 > /proc/sys/vm/drop_caches
 
-2. **Write caching issues**:
+#. **Write caching issues**:
 
    .. code-block:: bash
 
@@ -894,7 +874,7 @@ NFS Data Inconsistency
        # Force write-through for specific operations
        dd if=sourcefile of=/mnt/nfs/destfile oflag=sync
 
-3. **Clock synchronization problems**:
+#. **Clock synchronization problems**:
 
    .. code-block:: bash
 
@@ -904,7 +884,7 @@ NFS Data Inconsistency
        # Verify timezone consistency
        timedatectl status
 
-4. **Multiple writers without coordination**:
+#. **Multiple writers without coordination**:
 
    .. code-block:: bash
 
@@ -936,7 +916,7 @@ Network and Connectivity Issues
 
 **Diagnostic Steps**:
 
-1. **Network stability testing**:
+#. **Network stability testing**:
 
    .. code-block:: bash
 
@@ -946,7 +926,7 @@ Network and Connectivity Issues
        # Check for network congestion
        iperf3 -c nfs.server -t 300 -i 10
 
-2. **RPC layer debugging**:
+#. **RPC layer debugging**:
 
    .. code-block:: bash
 
@@ -959,7 +939,7 @@ Network and Connectivity Issues
        # Disable debugging after troubleshooting
        echo 0 > /proc/sys/sunrpc/rpc_debug
 
-3. **Firewall and port issues**:
+#. **Firewall and port issues**:
 
    .. code-block:: bash
 
@@ -990,7 +970,7 @@ Server-Side Issues
 
 **Common Server Issues**:
 
-1. **Insufficient nfsd threads**:
+#. **Insufficient nfsd threads**:
 
    .. code-block:: bash
 
@@ -1000,7 +980,7 @@ Server-Side Issues
        # Increase thread count (server-side)
        echo 64 > /proc/fs/nfsd/threads
 
-2. **Export configuration problems**:
+#. **Export configuration problems**:
 
    .. code-block:: bash
 
@@ -1031,9 +1011,8 @@ Recovery and Maintenance Procedures
 
 .. warning::
 
-    Using ``umount -f`` (force) or ``umount -l`` (lazy) can lead to data corruption if
-    there are pending writes. These options should be used with extreme caution as a
-    last resort when a graceful unmount is not possible.
+    Using ``umount -f`` (force) or ``umount -l`` (lazy) can lead to data corruption if there are pending writes. These
+    options should be used with extreme caution as a last resort when a graceful unmount is not possible.
 
 **Emergency Recovery**
 
