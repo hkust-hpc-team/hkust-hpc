@@ -64,7 +64,7 @@ References
 
 - `Slurm srun Guide <https://slurm.schedmd.com/srun.html>`_
 - `HKUST HPC4 Slurm Guide
-  <https://ITSO.hkust.edu.hk/services/academic-teaching-support/high-performance-computing/hpc4/slurm>`_
+  <https://itso.hkust.edu.hk/services/academic-teaching-support/high-performance-computing/hpc4/slurm>`_
 
 .. rst-class:: footer
 

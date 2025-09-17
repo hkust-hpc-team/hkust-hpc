@@ -105,9 +105,9 @@ References
 
 - `Slurm Documentation <https://slurm.schedmd.com/documentation.html>`_
 - `HKUST HPC4 Slurm Guide
-  <https://ITSO.hkust.edu.hk/services/academic-teaching-support/high-performance-computing/hpc4/slurm>`_
+  <https://itso.hkust.edu.hk/services/academic-teaching-support/high-performance-computing/hpc4/slurm>`_
 - `HKUST SuperPOD Website
-  <https://ITSO.hkust.edu.hk/services/academic-teaching-support/high-performance-computing/superpod>`_
+  <https://itso.hkust.edu.hk/services/academic-teaching-support/high-performance-computing/superpod>`_
 
 .. rst-class:: footer
 
