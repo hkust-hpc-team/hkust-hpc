@@ -298,12 +298,12 @@ General Optimization Dimensions
 This section presents NFS optimization dimensions in a logical progression from macroscopic to detailed configuration.
 The optimization hierarchy follows this order:
 
-1. **Protocol and Transport** - Fundamental architectural choices that determine the performance envelope available to
+#. **Protocol and Transport** - Fundamental architectural choices that determine the performance envelope available to
    your deployment
-2. **System-Wide Kernel Tuning** - Global parameters affecting all NFS operations
-3. **System-Wide Caching** - Infrastructure-level caching solutions
-4. **Per-Mount Configuration** - Mount-specific tuning based on workload characteristics
-5. **Specialized Optimizations** - Targeted settings for specific operation types
+#. **System-Wide Kernel Tuning** - Global parameters affecting all NFS operations
+#. **System-Wide Caching** - Infrastructure-level caching solutions
+#. **Per-Mount Configuration** - Mount-specific tuning based on workload characteristics
+#. **Specialized Optimizations** - Targeted settings for specific operation types
 
 This hierarchy ensures that broad, high-impact optimizations are applied first, followed by progressively more specific
 tuning based on detailed workload analysis.
@@ -751,7 +751,7 @@ Filesystem Soft Lockups
 
 **Common Causes and Solutions**:
 
-1. **Long-running metadata operations on large directories**:
+#. **Long-running metadata operations on large directories**:
 
    .. code-block:: bash
 
@@ -762,7 +762,7 @@ Filesystem Soft Lockups
        # Break large operations into smaller chunks
        ls /mnt/nfs/large_dir | head -1000
 
-2. **Uninterruptible I/O operations**:
+#. **Uninterruptible I/O operations**:
 
    .. code-block:: bash
 
@@ -772,7 +772,7 @@ Filesystem Soft Lockups
        # For critical data, ensure proper timeout values
        mount -o hard,timeo=50,retrans=3 nfs.server:/export /mnt/nfs
 
-3. **Memory pressure during large I/O operations**:
+#. **Memory pressure during large I/O operations**:
 
    .. code-block:: bash
 
@@ -801,7 +801,7 @@ Process Deadlocks on NFS
 
 **Common Scenarios and Solutions**:
 
-1. **Lock conflicts in NFSv3**:
+#. **Lock conflicts in NFSv3**:
 
    .. code-block:: bash
 
@@ -811,7 +811,7 @@ Process Deadlocks on NFS
        # Use local locking only
        mount -o local_lock=all nfs.server:/export /mnt/nfs
 
-2. **Stale file handles**:
+#. **Stale file handles**:
 
    .. code-block:: bash
 
@@ -823,7 +823,7 @@ Process Deadlocks on NFS
 
        # For persistent issues, restart applications accessing the mount
 
-3. **Server-side lock manager issues**:
+#. **Server-side lock manager issues**:
 
    .. code-block:: bash
 
@@ -851,7 +851,7 @@ NFS Data Inconsistency
 
 **Common Causes and Solutions**:
 
-1. **Aggressive client-side caching**:
+#. **Aggressive client-side caching**:
 
    .. code-block:: bash
 
@@ -864,7 +864,7 @@ NFS Data Inconsistency
        # Force immediate synchronization
        sync && echo 3 > /proc/sys/vm/drop_caches
 
-2. **Write caching issues**:
+#. **Write caching issues**:
 
    .. code-block:: bash
 
@@ -874,7 +874,7 @@ NFS Data Inconsistency
        # Force write-through for specific operations
        dd if=sourcefile of=/mnt/nfs/destfile oflag=sync
 
-3. **Clock synchronization problems**:
+#. **Clock synchronization problems**:
 
    .. code-block:: bash
 
@@ -884,7 +884,7 @@ NFS Data Inconsistency
        # Verify timezone consistency
        timedatectl status
 
-4. **Multiple writers without coordination**:
+#. **Multiple writers without coordination**:
 
    .. code-block:: bash
 
@@ -916,7 +916,7 @@ Network and Connectivity Issues
 
 **Diagnostic Steps**:
 
-1. **Network stability testing**:
+#. **Network stability testing**:
 
    .. code-block:: bash
 
@@ -926,7 +926,7 @@ Network and Connectivity Issues
        # Check for network congestion
        iperf3 -c nfs.server -t 300 -i 10
 
-2. **RPC layer debugging**:
+#. **RPC layer debugging**:
 
    .. code-block:: bash
 
@@ -939,7 +939,7 @@ Network and Connectivity Issues
        # Disable debugging after troubleshooting
        echo 0 > /proc/sys/sunrpc/rpc_debug
 
-3. **Firewall and port issues**:
+#. **Firewall and port issues**:
 
    .. code-block:: bash
 
@@ -970,7 +970,7 @@ Server-Side Issues
 
 **Common Server Issues**:
 
-1. **Insufficient nfsd threads**:
+#. **Insufficient nfsd threads**:
 
    .. code-block:: bash
 
@@ -980,7 +980,7 @@ Server-Side Issues
        # Increase thread count (server-side)
        echo 64 > /proc/fs/nfsd/threads
 
-2. **Export configuration problems**:
+#. **Export configuration problems**:
 
    .. code-block:: bash
 

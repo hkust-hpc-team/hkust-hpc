@@ -30,7 +30,7 @@ Issue
 Resolution
 ----------
 
-1. Basic Interactive Container Session
+#. Basic Interactive Container Session
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Start an interactive container session using the following command:
@@ -58,7 +58,7 @@ Start an interactive container session using the following command:
     - Interactive sessions have a maximum walltime of 4 hours on HPC4 and 2 hours on SuperPOD
     - Create the target directory first: ``mkdir -p $HOME/containers`` if saving to a subdirectory
 
-2. Container Customization and Package Installation
+#. Container Customization and Package Installation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Once inside the container, update and install packages:
@@ -75,7 +75,7 @@ Common packages for development:
     root@node:/# apt install -y vim git wget curl build-essential python3-pip
     root@node:/# pip3 install numpy matplotlib jupyter
 
-3. Using Previously Saved Containers
+#. Using Previously Saved Containers
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To start with a previously saved container, use ``--container-image /path/to/container/image.sqsh`` instead of pulling

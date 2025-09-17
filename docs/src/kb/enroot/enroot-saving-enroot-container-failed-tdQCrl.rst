@@ -31,13 +31,13 @@ Issue
 Resolution
 ----------
 
-1. Create container directory:
+#. Create container directory:
 
 .. code-block:: console
 
     $ mkdir -p $HOME/containers
 
-1. Run container with correct save path:
+#. Run container with correct save path:
 
 .. code-block:: console
 
@@ -54,7 +54,7 @@ Resolution
     - Ensure sufficient disk quota before saving large containers
     - Container names should not contain special characters
 
-1. Verify saved container:
+#. Verify saved container:
 
 .. code-block:: console
 

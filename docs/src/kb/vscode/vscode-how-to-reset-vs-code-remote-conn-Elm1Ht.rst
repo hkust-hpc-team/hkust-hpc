@@ -48,14 +48,14 @@ Quick Clean-up
     You must terminate VS Code processes on all servers sharing the same ``$HOME``
     directory.
 
-1. Terminate all VS Code server processes on the remote system
+#. Terminate all VS Code server processes on the remote system
 
        .. code-block:: bash
 
            pgrep -u $USER -f '(code|node)\s' | xargs -r -t -i kill {}
 
-2. Close VS Code on your local machine
-3. Attempt to reestablish connection on remote as usual.
+#. Close VS Code on your local machine
+#. Attempt to reestablish connection on remote as usual.
 
 .. hint::
 
@@ -86,14 +86,14 @@ If the quick solution doesn't resolve the issue, follow these steps
 
     You will need to re-establish tunnels from scratch after following these steps.
 
-1. Terminate all VS Code server processes on the remote system
-2. Remove all VS Code configuration directories
+#. Terminate all VS Code server processes on the remote system
+#. Remove all VS Code configuration directories
 
        .. code-block:: bash
 
            rm -rf ~/.vscode*
 
-3. Re-create tunnels using this best practice command
+#. Re-create tunnels using this best practice command
 
        .. code-block:: bash
 
@@ -104,7 +104,7 @@ If the quick solution doesn't resolve the issue, follow these steps
              --server-data-dir ~/.vscode-server/vscode-$(hostname)/server-data \
              --extensions-dir ~/.vscode-server/vscode-$(hostname)/server-data/extensions
 
-4. Attempt to reestablish connection on remote as usual.
+#. Attempt to reestablish connection on remote as usual.
 
 Root Cause
 ----------

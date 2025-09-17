@@ -38,7 +38,7 @@ Resolution
     For detailed instructions on running containers interactively, see:
     :doc:`enroot-running-interactive-container-se-L58_Wq`
 
-1. Batch Job with Custom Container
+#. Batch Job with Custom Container
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you need to use a customized container (created during interactive testing), save it first and then use it in batch
@@ -66,7 +66,7 @@ mode:
         --container-image $HOME/containers/my-custom-container.sqsh \
          python3 ...
 
-3. Multi-Node Container Jobs
+#. Multi-Node Container Jobs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 For parallel applications that span multiple nodes:

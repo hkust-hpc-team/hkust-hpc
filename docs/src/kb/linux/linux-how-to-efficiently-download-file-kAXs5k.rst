@@ -33,7 +33,7 @@ Use ``sshfs`` to mount remote directory locally, then use ``fpsync`` for paralle
 Install Required Packages
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-1. Install ``sshfs`` and ``fpart``:
+#. Install ``sshfs`` and ``fpart``:
 
 .. code-block:: shell-session
 
@@ -49,13 +49,13 @@ Install Required Packages
 Mount Remote Directory
 ~~~~~~~~~~~~~~~~~~~~~~
 
-1. Create local mount point:
+#. Create local mount point:
 
 .. code-block:: shell-session
 
     $ mkdir -p ~/cluster_data
 
-1. Mount remote directory:
+#. Mount remote directory:
 
 .. code-block:: shell-session
 
@@ -64,19 +64,19 @@ Mount Remote Directory
 Download Using fpsync
 ~~~~~~~~~~~~~~~~~~~~~
 
-1. Create local destination directory:
+#. Create local destination directory:
 
 .. code-block:: shell-session
 
     $ mkdir -p ~/local_dataset
 
-1. Transfer files using parallel processes:
+#. Transfer files using parallel processes:
 
 .. code-block:: shell-session
 
     $ fpsync -t $HOME/.fpsync -n 8 -vv ~/cluster_data/ ~/local_dataset/
 
-1. Unmount after transfer:
+#. Unmount after transfer:
 
 .. code-block:: shell-session
 

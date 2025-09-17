@@ -31,7 +31,7 @@ Resolution
 
 The process involves four main steps:
 
-1. Requesting Compute Resources
+#. Requesting Compute Resources
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Request an interactive session on a compute node:
@@ -45,7 +45,7 @@ Request an interactive session on a compute node:
 
     Interactive jobs have a maximum walltime of 4 hours on HPC4 and 2 hours on SuperPOD.
 
-2. Starting JupyterLab Server
+#. Starting JupyterLab Server
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 After allocation is granted, activate your environment and launch JupyterLab:
@@ -59,7 +59,7 @@ After allocation is granted, activate your environment and launch JupyterLab:
 
     Save the token or URL from the output. It will be needed for authentication.
 
-3. Creating SSH Tunnel
+#. Creating SSH Tunnel
 ~~~~~~~~~~~~~~~~~~~~~~
 
 On your local machine, establish an SSH tunnel:
@@ -74,7 +74,7 @@ On your local machine, establish an SSH tunnel:
     - Replace <compute_node> with the allocated compute node name from step 1
     - Replace username with your HKUST HPC Cluster username
 
-4. Accessing JupyterLab Interface
+#. Accessing JupyterLab Interface
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - Open a web browser on your local machine
@@ -90,9 +90,9 @@ Cleanup
 
 When finished:
 
-1. Close your browser
-2. Terminate the SSH tunnel (Ctrl+C)
-3. Exit the Slurm session
+#. Close your browser
+#. Terminate the SSH tunnel (Ctrl+C)
+#. Exit the Slurm session
 
 Root Cause
 ----------

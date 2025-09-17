@@ -38,7 +38,7 @@ Use ``fpsync`` for parallel file transfers, which significantly improves transfe
 Installation
 ~~~~~~~~~~~~
 
-1. Install fpart package on your local machine:
+#. Install fpart package on your local machine:
 
 .. code-block:: shell-session
 
@@ -54,13 +54,13 @@ Installation
 Basic Usage
 ~~~~~~~~~~~
 
-1. Transfer a directory to cluster:
+#. Transfer a directory to cluster:
 
 .. code-block:: shell-session
 
     $ fpsync -n 8 ~/local_directory username@hpc.university.edu:~/remote_directory
 
-1. Transfer with specific options:
+#. Transfer with specific options:
 
 .. code-block:: shell-session
 

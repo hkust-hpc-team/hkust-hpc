@@ -57,7 +57,7 @@ Persistent Configuration
 
 Add X11 forwarding settings to your SSH config file
 
-1. Create or edit ``~/.ssh/config``
+#. Create or edit ``~/.ssh/config``
 
        .. code-block:: bash
 
@@ -65,7 +65,7 @@ Add X11 forwarding settings to your SSH config file
            chmod 700 ~/.ssh
            nano ~/.ssh/config
 
-2. Add the following configuration
+#. Add the following configuration
 
        .. code-block:: text
 
@@ -73,7 +73,7 @@ Add X11 forwarding settings to your SSH config file
                ForwardX11 yes
                ForwardX11Trusted yes
 
-3. Set proper permissions
+#. Set proper permissions
 
        .. code-block:: bash
 

@@ -60,19 +60,19 @@ Replace NFS lock with a lock on local filesystem to reduce I/O bottleneck
 
     The local lock file needs to be recreated after system reboot
 
-1. Create local lock directory
+#. Create local lock directory
 
        .. code-block:: bash
 
            mkdir -p /run/$(id -u)/spack-app
 
-2. Create local lock file
+#. Create local lock file
 
        .. code-block:: bash
 
            touch /run/$(id -u)/spack-app/prefix_lock
 
-3. Link local lock to Spack directory
+#. Link local lock to Spack directory
 
        .. code-block:: bash
 

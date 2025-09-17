@@ -31,10 +31,10 @@ This method is more secure and convenient for both interactive logins and automa
 
 The process involves three main steps:
 
-1. **Create an SSH key pair** on your local machine. This consists of a private key (which you must keep secret) and a
+#. **Create an SSH key pair** on your local machine. This consists of a private key (which you must keep secret) and a
    public key (which you can share).
-2. **Copy the public key** to the HPC cluster and add it to the ``~/.ssh/authorized_keys`` file.
-3. **Configure your SSH client** to use the private key when connecting to your HPC cluster (e.g., ``hpc4.ust.hk``).
+#. **Copy the public key** to the HPC cluster and add it to the ``~/.ssh/authorized_keys`` file.
+#. **Configure your SSH client** to use the private key when connecting to your HPC cluster (e.g., ``hpc4.ust.hk``).
 
 For platform-specific instructions, please use the links below:
 
@@ -46,26 +46,26 @@ Generating SSH Keys on Windows
 
 These steps show how to use Windows PowerShell to generate an SSH key pair.
 
-1. Launch **PowerShell** as an **Administrator**.
+#. Launch **PowerShell** as an **Administrator**.
 
    - Press **Win + R** to open the Run dialog box.
    - Type ``powershell`` into the Run dialog.
    - Press **Ctrl + Shift + Enter** to run it as an administrator.
 
-2. Ensure the OpenSSH client is installed.
+#. Ensure the OpenSSH client is installed.
 
    .. code-block:: shell-session
 
        Add-WindowsCapability -Online -Name OpenSSH.Client~~~~0.0.1.0
 
-3. Set the SSH agent to start automatically and start the service.
+#. Set the SSH agent to start automatically and start the service.
 
    .. code-block:: shell-session
 
        Set-Service ssh-agent -StartupType Automatic
        Start-Service ssh-agent
 
-4. Generate a new SSH key pair. You can choose between the modern ``ed25519`` algorithm or the widely-used ``rsa``
+#. Generate a new SSH key pair. You can choose between the modern ``ed25519`` algorithm or the widely-used ``rsa``
    algorithm. ``ed25519`` is newer and considered stronger, while ``rsa`` has broader compatibility with older systems.
 
    **For Ed25519 (recommended):**
@@ -83,7 +83,7 @@ These steps show how to use Windows PowerShell to generate an SSH key pair.
    You will be prompted to enter a file in which to save the key. Press Enter to accept the default location. You will
    also be asked to enter a passphrase, which is optional but highly recommended for security.
 
-5. Add your new key to the SSH agent.
+#. Add your new key to the SSH agent.
 
    If you generated an **Ed25519** key:
 
@@ -97,7 +97,7 @@ These steps show how to use Windows PowerShell to generate an SSH key pair.
 
        ssh-add $HOME\.ssh\id_rsa
 
-6. Copy your public key to the HPC cluster. Replace ``<username>`` with your account name and ``<hpc-address>`` with
+#. Copy your public key to the HPC cluster. Replace ``<username>`` with your account name and ``<hpc-address>`` with
    your cluster's address (e.g., ``hpc4.ust.hk``).
 
    If you generated an **Ed25519** key:
@@ -115,7 +115,7 @@ These steps show how to use Windows PowerShell to generate an SSH key pair.
    This command reads your public key, connects to the HPC cluster, creates the ``.ssh`` directory if it doesn't exist,
    sets the correct permissions, and appends your key to the ``authorized_keys`` file.
 
-7. You can now log in to the HPC cluster without a password.
+#. You can now log in to the HPC cluster without a password.
 
    .. code-block:: shell-session
 
@@ -126,14 +126,14 @@ Generating SSH Keys on macOS and Linux
 
 The process is similar for macOS and Linux.
 
-1. Open a terminal.
-2. Start the SSH agent in the background.
+#. Open a terminal.
+#. Start the SSH agent in the background.
 
    .. code-block:: shell-session
 
        eval "$(ssh-agent -s)"
 
-3. Generate a new SSH key pair. You can choose between the modern ``ed25519`` algorithm or the widely-used ``rsa``
+#. Generate a new SSH key pair. You can choose between the modern ``ed25519`` algorithm or the widely-used ``rsa``
    algorithm. ``ed25519`` is newer and considered stronger, while ``rsa`` has broader compatibility with older systems.
 
    **For Ed25519 (recommended):**
@@ -150,7 +150,7 @@ The process is similar for macOS and Linux.
 
    Press Enter to accept the default file location and enter a secure passphrase when prompted.
 
-4. Add your new key to the SSH agent.
+#. Add your new key to the SSH agent.
 
    If you generated an **Ed25519** key:
 
@@ -164,7 +164,7 @@ The process is similar for macOS and Linux.
 
        ssh-add ~/.ssh/id_rsa
 
-5. Copy the public key to the HPC cluster using the ``ssh-copy-id`` utility. This command automatically handles creating
+#. Copy the public key to the HPC cluster using the ``ssh-copy-id`` utility. This command automatically handles creating
    the ``.ssh`` directory and setting the correct file permissions on the remote server. To avoid ambiguity, it is best
    to specify which key to copy.
 
@@ -180,7 +180,7 @@ The process is similar for macOS and Linux.
 
        ssh-copy-id -i ~/.ssh/id_rsa.pub <username>@<hpc-address>
 
-6. You can now log in to the HPC cluster without a password.
+#. You can now log in to the HPC cluster without a password.
 
    .. code-block:: shell-session
 

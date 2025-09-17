@@ -50,7 +50,7 @@ Create a SLURM job script with appropriate resource requests:
     #SBATCH --account=<account>
     #SBATCH --time=01:00:00
 
-1. Using NGC Container (Recommended for Single-Node Jobs)
+#. Using NGC Container (Recommended for Single-Node Jobs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - Add these commands to your SLURM script:
@@ -71,7 +71,7 @@ Create a SLURM job script with appropriate resource requests:
 
     NGC container provides superior performance for single-node jobs
 
-2. Building from Source with Spack (For Multi-Node Jobs)
+#. Building from Source with Spack (For Multi-Node Jobs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - Set up Spack environment:

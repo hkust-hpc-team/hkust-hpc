@@ -56,18 +56,18 @@ Then connect using:
 For PuTTY (Windows)
 +++++++++++++++++++
 
-1. Open PuTTY configuration
-2. Navigate to Connection
-3. Set "Seconds between keepalives" to 60
-4. Save the session settings
+#. Open PuTTY configuration
+#. Navigate to Connection
+#. Set "Seconds between keepalives" to 60
+#. Save the session settings
 
 For MobaXterm (Windows)
 +++++++++++++++++++++++
 
-1. Open Session Settings
-2. Go to SSH tab
-3. Enable "SSH keepalive"
-4. Set interval to 60 seconds
+#. Open Session Settings
+#. Go to SSH tab
+#. Enable "SSH keepalive"
+#. Set interval to 60 seconds
 
 Use Terminal Multiplexers
 ~~~~~~~~~~~~~~~~~~~~~~~~~
