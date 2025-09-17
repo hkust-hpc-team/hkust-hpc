@@ -35,5 +35,5 @@ epub_show_urls = "footnote"
 
 # -- Custom options
 exclude_patterns = [
-    'kb/template.rst',
+    "kb/template.rst",
 ]

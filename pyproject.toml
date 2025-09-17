@@ -33,6 +33,20 @@ dev = [
     "yq>=3.4.3",
 ]
 
-[tool.docstrfmt]
-docstring-trailing-line = true
+[tool.ruff]
 line-length = 120
+
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "B",  # flake8-bugbear
+    "C4", # flake8-comprehensions
+    "UP", # pyupgrade
+]
+ignore = []
+
+[tool.ruff.format]
+quote-style = "double"
