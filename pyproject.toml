@@ -1,7 +1,7 @@
 [project]
 name = "hkust-hpc"
 version = "0.1.0"
-description = "Add your description here"
+description = "Tutorials, docs and knowledge base for AI / HPC users at HKUST"
 readme = "README.rst"
 requires-python = ">=3.11"
 dependencies = [
@@ -27,6 +27,7 @@ dev = [
     "pylint>=3.3.8",
     "restructuredtext-lint>=1.4.0",
     "rstcheck>=6.2.5",
+    "ruff>=0.13.0",
     "tox>=4.30.2",
     "typing-extensions>=4.15.0",
     "yamllint>=1.37.1",
