@@ -56,8 +56,8 @@ help:
 	@echo "  clean        - Remove build directory"
 	@echo "  help         - Show this help message"
 
-.PHONY: all clean run run-segfault help
+.PHONY: all clean help
 
-build/main.o: src/util.h src/mpi_impl.h build/util.o build/mpi_impl.o
-build/mpi_impl.o: src/constants.h build/constants.o
-build/util.o: src/constants.h build/constants.o
+build/main.o: src/util.h src/mpi_impl.h
+build/mpi_impl.o: src/constants.h
+build/util.o: src/constants.h
