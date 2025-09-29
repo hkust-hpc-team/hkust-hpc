@@ -186,7 +186,7 @@ Here showcase some common gdb commands to analyze the core dump.
       (gdb) print rank
       $2 = 3
       (gdb) print array
-      $3 = (int *) 0x153635fff010
+      $3 = (unsigned long *) 0x153635fff010
 
   .. note::
 
