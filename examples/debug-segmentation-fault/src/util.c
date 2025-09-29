@@ -5,7 +5,7 @@
 
 unsigned long calculate_expected_sum(int num_ranks)
 {
-  unsigned long arr_len = num_ranks * PER_RANK_ARRAY_SIZE;
+  unsigned long arr_len = (unsigned long)num_ranks * PER_RANK_ARRAY_SIZE;
   unsigned long total_sum = arr_len * (arr_len - 1) / 2;
 
   return total_sum;
