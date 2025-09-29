@@ -1,5 +1,5 @@
-HPC Applications
-================
+Application Development
+=======================
 
 .. toctree::
     :glob:
