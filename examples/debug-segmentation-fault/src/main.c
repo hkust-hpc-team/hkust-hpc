@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 
   if (rank == 0)
   {
-    long difference = (long)(expected_sum - global_sum);
+    long difference = (expected_sum > global_sum) ? (long)(expected_sum - global_sum) : -(long)(global_sum - expected_sum);
     printf("Sum: Expected = %lu, Computed = %lu, difference = %ld\n", expected_sum, global_sum, difference);
     write_file("out/result.log", size, expected_sum, global_sum, difference);
 
