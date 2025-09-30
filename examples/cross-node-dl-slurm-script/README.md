@@ -116,7 +116,7 @@ export MASTER_PORT=54321
 export GPT_GLOBAL_SEED="$(python -c 'import numpy; print(numpy.random.randint(2**30-1))')"
 ```
 - **MASTER_ADDR**: First allocated node becomes master
-- **MASTER_PORT**: Fixed port for distributed communication
+- **MASTER_PORT**: Fixed port for distributed communication, you may calculate something like `32768 + $SLURM_JOB_ID % 28672` to reduce collision chance. Do not use random, as all nodes must agree on the same master port.
 - **GPT_GLOBAL_SEED**: Random seed for reproducible training
 
 #### Timestamping for Long Jobs

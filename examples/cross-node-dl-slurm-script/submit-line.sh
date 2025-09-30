@@ -35,4 +35,11 @@
 #            --ntasks-per-node=8
 #            --cpus-per-task=28
 
-sbatch  --nodes=4 --gpus-per-node=8 --ntasks-per-node=8 --cpus-per-task=28 --account=itscspod --partition=admin --output=/scratch/$USER/out/slurm/slurm-%j.out --container-image=/scratch/$USER/home/containers/pytorch-23.10.sqsh --no-container-mount-home --container-remap-root --container-workdir=/scratch/$USER/py-in-container/lit-gpt --container-mounts=/scratch/$USER/py-in-container/lit-gpt:/scratch/$USER/py-in-container/lit-gpt,/scratch/$USER/data:/scratch/$USER/py-in-container/lit-gpt/data,/scratch/$USER/out:/scratch/$USER/py-in-container/lit-gpt/out ./train-redpajama-prelaunch.sh
+sbatch  --nodes=4 --gpus-per-node=8 --ntasks-per-node=8 --cpus-per-task=28 \
+        --account=itscspod --partition=admin \
+        --output=/scratch/$USER/out/slurm/slurm-%j.out \
+        --container-image=/scratch/$USER/home/containers/pytorch-23.10.sqsh \
+        --no-container-mount-home --container-remap-root \
+        --container-workdir=/scratch/$USER/py-in-container/lit-gpt \
+        --container-mounts=/scratch/$USER/py-in-container/lit-gpt:/scratch/$USER/py-in-container/lit-gpt,/scratch/$USER/data:/scratch/$USER/py-in-container/lit-gpt/data,/scratch/$USER/out:/scratch/$USER/py-in-container/lit-gpt/out \
+        ./train-redpajama-prelaunch.sh

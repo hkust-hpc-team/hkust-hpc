@@ -27,6 +27,9 @@ module purge
 module load slurm/slurm
 
 export MASTER_ADDR=$(scontrol show hostnames "$SLURM_JOB_NODELIST" | sort | head -n 1)
+#* Ensure port is not duplicated across jobs
+#  You may calculate something like 32768 + $SLURM_JOB_ID % 28672 to reduce collision chance
+#  Do not use random, as all nodes must agree on the same master port
 export MASTER_PORT=54321
 export GPT_GLOBAL_SEED="$(python -c 'import numpy; print(numpy.random.randint(2**30-1))')"
 
