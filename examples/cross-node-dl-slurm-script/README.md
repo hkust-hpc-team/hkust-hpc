@@ -170,7 +170,7 @@ export GPT_DEVICES_PER_NODE=${SLURM_GPUS_PER_TASK:-$SLURM_GPUS_PER_NODE}
 
 ```bash
 if [ -z "$SLURM_INTERACTIVE" ] && [ $SLURM_LOCALID -eq 0 ]; then
-  nvidia-smi | grep "NVIDIA H800"
+  nvidia-smi -L
   nvidia-smi dmon --delay 15 --select pumt --options DT \
     --filename $PWD/out/slurm/slurm-$SLURM_JOB_ID.$(hostname).gutil &
   export GPT_NVIDIA_SMI_DMON_PID=$!
