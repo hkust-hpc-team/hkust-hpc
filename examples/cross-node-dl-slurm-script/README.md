@@ -188,7 +188,7 @@ fi
 [ -z "$SLURM_INTERACTIVE" ] && [ $SLURM_LOCALID -eq 0 ] && kill $GPT_NVIDIA_SMI_DMON_PID
 ```
 
-**Cleanup step**: After the main `python` execution completes (whether successful or failed), the script ensures the background timestamping process is terminated. This prevents the timestamping process from keeping the SLURM job alive indefinitely, which would continue billing charges.
+**Cleanup step**: After the main `python` execution completes (whether successful or failed), the script ensures the background `nvidia-smi dmon` process is terminated. This prevents the monitoring process from keeping the SLURM job alive indefinitely, which would continue billing charges.
 
 #### Training Process Launch
 
