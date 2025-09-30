@@ -23,7 +23,7 @@ echo "Launching [$GPT_GLOBAL_RANK/$GPT_WORLD_SIZE]: $SLURM_JOB_ID $SLURM_JOB_NOD
 
 # Job NVIDIA_SMI_DMON ===
 if [ -z "$SLURM_INTERACTIVE" ] && [ $SLURM_LOCALID -eq 0 ]; then
-  nvidia-smi | grep "NVIDIA H800"
+  nvidia-smi -L
   nvidia-smi dmon --delay 15 --select pumt --options DT --filename $PWD/out/slurm/slurm-$SLURM_JOB_ID.$(hostname).gutil &
   export GPT_NVIDIA_SMI_DMON_PID=$!
 fi
