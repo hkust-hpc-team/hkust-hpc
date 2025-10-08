@@ -12,7 +12,7 @@ dependencies = [
 license = {text = "MIT"}
 authors = [
     { name = "K. F. Tse", email = "kftse@ust.hk" },
-    { name = "C. H. H. Tai", email = "chtaihei@ust.hk" },
+    { name = "C. H. Tai", email = "chtaihei@ust.hk" },
 ]
 
 [dependency-groups]
