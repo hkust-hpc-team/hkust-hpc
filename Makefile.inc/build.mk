@@ -1,13 +1,15 @@
 SOURCEDIR            = docs/src
 BUILDDIR             = build
-SPHINXOUTPUT         = html epub latexpdf text
-SPHINXBUILDS 				 = $(addprefix $(BUILDDIR)/,$(SPHINXOUTPUT))
+SPHINXOUTPUT         = html
+SPHINXBUILDS        = $(SPHINXOUTPUT:%=$(BUILDDIR)/%)
 .SOURCE_FILES_SPHINX = $(shell (find docs -type f && find . -type f -name '*.rst') | sort -u)
 
+build: clean $(SPHINXBUILDS)
+	@true
 
 $(SPHINXBUILDS): $(.SOURCE_FILES_PYPROJECT) $(.SOURCE_FILES_MK) $(.SOURCE_FILES_SPHINX_CONFIG) $(.SOURCE_FILES_SPHINX)
 $(BUILDDIR)/%:
-	$(SPHINXBUILD) -b $* "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+	$(SPHINXBUILD) -M $* "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 	@[ "$*" == "clean" ] || touch $(BUILDDIR)/$*
 
 clean:
@@ -17,4 +19,4 @@ help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
 .FILE_TARGETS += $(SPHINXBUILDS)
-.PHONY_TARGETS += clean help
+.PHONY_TARGETS += clean help build
