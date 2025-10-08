@@ -1,15 +1,18 @@
 {
   "recommendations": [
     "aaron-bond.better-comments",
-    "charliermarsh.ruff",
-    "eamodio.gitlens",
     "editorconfig.editorconfig",
-    "esbenp.prettier-vscode",
     "lextudio.restructuredtext",
+    "ms-python.black-formatter",
+    "ms-python.flake8",
+    "ms-python.isort",
+    "ms-python.mypy-type-checker",
+    "ms-python.pylint",
     "ms-python.python",
     "ms-python.vscode-pylance",
     "redhat.vscode-yaml",
     "swyddfa.esbonio",
-    "tamasfe.even-better-toml"
+    "tamasfe.even-better-toml",
+    "trond-snekvik.simple-rst",
   ]
 }
