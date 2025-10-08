@@ -2,7 +2,7 @@
 
 # [info] Preparing environment...
 #        Currently Loaded Modulefiles:
-#         1) slurm/slurm/23.02.6  
+#         1) slurm/slurm/23.02.6
 #        Working dir: /scratch/$USER/py-in-container/lit-gpt
 #        Virtualenv: /scratch/$USER/py-in-container/lit-gpt/.venv
 

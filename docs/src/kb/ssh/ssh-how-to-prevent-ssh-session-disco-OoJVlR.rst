@@ -6,7 +6,7 @@ How to Prevent SSH Session Disconnects and Timeouts
     :keywords: ssh, timeout, keepalive, screen, tmux, connection, putty, mobaxterm
     :author: chtaihei <chtaihei@ust.hk>
 
-.. container:: header
+.. rst-class:: header
 
     | Last updated: 2024-12-06
     | *Solution verified: 2024-12-06*
@@ -20,13 +20,12 @@ Environment
       - PuTTY (Windows)
       - MobaXterm (Windows)
 
-    - ITSC HPC clusters
+    - ITSO HPC clusters
 
 Issue
 -----
 
-    - SSH sessions disconnect during long operations due to network inactivity timeouts
-      (e.g., 15-30 minutes).
+    - SSH sessions disconnect during long operations due to network inactivity timeouts (e.g., 15-30 minutes).
 
 Resolution
 ----------
@@ -57,18 +56,18 @@ Then connect using:
 For PuTTY (Windows)
 +++++++++++++++++++
 
-1. Open PuTTY configuration
-2. Navigate to Connection
-3. Set "Seconds between keepalives" to 60
-4. Save the session settings
+#. Open PuTTY configuration
+#. Navigate to Connection
+#. Set "Seconds between keepalives" to 60
+#. Save the session settings
 
 For MobaXterm (Windows)
 +++++++++++++++++++++++
 
-1. Open Session Settings
-2. Go to SSH tab
-3. Enable "SSH keepalive"
-4. Set interval to 60 seconds
+#. Open Session Settings
+#. Go to SSH tab
+#. Enable "SSH keepalive"
+#. Set interval to 60 seconds
 
 Use Terminal Multiplexers
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -107,8 +106,8 @@ Best Practices for Long Operations
 Root Cause
 ----------
 
-ITSC HPC clusters drop inactive SSH connections after a certain period to free up
-resources. This is a security measure to prevent unauthorized access to idle sessions.
+ITSO HPC clusters drop inactive SSH connections after a certain period to free up resources. This is a security measure
+to prevent unauthorized access to idle sessions.
 
 Diagnosis
 ---------
@@ -128,14 +127,12 @@ References
 - PuTTY Documentation: https://tartarus.org/~simon/putty-snapshots/htmldoc/
 - MobaXterm Documentation: https://mobaxterm.mobatek.net/documentation.html
 
-----
-
-.. container:: footer
+.. rst-class:: footer
 
     **HPC Support Team**
-      | ITSC, HKUST
+      | ITSO, HKUST
       | Email: cchelp@ust.hk
-      | Web: https://itsc.ust.hk
+      | Web: https://itso.hkust.edu.hk/
 
     **Article Info**
       | Issued: 2024-12-06
