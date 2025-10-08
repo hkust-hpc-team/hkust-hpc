@@ -6,7 +6,7 @@ Running Container in Batch Mode on HPC
     :keywords: container, batch, slurm, sbatch, nvidia, enroot
     :author: kftse <kftse@ust.hk>
 
-.. rst-class:: header
+.. container:: header
 
     | Last updated: 2025-06-13
     | Keywords: container, batch, slurm, sbatch, nvidia, enroot
@@ -32,17 +32,18 @@ Resolution
 
 .. important::
 
-    **Before running batch jobs, we strongly recommend testing your container and commands in interactive mode.** This
-    helps ensure your container works correctly and your commands are properly configured.
+    **Before running batch jobs, we strongly recommend testing your container and
+    commands in interactive mode.** This helps ensure your container works correctly and
+    your commands are properly configured.
 
     For detailed instructions on running containers interactively, see:
     :doc:`enroot-running-interactive-container-se-L58_Wq`
 
-#. Batch Job with Custom Container
+1. Batch Job with Custom Container
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If you need to use a customized container (created during interactive testing), save it first and then use it in batch
-mode:
+If you need to use a customized container (created during interactive testing), save it
+first and then use it in batch mode:
 
 .. code-block:: bash
     :caption: custom_container_job.sh
@@ -66,7 +67,7 @@ mode:
         --container-image $HOME/containers/my-custom-container.sqsh \
          python3 ...
 
-#. Multi-Node Container Jobs
+3. Multi-Node Container Jobs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 For parallel applications that span multiple nodes:
@@ -96,26 +97,34 @@ For parallel applications that span multiple nodes:
 Best Practices
 ~~~~~~~~~~~~~~
 
-- **Resource Planning**: Request appropriate time limits for batch jobs (can be longer than interactive limits)
-- **Output Files**: Use descriptive output file names with ``%x`` (job name) and ``%j`` (job ID) placeholders
+- **Resource Planning**: Request appropriate time limits for batch jobs (can be longer
+  than interactive limits)
+- **Output Files**: Use descriptive output file names with ``%x`` (job name) and ``%j``
+  (job ID) placeholders
 - **Container Storage**: Store containers in ``$HOME/containers/`` for organization
-- **Error Handling**: Always specify both ``--output`` and ``--error`` files for debugging
+- **Error Handling**: Always specify both ``--output`` and ``--error`` files for
+  debugging
 
 References
 ----------
 
-- `CUDA Containers for Deep Learning <https://catalog.ngc.nvidia.com/orgs/nvidia/containers/cuda-dl-base>`_
+- `CUDA Containers for Deep Learning
+  <https://catalog.ngc.nvidia.com/orgs/nvidia/containers/cuda-dl-base>`_
 - `NGC Container Registry <https://catalog.ngc.nvidia.com/>`_
 - `Pyxis/Enroot Usage <https://github.com/NVIDIA/pyxis?tab=readme-ov-file#usage>`_
 - `Slurm srun Documentation <https://slurm.schedmd.com/srun.html>`_
-- `Container Best Practices <https://docs.nvidia.com/deeplearning/frameworks/user-guide/index.html>`_
+- `Container Best Practices
+  <https://docs.nvidia.com/deeplearning/frameworks/user-guide/index.html>`_
 
-.. rst-class:: footer
+----
+
+.. container::
+    :name: footer
 
     **HPC Support Team**
-      | ITSO, HKUST
+      | ITSC, HKUST
       | Email: cchelp@ust.hk
-      | Web: https://itso.hkust.edu.hk/
+      | Web: https://itsc.ust.hk
 
     **Article Info**
       | Issued: 2025-02-12

@@ -6,7 +6,8 @@ Saving Enroot container failed
     :keywords: enroot, container, export, error, hpc, slurm, squashfs
     :author: kftse <kftse@ust.hk>
 
-.. rst-class:: header
+.. container::
+    :name: header
 
     | Last updated: 2025-02-12
     | *Solution under review*
@@ -24,20 +25,21 @@ Issue
 
     When using pyxis/enroot container, saving fails with errors such as
 
-        - ``slurmstepd: error: pyxis: [ERROR] No such file or directory: /home/username/example/nvhpc:24.3.sqsh``
+        - ``slurmstepd: error: pyxis: [ERROR] No such file or directory:
+          /home/username/example/nvhpc:24.3.sqsh``
         - ``slurmstepd: error: pyxis: failed to export container pyxis_174632.0 to
           /home/username/example/nvhpc:24.3.sqsh``
 
 Resolution
 ----------
 
-#. Create container directory:
+1. Create container directory:
 
 .. code-block:: console
 
     $ mkdir -p $HOME/containers
 
-#. Run container with correct save path:
+2. Run container with correct save path:
 
 .. code-block:: console
 
@@ -54,7 +56,7 @@ Resolution
     - Ensure sufficient disk quota before saving large containers
     - Container names should not contain special characters
 
-#. Verify saved container:
+3. Verify saved container:
 
 .. code-block:: console
 
@@ -80,12 +82,15 @@ References
 
 - `Pyxis/Enroot Usage <https://github.com/NVIDIA/pyxis?tab=readme-ov-file#usage>`_
 
-.. rst-class:: footer
+----
+
+.. container::
+    :name: footer
 
     **HPC Support Team**
-      | ITSO, HKUST
+      | ITSC, HKUST
       | Email: cchelp@ust.hk
-      | Web: https://itso.hkust.edu.hk/
+      | Web: https://itsc.ust.hk
 
     **Article Info**
       | Issued: 2025-02-12

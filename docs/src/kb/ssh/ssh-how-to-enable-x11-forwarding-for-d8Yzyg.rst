@@ -6,7 +6,7 @@ How to enable X11 forwarding for remote access
     :keywords: x11, ssh, display, forwarding, remote access
     :author: kftse <kftse@ust.hk>
 
-.. rst-class:: header
+.. container:: header
 
     | Last updated: 2024-12-05
     | *Solution under review*
@@ -38,10 +38,11 @@ Enable X11 Forwarding
 
 .. note::
 
-    X11 forwarding must be enabled when connecting to the remote system via SSH. Please disconnect your current SSH
-    session and reconnect after applying the changes.
+    X11 forwarding must be enabled when connecting to the remote system via SSH. Please
+    disconnect your current SSH session and reconnect after applying the changes.
 
-X11 forwarding can be enabled ad-hoc at command-line or persistently by modifying SSH client config.
+X11 forwarding can be enabled ad-hoc at command-line or persistently by modifying SSH
+client config.
 
 One-time Connection
 +++++++++++++++++++
@@ -57,7 +58,7 @@ Persistent Configuration
 
 Add X11 forwarding settings to your SSH config file
 
-#. Create or edit ``~/.ssh/config``
+1. Create or edit ``~/.ssh/config``
 
        .. code-block:: bash
 
@@ -65,7 +66,7 @@ Add X11 forwarding settings to your SSH config file
            chmod 700 ~/.ssh
            nano ~/.ssh/config
 
-#. Add the following configuration
+2. Add the following configuration
 
        .. code-block:: text
 
@@ -73,7 +74,7 @@ Add X11 forwarding settings to your SSH config file
                ForwardX11 yes
                ForwardX11Trusted yes
 
-#. Set proper permissions
+3. Set proper permissions
 
        .. code-block:: bash
 
@@ -107,12 +108,14 @@ Root Cause
 
 X11 forwarding requires client support, which is disabled by default.
 
-.. rst-class:: footer
+----
+
+.. container:: footer
 
     **HPC Support Team**
-      | ITSO, HKUST
+      | ITSC, HKUST
       | Email: cchelp@ust.hk
-      | Web: https://itso.hkust.edu.hk/
+      | Web: https://itsc.ust.hk
 
     **Article Info**
       | Issued: 2024-12-05

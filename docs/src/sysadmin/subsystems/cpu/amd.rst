@@ -1,12 +1,14 @@
 AMD 9004 CPU
 ============
 
-AMD EPYC 9004 series (Genoa/Bergamo) introduces several key features that benefit HPC workloads
+AMD EPYC 9004 series (Genoa/Bergamo) introduces several key features that benefit HPC
+workloads
 
 - **Zen 4 cores**: Up to 128 cores per socket with improved IPC (Instructions Per Clock)
 - **DDR5 support**: Up to DDR5-4800 with 12 memory channels per socket
 - **Higher PCIe lane count**: 128 lanes of PCIe 5.0 for high-speed I/O and accelerators
-- **Advanced Vector Extensions (AVX-512)**: Full AVX-512 support for vectorized workloads
+- **Advanced Vector Extensions (AVX-512)**: Full AVX-512 support for vectorized
+  workloads
 - **3D V-Cache** (select models): Additional L3 cache for memory-intensive applications
 - **Improved NUMA topology**: Better memory locality with configurable NUMA domains
 - **Enhanced security**: Hardware-level security features without performance penalty
@@ -14,61 +16,61 @@ AMD EPYC 9004 series (Genoa/Bergamo) introduces several key features that benefi
 BIOS Config
 -----------
 
-Optimal BIOS configuration is crucial for achieving maximum performance from AMD EPYC processors in HPC environments.
+Optimal BIOS configuration is crucial for achieving maximum performance from AMD EPYC
+processors in HPC environments.
 
-The settings below are tuned for based on a variety of HPC/AI benchmarks, this should serve as a good starting point for
-most workloads. For optimal performance on specific workload, one may further finetune based on an application-specific
-benchmark.
+The settings below are tuned for based on a variety of HPC/AI benchmarks, this should
+serve as a good starting point for most workloads. For optimal performance on specific
+workload, one may further finetune based on an application-specific benchmark.
 
-After making changes, one should always perform a full power cycle to ensure all BIOS settings are applied, then confirm
-the number of cores reported in BIOS and OS.
+After making changes, one should always perform a full power cycle to ensure all BIOS
+settings are applied, then confirm the number of cores reported in BIOS and OS.
 
 .. warning::
 
-    There maybe a BIOS bug with some setting combinations where the reported number of cores is incorrect after
-    **performing a full power cycle**.
+    There maybe a BIOS bug with some setting combinations where the reported number of
+    cores is incorrect after **performing a full power cycle**.
 
 Dell OpenManage BIOS
 ~~~~~~~~~~~~~~~~~~~~
 
-Dell OpenManage provides XML-based configuration for Dell PowerEdge servers. For AMD EPYC systems, you can use the
-following XML snippet to configure BIOS settings:
+Dell OpenManage provides XML-based configuration for Dell PowerEdge servers. For AMD
+EPYC systems, you can use the following XML snippet to configure BIOS settings:
 
 .. code-block:: xml
 
-    <root>
-      <Attribute Name="ApbDis">Enabled</Attribute>
-      <Attribute Name="CcxAsNumaDomain">Enabled</Attribute>
-      <Attribute Name="DeterminismSlider">PerformanceDeterminism</Attribute>
-      <Attribute Name="DfCState">Enabled</Attribute>
-      <Attribute Name="DfPstateFreqOptimizer">Enabled</Attribute>
-      <Attribute Name="DfPstateLatencyOptimizer">Enabled</Attribute>
-      <Attribute Name="DlwmForcedWidth">x16</Attribute>
-      <Attribute Name="DramRefreshDelay">Performance</Attribute>
-      <Attribute Name="DynamicLinkWidthManagement">Force</Attribute>
-      <Attribute Name="FixedSocPstate">FixedSocPstate0</Attribute>
-      <Attribute Name="Hsmp">Enabled</Attribute>
-      <Attribute Name="IommuSupport">Enabled</Attribute>
-      <Attribute Name="MemFrequency">MaxPerf</Attribute>
-      <Attribute Name="MemPatrolScrub">Standard</Attribute>
-      <Attribute Name="MemRefreshRate">1x</Attribute>
-      <Attribute Name="NumaNodesPerSocket">2</Attribute>
-      <Attribute Name="PcieAspmL1">Disabled</Attribute>
-      <Attribute Name="PcieSpeedPmmControl">StaticLinkSpeedGen5</Attribute>
-      <Attribute Name="PowerProfileSelect">HighPerformanceMode</Attribute>
-      <Attribute Name="ProcCStates">Enabled</Attribute>
-      <Attribute Name="ProcPwrPerf">OsDbpm</Attribute>
-      <Attribute Name="ProcTurboMode">Enabled</Attribute>
-      <Attribute Name="SysProfile">Custom</Attribute>
-    </root>
+    <Attribute Name="ApbDis">Enabled</Attribute>
+    <Attribute Name="CcxAsNumaDomain">Enabled</Attribute>
+    <Attribute Name="DeterminismSlider">PerformanceDeterminism</Attribute>
+    <Attribute Name="DfCState">Enabled</Attribute>
+    <Attribute Name="DfPstateFreqOptimizer">Enabled</Attribute>
+    <Attribute Name="DfPstateLatencyOptimizer">Enabled</Attribute>
+    <Attribute Name="DlwmForcedWidth">x16</Attribute>
+    <Attribute Name="DramRefreshDelay">Performance</Attribute>
+    <Attribute Name="DynamicLinkWidthManagement">Force</Attribute>
+    <Attribute Name="FixedSocPstate">FixedSocPstate0</Attribute>
+    <Attribute Name="Hsmp">Enabled</Attribute>
+    <Attribute Name="IommuSupport">Enabled</Attribute>
+    <Attribute Name="MemFrequency">MaxPerf</Attribute>
+    <Attribute Name="MemPatrolScrub">Standard</Attribute>
+    <Attribute Name="MemRefreshRate">1x</Attribute>
+    <Attribute Name="NumaNodesPerSocket">2</Attribute>
+    <Attribute Name="PcieAspmL1">Disabled</Attribute>
+    <Attribute Name="PcieSpeedPmmControl">StaticLinkSpeedGen5</Attribute>
+    <Attribute Name="PowerProfileSelect">HighPerformanceMode</Attribute>
+    <Attribute Name="ProcCStates">Enabled</Attribute>
+    <Attribute Name="ProcPwrPerf">OsDbpm</Attribute>
+    <Attribute Name="ProcTurboMode">Enabled</Attribute>
+    <Attribute Name="SysProfile">Custom</Attribute>
 
 AMI Aptio BIOS
 ~~~~~~~~~~~~~~
 
 .. note::
 
-    Some settings show ``Auto`` may imply the same value as the explicit setting ``Enabled``. We list explicit values to
-    ensure consistency across different BIOS versions.
+    Some settings show ``Auto`` may imply the same value as the explicit setting
+    ``Enabled``. We list explicit values to ensure consistency across different BIOS
+    versions.
 
 **AMD CBS (Custom BIOS Settings)**:
 
@@ -138,22 +140,25 @@ AMI Aptio BIOS
 Kernel Parameters
 -----------------
 
-To optimize the performance of AMD EPYC processors, you can use specific kernel parameters. These parameters can be
-added to the kernel command line in your bootloader configuration (e.g., GRUB).
+To optimize the performance of AMD EPYC processors, you can use specific kernel
+parameters. These parameters can be added to the kernel command line in your bootloader
+configuration (e.g., GRUB).
 
-.. code-block:: bash
+.. code-block::
 
     amd_pstate=active iommu=pt
 
-- ``amd_pstate=active``: Enables the AMD P-State driver, which provides OS-level control over CPU frequency and power
-  management.
-- ``iommu=pt``: Enables pass-through mode for better performance with virtual machines and containers.
+- ``amd_pstate=active``: Enables the AMD P-State driver, which provides OS-level control
+  over CPU frequency and power management.
+- ``iommu=pt``: Enables pass-through mode for better performance with virtual machines
+  and containers.
 
 AMD-specific Kernel Modules
 ---------------------------
 
-Specific kernel version provides additional AMD-specific modules that enhance performance and functionality, below lists
-the modules available in different kernel versions.
+Specific kernel version provides additional AMD-specific modules that enhance
+performance and functionality, below lists the modules available in different kernel
+versions.
 
 - ``amd_atl``: AMD Address Translation Library for enhanced memory management
 - ``ptdma``: Platform DMA driver for improved data movement

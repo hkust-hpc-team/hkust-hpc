@@ -34,6 +34,3 @@ html_last_updated_fmt = "%b %d, %Y"
 epub_show_urls = "footnote"
 
 # -- Custom options
-exclude_patterns = [
-    "kb/template.rst",
-]
