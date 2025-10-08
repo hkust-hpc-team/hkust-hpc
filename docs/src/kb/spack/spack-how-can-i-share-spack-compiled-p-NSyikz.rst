@@ -6,7 +6,7 @@ How can I share spack compiled program in a project group?
     :keywords: spack, module, shared libraries
     :author: kftse <kftse@ust.hk>
 
-.. container:: header
+.. rst-class:: header
 
     | Last updated: 2024-11-28
     | *Solution under review*
@@ -25,25 +25,21 @@ Issue
 Resolution
 ----------
 
-If you have compiled the libraries and program in the default user's Spack directory,
-you must recompile program and libraries in a shared Spack directory, and have other
-group members to use the same shared Spack instance.
+If you have compiled the libraries and program in the default user's Spack directory, you must recompile program and
+libraries in a shared Spack directory, and have other group members to use the same shared Spack instance.
 
 Managing shared Spack directory
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To relocate Spack onto a shared directory, you need to set the environment variables
-``SPACK_USER_CONFIG_PATH`` and ``SPACK_USER_CACHE_PATH`` and reload the spack
-environment.
+To relocate Spack onto a shared directory, you need to set the environment variables ``SPACK_USER_CONFIG_PATH`` and
+``SPACK_USER_CACHE_PATH`` and reload the spack environment.
 
 .. warning::
 
-    Please assign a member as the **owner (writable)** of the shared Spack
-    instance.Having multiple users to modify software in the same shared Spack directory
-    may cause conflicts.
+    Please assign a member as the **owner (writable)** of the shared Spack instance.Having multiple users to modify
+    software in the same shared Spack directory may cause conflicts.
 
-    If there is need for multiple users to modify the software, consider sharing ``spack
-    env`` yaml definition instead.
+    If there is need for multiple users to modify the software, consider sharing ``spack env`` yaml definition instead.
 
 Create a shared Spack instance
 ++++++++++++++++++++++++++++++
@@ -67,8 +63,8 @@ This will initialize the shared Spack instance in ``/project/my-research-group/s
 Recompile program and libraries
 +++++++++++++++++++++++++++++++
 
-You should set and reload the spack environment whenever you need to modify this shared
-Spack instance, instead of the default user's Spack instance.
+You should set and reload the spack environment whenever you need to modify this shared Spack instance, instead of the
+default user's Spack instance.
 
 .. code-block:: bash
 
@@ -106,8 +102,8 @@ Use ``module load`` to load software and libraries as usual.
 
 .. note::
 
-    In case another version is available at other module locations, you should specify
-    the ``version`` and ``hash`` to ensure the correct software is loaded.
+    In case another version is available at other module locations, you should specify the ``version`` and ``hash`` to
+    ensure the correct software is loaded.
 
 .. code-block:: bash
 
@@ -120,14 +116,12 @@ The default location of Spack user installation is ``$HOME/.spack`` directory.
 
 It is not possible to share anything inside ``$HOME`` directory with your group members.
 
-----
-
-.. container:: footer
+.. rst-class:: footer
 
     **HPC Support Team**
-      | ITSC, HKUST
+      | ITSO, HKUST
       | Email: cchelp@ust.hk
-      | Web: https://itsc.ust.hk
+      | Web: https://itso.hkust.edu.hk/
 
     **Article Info**
       | Issued: 2024-12-03

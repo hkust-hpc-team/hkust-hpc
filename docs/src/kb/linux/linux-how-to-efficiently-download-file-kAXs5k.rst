@@ -6,7 +6,7 @@ How to Efficiently Download Files from Cluster
     :keywords: sshfs, fpsync, dataset, download, hpc, cluster
     :author: kftse <kftse@ust.hk>
 
-.. container:: header
+.. rst-class:: header
 
     | Last updated: 2025-02-17
     | *Solution under review*
@@ -28,13 +28,12 @@ Issue
 Resolution
 ----------
 
-Use ``sshfs`` to mount remote directory locally, then use ``fpsync`` for parallel
-downloads.
+Use ``sshfs`` to mount remote directory locally, then use ``fpsync`` for parallel downloads.
 
 Install Required Packages
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-1. Install ``sshfs`` and ``fpart``:
+#. Install ``sshfs`` and ``fpart``:
 
 .. code-block:: shell-session
 
@@ -50,13 +49,13 @@ Install Required Packages
 Mount Remote Directory
 ~~~~~~~~~~~~~~~~~~~~~~
 
-1. Create local mount point:
+#. Create local mount point:
 
 .. code-block:: shell-session
 
     $ mkdir -p ~/cluster_data
 
-2. Mount remote directory:
+#. Mount remote directory:
 
 .. code-block:: shell-session
 
@@ -65,19 +64,19 @@ Mount Remote Directory
 Download Using fpsync
 ~~~~~~~~~~~~~~~~~~~~~
 
-1. Create local destination directory:
+#. Create local destination directory:
 
 .. code-block:: shell-session
 
     $ mkdir -p ~/local_dataset
 
-2. Transfer files using parallel processes:
+#. Transfer files using parallel processes:
 
 .. code-block:: shell-session
 
     $ fpsync -t $HOME/.fpsync -n 8 -vv ~/cluster_data/ ~/local_dataset/
 
-3. Unmount after transfer:
+#. Unmount after transfer:
 
 .. code-block:: shell-session
 
@@ -98,8 +97,7 @@ Download Using fpsync
 Root Cause
 ----------
 
-Outbound SSH is not permitted. Use ``sshfs`` to mount a local directory using an inbound
-SSH connection to HPC cluster.
+Outbound SSH is not permitted. Use ``sshfs`` to mount a local directory using an inbound SSH connection to HPC cluster.
 
 For parallel transfer, use fpsync to efficiently download files.
 
@@ -109,14 +107,12 @@ References
 - `SSHFS Documentation <https://github.com/libfuse/sshfs>`_
 - `fpsync Documentation <https://github.com/martymac/fpart>`_
 
-----
-
-.. container:: footer
+.. rst-class:: footer
 
     **HPC Support Team**
-      | ITSC, HKUST
+      | ITSO, HKUST
       | Email: cchelp@ust.hk
-      | Web: https://itsc.ust.hk
+      | Web: https://itso.hkust.edu.hk/
 
     **Article Info**
       | Issued: 2025-02-17
