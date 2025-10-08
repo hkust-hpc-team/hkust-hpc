@@ -5,9 +5,9 @@ description = "Tutorials, docs and knowledge base for AI / HPC users at HKUST"
 readme = "README.rst"
 requires-python = ">=3.11"
 dependencies = [
-    "sphinx>=8.2.3",
-    "sphinx-copybutton>=0.5.2",
-    "sphinx-rtd-theme>=3.0.2",
+    "sphinx~=8.2.3",
+    "sphinx-copybutton~=0.5.2",
+    "sphinx-rtd-theme~=3.0.2",
 ]
 license = {text = "MIT"}
 authors = [
@@ -19,7 +19,6 @@ authors = [
 dev = [
     "black>=25.1.0",
     "doc8>=2.0.0",
-    "docstrfmt>=1.11.1",
     "esbonio>=0.16.5",
     "flake8>=7.3.0",
     "isort>=6.0.1",
@@ -33,6 +32,24 @@ dev = [
     "yamllint>=1.37.1",
     "yq>=3.4.3",
 ]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "B",  # flake8-bugbear
+    "C4", # flake8-comprehensions
+    "UP", # pyupgrade
+]
+ignore = []
+
+[tool.ruff.format]
+quote-style = "double"
 
 [tool.ruff]
 line-length = 120
