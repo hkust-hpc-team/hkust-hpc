@@ -3,8 +3,5 @@
   "makefile.configureOnOpen": false,
   "esbonio.sphinx.buildDir": "${workspaceFolder}/build",
   "esbonio.sphinx.confDir": "${workspaceFolder}/docs/src",
-  "esbonio.sphinx.numJobs": 1,
-  "restructuredtext.linter.doc8.extraArgs": [
-    "--max-line-length 120"
-  ]
+  "esbonio.sphinx.numJobs": 1
 }
