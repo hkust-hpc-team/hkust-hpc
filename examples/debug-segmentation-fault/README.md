@@ -6,7 +6,6 @@ This example demonstrates debugging techniques for MPI applications that encount
 
 **MPI (Message Passing Interface) is required** to compile and run this application.
 
-
 ## Building
 
 Compile the application using the provided Makefile:
