@@ -4,9 +4,10 @@
     - Subdomain name should be replaced with generic term, e.g. "hpcname", if it is not necessary for the context.
     - Any username should be replaced with generic term "username".
     - Truncate directory paths and filenames if it is not necessary for the context of the article.
-    - Remove the .. rst-class:: sample-whatever, those are for showcasing the template structure only.
+    - Remove the .. container:: sample-whatever, those are for showcasing the template structure only.
 
-.. TODO: Update the title to reflect the article's content
+..
+    TODO: Update the title to reflect the article's content
 
 Example: How to create a knowledgebase article using LLM
 ========================================================
@@ -23,13 +24,17 @@ Example: How to create a knowledgebase article using LLM
     :keywords: knowledgebase, article, template, workflow
     :author: user <user@ust.hk>
 
-.. TODO: Update "Last updated" to today's date
+..
+    TODO: Update "Last updated" to today's date
 
-.. Article should be *Solution under review* until verified
+..
+    Article should be *Solution under review* until verified
 
-.. When verified, change to "Solution verified: YYYY-MM-DD"
+..
+    When verified, change to "Solution verified: YYYY-MM-DD"
 
-.. rst-class:: header
+.. container::
+    :name: header
 
     | Last updated: YYYY-MM-DD
     | *Solution under review*
@@ -37,15 +42,20 @@ Example: How to create a knowledgebase article using LLM
 Environment
 -----------
 
-    .. TODO: Update solution's applicable environment details
+    ..
+        TODO: Update solution's applicable environment details
 
-    .. Include e.g. software name; applicable version(s) if needed
+    ..
+        Include e.g. software name; applicable version(s) if needed
 
-    .. If it is a hardware specific issues, include hardware / OS details
+    ..
+        If it is a hardware specific issues, include hardware / OS details
 
-    .. For clarity, should be in point-form, 1 indent level
+    ..
+        For clarity, should be in point-form, 1 indent level
 
-    .. rst-class:: sample-environment-block
+    .. container::
+        :name: sample-environment-block
 
         - restructured text (rst) format
         - sphinx (readthedocs.io)
@@ -53,11 +63,14 @@ Environment
 Issue
 -----
 
-    .. TODO: Describe the procedure to reproduce the issue
+    ..
+        TODO: Describe the procedure to reproduce the issue
 
-    .. For clarity, all text should start with 1 indent level
+    ..
+        For clarity, all text should start with 1 indent level
 
-    .. rst-class:: sample-issue-block
+    .. container::
+        :name: sample-issue-block
 
         - When creating a knowledgebase article, it is time consuming to
 
@@ -70,7 +83,8 @@ Issue
 Resolution
 ----------
 
-.. TODO: Effectively illustrate the solution with sample code and corresponding screen output
+..
+    TODO: Effectively illustrate the solution with sample code and corresponding screen output
 
 ..
     Do:
@@ -87,7 +101,8 @@ Resolution
     - Indent the paragraph of resolution section
     - Explain technical details in this section, technical details should go to "Root Cause" section
 
-.. rst-class:: sample-resolution
+.. container::
+    :name: sample-resolution
 
     Large language model can help the process of writing articles.
 
@@ -102,11 +117,14 @@ Resolution
 Root Cause
 ----------
 
-.. TODO: If there is a root technical cause, describe it.
+..
+    TODO: If there is a root technical cause, describe it.
 
-.. TODO: If not required, remove this section.
+..
+    TODO: If not required, remove this section.
 
-.. rst-class:: example-rootcause-block
+.. container::
+    :name: example-rootcause-block
 
     It is sometimes harder to communication a solution than implement it.
 
@@ -116,24 +134,28 @@ Diagnosis
 ..
     TODO: A diagnosis section is only needed if
     - User may be required to further check the details instead of a straightforward solution
-    - There are methods for users to check if the solution is applicable to their case if they find
-      multiple similar solutions
+    - There are methods for users to check if the solution is applicable to their case if they find multiple similar solutions
 
-.. TODO: If section not required, remove this section.
+..
+    TODO: If section not required, remove this section.
 
 References
 ----------
 
-.. TODO: If not required, remove this section.
+..
+    TODO: If not required, remove this section.
 
-.. rst-class:: footer
+----
+
+.. container::
+    :name: footer
 
     .. TODO: Do not change the HPC Support Team information, and ask the author to fill in the email
 
     **HPC Support Team**
-      | ITSO, HKUST
+      | ITSC, HKUST
       | Email: cchelp@ust.hk
-      | Web: https://itso.hkust.edu.hk/
+      | Web: https://itsc.ust.hk
 
     **Article Info**
       | Issued: YYYY-MM-DD

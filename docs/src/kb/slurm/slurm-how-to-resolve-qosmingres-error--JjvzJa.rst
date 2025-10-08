@@ -1,7 +1,7 @@
 How to resolve QOSMinGRES error when submitting GPU jobs
 ========================================================
 
-.. rst-class:: header
+.. container:: header
 
     | Last updated: 2024-12-06
     | *Solution verified: 2024-12-06*
@@ -14,13 +14,13 @@ How to resolve QOSMinGRES error when submitting GPU jobs
 Environment
 -----------
 
-    - ITSO HPC4 or SuperPOD cluster
+    - ITSC HPC4 or SuperPOD cluster
 
 Issue
 -----
 
-    - When submitting jobs to GPU nodes without explicitly requesting GPU resources, users may encounter the following
-      error:
+    - When submitting jobs to GPU nodes without explicitly requesting GPU resources,
+      users may encounter the following error:
 
       .. code-block:: shell-session
 
@@ -29,7 +29,8 @@ Issue
 Resolution
 ----------
 
-Specify the number of GPU needed using the ``--gpus-per-node`` option when submitting the job.
+Specify the number of GPU needed using the ``--gpus-per-node`` option when submitting
+the job.
 
 .. code-block:: shell-session
 
@@ -38,10 +39,12 @@ Specify the number of GPU needed using the ``--gpus-per-node`` option when submi
 
 .. note::
 
-    Most applications e.g. pytorch or Gromacs can detect and allocate GPU resources automatically.
+    Most applications e.g. pytorch or Gromacs can detect and allocate GPU resources
+    automatically.
 
-    Explicitly specifying ``--gpus-per-task`` is only necessary in specific cases. - to bind GPU to process when
-    program's auto-detection failed - to optimize NUMA locality when using multiple GPUs
+    Explicitly specifying ``--gpus-per-task`` is only necessary in specific cases. - to
+    bind GPU to process when program's auto-detection failed - to optimize NUMA locality
+    when using multiple GPUs
 
     .. code-block:: bash
 
@@ -50,20 +53,23 @@ Specify the number of GPU needed using the ``--gpus-per-node`` option when submi
 Root Cause
 ----------
 
-The cluster's QOS (Quality of Service) policy requires requesting at least 1 GPU submitting jobs to GPU nodes. This
-helps ensure proper resource utilization and avoid unnecessary surcharge if applicable.
+The cluster's QOS (Quality of Service) policy requires requesting at least 1 GPU
+submitting jobs to GPU nodes. This helps ensure proper resource utilization and avoid
+unnecessary surcharge if applicable.
 
 References
 ----------
 
 - `Slurm GRES Guide <https://slurm.schedmd.com/gres.html>`_
 
-.. rst-class:: footer
+----
+
+.. container:: footer
 
     **HPC Support Team**
-      | ITSO, HKUST
+      | ITSC, HKUST
       | Email: cchelp@ust.hk
-      | Web: https://itso.hkust.edu.hk/
+      | Web: https://itsc.ust.hk
 
     **Article Info**
       | Issued: 2024-12-06

@@ -6,7 +6,7 @@ Running GROMACS on HPC Systems
     :keywords: gromacs, gpu, molecular dynamics, hpc, cuda, singularity, spack
     :author: chtaihei <chtaihei@ust.hk>
 
-.. rst-class:: header
+.. container:: header
 
     | Last updated: 2024-12-06
     | *Solution under review*
@@ -14,7 +14,7 @@ Running GROMACS on HPC Systems
 Environment
 -----------
 
-    - ITSO HPC4 Cluster
+    - ITSC HPC4 Cluster
     - GROMACS versions: - Container-based: 2023.2 (NGC) - Source build: 2024.1
     - CUDA 12.4.0
     - GCC 13.2.0
@@ -50,7 +50,7 @@ Create a SLURM job script with appropriate resource requests:
     #SBATCH --account=<account>
     #SBATCH --time=01:00:00
 
-#. Using NGC Container (Recommended for Single-Node Jobs)
+1. Using NGC Container (Recommended for Single-Node Jobs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - Add these commands to your SLURM script:
@@ -71,7 +71,7 @@ Create a SLURM job script with appropriate resource requests:
 
     NGC container provides superior performance for single-node jobs
 
-#. Building from Source with Spack (For Multi-Node Jobs)
+2. Building from Source with Spack (For Multi-Node Jobs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - Set up Spack environment:
@@ -118,28 +118,34 @@ Key findings:
 
 .. warning::
 
-    Always benchmark your specific simulation setup to determine optimal resource allocation
+    Always benchmark your specific simulation setup to determine optimal resource
+    allocation
 
 Root Cause
 ----------
 
-GROMACS performance depends heavily on build configuration and runtime parameters. NGC containers are pre-optimized for
-single-node performance, while source builds provide flexibility needed for multi-node runs.
+GROMACS performance depends heavily on build configuration and runtime parameters. NGC
+containers are pre-optimized for single-node performance, while source builds provide
+flexibility needed for multi-node runs.
 
 References
 ----------
 
-- NVIDIA NGC GROMACS Container: https://catalog.ngc.nvidia.com/orgs/hpc/containers/gromacs
+- NVIDIA NGC GROMACS Container:
+  https://catalog.ngc.nvidia.com/orgs/hpc/containers/gromacs
 - GROMACS Documentation: http://manual.gromacs.org/
 - Spack Documentation: https://spack.readthedocs.io/
 
-.. rst-class:: footer
+----
 
-    **HPC Support Team**
-      | ITSO, HKUST
-      | Email: cchelp@ust.hk
-      | Web: https://itso.hkust.edu.hk/
+.. container::
+    :name: footer
 
-    **Article Info**
-      | Issued: 2024-12-06
-      | Issued by: chtaihei@ust.hk
+      **HPC Support Team**
+        | ITSC, HKUST
+        | Email: cchelp@ust.hk
+        | Web: https://itsc.ust.hk
+
+      **Article Info**
+        | Issued: 2024-12-06
+        | Issued by: chtaihei@ust.hk

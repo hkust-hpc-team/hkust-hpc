@@ -1,11 +1,12 @@
 Networking
 ==========
 
-Network configuration is critical for HPC cluster performance. Proper setup, tuning, and monitoring ensure optimal
-communication between nodes.
+Network configuration is critical for HPC cluster performance. Proper setup, tuning, and
+monitoring ensure optimal communication between nodes.
 
-**Consistency is Key**: All measurements across message sizes should show smooth performance curves. Irregular patterns
-typically indicate configuration problems with the network or system.
+**Consistency is Key**: All measurements across message sizes should show smooth
+performance curves. Irregular patterns typically indicate configuration problems with
+the network or system.
 
 Benchmarks
 ----------

@@ -6,7 +6,8 @@ How to Efficiently Remove Large Number of Files
     :keywords: file deletion, parallel, fd, xargs, rm, nfs
     :author: kftse <kftse@ust.hk>
 
-.. rst-class:: header
+.. container::
+    :name: header
 
     | Last updated: 2024-12-13
     | *Solution under review*
@@ -20,8 +21,8 @@ Environment
 Issue
 -----
 
-    When dealing with large directories containing numerous files or subdirectories, standard removal commands like `rm
-    -rf` or `conda env remove` can be extremely slow.
+    When dealing with large directories containing numerous files or subdirectories,
+    standard removal commands like `rm -rf` or `conda env remove` can be extremely slow.
 
     This is particularly noticeable when
 
@@ -41,8 +42,8 @@ Use parallel file deletion to significantly speed up the removal process
 
 .. note::
 
-    For Ubuntu systems, the command is ``fdfind`` instead of ``fd``. You may alias ``fdfind`` to ``fd`` for
-    compatibility if needed.
+    For Ubuntu systems, the command is ``fdfind`` instead of ``fd``. You may alias
+    ``fdfind`` to ``fd`` for compatibility if needed.
 
 Command Details
 ~~~~~~~~~~~~~~~
@@ -66,26 +67,27 @@ Command Details
 
 .. note::
 
-    Running deletion in parallel can significantly impact I/O performance. Consider running during off-peak hours for
-    large deletions.
+    Running deletion in parallel can significantly impact I/O performance. Consider
+    running during off-peak hours for large deletions.
 
 .. warning::
 
-    Double-check the target directory path before execution - this operation cannot be undone.
+    Double-check the target directory path before execution - this operation cannot be
+    undone.
 
 Root Cause
 ----------
 
-Sequential file deletion becomes inefficient when dealing with large numbers of files. There are several contributing
-factors:
+Sequential file deletion becomes inefficient when dealing with large numbers of files.
+There are several contributing factors:
 
 - File system metadata updates for each deletion
 - Single-threaded operation in standard removal commands
 - Directory entry updates
 - Inode management overhead
 
-By parallelizing the deletion process and using efficient file finding, we can significantly reduce the total time
-required for bulk file removal.
+By parallelizing the deletion process and using efficient file finding, we can
+significantly reduce the total time required for bulk file removal.
 
 References
 ----------
@@ -94,12 +96,15 @@ References
 - ``fd`` Github Repository: https://github.com/sharkdp/fd
 - ``xargs`` help or manual: ``xargs --help`` or ``man xargs``
 
-.. rst-class:: footer
+----
+
+.. container::
+    :name: footer
 
     **HPC Support Team**
-      | ITSO, HKUST
+      | ITSC, HKUST
       | Email: cchelp@ust.hk
-      | Web: https://itso.hkust.edu.hk/
+      | Web: https://itsc.ust.hk
 
     **Article Info**
       | Issued: 2024-12-13

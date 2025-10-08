@@ -6,7 +6,7 @@ How to Reset VS Code Remote Connections
     :keywords: vscode, remote-ssh, remote-tunnel, connection, troubleshooting
     :author: kftse <kftse@ust.hk>
 
-.. rst-class:: header
+.. container:: header
 
     | Last updated: 2025-01-07
     | *Solution under review*
@@ -48,14 +48,14 @@ Quick Clean-up
     You must terminate VS Code processes on all servers sharing the same ``$HOME``
     directory.
 
-#. Terminate all VS Code server processes on the remote system
+1. Terminate all VS Code server processes on the remote system
 
        .. code-block:: bash
 
            pgrep -u $USER -f '(code|node)\s' | xargs -r -t -i kill {}
 
-#. Close VS Code on your local machine
-#. Attempt to reestablish connection on remote as usual.
+2. Close VS Code on your local machine
+3. Attempt to reestablish connection on remote as usual.
 
 .. hint::
 
@@ -86,14 +86,14 @@ If the quick solution doesn't resolve the issue, follow these steps
 
     You will need to re-establish tunnels from scratch after following these steps.
 
-#. Terminate all VS Code server processes on the remote system
-#. Remove all VS Code configuration directories
+1. Terminate all VS Code server processes on the remote system
+2. Remove all VS Code configuration directories
 
        .. code-block:: bash
 
            rm -rf ~/.vscode*
 
-#. Re-create tunnels using this best practice command
+3. Re-create tunnels using this best practice command
 
        .. code-block:: bash
 
@@ -104,7 +104,7 @@ If the quick solution doesn't resolve the issue, follow these steps
              --server-data-dir ~/.vscode-server/vscode-$(hostname)/server-data \
              --extensions-dir ~/.vscode-server/vscode-$(hostname)/server-data/extensions
 
-#. Attempt to reestablish connection on remote as usual.
+4. Attempt to reestablish connection on remote as usual.
 
 Root Cause
 ----------
@@ -115,12 +115,14 @@ connections fail. These remnants can interfere with new connection attempts.
 It is also a known bug that updating VS Code can cause connection issues due to version
 mismatch between local and remote instances.
 
-.. rst-class:: footer
+----
+
+.. container:: footer
 
     **HPC Support Team**
-      | ITSO, HKUST
+      | ITSC, HKUST
       | Email: cchelp@ust.hk
-      | Web: https://itso.hkust.edu.hk/
+      | Web: https://itsc.ust.hk
 
     **Article Info**
       | Issued: 2025-01-07
