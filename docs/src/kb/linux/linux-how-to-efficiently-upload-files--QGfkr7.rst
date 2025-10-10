@@ -64,7 +64,7 @@ Basic Usage
 
     .. code-block:: shell-session
 
-        $ fpsync -n 8 -v -x -o "-a" ~/local_directory username@superpod.ust:~/remote_directory
+        $ fpsync -n 8 -v -x -o "-a" ~/local_directory username@[hpc_hostname]:~/remote_directory
 
     Options Explained:
         - ``-n 8``: Use 8 parallel transfer processes
