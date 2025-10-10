@@ -34,7 +34,7 @@ Resolution
 
     Start an interactive container session using the following command:
 
-    .. code-block:: bash
+    .. code-block:: console
 
         $ srun --account=[YOUR_ACCOUNT] \
             --partition=normal \
