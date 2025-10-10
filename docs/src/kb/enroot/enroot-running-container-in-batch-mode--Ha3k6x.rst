@@ -38,60 +38,57 @@ Resolution
     For detailed instructions on running containers interactively, see:
     :doc:`enroot-running-interactive-container-se-L58_Wq`
 
-#. Batch Job with Custom Container
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#. **Batch Job with Custom Container**
 
-If you need to use a customized container (created during interactive testing), save it first and then use it in batch
-mode:
+   If you need to use a customized container (created during interactive testing), save it first and then use it in batch mode:
 
-.. code-block:: bash
-    :caption: custom_container_job.sh
+   .. code-block:: bash
+       :caption: custom_container_job.sh
 
-    #!/bin/bash
-    #SBATCH --account=[YOUR_ACCOUNT]
-    #SBATCH --partition=normal
-    #SBATCH --job-name=custom_container
-    #SBATCH --nodes=1
-    #SBATCH --ntasks-per-node=1
-    #SBATCH --gpus-per-node=1
-    #SBATCH --cpus-per-task=28
-    #SBATCH --time=24:00:00
-    #SBATCH --output=%x-%j.out
-    #SBATCH --error=%x-%j.err
+       #!/bin/bash
+       #SBATCH --account=[YOUR_ACCOUNT]
+       #SBATCH --partition=normal
+       #SBATCH --job-name=custom_container
+       #SBATCH --nodes=1
+       #SBATCH --ntasks-per-node=1
+       #SBATCH --gpus-per-node=1
+       #SBATCH --cpus-per-task=28
+       #SBATCH --time=24:00:00
+       #SBATCH --output=%x-%j.out
+       #SBATCH --error=%x-%j.err
 
-    # Use your custom container
-    srun --container-writable \
-        --container-remap-root \
-        --no-container-mount-home \
-        --container-image $HOME/containers/my-custom-container.sqsh \
-         python3 ...
+       # Use your custom container
+       srun --container-writable \
+           --container-remap-root \
+           --no-container-mount-home \
+           --container-image $HOME/containers/my-custom-container.sqsh \
+            python3 ...
 
-#. Multi-Node Container Jobs
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#. **Multi-Node Container Jobs**
 
-For parallel applications that span multiple nodes:
+   For parallel applications that span multiple nodes:
 
-.. code-block:: bash
-    :caption: multinode_container_job.sh
+   .. code-block:: bash
+       :caption: multinode_container_job.sh
 
-    #!/bin/bash
-    #SBATCH --account=[YOUR_ACCOUNT]
-    #SBATCH --partition=large
-    #SBATCH --job-name=multinode_container
-    #SBATCH --nodes=4
-    #SBATCH --ntasks-per-node=1
-    #SBATCH --gpus-per-node=8
-    #SBATCH --cpus-per-task=224
-    #SBATCH --time=24:00:00
-    #SBATCH --output=%x-%j.out
-    #SBATCH --error=%x-%j.err
+       #!/bin/bash
+       #SBATCH --account=[YOUR_ACCOUNT]
+       #SBATCH --partition=large
+       #SBATCH --job-name=multinode_container
+       #SBATCH --nodes=4
+       #SBATCH --ntasks-per-node=1
+       #SBATCH --gpus-per-node=8
+       #SBATCH --cpus-per-task=224
+       #SBATCH --time=24:00:00
+       #SBATCH --output=%x-%j.out
+       #SBATCH --error=%x-%j.err
 
-    # Use your custom container
-    srun --container-writable \
-        --container-remap-root \
-        --no-container-mount-home \
-        --container-image $HOME/containers/my-custom-container.sqsh \
-         python3 ...
+       # Use your custom container
+       srun --container-writable \
+           --container-remap-root \
+           --no-container-mount-home \
+           --container-image $HOME/containers/my-custom-container.sqsh \
+            python3 ...
 
 Best Practices
 ~~~~~~~~~~~~~~
