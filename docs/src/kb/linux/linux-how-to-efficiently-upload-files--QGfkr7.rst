@@ -58,7 +58,7 @@ Basic Usage
 
     .. code-block:: shell-session
 
-        $ fpsync -n 8 ~/local_directory username@superpod.ust:~/remote_directory
+        $ fpsync -n 8 ~/local_directory username@[hpc_hostname]:~/remote_directory
 
 #. Transfer with specific options:
 
