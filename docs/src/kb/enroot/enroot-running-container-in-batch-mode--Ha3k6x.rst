@@ -40,7 +40,8 @@ Resolution
 
 #. **Batch Job with Custom Container**
 
-   If you need to use a customized container (created during interactive testing), save it first and then use it in batch mode:
+   If you need to use a customized container (created during interactive testing),
+   save it first and then use it in batch mode:
 
    .. code-block:: bash
        :caption: custom_container_job.sh

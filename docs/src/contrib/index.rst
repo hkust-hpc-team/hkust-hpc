@@ -57,20 +57,24 @@ We recommend using VS Code for editing the documentation. The repository include
 The following extensions are recommended and align with our pre-commit hooks:
 
 - **Python**
+
   - ``ms-python.python``: Core Python support.
   - ``ms-python.vscode-pylance``: Powerful language server for Python.
   - ``charliermarsh.ruff``: Integrates the Ruff linter and formatter.
 
 - **reStructuredText**
+
   - ``lextudio.restructuredtext``: Syntax highlighting and snippets.
   - ``swyddfa.esbonio``: Live preview and language server for Sphinx projects.
 
 - **Other Languages**
+
   - ``esbenp.prettier-vscode``: For formatting YAML and Markdown files.
   - ``redhat.vscode-yaml``: Comprehensive YAML language support.
   - ``tamasfe.even-better-toml``: Enhanced TOML file support.
 
 - **General Development**
+
   - ``aaron-bond.better-comments``: Improve comments readability.
   - ``EditorConfig.EditorConfig``: Enforces consistent coding styles.
   - ``eamodio.gitlens``: Supercharges Git capabilities within VS Code.

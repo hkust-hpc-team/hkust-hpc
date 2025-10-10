@@ -28,84 +28,88 @@ Issue
 Resolution
 ----------
 
-Use ``sshfs`` to mount remote directory locally, then use ``fpsync`` for parallel downloads.
+The recommended method is to use ``sshfs`` to mount the remote cluster directory locally, and then use ``fpsync`` to perform a parallel download. This approach is efficient, especially for datasets with many small files.
 
-Install Required Packages
-~~~~~~~~~~~~~~~~~~~~~~~~~
+#. **Install Required Packages**
 
-#. Install ``sshfs`` and ``fpart``:
+   Install ``sshfs`` for mounting and ``fpart`` (which includes ``fpsync``) for parallel file transfer.
 
-.. code-block:: shell-session
+   .. code-block:: shell-session
 
-    # Ubuntu/Debian:
-    $ sudo apt install sshfs fpart
+       # Ubuntu/Debian:
+       $ sudo apt install sshfs fpart
 
-    # macOS:
-    $ brew install sshfs fpart
+       # macOS (using Homebrew):
+       $ brew install sshfs fpart
 
-    # CentOS/RHEL:
-    $ sudo dnf install fuse-sshfs fpart
+       # CentOS/RHEL:
+       $ sudo dnf install fuse-sshfs fpart
 
-Mount Remote Directory
-~~~~~~~~~~~~~~~~~~~~~~
+#. **Mount the Remote Directory**
 
-#. Create local mount point:
+   First, create a local directory that will serve as the mount point. Then, use `sshfs` to mount the remote directory from the cluster.
 
-.. code-block:: shell-session
+   Create a local mount point:
 
-    $ mkdir -p ~/cluster_data
+   .. code-block:: shell-session
 
-#. Mount remote directory:
+       $ mkdir -p ~/cluster_data
 
-.. code-block:: shell-session
+   Mount the remote directory:
 
-    $ sshfs username@hpc.ust.hk:/path/to/dataset ~/cluster_data
+   .. code-block:: shell-session
 
-Download Using fpsync
-~~~~~~~~~~~~~~~~~~~~~
+       $ sshfs [username]@[hpc_hostname]:/path/to/remote/dataset ~/cluster_data
 
-#. Create local destination directory:
+#. **Download Files Using fpsync**
 
-.. code-block:: shell-session
+   Once the remote directory is mounted, you can treat it like a local directory. Use `fpsync` to copy the files in parallel, which significantly speeds up the transfer.
 
-    $ mkdir -p ~/local_dataset
+   Create a local destination directory for your dataset:
 
-#. Transfer files using parallel processes:
+   .. code-block:: shell-session
 
-.. code-block:: shell-session
+       $ mkdir -p ~/local_dataset
 
-    $ fpsync -t $HOME/.fpsync -n 8 -vv ~/cluster_data/ ~/local_dataset/
+   Transfer files using 8 parallel processes. You can adjust the number with the ``-n`` option.
 
-#. Unmount after transfer:
+   .. code-block:: shell-session
 
-.. code-block:: shell-session
+       $ fpsync -t $HOME/.fpsync -n 8 -vv ~/cluster_data/ ~/local_dataset/
 
-    $ fusermount -u ~/cluster_data    # Linux
-    $ umount ~/cluster_data          # macOS
+#. **Unmount the Directory**
 
-.. note::
+   After the transfer is complete, unmount the directory to close the connection.
 
-    - Choose appropriate number of parallel processes (``-n``) based on your system
-    - Verify transfer completion before unmounting
+   .. code-block:: shell-session
 
-.. warning::
+       # For Linux
+       $ fusermount -u ~/cluster_data
 
-    - Ensure sufficient local disk space before starting transfer
-    - Do not interrupt transfer process to avoid incomplete files
-    - Large parallel transfers may impact system performance
+       # For macOS
+       $ umount ~/cluster_data
+
+   .. note::
+      - Choose an appropriate number of parallel processes (``-n``) based on your local machine's capabilities and network conditions.
+      - Always verify that the transfer has completed successfully before unmounting or deleting source files.
+
+   .. warning::
+      - Ensure you have sufficient local disk space before starting the transfer.
+      - Do not interrupt the `fpsync` process, as this can result in an incomplete or corrupted dataset.
+      - A high number of parallel transfers may impact the performance of your local machine.
 
 Root Cause
 ----------
 
-Outbound SSH is not permitted. Use ``sshfs`` to mount a local directory using an inbound SSH connection to HPC cluster.
+Direct outbound SSH connections from the cluster nodes are often restricted for security reasons. Using ``sshfs`` circumvents this by establishing an inbound SSH connection from your local machine to mount the remote filesystem.
 
-For parallel transfer, use fpsync to efficiently download files.
+Standard tools like `scp` or `rsync` transfer files serially. For datasets with thousands of small files, the overhead of establishing a connection for each file makes the process very slow. `fpsync` addresses this by using multiple parallel `rsync` or `cpio` workers to transfer files simultaneously, maximizing throughput.
 
 References
 ----------
 
 - `SSHFS Documentation <https://github.com/libfuse/sshfs>`_
-- `fpsync Documentation <https://github.com/martymac/fpart>`_
+- `fpart/fpsync Documentation <https://github.com/martymac/fpart>`_
 
 .. rst-class:: footer
 

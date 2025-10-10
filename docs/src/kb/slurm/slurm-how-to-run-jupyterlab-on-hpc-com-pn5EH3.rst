@@ -31,59 +31,55 @@ Resolution
 
 The process involves four main steps:
 
-#. Requesting Compute Resources
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#. **Requesting Compute Resources**
 
-Request an interactive session on a compute node:
+    Request an interactive session on a compute node:
 
-.. code-block:: bash
+    .. code-block:: bash
 
-    srun --account=<account> --partition=<partition> --nodes=1 \
-         --ntasks-per-node=1 --cpus-per-task=16 --time=01:00:00 --pty bash
+        srun --account=<account> --partition=<partition> --nodes=1 \
+            --ntasks-per-node=1 --cpus-per-task=16 --time=01:00:00 --pty bash
 
-.. note::
+    .. note::
 
-    Interactive jobs have a maximum walltime of 4 hours on HPC4 and 2 hours on SuperPOD.
+        Interactive jobs have a maximum walltime of 4 hours on HPC4 and 2 hours on SuperPOD.
 
-#. Starting JupyterLab Server
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#. **Starting JupyterLab Server**
 
-After allocation is granted, activate your environment and launch JupyterLab:
+    After allocation is granted, activate your environment and launch JupyterLab:
 
-.. code-block:: bash
+    .. code-block:: bash
 
-    conda activate myenv
-    jupyter-lab --no-browser --ip=0.0.0.0 --port=8888
+        conda activate myenv
+        jupyter-lab --no-browser --ip=0.0.0.0 --port=8888
 
-.. note::
+    .. note::
 
-    Save the token or URL from the output. It will be needed for authentication.
+        Save the token or URL from the output. It will be needed for authentication.
 
-#. Creating SSH Tunnel
-~~~~~~~~~~~~~~~~~~~~~~
+#. **Setting Up SSH Tunnel**
 
-On your local machine, establish an SSH tunnel:
+    On your local machine, establish an SSH tunnel:
 
-.. code-block:: bash
+    .. code-block:: bash
 
-    ssh -N -L 8888:<compute_node>:8888 username@<hpcname>.ust.hk
+        ssh -N -L 8888:<compute_node>:8888 username@<hpcname>.ust.hk
 
-.. note::
+    .. note::
 
-    - Replace <hpcname> with your target HPC cluster name (e.g., hpc3, hpc4, superpod)
-    - Replace <compute_node> with the allocated compute node name from step 1
-    - Replace username with your HKUST HPC Cluster username
+        - Replace <hpcname> with your target HPC cluster name (e.g., hpc3, hpc4, superpod)
+        - Replace <compute_node> with the allocated compute node name from step 1
+        - Replace username with your HKUST HPC Cluster username
 
-#. Accessing JupyterLab Interface
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#. **Accessing JupyterLab Interface**
 
-- Open a web browser on your local machine
-- Navigate to http://127.0.0.1:8888
-- Enter the token from step 2 if prompted
+    - Open a web browser on your local machine
+    - Navigate to http://127.0.0.1:8888
+    - Enter the token from step 2 if prompted
 
-.. warning::
+    .. warning::
 
-    Choose a unique port number if 8888 is already in use
+        Choose a unique port number if 8888 is already in use
 
 Cleanup
 -------
