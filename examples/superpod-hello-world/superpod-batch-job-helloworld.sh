@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -euo pipefail
 ## TODO: Update account name
 #SBATCH --account=itscspod
 
