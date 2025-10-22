@@ -128,7 +128,7 @@ After successfully running this hello world example, you can:
 
 ## Troubleshooting
 
-- **Job stays in queue**: This is expected behavior when the cluster is busy. Your job will start automatically when resources become available. Check  your job priority with `squeue -u $USER`
+- **Job stays in queue**: This is expected behavior when the cluster is busy. Your job will start automatically when resources become available. Check your job priority with `squeue -u $USER`
 - **"Invalid account" error**: Make sure you've updated the account name to your actual SLURM account
 - **Permission denied**: Make sure the scripts are executable with `chmod +x *.sh`
 
