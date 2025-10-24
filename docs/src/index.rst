@@ -19,6 +19,7 @@ Table of Contents
     kb/index
     sysadmin/index
     contrib/index
+    examples/index
 
 Building the Documentation
 --------------------------
