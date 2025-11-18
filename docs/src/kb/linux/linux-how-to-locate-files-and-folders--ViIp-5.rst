@@ -20,7 +20,7 @@ Environment
 Issue
 -----
 
-    - Missing files or folders on Linux systems
+    - Locate files or folders on Linux systems
     - Find accidentally moved files or directories
     - Need to find recently modified files (e.g., files modified today or yesterday)
 
@@ -116,7 +116,7 @@ Find files modified within a specific time period:
 .. note::
     - ``-mtime -1`` means modified less than 1 day ago (within last 24 hours)
     - ``-mtime +30`` means modified more than 30 days ago
-    - ``-mtime 7`` means modified exactly 7 days ago
+    - ``-mtime 7`` means modified between 7 and 8 days ago
 
 For more precise time control (minutes):
 
@@ -168,8 +168,8 @@ Exclude specific directories:
 
 .. code-block:: shell-session
 
-    $ # Exclude .git and node_modules directories
-    $ find . -type f -name "*report*" -not -path "*/node_modules/*" -not -path "*/.git/*"
+    $ # Exclude .git and node_modules directories. -prune is more efficient.
+    $ find . \( -path './.git' -o -path './node_modules' \) -prune -o -type f -name "*report*"
     ./src/report_generator.py
     ./docs/report_template.md
 
@@ -183,8 +183,8 @@ Common scenarios for locating files:
     $ # Find all files modified today in home directory
     $ find ~ -type f -mtime -1
     
-    $ # Find a file you worked on yesterday
-    $ find ~ -type f -mtime -2 -name "*presentation*"
+    $ # Find a file you worked on yesterday (more precise)
+    $ find ~ -type f -daystart -mtime 1 -name "*presentation*"
     
     $ # Find all Excel files in home directory
     $ find ~ -type f -name "*.xlsx" -o -name "*.xls"
