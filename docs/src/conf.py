@@ -4,9 +4,9 @@ from docutils import nodes
 from docutils.parsers.rst import roles
 
 
-def strike_role(name, rawtext, text, lineno, inliner, options={}, content=[]):
+def strike_role(_name, rawtext, text, _lineno, _inliner, options={}, content=[]):
     """Custom role for strikethrough text."""
-    node = nodes.inline(rawtext, text, **options)
+    node = nodes.inline(rawtext, nodes.Text(text), **options)
     node["classes"].append("strike")
     return [node], []
 
