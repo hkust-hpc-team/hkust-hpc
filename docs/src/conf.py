@@ -1,5 +1,27 @@
 """Configuration file for the Sphinx documentation builder."""
 
+from docutils import nodes
+from docutils.parsers.rst import roles
+
+
+def strike_role(_name, rawtext, text, _lineno, _inliner, options={}, content=[]):
+    """Custom role for strikethrough text."""
+    node = nodes.inline(rawtext, nodes.Text(text), **options)
+    node["classes"].append("strike")
+    return [node], []
+
+
+def setup(app):
+    """Setup function for Sphinx."""
+    roles.register_local_role("strike", strike_role)
+    app.add_css_file("custom.css")
+    return {
+        "version": "0.1",
+        "parallel_read_safe": True,
+        "parallel_write_safe": True,
+    }
+
+
 # -- Project information
 
 project = "HPC Handbook"
@@ -29,6 +51,7 @@ intersphinx_disabled_domains = ["std"]
 
 html_theme = "sphinx_rtd_theme"
 html_last_updated_fmt = "%b %d, %Y"
+html_static_path = ["_static"]
 
 # -- Options for EPUB output
 epub_show_urls = "footnote"
