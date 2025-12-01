@@ -503,8 +503,43 @@ Libraries compiled by Intel compilers are optimized for latest Intel and AMD CPU
    
    Deprecated package are marked as :strike:`versions @edge` in the ``edge`` Spack variant, deprecated packages will be removed in the next production variant.
 
+
 Pre-built HPC Applications
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+These applications are scientific software that is built for general use. They may have both serial and parallel versions depending on their nature.
+
+.. list-table::
+   :widths: 20 35 15 22 8
+   :header-rows: 1
+
+   * - Software
+     - Description
+     - Version
+     - Compiler / MPI
+     - GPU
+   * - lammps
+     - Large-scale Atomic/Molecular Massively Parallel Simulator
+     - **20250204**
+     - | - Intel OneAPI 2025
+       | - Intel MPI 2021.14
+     - ✓
+   * - mpas-model
+     - Model for Prediction Across Scales (Atmosphere/Ocean)
+     - | 7.3
+       | 8.0.2
+       | **8.1.0**
+     - | - Intel OneAPI 2025
+       | - Intel MPI 2021.14
+     - 
+   * - openfoam-org
+     - OpenFOAM CFD Toolbox (org version)
+     - | 11
+       | **12**
+     - | - Intel OneAPI 2025
+       | - Intel MPI 2021.14
+     - 
+
 
 MPI-enabled Libraries
 ^^^^^^^^^^^^^^^^^^^^^
