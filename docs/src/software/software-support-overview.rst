@@ -281,7 +281,7 @@ Here is a list of maintained C/C++/Fortran compilers for building high-performan
 .. note::
    **Bold** versions are the default versions loaded when using ``module load`` without specifying a version number.
    
-   Deprecated package are marked as :strike:`versions @edge` in the ``edge`` Spack variant, deprecated packages will be removed in the next production variant.
+   Deprecated packages are marked as :strike:`versions @edge` in the ``edge`` Spack variant, deprecated packages will be removed in the next production variant.
 
 .. list-table::
    :widths: 20 20 15 15 30
@@ -292,7 +292,7 @@ Here is a list of maintained C/C++/Fortran compilers for building high-performan
      - Library Support
      - MPI Support
      - Compiler Command
-   * - **AMD aocc**
+   * - **AMD AOCC**
      - | :strike:`4.2.0 @edge`
        | **5.0.0**
      - ✓
@@ -503,7 +503,7 @@ Libraries compiled by Intel compilers are optimized for latest Intel and AMD CPU
 .. note::
    **Bold** versions are the default versions loaded when using ``module load`` without specifying a version number.
    
-   Deprecated package are marked as :strike:`versions @edge` in the ``edge`` Spack variant, deprecated packages will be removed in the next production variant.
+   Deprecated packages are marked as :strike:`versions @edge` in the ``edge`` Spack variant, deprecated packages will be removed in the next production variant.
 
 
 Pre-built HPC Applications
