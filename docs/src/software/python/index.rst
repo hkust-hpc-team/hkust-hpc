@@ -11,10 +11,17 @@ multiple versions, package managers, and development tools.
 Python Quick Start
 --------------------
 
+.. note::
+
+  For the value of ``${SPACK_ROOT}``, Please refer to :ref:`Spack Instances <spack-instances>` for the installation path.
+
 .. code-block:: bash
 
+   # Modify this path accordingly
+   export SPACK_ROOT="/path/to/spack"
+
    # Activate Spack environment
-   source /opt/shared/.spack-edge/dist/bin/setup-envs.sh -y
+   source "${SPACK_ROOT}/dist/bin/setup-env.sh" -y
    
    # Check available Python versions
    module avail python
@@ -34,10 +41,17 @@ Python Quick Start
 Anaconda Quick Start
 ----------------------
 
+.. note::
+
+  For the value of ``${SPACK_ROOT}``, Please refer to :ref:`Spack Instances <spack-instances>` for the installation path.
+
 .. code-block:: bash
 
+   # Modify this path accordingly
+   export SPACK_ROOT="/path/to/spack"
+
    # Activate Spack environment
-   source /opt/shared/.spack-edge/dist/bin/setup-envs.sh -y
+   source "${SPACK_ROOT}/dist/bin/setup-env.sh" -y
    
    # Load Anaconda
    module load anaconda3
