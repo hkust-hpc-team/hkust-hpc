@@ -86,11 +86,11 @@ To activate the **alternative instance**, source its setup script:
 .. note::
    The first-time activation includes a bootstrapping process that may take a few minutes. Subsequent activations will be much faster.
 
-When activating an alternative Spack instance for the first time, you'll see similar output to below bootstraping the Spack instance.
+When activating an alternative Spack instance for the first time, you'll see similar output to below bootstrapping the Spack instance.
 
 .. note::
 
-   It is **normal to have some warning during bootstrap** shown below, please ignore these warning as it does not affect the bootstrap process.
+   It is **normal to have some warnings during bootstrap** shown below, please ignore these warnings as they do not affect the bootstrap process.
 
    .. code-block:: console
 
@@ -300,7 +300,7 @@ When submitting batch jobs to SLURM, a typical workflow is to
 
 1. activate the Spack instance non-interactively
 2. load the required modules
-3. continue your program setting and run your program
+3. continue your program settings and run your program
 
 This example demonstrates the hierarchical module system: first load the compiler, then the MPI implementation, and finally any MPI-dependent libraries like NetCDF.
 
