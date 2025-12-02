@@ -1082,5 +1082,3 @@ Command-line tools for cloud services and package management.
      - Fortran Package Management
      - **0.10.0**
      - 
-
-**Bold** denotes the default version.
