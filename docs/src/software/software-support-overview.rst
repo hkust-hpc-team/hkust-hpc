@@ -1,16 +1,16 @@
 Software Support Overview
 =========================
 
-The HKUST HPC clusters provide a wide range of pre-installed software modules. We utilize **Spack** for package management and **Lmod** for environment module management.
+The HKUST HPC clusters provide a comprehensive suite of pre-installed software modules. We utilize **Spack** for package management and **Lmod** for environment module management, ensuring a flexible and reproducible research environment.
 
-Our software stack is organized in a hierarchy:
+Our software stack is organized into a three-level hierarchy:
 
-1.  **Core (Root)**: Compilers, Interpreters, Utilities, and GPU Drivers (Listed below).
-2.  **Compiler Dependent**: Libraries and tools built with a specific compiler.
-3.  **MPI Dependent**: Parallel applications built with a specific Compiler and MPI combination.
+1.  **Core (Root)**: Compilers, Interpreters (Python, R), Utilities, and GPU Drivers.
+2.  **Compiler Dependent**: Libraries and tools built with a specific compiler (e.g., FFTW built with GCC).
+3.  **MPI Dependent**: Parallel applications built with a specific Compiler and MPI combination (e.g., HDF5 built with GCC and OpenMPI).
 
-Up-to-date software is available **through activating of an alternative Spack instance.**
-
+.. note::
+   Access to the latest software requires **activating the 'Edge' Spack instance**. See below for details.
 
 .. contents:: Table of Contents
    :local:
@@ -46,8 +46,11 @@ We maintain multiple Spack instances to provide different sets of software packa
      - 0.22.0 (May 2024)
      - 0.23.x (Mar 2025) with package backports
    * - **Status**
-     - Deprecating (Frozen)
+     - Deprecated (Frozen)
      - Semi-stable
+   * - **Spack Chaining**
+     - ✓
+     - ⚠ [1]_
    * - **Compatibility**
      - Standalone
      - Forward-compatible
@@ -58,6 +61,9 @@ We maintain multiple Spack instances to provide different sets of software packa
      - | HPC4: ``/opt/shared/.spack-edge``
        |
        | Superpod: ``/scratch/spack/2025``
+
+.. [1] Spack chaining may break when facing large, foundational package upgrades. We recommend using Lmod instead, or chain with the previous frozen release. If you require spack chaining in the edge instance, please contact HPC support so we can track your usage requirement.
+
 
 .. tip::
 
@@ -80,52 +86,65 @@ To activate the **alternative instance**, source its setup script:
 .. note::
    The first-time activation includes a bootstrapping process that may take a few minutes. Subsequent activations will be much faster.
 
-When activating an alternative Spack instance for the first time, you'll see output similar to:
+When activating an alternative Spack instance for the first time, you'll see similar output to below bootstraping the Spack instance.
 
-.. code-block:: console
+.. note::
 
-   [user@login2 ~]$ source /opt/shared/.spack-edge/dist/bin/setup-env.sh
+   It is **normal to have some warning during bootstrap** shown below, please ignore these warning as it does not affect the bootstrap process.
 
-   You are using non-default spack instances.
-   Please do not mix packages installed from different spack instances.
+   .. code-block:: console
 
-   This script will unload all other spack instances and modules automatically.
+      Warning: error detecting "msvc" ...
+      ==> Warning: The default behavior of tarfile extraction ...
+      ==> Warning: lib/libgfortran.so.5
+              libz.so.1 => not found
 
-   ==> Checking spack config and cache paths
+.. dropdown:: Example Activation Output
 
+  .. code-block:: console
 
-       Spack instance root: /opt/shared/.spack-edge
-       Shared apps and modules: /opt/shared/.spack-edge/dist
-       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-       Your spack config: /home/user/.spack-edge
-       Your spack apps: /home/user/.spack-edge
-       Tmpdir (TMPDIR and TMP): /tmp/user-XXXX
+    [user@login2 ~]$ source /opt/shared/.spack-edge/dist/bin/setup-env.sh
 
-   ==> Activate spack instance [edge]? [y/N] y
+    You are using non-default spack instances.
+    Please do not mix packages installed from different spack instances.
 
-   i=> You can use '-y' option to skip this confirmation next time.
+    This script will unload all other spack instances and modules automatically.
 
-   ==> First launch: bootstrapping spack [edge]
-       This may take a few minutes, please wait...
-   ==> First launch: bootstrapping spack [dev]
-       This may take a few minutes, please wait...
-   ==> Warning: error detecting "msvc" from prefix /opt/shared/.spack-dev/opt/spack/linux-rocky9-x86_64_v4/gcc-11.5.0.spack/intel-oneapi-compilers-2025.0.4-sn26au2eyxigpsati3gb5oxmtku6s5uo/compiler/2025.0/bin: [KeyError: 'cxx']
-   ==> Fetching https://ghcr.io/v2/spack/bootstrap-buildcache-v1/blobs/sha256:16f27dafb233a9aff14adff75112d0a8b2e03492f796f12101785c02950aa7f6
-   ==> Fetching https://ghcr.io/v2/spack/bootstrap-buildcache-v1/blobs/sha256:b76a4eaef54b24d0ea9b8dfa9392f7ab519f918ae7e1a8bb919539d9adeddbcb
-   ==> Installing "gcc-runtime@=10.2.1 build_system=generic arch=linux-centos7-x86_64 %gcc@=10.2.1" from a buildcache
-   ==> Warning: The default behavior of tarfile extraction has been changed to disallow common exploits (including CVE-2007-4559). By default, absolute/parent paths are disallowed and some mode bits are cleared. See https://access.redhat.com/articles/7004769 for more details.
-   ==> Warning: lib/libgfortran.so.5
-           libz.so.1 => not found
-   dependencies:
-   ==> Fetching https://ghcr.io/v2/spack/bootstrap-buildcache-v1/blobs/sha256:5367a0d038a87532fbbe373da31502bd32e399cc113343f403ebbc9d8ca7d552
-   ==> Fetching https://ghcr.io/v2/spack/bootstrap-buildcache-v1/blobs/sha256:79dfb7064e7993a97474c5f6b7560254fe19465a6c4cfc44569852e5a6ab542b
-   ==> Installing "patchelf@=0.17.2 build_system=autotools arch=linux-centos7-x86_64 %gcc@=10.2.1" from a buildcache
-   ==> Fetching https://ghcr.io/v2/spack/bootstrap-buildcache-v1/blobs/sha256:82ec278bef26c42303a2c2c888612c0d37babef615bc9a0003530e0b8b4d3d2c
-   ==> Fetching https://ghcr.io/v2/spack/bootstrap-buildcache-v1/blobs/sha256:0c5831932608e7b4084fc6ce60e2b67b77dab76e5515303a049d4d30cd772321
-   ==> Installing "clingo-bootstrap@=spack~docs+ipo+optimized+python+static_libstdcpp build_system=cmake build_type=Release generator=make patches=bebb819,ec99431 arch=linux-centos7-x86_64 %gcc@=10.2.1" from a buildcache
+    ==> Checking spack config and cache paths
 
 
-   ==> Spack [edge] environment is ready
+        Spack instance root: /opt/shared/.spack-edge
+        Shared apps and modules: /opt/shared/.spack-edge/dist
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        Your spack config: /home/user/.spack-edge
+        Your spack apps: /home/user/.spack-edge
+        Tmpdir (TMPDIR and TMP): /tmp/user-XXXX
+
+    ==> Activate spack instance [edge]? [y/N] y
+
+    i=> You can use '-y' option to skip this confirmation next time.
+
+    ==> First launch: bootstrapping spack [edge]
+        This may take a few minutes, please wait...
+    ==> First launch: bootstrapping spack [dev]
+        This may take a few minutes, please wait...
+    ==> Warning: error detecting "msvc" from prefix /opt/shared/.spack-dev/opt/spack/linux-rocky9-x86_64_v4/gcc-11.5.0.spack/intel-oneapi-compilers-2025.0.4-sn26au2eyxigpsati3gb5oxmtku6s5uo/compiler/2025.0/bin: [KeyError: 'cxx']
+    ==> Fetching https://ghcr.io/v2/spack/bootstrap-buildcache-v1/blobs/sha256:16f27dafb233a9aff14adff75112d0a8b2e03492f796f12101785c02950aa7f6
+    ==> Fetching https://ghcr.io/v2/spack/bootstrap-buildcache-v1/blobs/sha256:b76a4eaef54b24d0ea9b8dfa9392f7ab519f918ae7e1a8bb919539d9adeddbcb
+    ==> Installing "gcc-runtime@=10.2.1 build_system=generic arch=linux-centos7-x86_64 %gcc@=10.2.1" from a buildcache
+    ==> Warning: The default behavior of tarfile extraction has been changed to disallow common exploits (including CVE-2007-4559). By default, absolute/parent paths are disallowed and some mode bits are cleared. See https://access.redhat.com/articles/7004769 for more details.
+    ==> Warning: lib/libgfortran.so.5
+            libz.so.1 => not found
+    dependencies:
+    ==> Fetching https://ghcr.io/v2/spack/bootstrap-buildcache-v1/blobs/sha256:5367a0d038a87532fbbe373da31502bd32e399cc113343f403ebbc9d8ca7d552
+    ==> Fetching https://ghcr.io/v2/spack/bootstrap-buildcache-v1/blobs/sha256:79dfb7064e7993a97474c5f6b7560254fe19465a6c4cfc44569852e5a6ab542b
+    ==> Installing "patchelf@=0.17.2 build_system=autotools arch=linux-centos7-x86_64 %gcc@=10.2.1" from a buildcache
+    ==> Fetching https://ghcr.io/v2/spack/bootstrap-buildcache-v1/blobs/sha256:82ec278bef26c42303a2c2c888612c0d37babef615bc9a0003530e0b8b4d3d2c
+    ==> Fetching https://ghcr.io/v2/spack/bootstrap-buildcache-v1/blobs/sha256:0c5831932608e7b4084fc6ce60e2b67b77dab76e5515303a049d4d30cd772321
+    ==> Installing "clingo-bootstrap@=spack~docs+ipo+optimized+python+static_libstdcpp build_system=cmake build_type=Release generator=make patches=bebb819,ec99431 arch=linux-centos7-x86_64 %gcc@=10.2.1" from a buildcache
+
+
+    ==> Spack [edge] environment is ready
 
 For non-interactive shells (e.g., in batch scripts), use the ``-y`` flag to avoid prompts
 
@@ -318,9 +337,14 @@ Compiler Support
 
 Here is a list of maintained C/C++/Fortran compilers for building high-performance applications.
 
-.. caution::
+.. danger:: **Architecture Compatibility Warning**
 
-   Libraries built with AMD AOCC are only compatible with AMD CPU (zen4 architecture). **Do not use AOCC-built libraries on Intel CPUs** as it may lead to unexpected crashes.
+   Libraries built with the **AMD AOCC** compiler are strictly optimized for the **AMD Zen4** architecture.
+   
+   *   **Do not** load AOCC modules on Intel nodes.
+   *   **Do not** submit jobs using AOCC-compiled code to Intel partitions.
+   
+   Doing so will result in `Illegal Instruction` errors and immediate job failure.
 
 .. note::
    **Bold** versions are the default versions loaded when using ``module load`` without specifying a version number.
@@ -413,23 +437,23 @@ The following table shows tested compiler and MPI combinations available in the 
      - 
      - 
      - 
-   * - **Intel OneAPI 2025**
+   * - **Intel OneAPI 2025.x**
      - ✓
      - ✓
      - ✓
-   * - **Intel OneAPI 2024**
+   * - **Intel OneAPI 2024.x**
      - ✓
      - ✓
      - ✓
-   * - **Intel OneAPI 2023**
+   * - **Intel OneAPI 2023.x**
      - ✓
      - ✓
      - ✓
-   * - **Intel OneAPI 2022**
+   * - **Intel OneAPI 2022.x**
      - 
      - 
      - 
-   * - **Intel OneAPI 2021**
+   * - **Intel OneAPI 2021.x**
      - 
      - 
      - 
@@ -449,15 +473,15 @@ The following table shows tested compiler and MPI combinations available in the 
      - 
      - ✓
      - ✓
-   * - **GCC 14.2**
+   * - **GCC 14.x**
      - 
      - 
      - 
-   * - **GCC 13.3**
+   * - **GCC 13.x**
      - 
      - 
      - 
-   * - **GCC 12.4**
+   * - **GCC 12.x**
      - 
      - 
      - 
@@ -467,7 +491,9 @@ CUDA Support
 
 The following table shows which compilers have CUDA support enabled for GPU programming and their MPI compatibility when building packages via Spack.
 
-**[untested]** For compilers without Spack's native CUDA support (GCC, AOCC), directly loading CUDA Toolkit separately with ``module load cuda`` might work.
+.. warning::
+
+   **[NOT tested]** For compilers without Spack's native CUDA support (GCC, AOCC), directly loading CUDA Toolkit separately with ``module load cuda`` might work.
 
 .. list-table::
    :widths: 30 15 15 15 15
@@ -540,9 +566,14 @@ List of pre-built software and libraries
 
 Libraries compiled by Intel compilers are optimized for latest Intel and AMD CPUs, while those compiled by AOCC are optimized for AMD CPUs only.
 
-.. caution::
+.. danger:: **Architecture Compatibility Warning**
 
-   Libraries built with AMD AOCC are only compatible with AMD CPU (zen4 architecture). **Do not use AOCC-built libraries on Intel CPUs** as it may lead to unexpected crashes.
+   Libraries built with the **AMD AOCC** compiler are strictly optimized for the **AMD Zen4** architecture.
+   
+   *   **Do not** load AOCC modules on Intel nodes.
+   *   **Do not** submit jobs using AOCC-compiled code to Intel partitions.
+   
+   Doing so will result in `Illegal Instruction` errors and immediate job failure.
 
 .. note::
    **Bold** versions are the default versions loaded when using ``module load`` without specifying a version number.
