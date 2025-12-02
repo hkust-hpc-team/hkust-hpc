@@ -200,8 +200,14 @@ To load a specific software module, use the ``module`` command:
    # List available modules
    module avail
 
+   # Search for a specific module across all levels
+   module spider netcdf-c
+
+   # Get detailed information about a specific module
+   #module spider python/<version>-<hash>
+
    # Load a specific module (e.g., Python 3.12)
-   module load python/3.12.9
+   module load python/3.12
 
    # Unload a specific module
    module unload python
