@@ -550,8 +550,8 @@ Libraries compiled by Intel compilers are optimized for latest Intel and AMD CPU
    Deprecated packages are marked as :strike:`versions @edge` in the ``edge`` Spack variant, deprecated packages will be removed in the next production variant.
 
 
-Pre-built HPC Applications
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+HPC Applications
+^^^^^^^^^^^^^^^^
 
 These applications are scientific software that is built for general use. They may have both serial and parallel versions depending on their nature.
 
@@ -826,56 +826,6 @@ Runtime environments for various programming languages.
      - The Go Programming Language
      - **1.24.1**
      - 
-   * - **Dotnet Core SDK**
-     - .NET Core Software Development Kit
-     - **8.0.4**
-     - 
-   * - **Node.js**
-     - JavaScript runtime built on Chrome's V8
-     - **22.14.0**
-     - 
-   * - **OCaml**
-     - Functional programming language
-     - **5.2.1**
-     - 
-
-Scripting Languages
-"""""""""""""""""""
-
-High-level scripting and interpreted languages.
-
-.. list-table::
-   :widths: 25 40 20 15
-   :header-rows: 1
-
-   * - Software
-     - Description
-     - Version
-     - Docs
-   * - **Perl**
-     - Practical Extraction and Report Language
-     - **5.40.0**
-     - :doc:`Details <./perl/index>`
-   * - **Ruby**
-     - Dynamic, open source programming language
-     - **3.3.5**
-     - 
-   * - **Lua**
-     - Lightweight, multi-paradigm scripting language
-     - **5.4.6**
-     - 
-   * - **Tcl**
-     - Tool Command Language
-     - **8.6.12**
-     - 
-   * - **Bash**
-     - GNU Bourne Again Shell
-     - **5.2**
-     - 
-   * - **Tcsh**
-     - C Shell with file name completion
-     - **6.24.14**
-     - 
 
 Visualization & Media
 """""""""""""""""""""
@@ -910,6 +860,33 @@ Tools for graphics, visualization, and media processing.
        | **7.1**
      - 
 
+Libraries
+"""""""""
+
+Core system libraries and development tools.
+
+.. list-table::
+   :widths: 25 40 20 15
+   :header-rows: 1
+
+   * - Software
+     - Description
+     - Version
+     - Docs
+   * - **Jasper**
+     - JPEG-2000 codec library
+     - | 1.900.31
+       | **4.2.8**
+     - 
+   * - **libpng**
+     - PNG reference library
+     - **1.6.39**
+     - 
+   * - **libtirpc**
+     - Transport Independent RPC library
+     - **1.3.3**
+     - 
+
 Build Tools & Development
 """""""""""""""""""""""""
 
@@ -939,39 +916,15 @@ Tools for building, configuring, and managing software projects.
      - Small build system with a focus on speed
      - **1.12.1**
      - 
-   * - **Autotools**
-     - GNU Build System (Autoconf, Automake, Libtool)
-     - **master**
-     - 
    * - **Gmake**
      - GNU Make
      - **4.4.1**
      - 
-   * - **SCons**
-     - Software construction tool
-     - **4.7.0**
-     - 
-   * - **Bazel**
-     - Build and test tool (Google)
-     - **7.0.2**
-     - 
-   * - **Maven**
-     - Build automation tool for Java
-     - **3.9.8**
-     - 
-   * - **Gradle**
-     - Build automation tool for multi-language
-     - **8.10.2**
-     - 
-   * - **Ant**
-     - Java build tool
-     - **1.10.14**
-     - 
 
-Version Control
-"""""""""""""""
+Git Version Control
+"""""""""""""""""""
 
-Version control systems and related tools.
+Version control tools for managing code repositories and large files.
 
 .. list-table::
    :widths: 25 40 20 15
@@ -989,140 +942,231 @@ Version control systems and related tools.
      - Git Large File Storage
      - **3.5.1**
      - 
-   * - **Subversion**
-     - Centralized version control system
-     - **1.14.2**
-     - 
-   * - **Mercurial**
-     - Distributed version control system
-     - **6.7.3**
-     - 
-   * - **CVS**
-     - Concurrent Versions System
-     - **1.12.13**
-     - 
 
-Debugging & Profiling
-"""""""""""""""""""""
+Other Packages
+""""""""""""""
 
-Tools for debugging, testing, and code analysis.
+- **Scripting Languages**: High-level scripting and interpreted languages.
+- **Other Version Control Systems**: Alternative version control systems.
+- **Debugging & Profiling**: Tools for debugging, testing, and code analysis.
+- **Utilities & Tools**: General system utilities, editors, and productivity tools.
+- **Cloud CLI**: Command-line tools for cloud services.
+- **Package Managers**: Package management tools.
+- **Additional Build Tools**: Less commonly used build tools and Java toolchains.
+- **Additional Language Runtimes**: Additional programming language runtimes.
 
-.. list-table::
-   :widths: 25 40 20 15
-   :header-rows: 1
+.. dropdown:: Scripting Languages
 
-   * - Software
-     - Description
-     - Version
-     - Docs
-   * - **GDB**
-     - GNU Debugger
-     - **15.2**
-     - 
-   * - **GoogleTest**
-     - Google C++ Testing Framework
-     - **1.15.2**
-     - 
+  .. list-table::
+    :widths: 25 40 20 15
+    :header-rows: 1
 
-Libraries
-"""""""""
+    * - Software
+      - Description
+      - Version
+      - Docs
+    * - **Perl**
+      - Practical Extraction and Report Language
+      - **5.40.0**
+      - :doc:`Details <./perl/index>`
+    * - **Ruby**
+      - Dynamic, open source programming language
+      - **3.3.5**
+      - 
+    * - **Lua**
+      - Lightweight, multi-paradigm scripting language
+      - **5.4.6**
+      - 
+    * - **Tcl**
+      - Tool Command Language
+      - **8.6.12**
+      - 
+    * - **Bash**
+      - GNU Bourne Again Shell
+      - **5.2**
+      - 
+    * - **Tcsh**
+      - C Shell with file name completion
+      - **6.24.14**
+      - 
 
-Core system libraries and development tools.
+.. dropdown:: Other Version Control Systems
 
-.. list-table::
-   :widths: 25 40 20 15
-   :header-rows: 1
+  .. list-table::
+    :widths: 25 40 20 15
+    :header-rows: 1
 
-   * - Software
-     - Description
-     - Version
-     - Docs
-   * - **Jasper**
-     - JPEG-2000 codec library
-     - | 1.900.31
-       | **4.2.8**
-     - 
-   * - **libpng**
-     - PNG reference library
-     - **1.6.39**
-     - 
-   * - **libtirpc**
-     - Transport Independent RPC library
-     - **1.3.3**
-     - 
+    * - Software
+      - Description
+      - Version
+      - Docs
+    * - **Subversion**
+      - Centralized version control system
+      - **1.14.2**
+      - 
+    * - **Mercurial**
+      - Distributed version control system
+      - **6.7.3**
+      - 
+    * - **CVS**
+      - Concurrent Versions System
+      - **1.12.13**
+      - 
 
-Utilities & Tools
-"""""""""""""""""
+.. dropdown:: Debugging & Profiling
 
-General system utilities, editors, and productivity tools.
+  .. list-table::
+    :widths: 25 40 20 15
+    :header-rows: 1
 
-.. list-table::
-   :widths: 25 40 20 15
-   :header-rows: 1
+    * - Software
+      - Description
+      - Version
+      - Docs
+    * - **GDB**
+      - GNU Debugger
+      - **15.2**
+      - 
+    * - **GoogleTest**
+      - Google C++ Testing Framework
+      - **1.15.2**
+      - 
 
-   * - Software
-     - Description
-     - Version
-     - Docs
-   * - **Emacs**
-     - Extensible text editor
-     - **30.1**
-     - 
-   * - **Neovim**
-     - Hyperextensible Vim-based text editor
-     - **0.11.5**
-     - 
-   * - **Zsh**
-     - Z Shell
-     - **5.9**
-     - 
-   * - **Screen**
-     - Terminal multiplexer
-     - **4.9.1**
-     - 
-   * - **Parallel**
-     - GNU Parallel (Shell tool for executing jobs in parallel)
-     - **20240822**
-     - 
-   * - **dos2unix**
-     - Text file format converter
-     - **7.4.4**
-     - 
-   * - **EasyBuild**
-     - Software build and installation framework
-     - **4.7.0**
-     - 
+.. dropdown:: Utilities & Tools
 
-Cloud CLI & Package Managers
-"""""""""""""""""""""""""""""
+  .. list-table::
+    :widths: 25 40 20 15
+    :header-rows: 1
 
-Command-line tools for cloud services and package management.
+    * - Software
+      - Description
+      - Version
+      - Docs
+    * - **Emacs**
+      - Extensible text editor
+      - **30.1**
+      - 
+    * - **Neovim**
+      - Hyperextensible Vim-based text editor
+      - **0.11.5**
+      - 
+    * - **Zsh**
+      - Z Shell
+      - **5.9**
+      - 
+    * - **Screen**
+      - Terminal multiplexer
+      - **4.9.1**
+      - 
+    * - **Parallel**
+      - GNU Parallel (Shell tool for executing jobs in parallel)
+      - **20240822**
+      - 
+    * - **dos2unix**
+      - Text file format converter
+      - **7.4.4**
+      - 
+    * - **EasyBuild**
+      - Software build and installation framework
+      - **4.7.0**
+      - 
 
-.. list-table::
-   :widths: 25 40 20 15
-   :header-rows: 1
+.. dropdown:: Cloud CLI
 
-   * - Software
-     - Description
-     - Version
-     - Docs
-   * - **AWS CLI v2**
-     - Amazon Web Services Command Line Interface
-     - **2.24.24**
-     - 
-   * - **Google Cloud CLI**
-     - Google Cloud SDK
-     - **504.0.1**
-     - 
-   * - **NPM**
-     - Node Package Manager
-     - **11.2.0**
-     - 
-   * - **Yarn**
-     - JavaScript package manager
-     - **1.22.22**
-     - 
-   * - **FPM**
-     - Fortran Package Management
-     - **0.10.0**
-     - 
+  .. list-table::
+    :widths: 25 40 20 15
+    :header-rows: 1
+
+    * - Software
+      - Description
+      - Version
+      - Docs
+    * - **AWS CLI v2**
+      - Amazon Web Services Command Line Interface
+      - **2.24.24**
+      - 
+    * - **Google Cloud CLI**
+      - Google Cloud SDK
+      - **504.0.1**
+      - 
+
+.. dropdown:: Package Managers
+
+  .. list-table::
+    :widths: 25 40 20 15
+    :header-rows: 1
+
+    * - Software
+      - Description
+      - Version
+      - Docs
+    * - **NPM**
+      - Node Package Manager
+      - **11.2.0**
+      - 
+    * - **Yarn**
+      - JavaScript package manager
+      - **1.22.22**
+      - 
+    * - **FPM**
+      - Fortran Package Management
+      - **0.10.0**
+      - 
+
+.. dropdown:: Additional Build Tools
+
+  .. list-table::
+    :widths: 25 40 20 15
+    :header-rows: 1
+
+    * - Software
+      - Description
+      - Version
+      - Docs
+    * - **Autotools**
+      - GNU Build System (Autoconf, Automake, Libtool)
+      - **master**
+      - 
+    * - **SCons**
+      - Software construction tool
+      - **4.7.0**
+      - 
+    * - **Bazel**
+      - Build and test tool (Google)
+      - **7.0.2**
+      - 
+    * - **Maven**
+      - Build automation tool for Java
+      - **3.9.8**
+      - 
+    * - **Gradle**
+      - Build automation tool for multi-language
+      - **8.10.2**
+      - 
+    * - **Ant**
+      - Java build tool
+      - **1.10.14**
+      - 
+
+.. dropdown:: Additional Language Runtimes
+
+  .. list-table::
+    :widths: 25 40 20 15
+    :header-rows: 1
+
+    * - Software
+      - Description
+      - Version
+      - Docs
+    * - **Dotnet Core SDK**
+      - .NET Core Software Development Kit
+      - **8.0.4**
+      - 
+    * - **Node.js**
+      - JavaScript runtime built on Chrome's V8
+      - **22.14.0**
+      - 
+    * - **OCaml**
+      - Functional programming language
+      - **5.2.1**
+      - 
