@@ -268,6 +268,44 @@ This hierarchy ensures you're using compatible versions of libraries built with 
 .. seealso::
    For more information about Lmod, refer to the official documentation: https://lmod.readthedocs.io/en/latest/
 
+SLURM Integration
+-----------------
+
+When submitting batch jobs to SLURM, a typical workflow is to
+
+1. activate the Spack instance non-interactively
+2. load the required modules
+3. continue your program setting and run your program
+
+This example demonstrates the hierarchical module system: first load the compiler, then the MPI implementation, and finally any MPI-dependent libraries like NetCDF.
+
+.. code-block:: bash
+
+   #!/bin/bash
+
+   ##SBATCH ...
+
+   # Activate Spack instance (use -y flag to skip prompts)
+   export SPACK_ROOT="/path/to/your/selected/spack/instance"
+   source "${SPACK_ROOT}/dist/bin/setup-env.sh" -y
+
+   # Load compiler and MPI
+   module load intel-oneapi-compilers/2025.0.4
+   module load intel-oneapi-mpi/2021.14.2
+
+   # Load application libraries
+   module load netcdf-c/4.9.2
+
+   # Set up your application related settings
+   #...
+   # Run your MPI program
+   #srun my_mpi_program
+
+.. seealso::
+   For essential ``#SBATCH`` parameters and complete job submission examples, refer to:
+   
+   - HPC4: https://github.com/hkust-hpc-team/hkust-hpc/tree/main/examples/hpc4-hello-world
+   - Superpod: https://github.com/hkust-hpc-team/hkust-hpc/tree/main/examples/superpod-hello-world
 
 Compiler Support
 ----------------
