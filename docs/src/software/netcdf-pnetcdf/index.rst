@@ -19,7 +19,7 @@ NetCDF Quick Start
 
 .. note::
 
-  For the value of ``${SPACK_ROOT}``, Please refer to :ref:`Spack Instances <spack-instances>` for the installation path.
+  For the value of ``${SPACK_ROOT}``, please refer to :ref:`Spack Instances <spack-instances>` for the installation path.
 
 .. code-block:: bash
 
@@ -56,7 +56,7 @@ Parallel NetCDF Quick Start
 
 .. note::
 
-  For the value of ``${SPACK_ROOT}``, Please refer to :ref:`Spack Instances <spack-instances>` for the installation path.
+  For the value of ``${SPACK_ROOT}``, please refer to :ref:`Spack Instances <spack-instances>` for the installation path.
 
 .. code-block:: bash
 
@@ -155,7 +155,7 @@ Using Makefile
    .f90.o:
    	$(FC) $(FFLAGS) -c $< -o $@
    
-   # Link example
+   # Link example for a C program. For Fortran, use $(FC) and $(FLDFLAGS).
    myprogram: myprogram.o
    	$(CC) -o $@ $^ $(LDFLAGS)
 
@@ -166,7 +166,7 @@ Using FindNetCDF:
 
 .. code-block:: cmake
 
-   find_package(netCDF REQUIRED)
+   find_package(NetCDF REQUIRED)
    
    target_link_libraries(myprogram PRIVATE netCDF::netcdf)
 
@@ -268,7 +268,7 @@ Using Makefile
    .f90.o:
    	$(FC) $(FFLAGS) -c $< -o $@
    
-   # Link example
+   # Link example for a C program. For Fortran, use $(FC) and $(FLDFLAGS).
    myprogram: myprogram.o
    	$(CC) -o $@ $^ $(LDFLAGS)
 
