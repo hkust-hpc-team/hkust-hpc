@@ -645,15 +645,15 @@ These libraries become available after loading both a compiler and an MPI implem
      - | Network Common Data Form (C library)
        | - Pnetcdf, szip enabled
      - **4.9.2**
-     - 
+     - :doc:`Details <./netcdf-pnetcdf/index>`
    * - **netcdf-fortran**
      - Network Common Data Form (Fortran library)
      - **4.6.1**
-     - 
+     - :doc:`Details <./netcdf-pnetcdf/index>`
    * - **parallel-netcdf**
      - Parallel I/O library for NetCDF file access
      - **1.14.0**
-     - 
+     - :doc:`Details <./netcdf-pnetcdf/index>`
    * - **parallelio**
      - | High-level parallel I/O library
        | - Pnetcdf enabled
