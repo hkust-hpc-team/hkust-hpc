@@ -16,6 +16,8 @@ Up-to-date software is available **through activating of an alternative Spack in
    :local:
    :depth: 3
 
+.. _spack-instances:
+
 Spack Instances
 ---------------
 
@@ -73,7 +75,7 @@ To activate the **alternative instance**, source its setup script:
 .. code-block:: bash
 
    # Acknowledge the Terms of Service and activate an alternative spack instance
-   source "${SPACK_ROOT}/dist/bin/setup-envs.sh"
+   source "${SPACK_ROOT}/dist/bin/setup-env.sh"
 
 .. note::
    The first-time activation includes a bootstrapping process that may take a few minutes. Subsequent activations will be much faster.
