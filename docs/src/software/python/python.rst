@@ -182,7 +182,7 @@ Example batch script using Python virtual environment:
    #SBATCH ...
    
    # Activate Spack environment
-   source /opt/shared/.spack-edge/dist/bin/setup-env.sh -y
+   source /path/to/spack/dist/bin/setup-env.sh -y
    
    # Load Python
    module load python/3.12
@@ -203,7 +203,7 @@ Example using uv:
    #SBATCH ...
    
    # Activate Spack environment
-   source /opt/shared/.spack-edge/dist/bin/setup-env.sh -y
+   source /path/to/spack/dist/bin/setup-env.sh -y
    
    # Load Python
    module load python/3.12
