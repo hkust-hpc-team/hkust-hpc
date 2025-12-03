@@ -160,9 +160,6 @@ All Python versions include Cython for building C extensions.
 
 .. code-block:: bash
 
-   # Install Cython (if not already available)
-   pip install cython
-   
    # Compile a Cython file
    cython mymodule.pyx
    
