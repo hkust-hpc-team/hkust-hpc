@@ -816,11 +816,11 @@ Platforms for mathematical computing, statistical analysis, and data science.
        | 3.11.11
        | 3.12.9
        | **3.13.2**
-     - :doc:`Details <./python/index>`
+     - :doc:`Details <./python/python>`
    * - **Anaconda3**
      - Python Data Science Platform
      - **2024.10**
-     - :doc:`Details <./python/index>`
+     - :doc:`Details <./python/anaconda3>`
    * - **R**
      - R Language for Statistical Computing
      - **4.4.2**
