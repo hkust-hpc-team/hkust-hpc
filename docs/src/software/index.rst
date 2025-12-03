@@ -10,6 +10,8 @@ AI / HPC Software Documentation
 
 .. toctree::
     :glob:
-    :maxdepth: 1
+    :maxdepth: 2
+    :titlesonly:
 
+    python/index
     */index

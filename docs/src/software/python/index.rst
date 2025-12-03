@@ -1,142 +1,79 @@
-Python Support
-==============
+Python Ecosystems
+=================
 
 Python is available through the Spack package manager with support for 
 multiple versions, package managers, and development tools.
 
-.. contents:: Table of Contents
-   :local:
-   :depth: 2
+We provide two main Python options:
 
-Python Quick Start
---------------------
+**Native Python Module**
 
-.. note::
+- Direct Python installations (3.9, 3.10, 3.11, 3.12, 3.13)
+- Lightweight and fast
+- Supports modern package managers (pip, uv, pdm, poetry)
+- Ideal for custom environments and production workflows
 
-  For the value of ``${SPACK_ROOT}``, Please refer to :ref:`Spack Instances <spack-instances>` for the installation path.
+**Anaconda3 Distribution**
 
-.. code-block:: bash
+- Comprehensive Python distribution with conda
+- Pre-installed scientific libraries
+- Built-in environment management
+- Ideal for data science and scientific computing
 
-   # Modify this path accordingly
-   export SPACK_ROOT="/path/to/spack"
+.. toctree::
+   :maxdepth: 1
+   :caption: Documentation
 
-   # Activate Spack environment
-   source "${SPACK_ROOT}/dist/bin/setup-env.sh" -y
-   
-   # Check available Python versions
-   module avail python
-   
-   # Load Python
-   module load python/3.12
-   
-   # Verify installation
-   python --version
-   pip --version
+   python
+   anaconda3
 
-.. note::
-   Module names may include a 7-digit hash suffix (e.g., ``python/3.12-7r5y3as``).
-   You do **NOT** need to include this hash when loading - the version alone 
-   (e.g., ``3.12``) is sufficient.
-
-Anaconda Quick Start
+Package Manager & Tool
 ----------------------
 
-.. note::
+All native Python installations (3.9-3.13) include: ``pip``, ``wheel``, ``setuptools``, ``uv``, ``pdm``, ``poetry``, and ``Cython`` pre-installed.
 
-  For the value of ``${SPACK_ROOT}``, Please refer to :ref:`Spack Instances <spack-instances>` for the installation path.
+Here is a quick comparison of their advantages and features:
 
-.. code-block:: bash
-
-   # Modify this path accordingly
-   export SPACK_ROOT="/path/to/spack"
-
-   # Activate Spack environment
-   source "${SPACK_ROOT}/dist/bin/setup-env.sh" -y
-   
-   # Load Anaconda
-   module load anaconda3
-   
-   # Initialize conda for your shell (required once)
-   conda init
-   
-   # Restart your shell or source your profile
-   source ~/.bashrc
-   
-   # Verify installation
-   conda --version
-   python --version
-
-Features Availability
----------------------
 
 .. list-table::
    :header-rows: 1
-   :widths: 25 15 15 15 15 15
+   :widths: 30 35 35
 
-   * - Feature / Version
-     - 3.9
-     - 3.10
-     - 3.11
-     - 3.12
-     - 3.13
-   * - **Installed**
-     - ✓
-     - ✓
-     - ✓
-     - ✓
-     - ✓
-   * - **pip/wheel**
-     - ✓
-     - ✓
-     - ✓
-     - ✓
-     - ✓
-   * - **venv**
-     - ✓
-     - ✓
-     - ✓
-     - ✓
-     - ✓
-   * - **pdm**
-     - ✓
-     - ✓
-     - ✓
-     - ✓
-     - ✓
-   * - **poetry**
-     - ✓
-     - ✓
-     - ✓
-     - ✓
-     - ✓
-   * - **uv**
-     - ✓
-     - ✓
-     - ✓
-     - ✓
-     - ✓
-   * - **Cython**
-     - ✓
-     - ✓
-     - ✓
-     - ✓
-     - ✓
+   * - Feature
+     - Native Python
+     - Anaconda3
+   * - **Package Manager**
+     - pip, uv, pdm, poetry
+     - conda, pip
+   * - **Environment Tool**
+     - venv, uv, pdm, poetry
+     - conda
+   * - **Installation Speed**
+     - Fast (especially with uv)
+     - Moderate
+   * - **Pre-installed Packages**
+     - Minimal
+     - Extensive (scientific stack)
+   * - **Disk Space**
+     - Minimal
+     - Large
+   * - **Best For**
+     - Custom setups, production
+     - Data science, quick start
 
-Support and Resources
----------------------
+Which Should I Use?
+-------------------
 
-**Python Documentation**
+**Choose Native Python if:**
 
-- `Python Documentation <https://docs.python.org/3/>`_
-- `pip Documentation <https://pip.pypa.io/>`_
-- `PyPI (Python Package Index) <https://pypi.org/>`_
-- `venv Documentation <https://docs.python.org/3/library/venv.html>`_
-- `PDM Documentation <https://pdm.fming.dev/>`_
-- `Poetry Documentation <https://python-poetry.org/docs/>`_
-- `uv Documentation <https://github.com/astral-sh/uv>`_
+- You prefer modern tools like uv, poetry or pdm
+- You want minimal disk usage
+- You are building production python applications
+- You need fine-grained control over dependencies
 
-**Anaconda Documentation**
+**Choose Anaconda3 if:**
 
-- `Anaconda Documentation <https://docs.anaconda.com/>`_
-- `Conda Documentation <https://docs.conda.io/>`_
-- `Anaconda Repository <https://repo.anaconda.com/>`_
+- You are familiar with the conda ecosystem
+- You are doing data science or scientific computing
+- You want to import conda environments from other systems
+- You would use non-python packages available in conda
