@@ -1,5 +1,5 @@
-R and RStudio Support
-======================
+R and RStudio
+=============
 
 R is available through the Spack package manager with support for 
 statistical computing, CRAN package management, and RStudio IDE.

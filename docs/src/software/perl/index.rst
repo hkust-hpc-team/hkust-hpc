@@ -1,5 +1,5 @@
-Perl Support
-=============
+Perl
+====
 
 Perl is available through the Spack package manager with support for 
 scripting, CPAN package management, and comprehensive standard library.

@@ -1,5 +1,5 @@
-NetCDF / Parallel-NetCDF Support
-================================
+NetCDF / Parallel-NetCDF
+========================
 
 NetCDF (Network Common Data Form) and Parallel-NetCDF (PnetCDF) are available through the Spack package manager 
 for scientific data storage and parallel I/O operations.

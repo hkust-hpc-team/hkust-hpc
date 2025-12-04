@@ -1,5 +1,5 @@
-Java Support
-============
+Java
+====
 
 Java (OpenJDK) is available through the Spack package manager with support for 
 compiling and running Java applications across multiple Java versions.

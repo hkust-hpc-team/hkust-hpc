@@ -1,5 +1,5 @@
-MATLAB Support
-==============
+MATLAB
+======
 
 MATLAB is available through the Spack package manager with support for 
 parallel computing, GPU acceleration, and comprehensive toolboxes.
