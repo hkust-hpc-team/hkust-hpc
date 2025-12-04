@@ -81,7 +81,7 @@ GPU Job (Superpod)
    #SBATCH --ntasks-per-node=1
    #SBATCH --cpus-per-task=32
    #SBATCH --gpus-per-task=1
-   #SBATCH --time=48:00:00
+   #SBATCH --time=2-00:00:00
    #SBATCH --output=gpu_job_%j.out
    #SBATCH --error=gpu_job_%j.err
    
@@ -105,6 +105,7 @@ MPI Parallel Job
    #SBATCH --ntasks-per-node=64
    #SBATCH --time=12:00:00
    #SBATCH --output=mpi_%j.out
+   #SBATCH --error=mpi_%j.err
    
    # Load compiler and MPI
    module load intel-oneapi-compilers/2025

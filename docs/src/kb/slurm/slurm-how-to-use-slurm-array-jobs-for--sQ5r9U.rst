@@ -369,7 +369,9 @@ Dynamic Array Size from File Count
 .. code-block:: bash
 
    # Count files and create array job
-   NUM_FILES=$(ls data/*.txt | wc -l)
+   shopt -s nullglob
+   files=(data/*.txt)
+   NUM_FILES=${#files[@]}
    sbatch --array=1-$NUM_FILES process_files.sh
 
 Resubmitting Failed Tasks
@@ -378,10 +380,12 @@ Resubmitting Failed Tasks
 .. code-block:: bash
 
    # Find failed tasks from sacct
-   sacct -j 12345 --format=JobID,State | grep FAILED | awk '{print $1}' > failed_tasks.txt
+   # Find failed tasks from sacct
+   JOB_ID=12345
+   sacct -j $JOB_ID --format=JobID,State | grep FAILED | awk '{print $1}' > failed_tasks.txt
    
    # Create array specification from failed tasks
-   FAILED_ARRAY=$(cat failed_tasks.txt | sed 's/12345_//' | tr '\n' ',' | sed 's/,$//')
+   FAILED_ARRAY=$(sed "s/${JOB_ID}_//" failed_tasks.txt | tr '\n' ',' | sed 's/,$//')
    
    # Resubmit only failed tasks
    sbatch --array=$FAILED_ARRAY rerun_job.sh

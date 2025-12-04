@@ -118,7 +118,7 @@ GPU Development and Testing
 .. code-block:: bash
 
    # Request GPU resources for testing
-   srun --account=myproject \
+   srun --account=exampleproj \
         --partition=gpu \
         --gpus-per-task=1 \
         --cpus-per-task=16 \
@@ -173,7 +173,7 @@ References
 
 - `HPC4 SLURM Examples <https://github.com/hkust-hpc-team/hkust-hpc/blob/main/examples/hpc4-hello-world>`_
 
-  - `HPC4 Interactive Sessions <https://github.com/hkust-hpc-team/hkust-hpc/blob/main/examples/superpod-hello-world/hpc4-interactive-helloworld.sh>`_
+  - `HPC4 Interactive Sessions <https://github.com/hkust-hpc-team/hkust-hpc/blob/main/examples/hpc4-hello-world/hpc4-interactive-helloworld.sh>`_
 
 - `Superpod SLURM Examples <https://github.com/hkust-hpc-team/hkust-hpc/blob/main/examples/superpod-hello-world>`_
 
