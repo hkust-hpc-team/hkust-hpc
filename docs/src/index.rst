@@ -18,6 +18,7 @@ Table of Contents
     :maxdepth: 2
 
     software/index
+    compile-guides/index
     kb/index
     sysadmin/index
     contrib/index
