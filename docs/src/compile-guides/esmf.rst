@@ -291,12 +291,18 @@ After building ESMF, you need to set up the environment to use it in your applic
 .. code-block:: bash
 
    # Set ESMF installation directory
-   export ESMFMKFILE=/path/to/esmf/lib/libO/Linux.intel.64.mpi.default/esmf.mk
+   export ESMFMKFILE=/path/to/esmf/lib/libO/Linux.intel.64.intelmpi.default/esmf.mk
    
    # Verify the file exists
    ls -l $ESMFMKFILE
 
-The exact path to ``esmf.mk`` depends on your build configuration. Check the ``lib`` directory after compilation.
+.. note::
+   The path to ``esmf.mk`` depends on your build configuration. For example:
+
+   - **Intel:** ``.../lib/libO/Linux.intel.64.intelmpi.default/esmf.mk``
+   - **AMD AOCC:** ``.../lib/libO/Linux.aocc.64.openmpi.default/esmf.mk``
+
+   Check the ``lib/libO/`` directory after compilation for the correct path corresponding to your ``ESMF_COMPILER``, ``ESMF_COMM``, and ``ESMF_ABI`` settings.
 
 Compiling Applications with ESMF
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
