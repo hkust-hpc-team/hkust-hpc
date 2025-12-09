@@ -48,7 +48,7 @@ System Requirements
 ^^^^^^^^^^^^^^^^^^^
 
 - Sufficient disk space (~3GB for source code and build)
-- Memory: At least 8GB RAM for serial compilation, more for parallellized builds
+- Memory: At least 8GB RAM for serial compilation, more for parallelized builds
 - Time: Compilation takes approx. 1 hour
 
 Supported Compiler Toolchains
