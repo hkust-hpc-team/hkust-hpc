@@ -1,4 +1,4 @@
-Libxc (Exchange-Correlation Functional Library)
+Libxc (Exchange-Correlation Functionals Library)
 ===============================================
 
 Libxc is a library of exchange-correlation functionals for density-functional theory (DFT). The library provides a comprehensive collection of local and semi-local functionals, as well as some hybrid functionals, widely used in quantum chemistry and solid-state physics applications.
@@ -350,5 +350,5 @@ Support and Resources
 
 If you use Libxc in your research, please cite the appropriate papers:
 
-- S. Lehtola et al., *SoftwareX* **7**, 1 (2018)
-- M.A.L. Marques et al., *Comput. Phys. Commun.* **183**, 2272 (2012)
+- S. Lehtola, C. Steigemann, M.J.T. Oliveira, and M.A.L. Marques, *SoftwareX* **7**, 1 (2018), DOI: `10.1016/j.softx.2017.11.002 <https://doi.org/10.1016/j.softx.2017.11.002>`_
+- M.A.L. Marques, M.J.T. Oliveira, and T. Burnus, *Comput. Phys. Commun.* **183**, 2272 (2012), DOI: `10.1016/j.cpc.2012.05.007 <https://doi.org/10.1016/j.cpc.2012.05.007>`_

@@ -176,7 +176,7 @@ Library Variants
      - Dynamic linking support (.so files)
      - ✓
    * - **Static Libraries**
-     - Static linking support (.so files)
+     - Static linking support (.a files)
      - ✗
    * - **MPI Support**
      - Direct MPI integration
@@ -207,5 +207,5 @@ Support and Resources
 
 If you use Libxc in your research, please cite the following papers:
 
-- S. Lehtola, C. Steigemann, M.J.T. Oliveira, and M.A.L. Marques, *Software X* **7**, 1 (2018)
-  DOI: `10.1016/j.softx.2017.11.002 <https://doi.org/10.1016/j.softx.2017.11.002>`_
+- S. Lehtola, C. Steigemann, M.J.T. Oliveira, and M.A.L. Marques, *Software X* **7**, 1 (2018), DOI: `10.1016/j.softx.2017.11.002 <https://doi.org/10.1016/j.softx.2017.11.002>`_
+- M.A.L. Marques, M.J.T. Oliveira, and T. Burnus, *Comput. Phys. Commun.* **183**, 2272 (2012), DOI: `10.1016/j.cpc.2012.05.007 <https://doi.org/10.1016/j.cpc.2012.05.007>`_
