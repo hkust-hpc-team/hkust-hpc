@@ -716,6 +716,10 @@ These libraries are optimized for specific compiler toolchains and become availa
      - GNU Scientific Library
      - **2.8**
      - 
+   * - **libxc**
+     - Library of Exchange and Correlation Functionals
+     - **7.0.0**
+     - :doc:`Details <./libxc/index>`
 
 AOCC Specific Libraries
 """""""""""""""""""""""
