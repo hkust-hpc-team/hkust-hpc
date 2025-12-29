@@ -2,11 +2,11 @@ HPC Administration Guide
 ========================
 
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 3
    :caption: Contents:
 
-   hardware-overview
    system-config
    software-ecosystem
+   testing
    k8s-hpc
    other-topics

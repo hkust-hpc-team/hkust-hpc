@@ -386,11 +386,8 @@ Kernel Selection
 
 .. TODO: Ubuntu vs RHEL key differences, particularly kernel 6 available in Ubuntu vs 5 in RHEL9.x, which crucially lack the ``ptdma`` driver for AMD.
 
-Systemd Services
-^^^^^^^^^^^^^^^^
-
 Time Synchronization
-"""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: bash
 
@@ -399,17 +396,56 @@ Time Synchronization
     systemctl enable --now chronyd.service
 
 Entropy Generation
-""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: bash
 
     # Improve entropy availability for RNG use, e.g. for SSHD, SSL, etc.
     systemctl enable --now rngd
 
-CPU Power Management
-""""""""""""""""""""
+Swap
+^^^^
 
-We will config for a performance profile during compute jobs, and a power-saving profile when idle.
+Compute node don't need one, having one brings more problem than it solves.
+
+If you have the disk space, you might want to use the disk space for Cachefilesd, job TMP or other purposes instead.
+
+.. code-block:: bash
+
+    # Disable swap
+    swapoff -a
+    sed -i.bak '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+
+CGroup
+^^^^^^^
+
+CGroup v1: it does not work well with SLURM, and is deprecated in recent Linux kernel versions anyway.
+
+Use CGroup v2 instead whenever possible. Some recent kernel defaults to CGroup v2 already.
+
+.. code-block:: shell
+
+    # Kernel Boot Parameter
+    systemd.unified_cgroup_hierarchy=1
+
+IRQ Handling
+^^^^^^^^^^^^^^
+
+ IRQ Balance service may interfere with programmatic IRQ affinity settings for IB/RoCEv2 performance tuning.
+
+.. code-block:: bash
+
+    # Disable irqbalance to enable manual control of IRQ affinity
+    # Or alternatively use one-shot to set affinity on boot BEFORE running RoCEv2 tuning scripts
+    # This prevent jitters every 10s or so
+    systemctl disable --now irqbalance
+
+CPU Power Management
+^^^^^^^^^^^^^^^^^^^^^
+
+Philosophy
+- performant when needed
+- power-saving when idle
 
 A performance profile will
 
@@ -425,42 +461,47 @@ A power-saving profile will
   - set maximum CPU frequency to baseline frequency
   - enable all C states
 
+Example Implementation
+""""""""""""""""""""""
+
+Start from gathering node information
+
+.. code-block:: shell
+
+    # cat /sys/devices/system/cpu/cpu/cpufreq/cpuinfo_{min,max}_freq
+    1500000
+    3100341
+    
+    # cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies
+    2250000 1800000 1500000
+    
+    # cpupower idle-info
+    CPUidle driver: acpi_idle
+    CPUidle governor: menu
+    analyzing CPU 239:
+    
+    Number of idle states: 3
+    Available idle states: POLL C1 C2
+    POLL:
+    Flags/Description: CPUIDLE CORE POLL IDLE
+    Latency: 0
+    ...
+    C1:
+    Flags/Description: ACPI FFH MWAIT 0x0
+    Latency: 1
+    ...
+    C2:
+    Flags/Description: ACPI IOPORT 0x414
+    # This latency may be configured in BIOS, check BIOS C state settings
+    Latency: 800
+    ...
+
+Example configuration files for ``cpupower`` systemd service
+
+Note the systemd file is **modified** from the default shipped with ``cpupower`` package to support idle state management as well.
+
 .. code-block:: systemd
 
-    # Example config:
-    # $ cat /sys/devices/system/cpu/cpu/cpufreq/cpuinfo_{min,max}_freq
-    #   1500000
-    #   3100341
-    # $ cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies
-    #   2250000 1800000 1500000
-    # $ sudo cpupower idle-info
-    #   CPUidle driver: acpi_idle
-    #   CPUidle governor: menu
-    #   analyzing CPU 239:
-    #   
-    #   Number of idle states: 3
-    #   Available idle states: POLL C1 C2
-    #   POLL:
-    #   Flags/Description: CPUIDLE CORE POLL IDLE
-    #   Latency: 0
-    #   ...
-    #   C1:
-    #   Flags/Description: ACPI FFH MWAIT 0x0
-    #   Latency: 1
-    #   ...
-    #   C2:
-    #   Flags/Description: ACPI IOPORT 0x414
-    #   Latency: 800
-    #   ...
-
-    # /etc/sysconfig/cpupower
-    # We have min freq of 1.5GHz, max freq of 3.1GHz, baseline freq of 2.25GHz
-    CPUPOWER_START_OPTS="frequency-set -g performance --min 2250000 --max 3100341"
-    CPUPOWER_STOP_OPTS="frequency-set -g ondemand --min 1500000 --max 2250000"
-    # For idle state, we have C2 with 800us latency, so disable C2 and deeper states
-    CPUPOWER_START_IDLE_OPTS="idle-set --disable 2"
-    CPUPOWER_STOP_IDLE_OPTS="idle-set --enable-all"
-    
     # /usr/lib/systemd/system/cpupower.service
     [Unit]
     Description=Configure CPU power related settings
@@ -478,14 +519,24 @@ A power-saving profile will
     [Install]
     WantedBy=multi-user.target
 
+.. tip::
+    
+    For performance mode, it is better to test the maximum sustainable frequency given your data center cooling capability. (e.g. 2.7 GHz instead of full turbo 3.1 GHz)
+
+    It is expected systems will run at sustained maximum load for all kinds of long-running AI/HPC workloads.
+    
+    Setting a too high maximum frequency may lead to thermal throttling under sustained load, which is counter-productive.
+
+.. code-block:: shell
+
+    # /etc/sysconfig/cpupower
+    CPUPOWER_START_OPTS="frequency-set -g performance --min 2250000 --max 2700000"
+    CPUPOWER_STOP_OPTS="frequency-set -g ondemand --min 1500000 --max 2250000"
+    CPUPOWER_START_IDLE_OPTS="idle-set --disable 2"
+    CPUPOWER_STOP_IDLE_OPTS="idle-set --enable-all"
+
+
 This can then be integrated to SLURM as job prolog/epilog scripts (root portion) to set performance profile during job execution, and power-saving profile when idle.
-
-.. code-block:: bash
-
-    # /etc/slurm/job-prolog.sh
-    #!/bin/bash
-    # Job starts, unconditionally start cpupower service to set performance profile
-    systemctl start cpupower.service
 
 .. important::
     
@@ -501,6 +552,14 @@ This can then be integrated to SLURM as job prolog/epilog scripts (root portion)
       - other method
       
     to check for other running jobs before stopping ``cpupower`` service in job epilog.
+
+.. code-block:: bash
+
+    # /etc/slurm/job-prolog.sh
+    #!/bin/bash
+    # Job starts, unconditionally start cpupower service to set performance profile
+    systemctl start cpupower.service
+
     
 .. code-block:: bash
 
@@ -524,7 +583,7 @@ General Tunables
 
 This is usually set in BOOT_CMDLINE variable in GRUB config file such as ``/etc/default/grub``, or your PXE bootloader config.
 
-.. code-block:: console
+.. code-block:: shell
 
     clocksource=tsc
     default_hugepagesz=2M
@@ -546,7 +605,7 @@ This is usually set in BOOT_CMDLINE variable in GRUB config file such as ``/etc/
 
 .. TODO: Confirm source and values, some values seem off and missing
 
-.. code-block:: console
+.. code-block:: shell
 
     # security
     kernel.dmesg_restrict=1
@@ -599,7 +658,7 @@ Huge Page Management
 
 .. TODO: Extract config from current compute nodes
 
-Network Stack
+TCP/IP Stack
 -------------
 
 TCP/IP
@@ -607,34 +666,50 @@ TCP/IP
 
 This benefits TCP/IP over IB/RoCEv2 tuning as well as general network stack tuning.
 
-Disable IRQ Balance
-"""""""""""""""""""
-"
-.. code-block:: bash
-
-    # Disable irqbalance to enable manual control of IRQ affinity
-    # Or alternatively use one-shot to set affinity on boot BEFORE running RoCEv2 tuning scripts
-    # This prevent jitters every 10s or so
-    systemctl disable --now irqbalance
-
 Additional Tunables
 """""""""""""""""""
 
-.. TODO: Check for wmem and optmem, these should be set, also the tcp parameters as listed here https://wiki.archlinux.org/title/Network_configuration
-
 .. code-block:: bash
 
-    # Legacy shm parameters, may not be needed
-    kernel.shmall=4294967296
-    kernel.shmmax=4294967296
-    kernel.shmmni=20960
+    # These units in bytes
+    net.core.optmem_max = 20480
+    net.core.rmem_default = 16777216
+    net.core.rmem_max = 268435456
+    net.core.wmem_default = 16777216
+    net.core.wmem_max = 268435456
+    net.ipv4.tcp_rmem = 4096 131072 268435456
+    net.ipv4.tcp_wmem = 4096 131072 268435456
+    net.ipv4.udp_rmem_min = 8192
+    net.ipv4.udp_wmem_min = 8192
+    # These units in pages (4096 bytes)
+    net.ipv4.tcp_mem = 1048576 2097152 4194304
+    net.ipv4.udp_mem = 1048576 2097152 4194304
 
-    # TCP parameters
-    net.core.netdev_budget_usecs=8000
-    net.core.optmem_max=81920
-    net.core.rmem_default=262144
-    net.core.rmem_max=262144
+    net.core.somaxconn = 65535
+    net.core.netdev_budget = 600
+    net.core.netdev_budget_usecs = 4000
+    net.core.netdev_max_backlog = 250000
+    net.ipv4.tcp_max_syn_backlog = 8192
+    net.ipv4.tcp_syncookies = 1
+    net.ipv4.tcp_mtu_probing = 1
+    net.ipv4.tcp_timestamps = 1
+    net.ipv4.tcp_window_scaling = 1
 
+    # Assumes highly dropless network
+    net.ipv4.tcp_sack = 0
+    net.ipv4.tcp_fack = 0
+    net.ipv4.tcp_dsack = 0
+    net.ipv4.tcp_tw_reuse = 1
+    net.ipv4.tcp_fastopen = 3
+    net.ipv4.tcp_slow_start_after_idle = 0
+    # Sometimes latency is more important than throughput
+    net.ipv4.tcp_low_latency = 1
+    net.ipv4.tcp_notsent_lowat = 4294967295
+
+
+.. seealso::
+
+    https://wiki.archlinux.org/title/Sysctl#Networking
 
 RoCEv2
 ^^^^^^
@@ -802,16 +877,41 @@ File Systems
     - configured a compatible authentication and authorization scheme
     otherwise, file system operations may fail in unexpected ways.
 
-NFS client Tuning
+Tuning the underlying network stack is as important as tuning the parallel filesystem client itself, as a slow network stack directly translates to slow filesystem performance.
+
+NFS Client Tuning
 ^^^^^^^^^^^^^^^^^
 
-.. code-block:: console
+.. code-block:: shell
 
     # read-only large amount of small program files (LD_LIBRARY_PATH, python etc.)
     ro,noatime,vers=3,rsize=1048576,wsize=1048576,acregmin=10,hard,forcerdirplus,proto=tcp,nconnect=16,timeo=600,retrans=2,sec=sys,fsc,local_lock=none,lookupcache=all
 
     # use attr cache cache=pos when there are frequent writes to files 
     rw,relatime,vers=3,rsize=1048576,wsize=1048576,hard,forcerdirplus,proto=tcp,nconnect=16,timeo=600,retrans=2,sec=sys,fsc,local_lock=none,lookupcache=pos
+
+Cachefilesd
+""""""""""""
+
+If local fast SSD is available, we can enable cachefilesd for NFS client side caching of small files.
+
+.. code-block:: shell
+
+    # /etc/cachefilesd.conf 
+    # dir should point to a local fast SSD, preferably RAID0 of multiple NVMe drives, mdraid can be used for this.
+    dir /raid
+    tag nvcache
+    brun 30%
+    bcull 25%
+    bstop 15%
+    frun 10%
+    fcull 7%
+    fstop 3%
+
+.. code-block:: bash
+
+    # Enable cachefilesd for NFS client side caching of small files
+    systemctl enable --now cachefilesd.service
 
 Lustre Client Tuning
 ^^^^^^^^^^^^^^^^^^^^
@@ -825,7 +925,7 @@ Environment Defaults
 ^^^^^^^^^^^^^^^^^^^^
 
 .. TODO: Extract from admin/login nodes
-.. code-block:: console
+.. code-block:: shell
 
     # /etc/skel
     # /etc/profile.d/*.sh
@@ -834,8 +934,9 @@ Environment Defaults
 Resource Limits and Quotas
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. TODO: Extract from current Login Node setup
-.. code-block:: console
+Generally, unlock all quotas and limits on compute nodes, resource control is done by SLURM instead.
+
+.. code-block:: shell
 
     # /etc/security/limits.d/*.conf
     * soft      memlock    unlimited
@@ -846,22 +947,232 @@ Resource Limits and Quotas
     * soft      nofile     1048576
     * hard      nofile     1048576
 
-    # /etc/sysconfig/systemd/system/user-.scope.d
+On login nodes, you may want to set reasonable limits to prevent abuse and improve system stability.
 
-SLURM Resource Limits
-^^^^^^^^^^^^^^^^^^^^^
 
-Slurm uses slurmstepd to enforce per-job resource limits via cgroup-v2, the configuration is in /etc/slurm/cgroup.conf.
+Philosophy: 
+- Reserve some resources for system slices to protect system stability
+- Set user quotas according to permitted usage pattern
+
+System Quota
+"""""""""""""
+
+An example minimal guarantee for system slices.
+
+.. code-block:: systemd
+
+    # /usr/lib/systemd/system/system.slice.d/10-defaults.conf
+    [Slice]
+    CPUAccounting=true
+    CPUQuota=infinity
+    MemoryAccounting=true
+    # Set aside ~16GB minimum memory
+    MemoryMin=3%
+    MemoryMax=infinity
+    # If you have swap for login nodes, you may want it to be only for system slices
+    MemorySwapMax=infinity
+
+User Quotas
+""""""""""""
+
+An example permits visualization / GUI, but not too much to allow extensive computation or compiling on login nodes.
+
+.. code-block:: systemd
+
+    # /usr/lib/systemd/system/user-.slice.d/10-defaults.conf
+    [Slice]
+    CPUAccounting=true
+    # 4 cores worth of CPU time
+    CPUQuota=400%
+    MemoryAccounting=true
+    # 5% of total system memory
+    MemoryMax=5%
+    MemorySwapMax=0
+
+SLURM
+-----
+
+SLURM Environment
+^^^^^^^^^^^^^^^^^
+
+Philosophy: have SLURM environment identical to user environment on login nodes, so that user won't have issue running jobs.
+
+Resource Control
+^^^^^^^^^^^^^^^^
+
+Slurm uses slurmstepd to enforce per-job resource limits, the configuration is in /etc/slurm/cgroup.conf.
 
 Regular ``/etc/security/limits`` does not apply, since the limit is inherited from slurmstepd. 
 
-.. TODO: Extract from current SLURM setup
-.. code-block:: console
+.. code-block:: systemd
 
-    # /etc/slurm/cgroup.conf
-    # /etc/systemd/system/slurm-*.service.d/*.conf
+    # /usr/lib/systemd/system/slurmd.service.d/override.conf
+    [Service]
+    LimitNOFILE=16777216
+    LimitMEMLOCK=infinity
+    LimitSTACK=infinity
+    Delegate=yes
+    TasksMax=infinity
 
-.. TODO: SLURM resource limit is buggy even with cgroup-v2, we need a BPF-based script to enforce per-job resource limit, otherwise OOM killer does not work.
+
+.. code-block:: shell
+
+    # cat /etc/slurm/cgroup.conf
+    CgroupAutomount=yes
+    ConstrainCores=yes
+    ConstrainRAMSpace=yes
+    # see note below about OOM handling
+    ConstrainSwapSpace=no
+    ConstrainDevices=yes
+    AllowedRamSpace=94.40
+    AllowedSwapSpace=0.00
+    MaxRAMPercent=95.00
+
+Restrict SSH Access
+^^^^^^^^^^^^^^^^^^^
+
+In a multi-tenant HPC cluster, it is best practice to forbid direct SSH access to compute nodes.
+
+There is a SLURM plugin ``pam_slurm`` that can be used to restrict SSH access to only users with running jobs on the node, however it is not very reliable with some SLURM / cgroup version or configuration, in that user may intentionally or unintentionally escape from the resource control, potentially disrupting other user's jobs.
+
+Completely forbidding direct SSH access to compute nodes is the most straightforward solution.
+
+SSH Alternative
+""""""""""""""""
+
+To fulfill user's need to "peek at a running compute job", user can use ``srun --pty bash``. This is an essential operation concern of users to ensure their resources are being used correctly.
+
+.. code-block:: bash
+
+    srun --overlap --jobid <jobid> -w <node> --pty bash
+
+.. code-block:: shell
+
+    [kftse@login1 ~]$ sbatch -p gpu-rtx4090d -A itsc --ntasks-per-node=1 --cpus-per-task=32 --gpus-per-task=2 --wrap "sleep 3600"
+    Submitted batch job 390361
+    [kftse@login1 ~]$ srun --overlap --jobid 390361 --pty bash
+
+    # User is now in the compute node allocated to job 390361
+    # Visible resources are limited to those allocated to the job
+    [kftse@gpu32 ~]$ nvidia-smi -l
+    Fri Dec 19 10:10:25 2025       
+    +-----------------------------------------------------------------------------------------+
+    | NVIDIA-SMI 565.57.01              Driver Version: 565.57.01      CUDA Version: 12.7     |
+    |-----------------------------------------+------------------------+----------------------+
+    | GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+    | Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+    |                                         |                        |               MIG M. |
+    |=========================================+========================+======================|
+    |   0  NVIDIA GeForce RTX 4090 D      On  |   00000000:17:00.0 Off |                    0 |
+    |  0%   44C    P0             41W /  425W |       2MiB /  23028MiB |      0%      Default |
+    |                                         |                        |                  N/A |
+    +-----------------------------------------+------------------------+----------------------+
+    |   1  NVIDIA GeForce RTX 4090 D      On  |   00000000:2A:00.0 Off |                    0 |
+    |  0%   43C    P0             46W /  425W |       2MiB /  23028MiB |      0%      Default |
+    |                                         |                        |                  N/A |
+    +-----------------------------------------+------------------------+----------------------+
+                                                                                            
+    +-----------------------------------------------------------------------------------------+
+    | Processes:                                                                              |
+    |  GPU   GI   CI        PID   Type   Process name                              GPU Memory |
+    |        ID   ID                                                               Usage      |
+    |=========================================================================================|
+    |  No running processes found                                                             |
+    +-----------------------------------------------------------------------------------------+
+    [kftse@gpu32 ~]$ nproc
+    32
+
+    [root@gpu32 ~]# systemctl status
+    ● gpu32
+    # In cgroup hierarchy, both root shell are spawned under slurmstepd.scope/job_390361
+    │ ├─slurmstepd.scope
+    │ │ ├─job_390361
+    # - step_0/task_0: "peeking" processes 
+    │ │ │ ├─step_0
+    │ │ │ │ ├─slurm
+    │ │ │ │ │ └─26095 "slurmstepd: [390361.0]"
+    │ │ │ │ └─user
+    │ │ │ │   └─task_0
+    │ │ │ │     ├─26105 /usr/bin/bash
+    │ │ │ │     └─26303 nvidia-smi -l
+    # - step_batch/task_0: user's batch job
+    │ │ │ └─step_batch
+    │ │ │   ├─slurm
+    │ │ │   │ └─26076 "slurmstepd: [390361.batch]"
+    │ │ │   └─user
+    │ │ │     └─task_0
+    │ │ │       ├─26080 /bin/sh /var/spool/slurm/d/job390361/slurm_script
+    │ │ │       └─26081 sleep 3600
+
+OOM Handling
+^^^^^^^^^^^^ 
+
+OOM is one of the most disruptive events in a multi-tenant HPC cluster, as it may lead to node instability, job failures, and impact other users' jobs.
+
+Some version of SLURM does not handle OOM properly, leading to breaching of resource limits and even node instability as slurmstepd itself is in the system slice, it can compete for protected system resources all other critical system services and processes.
+
+Customize OOM Control
+"""""""""""""""""""""
+
+.. code-block:: bash
+
+    #!/bin/bash
+    # /usr/local/bin/slurm-cgroup-watcher.sh
+
+    # Configuration
+    WATCH_DIR="/sys/fs/cgroup/system.slice/slurmstepd.scope"
+    LOG_TAG="slurm-oom-control"
+
+    # Ensure the directory exists before watching
+    while [[ ! -d "$WATCH_DIR" ]]; do
+        sleep 5
+    done
+
+    logger -t "$LOG_TAG" "Starting monitoring on $WATCH_DIR"
+
+    # Monitor for CREATE events on directories (-r for recursive if you need steps inside jobs)
+    # We use --format to get just the filename
+    inotifywait -m -r -e create --format '%w%f' "$WATCH_DIR" | while read -r NEW_CGROUP; do
+        
+        # Check if this is a job or step directory
+        if [[ "$NEW_CGROUP" =~ job_[0-9]+ ]]; then
+            
+            # Run logic in background to not block the watcher loop
+            (
+                # Wait briefly for the directory structure to settle (cgroup v2 atomicity)
+                # A tiny loop is better than a hard sleep
+                for i in {1..10}; do
+                    if [[ -f "$NEW_CGROUP/memory.oom.group" ]]; then
+                        break
+                    fi
+                    sleep 0.01
+                done
+
+                # 1. Enable OOM Group Kill (Kill whole job if one task OOMs)
+                echo 1 > "$NEW_CGROUP/memory.oom.group" 2>/dev/null
+                
+                # 2. Disable Swap (Force 0)
+                echo 0 > "$NEW_CGROUP/memory.swap.max" 2>/dev/null
+                
+                logger -t "$LOG_TAG" "Applied OOM/Swap constraints to $NEW_CGROUP"
+            ) &
+        fi
+    done
+
+.. code-block:: systemd
+
+    # /etc/systemd/system/slurm-cgroup-watcher.service
+    [Unit]
+    Description=Slurm Cgroup OOM/Swap Enforcer
+    After=slurmd.service
+
+    [Service]
+    ExecStart=/usr/local/bin/slurm-cgroup-watcher.sh
+    Restart=always
+    RestartSec=3
+
+    [Install]
+    WantedBy=multi-user.target
 
 Module System
 ^^^^^^^^^^^^^
@@ -882,6 +1193,8 @@ This prevents later accidental installation of environment-modules overwriting L
 Protective Measures
 -------------------
 
+Philosophy: Last line of defense built into each node.
+
 Temperature Protection
 ^^^^^^^^^^^^^^^^^^^^^^
 
@@ -891,7 +1204,6 @@ Exact metric depends on your hardware platform, below is an example for NVIDIA D
 
 .. code-block:: systemd
 
-    # systemctl cat dgx-emergency-shutdown.service 
     # /lib/systemd/system/dgx-emergency-shutdown.service
     [Unit]
     Description=Check Ambient Temperature and Shutdown if Too High
@@ -903,7 +1215,8 @@ Exact metric depends on your hardware platform, below is an example for NVIDIA D
     Environment=MAX_AMBIENT_TEMP=30
     ExecStart=/bin/bash -c 'TEMP_AMBIENT_VAL="$(/usr/bin/ipmitool -c sdr get TEMP_AMBIENT | cut -d, -f 2)"; if [[ "$TEMP_AMBIENT_VAL" -gt $MAX_AMBIENT_TEMP ]]; then echo "Ambient Temperature $TEMP_AMBIENT_VAL > $MAX_AMBIENT_TEMP, emergency shutting down ..."; $DEBUG_EXEC /sbin/shutdown now; else echo TEMP_AMBIENT=$TEMP_AMBIENT_VAL; fi'
 
-    # systemctl cat dgx-emergency-shutdown.timer 
+.. code-block:: systemd
+
     # /lib/systemd/system/dgx-emergency-shutdown.timer
     [Unit]
     Description=Run Temperature Check Every 2 Minutes
@@ -918,12 +1231,13 @@ Exact metric depends on your hardware platform, below is an example for NVIDIA D
     [Install]
     WantedBy=timers.target
 
-Hardware Watchdog for Kernel Lockups
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Kernel Lockup Recovery
+^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. code-block:: console
+.. todo: Use hardware watchdog if available.
 
-    Enhancement ideas: Use hardware watchdog
+.. code-block:: shell
+
     # Install ipmitool and load modules
 
     modprobe ipmi_watchdog

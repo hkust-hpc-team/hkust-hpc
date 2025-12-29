@@ -32,11 +32,6 @@ For example, it is very hard, if not impossible to hackaround missing X11 suppor
 
 .. TODO: Include a non-exhaustive list of these software curated from experience
 
-Software Testing
-^^^^^^^^^^^^^^^^
-
-The testing standard would require these software to be imported (e.g. by ``cmake`` or ``pkgconf``), and be discussed below in OS Image Testing.
-
 Spack Software Management for HPC/AI
 ------------------------------------
 
@@ -136,13 +131,120 @@ while ``intel-oneapi-compilers/2025`` with ``intel-oneapi-mpi/2021`` would have 
       aocc/4.2.0-lhjvw3v                   gcc/12.4.0-dqqme7t                                        nvhpc/23.11-odjlr3d
     # ...
 
-Unified Software Stack as Spack Config / Env
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Support Scope (Target)
+^^^^^^^^^^^^^^^^^^^^^^
 
-See https://github.com/hkust-hpc-team/spack-community-config/ for the whole configuration.
+While not a majority of software are available, we are aware of a wide range of HPC/AI applications and libraries, and we prioritize support based on user demand and research trends.
+
+Please check user guide for supported software list: https://hkust-hpc-docs.readthedocs.io/latest/software/index.html
+
+
+These software are categorized into
+
+- Full high-level applications
+
+  .. TODO: Fill in data
+
+- MPI Libraries
+
+  .. TODO: Fill in data
+
+- Non-mpi Libraries
+
+  .. TODO: Fill in data
+
+- Runtimes
+
+  .. code-block:: console
+
+    app_name,category,installed
+    R,runtime,y
+    anaconda3,runtime,fix
+    gcc,runtime,y
+    intel,runtime
+    jdk,runtime,y
+    julia,runtime,fix
+    llvm,runtime,fix
+    miniconda3,runtime,n
+    miniforge,runtime,n
+    octave,runtime,y
+    perl,runtime,y
+    python,runtime,y
+    redis,runtime,n
+    ruby,runtime,y
+    tcl,runtime,y
+
+- GUI Tools and Visualization
+
+  .. code-block:: console
+
+    app_name,category,installed
+    VTK,graphics
+    magic,graphics
+    openCascade,graphics
+    PanoplyJ,graphics
+    chimera,graphics
+    grads,graphics,y
+    ncl,graphics,failed
+    visit,graphics,failed
+    ImageMagick,graphics,y
+    ParaView,graphics,y
+    ffmpeg,graphics,y
+    ghostscript,graphics,y
+    gnuplot,graphics,y
+    ncview,graphics,y
+    vmd,graphics,y
+    atk,gui-libs
+    cairo,gui-libs
+    fontconfig,gui-libs
+    freetype,gui-libs
+    harfbuzz,gui-libs
+    jasper,gui-libs
+    libgd,gui-libs
+    libjpeg,gui-libs
+    libpng,gui-libs
+    libxcb,gui-libs
+    libxext,gui-libs
+    mesa,gui-libs
+    qt,gui-libs
+    tk,gui-libs
+    xcb,gui-libs
+
+- Build tools
+
+  .. code-block:: console
+
+     app_name,category,installed
+     autoconf,build,y
+     automake,build,y
+     bazel
+     binutils,build,y
+     bison,build,y
+     cmake,build,y
+     easybuild
+     flex,build,y
+     fpm
+     gmake
+     googletest,build,y
+     meson,build,y
+     ninja,build,y
+     scons
+     swig,build,y
+     texinfo,build,y
 
 Spack Considerations
 ^^^^^^^^^^^^^^^^^^^^
+
+Presentation at HPSFcon 2025 - Spack session: **An Opinionated-Default Approach to Enhance Spack Developer Experience**
+
+.. raw:: html
+
+   <iframe width="560" height="315" src="https://www.youtube.com/embed/bvQs5R_Ey0g" 
+   title="An Opinionated-Default Approach to Enhance Spack Developer Experience" 
+   frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+   allowfullscreen></iframe>
+
+`Watch on YouTube <https://www.youtube.com/watch?v=bvQs5R_Ey0g>`_
 
 Start with Rebuilding GCC
 """""""""""""""""""""""""
@@ -151,15 +253,117 @@ Rebuilding GCC with Spack is often necessary to ensure compatibility and optimal
 
 It is also a solution to avoid OS build tool bugs, missing features or lack of instruction set.
 
+.. code-block:: yaml
+
+    spack:
+    compilers:
+      - compiler:
+          environment: {}
+          extra_rpaths: []
+          flags:
+            cflags: -std=gnu99
+            cxxflags: -std=gnu11
+          modules: []
+          operating_system: rocky9
+          paths:
+            cc: /usr/bin/gcc
+            cxx: /usr/bin/g++
+            f77: /usr/bin/gfortran
+            fc: /usr/bin/gfortran
+          spec: gcc@=11.4.1.os
+          target: x86_64
+    concretizer:
+      reuse: false
+      targets:
+        granularity: generic
+        host_compatible: true
+      unify: false
+    packages::
+      all:
+        permissions:
+          read: world
+          write: user
+        require:
+          - "target=x86_64_v4 %gcc@11.4.1.os"
+    specs:
+      - "gcc@11.5.0 +binutils+bootstrap+graphite+piclibs+profiled languages=c,c++,fortran,lto ^binutils@2.36:"
+    view: false
+
 Opinionated Defaults
 """"""""""""""""""""""
 
 Default preferences are given to a lot of aspects of the software stack to reduce the complexity of managing too many options, including default enabled features, architecture targets, compiler flags, etc.
 
+.. code-block:: yaml
+
+    packages:
+      hdf5:
+        prefer:
+          - "@1.14:"
+          - +cxx
+          - +fortran
+          - +hl
+          - +map
+          - +mpi
+          - +shared
+          - +subfiling
+          - +threadsafe
+          - +tools
+        require:
+          - +szip
+      netcdf-c:
+        prefer:
+          - "@4.9:"
+          - +blosc
+          - +byterange
+          - +fsync
+          - +logging
+          - +mpi
+          - +nczarr_zip
+          - +optimize
+          - +pic
+          - +shared
+          - +szip
+          - +zstd
+        require:
+          - +parallel-netcdf
+
 "Drop-in" Replacible Software
 """""""""""""""""""""""""""""
 
 We test and support every compiler with complete set of tools and libraries, so users can easily switch between different compilers without worrying about software availability.
+
+.. code-block:: console
+
+    $ module load aocc openmpi
+    $ module avail
+
+    ---------------------------------------------- /opt/shared/.spack-edge/share/spack/lmod/linux-rocky9-x86_64/openmpi/5.0.6-7lxgyoz/aocc/5.0.0 ----------------------------------------------
+      fftw/3.3.10-ka3at5w         netcdf-c/4.9.2-zen4-su7uzrh          parallel-netcdf/1.14.0-zen4-kwi63ho
+      hdf5/1.14.5-zen4-dl3y422    netcdf-fortran/4.6.1-zen4-ayvgcgp    parallelio/2.6.3-zen4-wdeshix
+
+    --------------------------------------------------------- /opt/shared/.spack-edge/share/spack/lmod/linux-rocky9-x86_64/aocc/5.0.0 ---------------------------------------------------------
+      amdblis/5.0-dn6uvvq        amdlibm/5.0-bejgadq             aocl-libmem/5.0-tau3tmx    fftw/3.3.10-3nnsud2 (D)    libxc/7.0.0-trdi2xh
+      amdfftw/5.0-qujcnic        aocl-compression/5.0-c6l64pq    boost/1.87.0-djati6y       glib/2.72.4-37b6esr        openmpi/4.1.8-zen4-ipgl3q2
+      amdlibflame/5.0-xv7wxm6    aocl-crypto/5.0-a6brcsm         eigen/3.4.0-q3j6krw        gsl/2.8-35kh35v            openmpi/5.0.6-zen4-7lxgyoz (L,D)
+    
+    ...
+
+    $ module load hdf5 netcdf-c netcdf-fortran parallel-netcdf parallelio fftw libxc
+    $ module load intel-oneapi-compilers intel-oneapi-mpi
+
+    Lmod is automatically replacing "aocc/5.0.0-bcw5biu" with "intel-oneapi-compilers/2025.0.4-sn26au2".
+
+
+    Lmod is automatically replacing "openmpi/5.0.6-zen4-7lxgyoz" with "intel-oneapi-mpi/2021.14.2-x86_64_v4-3hob5dq".
+
+
+    The following have been reloaded with a version change:
+      1) fftw/3.3.10-3nnsud2 => fftw/3.3.10-3a4be3v                          5) netcdf-fortran/4.6.1-zen4-ayvgcgp => netcdf-fortran/4.6.1-x86_64_v4-u7yhv2n
+      2) hdf5/1.14.5-zen4-dl3y422 => hdf5/1.14.5-x86_64_v4-rcob2cy           6) parallel-netcdf/1.14.0-zen4-kwi63ho => parallel-netcdf/1.14.0-x86_64_v4-snjqiin
+      3) libxc/7.0.0-trdi2xh => libxc/7.0.0-vwglv4q                          7) parallelio/2.6.3-zen4-wdeshix => parallelio/2.6.3-x86_64_v4-qhlxuxx
+      4) netcdf-c/4.9.2-zen4-su7uzrh => netcdf-c/4.9.2-x86_64_v4-kvaxzjk
+
 
 Composible Environments and Configs
 """""""""""""""""""""""""""""""""""
@@ -181,6 +385,34 @@ Using environment enhances reproducibility, the modular environments enables par
     2000-aocc-openmpi     3000-mkl-oneapi-openmpi   5000-coretools                 5001-nodejs          5002-vistools-basic
 
 A modular configuration allow easier update and version control.
+
+.. code-block:: yaml
+
+    # include.yaml
+    include:
+    - path: package-policies/externals/os-external.yaml
+    - path: package-policies/core.yaml
+    - path: package-policies/build.yaml
+    - path: package-policies/extra.yaml
+    - path: package-policies/compilers/commons.yaml
+    - path: package-policies/compilers/aocc.yaml
+    - path: package-policies/compilers/gcc.yaml
+    - path: package-policies/compilers/nvhpc.yaml
+    - path: package-policies/compilers/oneapi.yaml
+    - path: package-policies/externals/gui-external.yaml
+    - path: package-policies/gui.yaml
+    - path: package-policies/externals/mpi-external.yaml
+    - path: package-policies/mpi-roce-slurm.yaml
+    - path: package-policies/apps/boost.yaml
+    - path: package-policies/apps/cuda.yaml
+    - path: package-policies/apps/ffmpeg.yaml
+    - path: package-policies/apps/hdf5-netcdf.yaml
+    - path: package-policies/apps/libxc.yaml
+    - path: package-policies/apps/perl.yaml
+    - path: package-policies/apps/r.yaml
+    - path: package-policies/apps/ruby.yaml
+    - path: package-keys/matlab.yaml
+
 
 .. code-block:: console
 
@@ -221,6 +453,22 @@ A modular configuration allow easier update and version control.
     │   └── mpi-roce-slurm.yaml
     └── packages.yaml
 
+Env & Config as Code
+""""""""""""""""""""""
+
+Ensure tracibility and version control of the software stack by managing Spack environments and configuration files as code in a git repository.
+
+Forked Spack: https://github.com/hkust-hpc-team/spack
+
+Env & Config: https://github.com/hkust-hpc-team/spack-community-config
+
+Custom Spack Repos: https://github.com/hkust-hpc-team/spack-meta-pkgs
+
+Usage-driven Maintenance
+"""""""""""""""""""""""""
+
+We keep track of module usage statistics to identify popular and less-used packages. This data helps prioritize maintenance efforts, ensuring that the most relevant software remains up-to-date, well-supported and tested, and decisions to deprecate or remove seldom-used packages are made based on actual usage patterns.
+
 Compiling GPU Packages on CPU Nodes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -229,41 +477,226 @@ The only prerequisite is to have matching CUDA toolkit and driver installed on t
 Software Testing
 ----------------
 
-OS Image Building
-^^^^^^^^^^^^^^^^^
+.. TODO: Write up
 
-Basically OS build is to build this then push to repository.
+.. code-block:: markdown
 
-OS Image Testing
-^^^^^^^^^^^^^^^^
+    # HPC4 Test Suite
 
-- Basic Functionality Tests
-- Integration Tests with Spack
+    This repository contains automated test suites for validating HPC4 cluster environments.
 
-Spack Building
-^^^^^^^^^^^^^^
+    ## Test Categories
 
-- Parallel Builds using PVCs
+    ### Image Tests (`image-tests/`)
+    Tests for validating base container images and system packages:
+    - **Commandline utilities** - Common CLI tools availability
+    - **Development libraries** - curl-devel, fontconfig-devel, munge-devel, pmix-devel
+    - **Compilers** - OS-provided GCC, G++, and GFortran
+    - **MPI** - Mellanox OpenMPI installation
+    - **Module system** - Lmod functionality
+    - **GUI libraries** - Qt5 support
+    - **Environment** - System environment variables
 
-  - Build Isolation
-  - Parallelism
+    ### Spack Tests (`spack-tests/`)
+    Tests for Spack package manager and runtime environments:
+    - **Compilers** - Spack-provided C/C++/Fortran compilers
+    - **MPI** - Spack MPI implementations
+    - **Runtimes** - Go, Java (OpenJDK), MATLAB, Perl, Python, R
 
-Spack Testing
-^^^^^^^^^^^^^
+    ### Slurm MPI Tests (`slurm-mpi-tests/`)
+    Tests for validating Slurm job submission and MPI execution in the cluster environment across various compiler and MPI combinations.
 
-- Integration Tests with OS Image
+    ## Usage
 
-  - Runtime Tests
-  - Compiler Tests
-  - MPI Tests
-  - Library Tests
+    ### Image Tests & Spack Tests
+    These are container-based unit/integration tests. Use the k8s workflow from:
+    **https://github.com/hkust-hpc-team/hpc4-k8s-helm**
 
+    For debugging purposes, individual tests can be executed directly in a bash shell using the same commands as in the workflow.
+
+    ### Slurm MPI Tests
+    End-to-end integration tests that validate Spack compilers and MPI implementations through Slurm job submission.
+
+    Each test compiles and runs a simple MPI program with cross-node communication to check **production SLURM scheduled environment** for
+    - Compiler / MPI Compiler issues
+    - SLURM + MPI integration issues (PMIx failure)
+    - MPI initialization issues
+    - MPI communication issues etc.
+
+    #### Prerequisites
+
+    - Access to a login node with a valid cluster account
+    - Access to at least a CPU queue
+
+    #### Steps to run
+
+    1. Activate your Spack instance:
+
+        ```bash
+        . /opt/shared/.spack-edge/dist/bin/setup-env.sh -y
+        ```
+
+    2. Create an empty directory and run the submission script
+
+        ```bash
+        mkdir -p ~/slurm-mpi-tests && cd ~/slurm-mpi-tests
+        /path/to/hpc4-tests/slurm-mpi-tests/submit-mpi-tests.sh
+        ```
+
+    3. The script will submit test jobs (various compiler/MPI combinations on 1 and 2 nodes):
+
+        ```shell
+        Submitting MPI test jobs to SLURM...
+        Temporary directory: /home/user/slurm-mpi-tests/slurm-mpi-tests-tmp
+        Log directory: /home/user/slurm-mpi-tests/slurm-mpi-tests-logs
+
+        Submitting job: mpi_intel_oneapi_compilers_2023_intel_oneapi_mpi_2021_n1
+          Job ID: 382614, Log: .../mpi_intel_oneapi_compilers_2023_intel_oneapi_mpi_2021_n1.log
+        Submitting job: mpi_intel_oneapi_compilers_2023_openmpi_4_n1
+          Job ID: 382615, Log: .../mpi_intel_oneapi_compilers_2023_openmpi_4_n1.log
+        ...
+        ==========================================
+        All jobs submitted successfully!
+        Total jobs submitted: 24
+        ==========================================
+        ```
+
+    4. Monitor job progress
+
+        ```bash
+        squeue -u $USER
+        ```
+
+    1. Check results after completion
+      
+        ```bash
+        # For success cases
+        tail --quiet -n 1 slurm-mpi-tests-logs/* | grep "Test Complete"
+
+        # For failed cases
+        tail --quiet -n 1 slurm-mpi-tests-logs/* | grep -v "Test Complete"
+        ```
+
+    #### Interpreting results
+
+    - **Success:** Last line shows `Test Complete` with timestamp:
+      
+      ```shell
+      === intel-oneapi-compilers/2023 with openmpi/4 (256 tasks) Test Complete on Wed Dec 17 16:10:39 HKT 2025 ===
+      ```
+
+    - **Failure:** Last line does NOT contain `Test Complete` - indicates compilation error, MPI initialization failure, or runtime crash. Review the full log file for details.
+
+.. code-block:: console
+
+    $ tree
+    .
+    ├── image-tests
+    │   ├── fixtures
+    │   │   ├── hello.c
+    │   │   ├── hello.cpp
+    │   │   ├── hello.f90
+    │   │   ├── mpi_hello.c
+    │   │   ├── mpi_hello.cpp
+    │   │   ├── mpi_hello.f90
+    │   │   ├── test_curl.c
+    │   │   ├── test_fontconfig.c
+    │   │   ├── test_munge.c
+    │   │   └── test_pmix.c
+    │   ├── run-test-commandline-utils.sh
+    │   ├── run-test-curl-devel.sh
+    │   ├── run-test-env.sh
+    │   ├── run-test-fontconfig-devel.sh
+    │   ├── run-test-lmod.sh
+    │   ├── run-test-mlnx-openmpi.sh
+    │   ├── run-test-munge-devel.sh
+    │   ├── run-test-os-gcc.sh
+    │   ├── run-test-os-gfortran.sh
+    │   ├── run-test-os-gxx.sh
+    │   ├── run-test-pmix-devel.sh
+    │   └── run-test-qt5.sh
+    ├── README.md
+    ├── slurm-mpi-tests
+    │   ├── fixtures
+    │   │   └── mpi_hello.c
+    │   ├── run-test-slurm-mpicc.sh
+    │   └── submit-mpi-tests.sh
+    └── spack-tests
+        ├── fixtures
+        │   ├── color_hello.go
+        │   ├── hello.c
+        │   ├── hello.cpp
+        │   ├── hello.f90
+        │   ├── hello.go
+        │   ├── HelloWorld.java
+        │   ├── mpi_hello.c
+        │   ├── mpi_hello.cpp
+        │   ├── mpi_hello.f90
+        │   ├── test_math.m
+        │   ├── test_matlab_pkg.m
+        │   └── test_parfor.m
+        ├── run-test-spack-cc.sh
+        ├── run-test-spack-mpicc.sh
+        ├── run-test-spack-rt-golang.sh
+        ├── run-test-spack-rt-matlab.sh
+        ├── run-test-spack-rt-openjdk.sh
+        ├── run-test-spack-rt-perl.sh
+        ├── run-test-spack-rt-python.sh
+        └── run-test-spack-rt-r.sh
 
 Containerization Support
 ------------------------
 
+Philosophy: Respect "Bare Metal First" experience, the containerization should be customized to mirror the host HPC environment as closely as possible.
+
+General Config
+""""""""""""""
+
+.. code-block:: shell
+
+    # Some system comes with very low default value, that would affect container launch
+    # /etc/sysctl.d/99-containers.conf
+    user.max_user_namespaces=2048920 # reference to RHEL9 default
+
 Enroot / Pyxis
 ^^^^^^^^^^^^^^
+
+Enable all GPU capabilitys inside container
+
+.. code-block:: shell
+
+    # /etc/enroot/environ.d/19-nvidia-all-caps.env
+    NVIDIA_DRIVER_CAPABILITIES=all
+
+    # /etc/enroot/hooks.d/98-nvidia.sh
+    # https://github.com/nvidia/nvidia-container-runtime#nvidia_driver_capabilities
+    if [ -z "${NVIDIA_DRIVER_CAPABILITIES-}" ]; then
+        NVIDIA_DRIVER_CAPABILITIES="utility"
+    fi
+    for cap in ${NVIDIA_DRIVER_CAPABILITIES//,/ }; do
+        case "${cap}" in
+        all)
+            cli_args+=("--compute" "--compat32" "--display" "--graphics" "--utility" "--video")
+            break
+            ;;
+        compute | compat32 | display | graphics | utility | video)
+            cli_args+=("--${cap}")
+            ;;
+        *)
+            common::err "Unknown NVIDIA driver capability: ${cap}"
+            ;;
+        esac
+    done
+
+Automount auxillary host directories into container
+
+.. code-block:: shell
+
+    # /etc/enroot/mounts.d/20-mounts.conf
+    /cm/local        /cm/local        none    x-create=dir,rbind,ro,nosuid,noexec,rslave         0   -1
+    /cm/shared        /cm/shared        none    x-create=dir,rbind,ro,nosuid,noexec,rslave         0   -1
+    # ... other network mounts etc
+    # make sure nosuid,noexec are used for security
 
 Apptainer
 ^^^^^^^^^
