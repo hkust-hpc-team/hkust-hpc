@@ -21,6 +21,7 @@ Table of Contents
     compile-guides/index
     kb/index
     sysadmin/index
+    benchmarks/index
     contrib/index
 
 Building the Documentation
