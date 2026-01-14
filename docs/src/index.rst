@@ -9,19 +9,18 @@ Science and Technology (HKUST).
 Despite this doc is tailored for Superpod and HPC4 maintained by Information Technology Services Center (ITSO), you may
 find some useful techniques in general and works on other HPC systems as well.
 
-Table of Contents
------------------
-
 .. toctree::
     :glob:
     :titlesonly:
     :maxdepth: 2
+    :caption: Sections
 
     software/index
     compile-guides/index
-    kb/index
     sysadmin/index
     contrib/index
+    */index
+
 
 Building the Documentation
 --------------------------

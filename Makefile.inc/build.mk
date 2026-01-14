@@ -2,7 +2,7 @@ SOURCEDIR            = docs/src
 BUILDDIR             = build
 SPHINXOUTPUT         = html
 SPHINXBUILDS        = $(SPHINXOUTPUT:%=$(BUILDDIR)/%)
-.SOURCE_FILES_SPHINX = $(shell (find docs -type f && find . -type f -name '*.rst') | sort -u)
+.SOURCE_FILES_SPHINX = $(shell find $(SOURCEDIR) -type f -name '*.rst')
 
 build: clean $(SPHINXBUILDS)
 	@true
