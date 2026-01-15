@@ -2,20 +2,17 @@
 Getting Started: K8s Deployment from Bare Metal
 ===================================================
 
-Overview
-========
+This guide provides comprehensive deployment instructions for establishing a Kubernetes cluster using Rancher RKE2 in HPC environments, covering the complete workflow from bare metal OS installation through deploying your first Argo Workflow.
 
-This guide covers the practical steps to deploy a Kubernetes cluster using Rancher RKE2 in an HPC environment, from bare metal OS installation through deploying your first Argo Workflow.
-
-**Expected time:** 1-2 days for initial setup (including learning curve)
+**Expected duration:** 1-2 days for initial deployment (including familiarization)
 
 **Prerequisites:**
 
 - 3-5 dedicated nodes for K8s cluster
-- Basic Linux system administration skills
-- Familiarity with SSH, command-line tools
-- Access to shared storage (NFS or similar)
-- Willingness to experiment and learn
+- Linux system administration proficiency
+- Familiarity with SSH and command-line tools
+- Access to shared storage infrastructure (NFS or equivalent)
+- Organizational support for experimental infrastructure
 
 **What this guide covers:**
 
@@ -28,18 +25,18 @@ This guide covers the practical steps to deploy a Kubernetes cluster using Ranch
 7. Argo Workflows deployment
 8. First workflow example
 
-**What this guide does NOT cover:**
+**Out of scope:**
 
-- Networking configuration (assumes you have functional network)
-- Storage setup (assumes shared storage exists)
-- Firewall rules (you'll need to configure based on your environment)
-- Production hardening (this is for experimental/learning use)
+- Networking configuration (assumes functional network infrastructure)
+- Storage provisioning (assumes existing shared storage)
+- Firewall configuration (environment-specific requirements)
+- Production-grade security hardening (optimized for experimental environments)
 
 
 Architecture Overview
 =====================
 
-Before diving into installation, understand what we're building:
+Before proceeding with installation, understanding the target architecture is essential:
 
 .. code-block:: text
 
@@ -69,13 +66,13 @@ Step 1: Prepare K8s Nodes
 Install Minimal OS
 ------------------
 
-We start with minimal RHEL 9 (or Rocky Linux 9) installation:
+The deployment begins with a minimal RHEL 9 (or Rocky Linux 9) installation:
 
-**Why not PXE boot?**
+**Rationale for manual installation over PXE:**
 
-- K8s nodes are stateful (persist across reboots)
-- K8s configuration differs from compute nodes
-- Simplifies recovery (can reinstall from media independently)
+- K8s nodes maintain persistent state across reboots
+- K8s configuration requirements differ from compute nodes
+- Independent recovery path simplifies disaster recovery procedures
 
 **Installation steps:**
 
@@ -85,7 +82,7 @@ We start with minimal RHEL 9 (or Rocky Linux 9) installation:
 4. Set root password
 5. Complete installation and reboot
 
-**For our example:** We'll use 3 nodes as K8s masters:
+**Example configuration:** This guide uses 3 nodes configured as K8s masters:
 
 - k8s-master1: 192.168.40.11
 - k8s-master2: 192.168.40.12
@@ -94,7 +91,7 @@ We start with minimal RHEL 9 (or Rocky Linux 9) installation:
 Node Preparation Script
 -----------------------
 
-After OS installation, prepare each node for K8s. Here's the conceptual flow (actual implementation is environment-specific):
+Following OS installation, each node requires preparation for Kubernetes operation. The following script demonstrates the conceptual workflow (adapt to environment-specific requirements):
 
 .. code-block:: bash
 
@@ -391,19 +388,19 @@ Run the Deployment
 
 .. code-block:: bash
 
-    # From your admin workstation
+    # Execute from your administration workstation
     ansible-playbook -i inventory/k8s-cluster.yml playbooks/deploy-rke2.yml
 
-**Expected output:**
+**Expected deployment sequence:**
 
-- First master boots RKE2, generates token
-- Additional masters join using token
-- All nodes become control plane members
-- Takes ~10-15 minutes
+- First master initializes RKE2 and generates cluster token
+- Additional masters join using distributed token
+- All nodes establish control plane membership
+- Complete deployment typically requires 10-15 minutes
 
 **Verify deployment:**
 
-SSH to first master and check nodes:
+Validate cluster status from the first master:
 
 .. code-block:: bash
 
@@ -423,21 +420,21 @@ Step 3: Configure Kubectl Access
 Copy Kubeconfig
 ---------------
 
-From first master, copy kubeconfig to your workstation:
+Transfer cluster credentials from the first master to your workstation:
 
 .. code-block:: bash
 
-    # On your workstation
+    # Execute on your workstation
     mkdir -p ~/.kube
     scp sysadmin@k8s-master1:/etc/rancher/rke2/rke2.yaml ~/.kube/config
 
-    # Important: Edit the server address
+    # Critical: Update the server address
     # Change from: server: https://127.0.0.1:6443
     # Change to: server: https://k8s-master1:6443
     # Or use IP: server: https://192.168.40.11:6443
     sed -i 's/127.0.0.1/k8s-master1/g' ~/.kube/config
 
-    # Verify access
+    # Validate connectivity
     kubectl get nodes
 
 **Install kubectl** (if not already installed):
@@ -457,9 +454,9 @@ Verify Cluster Access
 .. code-block:: bash
 
     kubectl cluster-info
-    kubectl get pods -A  # See system pods
+    kubectl get pods -A  # Display all system pods
 
-    # Expected: pods in kube-system, rke2-* namespaces running
+    # Expected: Active pods in kube-system and rke2-* namespaces
 
 
 Step 4: Install and Use Helm
@@ -479,7 +476,7 @@ Install Helm
 Create Your First Helm Chart
 -----------------------------
 
-Example: Create a namespace chart:
+Example namespace chart implementation:
 
 .. code-block:: bash
 
@@ -616,32 +613,32 @@ K8s needs to access shared storage for:
 Step 6: Deploy Supporting Infrastructure
 =========================================
 
-Before deploying workflows, you need two critical pieces of infrastructure:
+Workflow deployment requires two essential infrastructure components:
 
-1. **Git repository** - Store configurations, build scripts, workflow definitions
-2. **Container registry** - Store container images used in workflows
+1. **Git repository** - Version control for configurations, build scripts, and workflow definitions
+2. **Container registry** - Image storage for workflow execution containers
 
-Both are essential for GitOps and reproducible builds.
+Both components are fundamental to GitOps practices and reproducible builds.
 
 Git Repository Options
 ----------------------
 
-You need Git to store:
+The Git repository serves as version control for:
 
-- Workflow definitions (Argo YAML files)
-- Build scripts and configurations
-- Spack configurations or fork
-- OS image build recipes
-- Ansible playbooks
-- Everything that enters the build process
+- Workflow definitions (Argo YAML specifications)
+- Build scripts and configuration files
+- Spack configurations or customized distributions
+- OS image construction recipes
+- Ansible automation playbooks
+- All artifacts entering the build pipeline
 
-**Option A: Use existing Git hosting** (Recommended for starting)
+**Option A: Existing Git hosting** (Recommended initial approach)
 
-- GitHub, GitLab, Bitbucket (cloud or self-hosted)
-- Pros: Already available, familiar tools, good UI
-- Cons: Requires external dependency
+- Platforms: GitHub, GitLab, Bitbucket (cloud or self-hosted)
+- Advantages: Immediate availability, established tooling, comprehensive UI
+- Considerations: Requires external connectivity
 
-**Option B: Self-host on K8s** (For air-gapped or fully self-contained)
+**Option B: Self-hosted on K8s** (For air-gapped or fully autonomous environments)
 
 Deploy Gitea (lightweight Git service) on K8s:
 
@@ -663,34 +660,34 @@ Deploy Gitea (lightweight Git service) on K8s:
     kubectl port-forward -n git svc/gitea-http 3000:3000
     # Open http://localhost:3000
 
-**IMPORTANT: Source-of-Truth for Disposable K8s**
+**CRITICAL: Source-of-Truth Architecture for Disposable Infrastructure**
 
 .. warning::
 
-   If you deploy Git on K8s (Option B), remember that our K8s clusteris disposable by design. You should:
+   When deploying Git on K8s (Option B), maintain architectural awareness that the K8s cluster is disposable by design:
    
-   - Use a **cloud Git service as the source-of-truth** (GitHub, GitLab)
-   - Treat K8s-hosted Git as a **local mirror/cache**
-   - Configure K8s Gitea to mirror from cloud: ``git remote add upstream https://github.com/yourorg/hpc-automation.git``
-   - Regularly push to cloud: ``git push upstream main``
+   - Designate a **cloud Git service as the authoritative source** (GitHub, GitLab)
+   - Configure K8s-hosted Git as a **local mirror/cache layer**
+   - Establish upstream remote: ``git remote add upstream https://github.com/yourorg/hpc-automation.git``
+   - Maintain regular synchronization: ``git push upstream main``
    
-   **Why:** If you nuke the K8s cluster (which is expected in this experimental approach), you don't lose your Git history. The K8s Git instance can be quickly rebuilt and re-synced from the cloud source.
+   **Rationale:** Cluster rebuilds (an expected operational pattern in this experimental approach) should not result in repository history loss. The K8s Git instance can be rapidly reconstructed and synchronized from the authoritative cloud source.
    
-   **Pattern:**
+   **Architecture pattern:**
    
    .. code-block:: text
    
-       Cloud Git (GitHub/GitLab)  ← Source of Truth
-            ↓ mirror/sync
-       K8s Git (Gitea)           ← Local cache for fast access
-            ↓ used by
-       Argo Workflows            ← Pulls from local Git
+       Cloud Git (GitHub/GitLab)  ← Authoritative source
+            ↓ synchronization
+       K8s Git (Gitea)           ← Local cache (performance optimization)
+            ↓ consumption
+       Argo Workflows            ← Executes from local instance
    
-   This way, rebuilding K8s cluster doesn't lose any code/config.
+   This architecture ensures cluster disposability without data loss.
 
-**Initial Git setup:**
+**Recommended repository structure:**
 
-Create a repository structure like:
+Organize the repository following this hierarchy:
 
 .. code-block:: text
 
@@ -713,15 +710,13 @@ You need a container registry to store:
 - Workflow step containers
 - Custom tool containers
 
-**Option A: Use existing registry** (Easiest start)
+**Option A: Existing registry infrastructure** (Simplest approach)
 
-- Docker Hub (public/private repos)
-- GitHub Container Registry (ghcr.io)
-- GitLab Container Registry
-- Pros: No setup required, reliable
-- Cons: External dependency, potential rate limits
+- Platforms: Docker Hub, GitHub Container Registry (ghcr.io), GitLab Container Registry
+- Advantages: Zero setup overhead, proven reliability
+- Considerations: External dependency, potential rate limiting
 
-**Option B: Deploy simple registry on K8s** (Minimal self-hosted)
+**Option B: Minimal self-hosted registry on K8s** (Basic autonomous operation)
 
 Use official Docker registry for basic needs:
 
@@ -806,7 +801,7 @@ Use official Docker registry for basic needs:
     # Test (from node or with port-forward):
     curl http://localhost:5000/v2/_catalog
 
-**Configure nodes to use insecure registry** (for simple registry without TLS):
+**Configure nodes for insecure registry access** (development/testing environments without TLS):
 
 On each K8s node, configure containerd:
 
@@ -826,15 +821,15 @@ On each K8s node, configure containerd:
     # Restart RKE2
     sudo systemctl restart rke2-server
 
-**Option C: Deploy Harbor** (Production-grade, feature-rich)
+**Option C: Harbor deployment** (Production-grade registry platform)
 
-Harbor provides:
+Harbor provides enterprise features:
 
-- Vulnerability scanning
-- Image signing
-- Replication
-- RBAC
-- UI for management
+- Vulnerability scanning and security analysis
+- Image signing and verification
+- Cross-registry replication
+- Role-Based Access Control (RBAC)
+- Comprehensive management interface
 
 .. code-block:: bash
 
@@ -850,7 +845,7 @@ Harbor provides:
       --set persistence.enabled=true \
       --set externalURL=https://harbor.local
 
-**For learning/experimental use:** Option A (existing registry) or Option B (simple registry) are sufficient.
+**Recommendation for experimental environments:** Option A (existing infrastructure) or Option B (minimal self-hosted) provide adequate functionality for initial deployment.
 
 Configure Registry Access in Workflows
 ---------------------------------------
@@ -903,7 +898,7 @@ Once you have a registry, configure Argo workflows to use it:
 GitOps Workflow Pattern
 -----------------------
 
-With Git + Container Registry, your workflow becomes:
+Integrated Git and container registry infrastructure enables the following operational pattern:
 
 .. code-block:: text
 
@@ -1002,15 +997,15 @@ Create a test workflow that accesses both:
 Step 7: Deploy Argo Workflows
 ==============================
 
-Why Argo Workflows?
--------------------
+Argo Workflows Selection Rationale
+-----------------------------------
 
-Argo Workflows is a workflow engine for K8s:
+Argo Workflows provides a Kubernetes-native workflow engine with the following capabilities:
 
-- Define multi-step workflows as YAML
-- Handles dependencies, parallelization, retries
-- Provides UI for monitoring
-- Well-suited for CI/CD pipelines
+- YAML-based workflow definitions
+- Dependency management, parallelization, and retry logic
+- Integrated monitoring interface
+- Well-suited for CI/CD pipeline orchestration
 
 Install Argo Workflows via Helm
 --------------------------------
@@ -1069,12 +1064,12 @@ Access Argo UI
 
 .. code-block:: bash
 
-    # Port forward to access UI locally
+    # Establish port forwarding for local access
     kubectl port-forward -n argo svc/argo-workflows-server 2746:2746
     
-    # Open browser: https://localhost:2746
+    # Navigate to: https://localhost:2746
 
-**Note:** Default install requires token. To disable auth for testing (NOT production):
+**Note:** Default installation requires authentication tokens. To disable authentication for development environments (unsuitable for production):
 
 .. code-block:: yaml
 
@@ -1088,10 +1083,10 @@ Access Argo UI
 Step 8: Your First Workflow
 ============================
 
-Simple Hello World Workflow
-----------------------------
+Basic Workflow Implementation
+-----------------------------
 
-Create ``workflows/hello-world.yaml``:
+Initial validation workflow (``workflows/hello-world.yaml``):
 
 .. code-block:: yaml
 
@@ -1202,44 +1197,46 @@ Example: Write to shared storage:
 Next Steps and Learning Resources
 ==================================
 
-You Now Have:
--------------
-
-- ✅ Working K8s cluster (3-node control plane)
-- ✅ Kubectl access from workstation
-- ✅ Helm for package management
-- ✅ Shared storage accessible from workflows
-- ✅ Git repository for storing configurations
-- ✅ Container registry for storing images
-- ✅ Argo Workflows for pipeline orchestration
-- ✅ Complete end-to-end build system (source → build → artifact)
-- ✅ First workflow examples
-
-Continue Learning:
+Deployment Summary
 ------------------
 
-**K8s fundamentals:**
+Successful completion establishes:
 
-- Pods, Deployments, Services
-- ConfigMaps and Secrets
-- Resource requests and limits
-- Namespaces and RBAC
+- ✅ Operational K8s cluster (3-node control plane configuration)
+- ✅ Kubectl access from administration workstation
+- ✅ Helm package management
+- ✅ Shared storage integration for workflow access
+- ✅ Git repository for configuration management
+- ✅ Container registry for image storage
+- ✅ Argo Workflows for pipeline orchestration
+- ✅ Complete build system architecture (source → build → artifact)
+- ✅ Validated workflow examples
 
-**Argo Workflows:**
+Continuing Education
+--------------------
 
-- Workflow templates (reusable)
-- DAG and steps patterns
-- Conditionals and loops
-- Artifacts and parameters
-- Retry and error handling
+**Kubernetes fundamentals:**
 
-**HPC-specific patterns:**
+- Core resources: Pods, Deployments, Services
+- Configuration management: ConfigMaps and Secrets
+- Resource allocation: requests and limits
+- Multi-tenancy: Namespaces and RBAC
 
-- Building end-to-end CI/CD pipelines (Git → Build → Test → Deploy)
-- Container image management and versioning strategies
-- Build caching and artifact reuse
-- Integration with HPC schedulers (SLURM)
-- Monitoring and logging for long-running builds
+**Argo Workflows advancement:**
+
+- Workflow templates for reusability
+- DAG and steps execution patterns
+- Conditional logic and iteration
+- Artifact and parameter management
+- Retry strategies and error handling
+
+**HPC-specific integration patterns:**
+
+- End-to-end CI/CD pipeline construction (Git → Build → Test → Deploy)
+- Container image lifecycle and versioning strategies
+- Build artifact caching and optimization
+- HPC scheduler integration (SLURM interoperability)
+- Long-running build monitoring and logging
 - GitOps patterns for infrastructure management
 
 Recommended Documentation:
@@ -1251,61 +1248,59 @@ Recommended Documentation:
 - Argo Workflows: https://argoproj.github.io/workflows/
 - Our case studies: :doc:`case-study-pxe-images` and :doc:`case-study-spack-stack`
 
-Troubleshooting Tips:
----------------------
+Common Troubleshooting Scenarios
+---------------------------------
 
-**Pods not starting:**
+**Pod initialization failures:**
 
 .. code-block:: bash
 
     kubectl describe pod <pod-name> -n <namespace>
     kubectl logs <pod-name> -n <namespace>
 
-**Workflow stuck:**
+**Workflow execution stalls:**
 
 .. code-block:: bash
 
     argo get <workflow-name> -n <namespace>
     argo logs <workflow-name> -n <namespace>
 
-**Can't access kubeconfig:**
+**Kubeconfig access issues:**
 
-- Check file permissions
-- Verify server address in kubeconfig
-- Test with: ``kubectl cluster-info``
+- Verify file permissions (typically 600)
+- Validate server address in kubeconfig file
+- Test connectivity: ``kubectl cluster-info``
 
-**Persistent volume issues:**
+**Persistent volume connectivity:**
 
-- Verify NFS mount works from nodes: ``mount | grep nfs``
-- Check PV/PVC status: ``kubectl get pv,pvc``
-- Review events: ``kubectl get events``
+- Verify NFS mounts on nodes: ``mount | grep nfs``
+- Check volume status: ``kubectl get pv,pvc``
+- Review system events: ``kubectl get events``
 
-Remember: "Disposable K8s"
---------------------------
+Disposable Infrastructure Recovery
+----------------------------------
 
-If things go wrong and you can't figure it out:
+When encountering intractable issues:
 
-1. Document what you tried
-2. Save any working configurations to Git
-3. Rebuild cluster from scratch (1-2 hours)
-4. Learn from the experience
+1. Document attempted resolution steps
+2. Commit functional configurations to Git repository
+3. Execute cluster rebuild (approximately 1-2 hours)
+4. Analyze and document the learning experience
 
-This is a learning environment - mistakes are okay!
+This experimental environment explicitly supports learning through iteration.
 
 
 Conclusion
 ==========
 
-You now have a working K8s environment for experimenting with CI/CD workflows in HPC contexts. This setup is:
+This guide has established a functional Kubernetes environment suitable for CI/CD workflow experimentation in HPC contexts. The resulting infrastructure is:
 
-- **Experimental**: For learning, not production-critical services
-- **Disposable**: Can rebuild from Git in ~2 hours
-- **Isolated**: Doesn't affect production HPC workloads
-- **Practical**: Ready for real workflow development
+- **Experimental**: Optimized for learning rather than production-critical services
+- **Disposable**: Reconstructible from version control in approximately 2 hours
+- **Isolated**: Architecturally separated from production HPC workloads
+- **Operational**: Prepared for workflow development and testing
 
-**Next:** Explore our case studies to see real-world applications:
+**Next steps:** Examine our detailed case studies demonstrating real-world applications:
 
-- :doc:`case-study-pxe-images` - Automated OS image builds
-- :doc:`case-study-spack-stack` - Hierarchical software stack management
-
-Happy experimenting!
+- :doc:`case-study-pxe-images` - Automated OS image construction and validation
+- :doc:`case-study-spack-stack` - Hierarchical software stack management and deployment

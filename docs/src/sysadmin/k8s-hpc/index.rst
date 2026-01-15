@@ -2,15 +2,12 @@
 Kubernetes in HPC Environments
 ===============================
 
-Introduction
-============
+This guide describes a pragmatic approach to integrating Kubernetes (K8s) into existing HPC and AI computing environments. Unlike approaches that attempt to replace or deeply integrate with traditional HPC workload managers like SLURM, this method focuses on using K8s as a complementary DevOps automation platform that runs alongside your existing infrastructure.
 
-This guide describes a pragmatic, experimental approach to integrating Kubernetes (K8s) into existing HPC and AI computing environments. Unlike approaches that attempt to replace or deeply integrate with traditional HPC workload managers like SLURM, this method focuses on using K8s as a complementary DevOps automation platform that runs alongside your existing infrastructure.
-
-**This is fundamentally a learning project** - an experiment in bringing modern DevOps practices (CI/CD, GitOps, Infrastructure as Code) to traditional HPC environments while minimizing risk to production operations.
+**This represents an experimental initiative** - an exploration of how modern DevOps practices (CI/CD, GitOps, Infrastructure as Code) can be adapted to traditional HPC environments while minimizing risk to production operations.
 
 The Problem: Managing HPC Software Lifecycle
----------------------------------------------
+=============================================
 
 HPC system administrators face several recurring challenges:
 
@@ -32,6 +29,8 @@ HPC system administrators face several recurring challenges:
 
 Our Approach: K8s as a Low-Risk Learning Platform
 ==================================================
+
+Our approach addresses these challenges by introducing GitOps and CI/CD practices to HPC systems in a measured, incremental way. 
 
 Philosophy: "Do No Harm"
 ------------------------
@@ -104,9 +103,9 @@ The production cluster has **no runtime dependency** on K8s for day-to-day opera
 This is fundamentally different from architectures where K8s manages the production workloads directly. Here, K8s is purely a build-time tool, not a runtime dependency.
 
 The "Disposable K8s" Philosophy
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+---------------------------------
 
-A key aspect of our approach is treating the K8s cluster as **disposable infrastructure**:
+A key aspect of this approach is treating the K8s cluster as **disposable infrastructure**:
 
 **What this means:**
 
@@ -136,75 +135,36 @@ Total: ~2 hours to full recovery, and production was never affected.
 What We Learned: Key Insights
 ==============================
 
-This learning project has taught us several valuable lessons about bringing modern DevOps practices to HPC environments.
+This experimental initiative has yielded several valuable insights about adapting modern DevOps practices to HPC environments.
 
-Learning GitOps and CI/CD in HPC Context
------------------------------------------
+Streamlining Operations
+------------------------
 
-**Infrastructure as Code works for HPC**
-  Storing all K8s configs, workflows, and build scripts in Git provides a single source of truth. When something breaks, we can see what changed.
+**Deterministic and reproducible builds**
+  Traditional HPC builds face several challenges: full compute nodes (256 cores) allocated for builds that use only 16 cores; software builds on compute nodes risk "pollution" from previous runs or ad-hoc installations; GPU-dependent builds require physical GPU nodes, limiting flexibility; parallel builds across nodes require ad-hoc file locking mechanisms prone to race conditions. Kubernetes workflows address these through containerized builds where each step runs from a specified container image, ensuring deterministic starting state. This eliminates "works on my machine" problems and enables cross-compilation capabilities (e.g., CUDA builds without requiring GPU hardware).
 
-**CI/CD concepts translate to HPC tasks**
-  The idea of "commit triggers build → run tests → deploy artifact" applies to OS images and software stacks, not just web applications.
+**Isolation with right-sized resource allocation**
+  Kubernetes enables precise resource allocation (e.g., 16 cores per build instance) rather than over-provisioning full compute nodes. Isolated storage via Persistent Volume Claims prevents build interference between concurrent workflows. Native parallelization through independent workflow steps (pods) eliminates custom locking mechanisms. Together, deterministic builds and efficient parallelization enable more frequent software updates - not because individual builds are faster, but because validation becomes reliable and debugging time decreases significantly.
 
-**Declarative configuration reduces tribal knowledge**
-  Instead of "SSH to the build node and run these commands," workflows document the entire process. New team members can understand what happens without asking.
+Introducing GitOps and CI/CD to HPC Operations
+-----------------------------------------------
 
-**GitOps for reproducibility**
-  Rebuilding from Git is easier than remembering what commands we ran six months ago.
+**Infrastructure as Code and CI/CD patterns**
+  Maintaining K8s configurations, workflows, and build scripts in version control provides a single source of truth. Configuration changes become traceable through Git history, improving accountability and debugging capabilities. The fundamental CI/CD pattern of "commit triggers build → run tests → deploy artifact" applies equally well to OS images and software stacks as it does to web applications. Declarative workflows encode procedural knowledge that traditionally existed as informal instructions, improving knowledge transfer and onboarding.
 
-**Key insight:** You don't need to fully embrace "cloud-native" culture to benefit from these practices. We're applying CI/CD concepts selectively to HPC admin tasks, not rewriting everything.
+**Knowledge captured in code and test cases**
+  Automated tests catch common configuration errors (missing package dependencies, broken symbolic links, path misconfigurations) immediately. Resolved failures become codified as test cases - over time, the test suite evolves into institutional knowledge, a catalog of failure modes and their detection mechanisms. Procedural knowledge traditionally maintained as checklists ("remember to check X", "don't forget to configure Y") transforms into automated validation steps, reducing cognitive load and ensuring consistent execution.
 
-Learning to Operate K8s (Low-Stakes Edition)
----------------------------------------------
+**Key insight:** Selective adoption of DevOps practices is viable. Organizations can apply CI/CD concepts to specific HPC administrative tasks without comprehensive infrastructure redesign or cultural transformation.
 
-**K8s concepts through practice**
-  Reading K8s docs is overwhelming. Building actual workflows (even simple ones) makes concepts like pods, services, persistent volumes, and namespaces concrete.
+Developing K8s Operational Expertise
+-------------------------------------
 
-**Troubleshooting skills develop gradually**
-  Early on, every error was mysterious. Over time, we learned to read logs, understand pod lifecycle issues, and diagnose common problems.
+**Low-risk experimentation environment**
+  Kubernetes documentation can be overwhelming for newcomers. Building actual workflows, even simple ones, provides concrete understanding of core concepts like pods, services, persistent volumes, and namespaces. Configuration errors in this architecture don't impact production workloads, enabling methodical investigation of problems, experimental fixes, and thorough documentation without pressure. The low-stakes nature of this implementation pattern facilitated broader team adoption - staff members initially hesitant about Kubernetes became more comfortable through exposure to a system explicitly positioned as non-critical infrastructure.
 
-**Mistakes are learning opportunities**
-  When we misconfigure something, production isn't affected. We can take time to understand what went wrong, experiment with fixes, and document solutions.
-
-**"Throw it away and rebuild" is valid**
-  Several times we couldn't figure out a K8s problem. Rebuilding from scratch (1-2 hours) taught us more than hours of troubleshooting. This only works because K8s isn't mission-critical.
-
-**Unexpected benefit:** Team members who were K8s-hesitant became more comfortable through low-pressure exposure. "It's just for builds, not critical" reduced anxiety about making changes.
-
-Learning What Goes Wrong and How to Avoid It
----------------------------------------------
-
-**Testing catches stupid mistakes**
-  Forgetting to install a package, breaking a symlink, or misconfiguring a path - automated tests catch these immediately. We learned that even basic tests have value.
-
-**Failures teach you your system**
-  When a build workflow fails, we learned about dependencies we didn't know existed, OS behaviors we hadn't considered, or environmental assumptions we made.
-
-**Documentation emerges from troubleshooting**
-  Each failure that we solved became documentation. The test suite became a knowledge base of "things that broke and how we detected them."
-
-**Systematic prevention**
-  Instead of "remember to check X," we write a test for X. Instead of "don't forget to configure Y," we add Y to the automated setup. Manual checklists become automated checks.
-
-Incidental Benefits We Noticed
--------------------------------
-
-While learning, we also noticed some operational improvements:
-
-**More frequent updates**
-  Because automated testing reduces uncertainty, we're more willing to update software regularly rather than delaying updates out of caution.
-
-**Parallel builds help**
-  For repetitive tasks (building software with multiple compilers), parallelization across K8s nodes does save time, though setup overhead is significant.
-
-**Test-driven development for infrastructure**
-  Writing tests for infrastructure (can this image boot? do compilers work?) feels similar to unit testing code. It's a mindset shift for HPC admins used to manual validation.
-
-**Shared build logs**
-  Automatically capturing and organizing build logs in one place (rather than scattered terminal sessions) helps when debugging or reviewing what happened.
-
-**Reality check:** These aren't dramatic transformations. They're incremental improvements that accumulate over time. The real value is in building operational muscle memory and institutional knowledge.
+**Rapid iteration through disposability**
+  When troubleshooting becomes protracted, rebuilding the K8s cluster from scratch (1-2 hours via Infrastructure as Code) often proves more educational than extended debugging sessions. This approach is viable specifically because K8s manages non-critical build infrastructure. All configuration lives in Git, making rebuilding mechanical rather than requiring creative problem-solving. This "disposable infrastructure" philosophy removes pressure to maintain "perfect" operations and enables fearless experimentation.
 
 
 Is This Approach Right for You?
@@ -240,13 +200,13 @@ This approach may NOT be suitable if:
 
 ❌ **Risk-averse culture** - Not comfortable with experimental approaches
 
-**Bottom line:** If you're interested in learning modern DevOps practices, can tolerate some experimentation, and can spare a few nodes, this approach provides a low-risk way to gain valuable experience. If you need immediate productivity gains or have no tolerance for learning curves, this may not be the right time.
+**Assessment framework:** This approach suits organizations seeking to explore modern DevOps practices with manageable risk, available infrastructure capacity (3-5 nodes), and tolerance for experimentation. Organizations requiring immediate operational improvements or lacking capacity for learning investment should consider alternative solutions or defer adoption until circumstances align better.
 
 
 Real-World Applications
 =======================
 
-To see this approach in action, we've documented two detailed case studies:
+Two detailed case studies demonstrate this approach in production environments:
 
 .. toctree::
    :maxdepth: 1
@@ -254,7 +214,7 @@ To see this approach in action, we've documented two detailed case studies:
    case-study-pxe-images
    case-study-spack-stack
 
-These case studies show the messy reality of implementing automation - what works, what's challenging, and what we learned along the way.
+These case studies present realistic implementation experiences - successful patterns, ongoing challenges, and practical lessons learned.
 
 
 Getting Started
