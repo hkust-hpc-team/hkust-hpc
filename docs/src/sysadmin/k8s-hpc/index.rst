@@ -233,7 +233,8 @@ This guide covers the practical steps from bare metal OS installation through de
 Further Reading
 ===============
 
-- :doc:`../software-ecosystem` - Understanding hierarchical module systems with Spack
+- :doc:`../software-ecosystem/index` - HPC software ecosystem overview and design philosophy
+- :doc:`../software-ecosystem/scientific-software-stack` - Hierarchical module systems with Spack/Lmod
 - Rancher RKE2 documentation: https://docs.rke2.io/
 - Argo Workflows documentation: https://argoproj.github.io/workflows/
 - GitOps principles: https://opengitops.dev/

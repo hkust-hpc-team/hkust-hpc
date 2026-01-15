@@ -5,4 +5,5 @@ HPC Administration Guide
    :maxdepth: 3
    :caption: Contents
 
+   software-ecosystem/index
    k8s-hpc/index
