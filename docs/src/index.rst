@@ -18,6 +18,7 @@ find some useful techniques in general and works on other HPC systems as well.
     software/index
     compile-guides/index
     sysadmin/index
+    benchmarks/index
     contrib/index
     */index
 
