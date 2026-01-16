@@ -27,8 +27,8 @@ def setup(app):
 project = "HPC Handbook"
 copyright = "2025, The Hong Kong University of Science and Technology"
 
-release = "0.1"
-version = "0.1.0"
+release = "1.0"
+version = "1.0.0"
 
 # -- General configuration
 
