@@ -7,3 +7,4 @@ HPC Administration Guide
 
    software-ecosystem/index
    k8s-hpc/index
+   other-topics
