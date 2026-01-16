@@ -110,8 +110,8 @@ The ``-l`` (``--localalloc``) flag ensures each MPI rank allocates memory on its
 
 **Best practice:** Verify MPI runtime NUMA binding behavior before adding manual ``numactl`` directives. Modern MPI implementations typically provide topology-aware placement; conflicting policies may degrade performance. Consult MPI runtime documentation for native NUMA support capabilities.
 
-RoCEv2 Last-Mile Buffer Optimization
--------------------------------------
+RoCEv2 CPU Core Reservation for Network Processing
+--------------------------------------------------
 
 **Background:** RoCEv2 (RDMA over Converged Ethernet v2) and InfiniBand both support RDMA for direct memory access but differ in kernel CPU involvement. InfiniBand offloads protocol processing to dedicated HCA hardware, while RoCEv2 requires kernel CPU cycles for Ethernet packet processing, flow control, and congestion management, competing with application threads for CPU resources.
 
