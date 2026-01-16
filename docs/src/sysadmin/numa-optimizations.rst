@@ -1,50 +1,11 @@
-===========================
-Other Administration Topics
-===========================
+================================
+NUMA Performance Optimizations
+================================
 
-This document covers operational knowledge that does not fit cleanly into specific infrastructure domains: known software issues requiring workarounds and performance optimization techniques for HPC workloads.
-
-Known Issues
-============
-
-RHEL 9: Binutils Incompatibility with AMD Zen4
------------------------------------------------
-
-**Issue:** System-provided binutils lacks support for AMD Zen4 instruction sets, preventing proper code generation for Zen4 and newer processors.
-
-**Status:** No upstream fix available in RHEL 9 base repository.
-
-**Workaround:** Rebuild GCC and binutils from source with Zen4 support enabled. See Spack configuration for compiler rebuilds with appropriate architecture targets.
-
-**Impact:** Affects compilation of architecture-optimized code. Scientific applications may fail to compile or miss performance optimizations without updated toolchain.
-
-RHEL 9: DMA Driver Unavailable for AMD Zen4
---------------------------------------------
-
-**Issue:** Direct Memory Access (DMA) driver support missing for AMD Zen4 platforms in earlier RHEL 9 releases.
-
-**Status:** Resolved in RHEL 9.7 and later.
-
-**Workaround:** Update to RHEL 9.7 or newer. No workaround available for earlier versions.
-
-**Impact:** Potential performance degradation for I/O-intensive workloads on Zen4 hardware running RHEL 9.0-9.6.
-
-AOCC 5.0: Fortran Compiler Configuration Regression
-----------------------------------------------------
-
-**Issue:** AMD Optimizing C/C++ Compiler (AOCC) 5.0 Fortran compiler (flang) does not read ``flang.cfg`` configuration file, representing regression from AOCC 4.2 behavior.
-
-**Status:** No fix or workaround available from vendor.
-
-**Mitigation:** Ensure detected GCC installation is fully functional. AOCC may fall back to partially installed, non-functional GCC toolchains (e.g., RHEL ``gcc-toolset-12`` incomplete installations), resulting in compilation failures.
-
-**Impact:** Fortran compilation may fail with non-obvious errors if GCC fallback is misconfigured. Verify GCC functionality before deploying AOCC 5.0 for Fortran workloads.
-
-Performance Optimization
-========================
+This document describes NUMA-aware configuration and optimization techniques for HPC workloads. Non-Uniform Memory Access (NUMA) architectures require careful memory allocation and process placement strategies to achieve optimal performance.
 
 NUMA Topology Verification
----------------------------
+===========================
 
 HPC systems should exhibit balanced NUMA topology with equal resource distribution across NUMA nodes (CPUs, memory, GPUs). Verify topology using hwloc:
 
@@ -59,7 +20,7 @@ HPC systems should exhibit balanced NUMA topology with equal resource distributi
 Asymmetric NUMA configurations introduce performance unpredictability for MPI applications with process placement sensitivity.
 
 NUMA-Aware Memory Allocation
------------------------------
+=============================
 
 Memory allocation strategy significantly impacts application performance on NUMA systems. The ``numactl`` command controls NUMA policy for processes, managing both CPU affinity and memory placement.
 
@@ -71,7 +32,7 @@ Memory allocation strategy significantly impacts application performance on NUMA
 - ``numactl --preferred=<node>`` (``-p``): Prefer specific NUMA node, fall back to others if unavailable
 
 Non-MPI Applications
-^^^^^^^^^^^^^^^^^^^^^
+---------------------
 
 Threading-based applications (OpenMP, TBB) often benefit from interleaved memory allocation, distributing memory across all NUMA nodes rather than concentrating on NUMA node 0:
 
@@ -82,7 +43,7 @@ Threading-based applications (OpenMP, TBB) often benefit from interleaved memory
 This prevents single-node memory bandwidth saturation. Without explicit policy, Linux default allocation concentrates memory on the node where the parent thread allocates, creating potential bottlenecks for applications using all CPU cores.
 
 MPI Applications
-^^^^^^^^^^^^^^^^
+----------------
 
 MPI runtimes provide NUMA-aware process placement. Combine MPI CPU pinning with local memory allocation - each MPI rank allocates memory on its local NUMA node.
 
@@ -111,7 +72,7 @@ The ``-l`` (``--localalloc``) flag ensures each MPI rank allocates memory on its
 **Best practice:** Verify MPI runtime NUMA binding behavior before adding manual ``numactl`` directives. Modern MPI implementations typically provide topology-aware placement; conflicting policies may degrade performance. Consult MPI runtime documentation for native NUMA support capabilities.
 
 RoCEv2 CPU Core Reservation for Network Processing
---------------------------------------------------
+===================================================
 
 **Background:** RoCEv2 (RDMA over Converged Ethernet v2) and InfiniBand both support RDMA for direct memory access but differ in kernel CPU involvement. InfiniBand offloads protocol processing to dedicated HCA hardware, while RoCEv2 requires kernel CPU cycles for Ethernet packet processing, flow control, and congestion management, competing with application threads for CPU resources.
 
@@ -157,7 +118,7 @@ RoCEv2 CPU Core Reservation for Network Processing
 **Performance impact:** Communication-intensive MPI applications (halo exchanges, collective operations) typically observe 10-20% performance improvement with core reservation on RoCEv2 networks.
 
 GPU-Aware NUMA Affinity
-------------------------
+========================
 
 Job schedulers should assign NUMA-local CPU and GPU resources together. GPU-CPU affinity mismatches introduce PCIe traffic across NUMA boundaries, degrading GPU-accelerated workload performance.
 
