@@ -29,7 +29,7 @@ RHEL 9: DMA Driver Unavailable for AMD Zen4
 AOCC 5.0: Fortran Compiler Configuration Regression
 ====================================================
 
-**Issue:** AMD Optimizing C/C++ Compiler (AOCC) 5.0 Fortran compiler (flang) does not read ``flang.cfg`` configuration file, representing regression from AOCC 4.2 behavior.
+**Issue:** AMD Optimizing C/C++ Compiler (AOCC) 5.0 Fortran compiler (flang) does not read ``flang.cfg`` configuration file, representing a regression from AOCC 4.2 behavior.
 
 **Status:** No fix or workaround available from vendor.
 
