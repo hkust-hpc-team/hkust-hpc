@@ -121,21 +121,21 @@ RoCEv2 CPU Core Reservation for Network Processing
 
 .. code-block:: bash
 
-   # Cores reserved for RoCE processing per node
-   declare -r NUMA_CCD=8  # Set to 0 to disable reservation
+   # Total number of cores
+   declare -r total_cores=256
+   # Reserve cores for network I/O processing
+   # These core IDs should match the NUMA node of your RoCE NIC
+   declare -r roce_core_start=192
+   declare -r roce_core_end=199
+   declare -r num_reserved_cores=$(($roce_core_end - $roce_core_start + 1))
 
    function set_binding() {
-     local ntasks_per_node=$(($SLURM_NTASKS_PER_NODE - $NUMA_CCD))
+     local ntasks_per_node=$(($total_cores - $num_reserved_cores))
      local ntasks=$(($SLURM_NNODES * $ntasks_per_node))
      
-     # Reserve cores for network I/O processing
-     # These core IDs should match the NUMA node of your RoCE NIC
-     local roce_core_start=192
-     local roce_core_end=199
-     
-     if [[ $ntasks_per_node -lt $SLURM_NTASKS_PER_NODE ]]; then
+     if [[ $ntasks_per_node -lt $total_cores ]]; then
        # Map tasks to non-reserved cores
-       local cpu_bind="verbose,map_cpu:$(seq --sep=, 0 $(($roce_core_start - 1))),$(seq --sep=, $(($roce_core_end + 1)) 255)"
+       local cpu_bind="verbose,map_cpu:$(seq --sep=, 0 $(($roce_core_start - 1))),$(seq --sep=, $(($roce_core_end + 1)) $(($total_cores - 1)))"
      else
        local cpu_bind="verbose,core"
      fi
