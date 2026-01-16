@@ -13,3 +13,4 @@ Each section includes essential setup, optimizations, and troubleshooting tips f
     subsystems/cpu/amd
     subsystems/networking/index
     subsystems/nfs-client
+    other-topics
