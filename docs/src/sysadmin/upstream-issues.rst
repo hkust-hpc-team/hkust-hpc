@@ -4,12 +4,6 @@ Upstream Software Issues and Workarounds
 
 This document catalogs known issues in upstream software components (operating systems, vendor compilers, hardware drivers) affecting HPC system operation. These issues originate from vendors or open-source projects and are outside direct administrative control. Where available, workarounds enable functionality until upstream resolution.
 
-Issues document operational impacts, current status, and mitigation strategies. Tracking upstream issues enables:
-
-- **Proactive communication** with users encountering affected workflows
-- **Vendor engagement** providing reproduction cases and workaround documentation
-- **Version planning** informing OS and compiler upgrade decisions based on known regressions
-
 RHEL 9: Binutils Incompatibility with Modern Instruction Sets
 ==============================================================
 
@@ -30,7 +24,7 @@ RHEL 9: DMA Driver Unavailable for AMD Zen4
 
 **Affected versions:** RHEL 9.0-9.6 (resolved in 9.7)
 
-**Upstream status:** Resolved in RHEL 9.5 (``ptdma``) and RHEL 9.7 (``ae4dma``). See `RHEL 9.7 Release Notes - New Drivers <https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html-single/9.7_release_notes/index#new_drivers>`_ for driver availability timeline. Drivers available in kernel 5.14.0-503+ (RHEL 9.7).
+**Upstream status:** Resolved in RHEL 9.7. While ``ptdma`` module appears in RHEL 9.5 kernel, driver does not function correctly on Zen4 (``/sys/class/dma`` absent despite module load). Functional ``ptdma`` and ``ae4dma`` drivers available in RHEL 9.7 kernel 5.14.0-611+. See `RHEL 9.7 Release Notes - New Drivers <https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html-single/9.7_release_notes/index#new_drivers>`_ for driver availability timeline.
 
 **Workaround:** Update to RHEL 9.7 or newer. No workaround available for earlier versions.
 
