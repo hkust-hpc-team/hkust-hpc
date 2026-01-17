@@ -8,6 +8,6 @@ HPC Administration Guide
    system-config
    software-ecosystem/index
    k8s-hpc/index
-   testing-tracing
+   testing-tracing/index
    known-issues
    numa-optimizations
