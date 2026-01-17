@@ -129,7 +129,7 @@ RoCEv2 CPU Core Reservation for Network Processing
 
 **Typical configuration:** 248 application tasks on 256-core system, with 8 cores reserved for network processing on NIC NUMA node.
 
-**Potential performance impact:** up to +10% depending on communication intensity (ROMs ocean science model, SPEChpc 2021 ``605.lbm``, ``618.tealeaf``, ``628.pot_s``)
+**Potential performance impact:** up to +10% depending on communication intensity (e.g., ROMs ocean science model; SPEChpc 2021: ``605.lbm``, ``618.tealeaf``, ``628.pot_s``)
 
 .. tip::
 
