@@ -4,6 +4,10 @@ NUMA Performance Optimizations
 
 This document describes NUMA-aware configuration and optimization techniques for HPC workloads. Non-Uniform Memory Access (NUMA) architectures require careful memory allocation and process placement strategies to achieve optimal performance.
 
+.. tip::
+
+   Benchmark your specific application with and without each optimization to determine actual benefit. Mileage varies significantly across applications.
+
 NUMA Topology Verification
 ===========================
 
@@ -42,6 +46,12 @@ Threading-based applications (OpenMP, TBB) often benefit from interleaved memory
 
 This prevents single-node memory bandwidth saturation. Without explicit policy, Linux default allocation concentrates memory on the node where the parent thread allocates, creating potential bottlenecks for applications using all CPU cores.
 
+**Potential performance impact:** ~20-30% (memory-intensive OpenMP applications with uniform memory access patterns)
+
+.. tip::
+   
+   For threading applications that use threads across all cores but don't fill all system memory, interleaved allocation (``-i all``) distributes memory across all NUMA nodes, enabling access to all memory channels' bandwidth even with modest memory usage. Default local allocation often concentrates memory on one NUMA node regardless of available capacity elsewhere. Test if your application benefits—mileage varies.
+
 MPI Applications
 ----------------
 
@@ -69,7 +79,11 @@ MPI runtimes provide NUMA-aware process placement. Combine MPI CPU pinning with 
 
 The ``-l`` (``--localalloc``) flag ensures each MPI rank allocates memory on its pinned NUMA node, minimizing cross-NUMA memory access during execution.
 
-**Best practice:** Verify MPI runtime NUMA binding behavior before adding manual ``numactl`` directives. Modern MPI implementations typically provide topology-aware placement; conflicting policies may degrade performance. Consult MPI runtime documentation for native NUMA support capabilities.
+**Potential performance impact:** ~5-10% (MPI applications with significant memory access)
+
+.. tip::
+
+   For MPI applications, verify your MPI runtime's automatic NUMA binding behavior first (modern implementations often handle this). Test with explicit ``numactl -l`` if your application exhibits significant cross-NUMA memory traffic. Mileage varies—benchmark your workload.
 
 RoCEv2 CPU Core Reservation for Network Processing
 ===================================================
@@ -110,12 +124,16 @@ RoCEv2 CPU Core Reservation for Network Processing
    }
 
 .. important::
-   
+
    Core ID ranges for reservation are hardware-specific and must match the NUMA node containing your RoCE NIC. Use ``lstopo`` to identify NIC NUMA locality and consult system documentation for appropriate core ranges. The example above (cores 192-199) represents one specific system configuration and will differ across hardware platforms.
 
 **Typical configuration:** 248 application tasks on 256-core system, with 8 cores reserved for network processing on NIC NUMA node.
 
-**Performance impact:** Communication-intensive MPI applications (halo exchanges, collective operations) typically observe 10-20% performance improvement with core reservation on RoCEv2 networks.
+**Potential performance impact:** up to +10% depending on communication intensity (e.g., ROMs ocean science model; SPEChpc 2021: ``605.lbm``, ``618.tealeaf``, ``628.pot_s``)
+
+.. tip::
+
+   For MPI applications with frequent cross-node communication (collective operations, halo exchanges), test with core reservation on RoCEv2 networks. Computation-dominated workloads may see performance loss from fewer available cores. Mileage varies—benchmark your workload.
 
 GPU-Aware NUMA Affinity
 ========================
