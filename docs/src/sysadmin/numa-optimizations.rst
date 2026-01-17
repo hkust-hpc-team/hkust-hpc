@@ -82,7 +82,7 @@ The ``-l`` (``--localalloc``) flag ensures each MPI rank allocates memory on its
 **Potential performance impact:** ~5-10% (MPI applications with significant memory access)
 
 .. tip::
-   
+
    For MPI applications, verify your MPI runtime's automatic NUMA binding behavior first (modern implementations often handle this). Test with explicit ``numactl -l`` if your application exhibits significant cross-NUMA memory traffic. Mileage varies—benchmark your workload.
 
 RoCEv2 CPU Core Reservation for Network Processing
@@ -124,7 +124,7 @@ RoCEv2 CPU Core Reservation for Network Processing
    }
 
 .. important::
-   
+
    Core ID ranges for reservation are hardware-specific and must match the NUMA node containing your RoCE NIC. Use ``lstopo`` to identify NIC NUMA locality and consult system documentation for appropriate core ranges. The example above (cores 192-199) represents one specific system configuration and will differ across hardware platforms.
 
 **Typical configuration:** 248 application tasks on 256-core system, with 8 cores reserved for network processing on NIC NUMA node.
@@ -132,7 +132,7 @@ RoCEv2 CPU Core Reservation for Network Processing
 **Potential performance impact:** up to +10% depending on communication intensity (ROMs ocean science model, SPEChpc 2021 ``605.lbm``, ``618.tealeaf``, ``628.pot_s``)
 
 .. tip::
-   
+
    For MPI applications with frequent cross-node communication (collective operations, halo exchanges), test with core reservation on RoCEv2 networks. Computation-dominated workloads may see performance loss from fewer available cores. Mileage varies—benchmark your workload.
 
 GPU-Aware NUMA Affinity
