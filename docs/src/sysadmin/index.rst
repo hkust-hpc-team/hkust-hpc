@@ -7,5 +7,5 @@ HPC Administration Guide
 
    software-ecosystem/index
    k8s-hpc/index
-   known-issues
+   upstream-issues
    numa-optimizations
