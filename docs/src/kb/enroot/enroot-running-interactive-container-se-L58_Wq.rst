@@ -30,71 +30,68 @@ Issue
 Resolution
 ----------
 
-#. Basic Interactive Container Session
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#. **Basic Interactive Container Session**
 
-Start an interactive container session using the following command:
+    Start an interactive container session using the following command:
 
-.. code-block:: console
+    .. code-block:: console
 
-    $ srun --account=[YOUR_ACCOUNT] \
-        --partition=normal \
-        --nodes=1 \
-        --ntasks-per-node=1 \
-        --gpus-per-node=1 \
-        --cpus-per-task=28 \
-        --container-writable \
-        --container-remap-root \
-        --no-container-mount-home \
-        --container-image nvcr.io#nvidia/nvhpc:24.3-devel-cuda12.3-ubuntu22.04 \
-        --container-save $HOME/my-container.sqsh \
-        --pty bash
+        $ srun --account=[YOUR_ACCOUNT] \
+            --partition=normal \
+            --nodes=1 \
+            --ntasks-per-node=1 \
+            --gpus-per-node=1 \
+            --cpus-per-task=28 \
+            --container-writable \
+            --container-remap-root \
+            --no-container-mount-home \
+            --container-image nvcr.io#nvidia/nvhpc:24.3-devel-cuda12.3-ubuntu22.04 \
+            --container-save $HOME/my-container.sqsh \
+            --pty bash
 
-.. note::
+    .. note::
 
-    - Changes will be lost without ``--container-save``, see :doc:`enroot-saving-enroot-container-failed-tdQCrl` for
-      more details.
-    - Root access requires ``--container-remap-root`` and ``--container-writable``
-    - Interactive sessions have a maximum walltime of 4 hours on HPC4 and 2 hours on SuperPOD
-    - Create the target directory first: ``mkdir -p $HOME/containers`` if saving to a subdirectory
+        - Changes will be lost without ``--container-save``, see :doc:`enroot-saving-enroot-container-failed-tdQCrl` for
+          more details.
+        - Root access requires ``--container-remap-root`` and ``--container-writable``
+        - Interactive sessions have a maximum walltime of 4 hours on HPC4 and 2 hours on SuperPOD
+        - Create the target directory first: ``mkdir -p $HOME/containers`` if saving to a subdirectory
 
-#. Container Customization and Package Installation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#. **Container Customization and Package Installation**
 
-Once inside the container, update and install packages:
+    Once inside the container, update and install packages:
 
-.. code-block:: console
+    .. code-block:: console
 
-    root@node:/# apt update
-    root@node:/# apt install -y [package-name]
+        root@node:/# apt update
+        root@node:/# apt install -y [package-name]
 
-Common packages for development:
+    Common packages for development:
 
-.. code-block:: console
+    .. code-block:: console
 
-    root@node:/# apt install -y vim git wget curl build-essential python3-pip
-    root@node:/# pip3 install numpy matplotlib jupyter
+        root@node:/# apt install -y vim git wget curl build-essential python3-pip
+        root@node:/# pip3 install numpy matplotlib jupyter
 
-#. Using Previously Saved Containers
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#. **Using Previously Saved Containers**
 
-To start with a previously saved container, use ``--container-image /path/to/container/image.sqsh`` instead of pulling
-from a registry:
+    To start with a previously saved container, use ``--container-image /path/to/container/image.sqsh`` instead
+    of pulling from a registry:
 
-.. code-block:: console
+    .. code-block:: console
 
-    $ srun --account=[YOUR_ACCOUNT] \
-        --partition=normal \
-        --nodes=1 \
-        --ntasks-per-node=1 \
-        --gpus-per-node=1 \
-        --cpus-per-task=28 \
-        --container-writable \
-        --container-remap-root \
-        --no-container-mount-home \
-        --container-image $HOME/my-container.sqsh \
-        --container-save $HOME/my-container-updated.sqsh \
-        --pty bash
+        $ srun --account=[YOUR_ACCOUNT] \
+            --partition=normal \
+            --nodes=1 \
+            --ntasks-per-node=1 \
+            --gpus-per-node=1 \
+            --cpus-per-task=28 \
+            --container-writable \
+            --container-remap-root \
+            --no-container-mount-home \
+            --container-image $HOME/my-container.sqsh \
+            --container-save $HOME/my-container-updated.sqsh \
+            --pty bash
 
 Best Practices
 ~~~~~~~~~~~~~~
