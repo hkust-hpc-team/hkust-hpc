@@ -23,3 +23,15 @@ jobs:
 
       - name: Build docs
         run: uv run sphinx-build -M html "docs/src" "build" -j auto -W --keep-going
+
+  trigger-rtd:
+    needs: build
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - name: Trigger Read the Docs build
+        run: |
+          curl -fsSX POST \
+            -d "token=${{ secrets.RTD_TOKEN }}&branches=main" \
+            "https://app.readthedocs.org/api/v2/webhook/${{ vars.RTD_PROJECT_SLUG }}/${{ vars.RTD_WEBHOOK_ID }}/"
