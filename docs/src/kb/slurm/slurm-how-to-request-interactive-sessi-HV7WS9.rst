@@ -110,7 +110,7 @@ Use Cases
 Compiling Software
 ^^^^^^^^^^^^^^^^^^
 
-See :doc:`Application Compile Notes </software/compile-notes/index>` for detailed compilation instructions of some common applications.
+See :doc:`Application Compile Guides </compile-guides/index>` for detailed compilation instructions of some common applications.
 
 GPU Development and Testing
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
