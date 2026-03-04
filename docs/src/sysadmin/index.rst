@@ -9,5 +9,6 @@ HPC Administration Guide
    software-ecosystem/index
    k8s-hpc/index
    testing-tracing/index
+   subsystems/index
    upstream-issues
    numa-optimizations

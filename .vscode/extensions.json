@@ -1,15 +1,13 @@
 {
   "recommendations": [
-    "aaron-bond.better-comments",
-    "charliermarsh.ruff",
-    "eamodio.gitlens",
-    "editorconfig.editorconfig",
-    "esbenp.prettier-vscode",
-    "lextudio.restructuredtext",
-    "ms-python.python",
-    "ms-python.vscode-pylance",
-    "redhat.vscode-yaml",
     "swyddfa.esbonio",
-    "tamasfe.even-better-toml"
+    "lextudio.restructuredtext",
+    "charliermarsh.ruff",
+    "ms-python.python",
+    "redhat.vscode-yaml",
+    "tamasfe.even-better-toml",
+    "esbenp.prettier-vscode",
+    "EditorConfig.EditorConfig",
+    "eamodio.gitlens"
   ]
 }

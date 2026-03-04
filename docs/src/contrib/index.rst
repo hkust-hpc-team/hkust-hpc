@@ -1,76 +1,135 @@
 Contributor's Guide
 ===================
 
-The doc is written in reStructuredText format and built using Sphinx.
-All the doc source files are located in the ``docs/src/`` directory.
+This documentation is written in reStructuredText (RST) and built with Sphinx.
+All source files live under ``docs/src/``.
 
-Getting started
+Getting Started
 ---------------
-
-This project uses ``uv`` for Python package management.
 
 **Prerequisites**
 
 - Python >= 3.11
-- ``uv``
+- `uv <https://docs.astral.sh/uv/>`_ (Python package manager)
 
-First, install ``uv`` if you don't have it:
-
-.. code-block:: bash
-
-    wget -qO- https://astral.sh/uv/install.sh | sh
-
-Then, set up the local development environment by running ``make install``
-from the project root. This will create a virtual environment in ``.venv/``
-and install all required dependencies.
+Install ``uv`` if you don't have it:
 
 .. code-block:: bash
 
-    make install
+   curl -LsSf https://astral.sh/uv/install.sh | sh
+
+Then set up the local development environment:
+
+.. code-block:: bash
+
+   git clone https://github.com/hkust-hpc-team/hkust-hpc.git
+   cd hkust-hpc
+   make install    # creates .venv, installs deps + pre-commit hooks
 
 Building the Documentation
 --------------------------
 
-To build the HTML content, simply run ``make``:
+.. code-block:: bash
+
+   make build      # builds HTML to build/html/
+
+Open ``build/html/index.html`` in a browser to preview.
+
+Contribution Workflow
+---------------------
+
+1. **Fork** the repository on GitHub.
+2. **Create a branch** from ``main``:
+
+   .. code-block:: bash
+
+      git checkout -b docs/my-topic
+
+3. **Edit** RST files under ``docs/src/``.
+4. **Build locally** with ``make build`` and verify the output.
+5. **Commit** your changes -- pre-commit hooks will run automatically.
+6. **Push** your branch and open a **Pull Request** against ``main``.
+
+Pre-commit hooks check RST style (``doc8``), RST syntax (``rstcheck``),
+Python style (``ruff``), and file hygiene (trailing whitespace, etc.).
+To run all hooks manually:
 
 .. code-block:: bash
 
-    make
+   uv run pre-commit run --all-files
 
-The output will be generated in the ``build/html`` directory.
+Tool Versions
+-------------
 
-How to Contribute
+All linter and formatter versions are managed through ``pyproject.toml`` and
+locked in ``uv.lock``. Pre-commit hooks use ``language: system`` with
+``uv run``, ensuring local development, CI, and ReadTheDocs all use
+identical tool versions.
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Tool
+     - Purpose
+   * - ``doc8``
+     - RST style (line length, blank lines, indentation)
+   * - ``rstcheck``
+     - RST syntax validation
+   * - ``ruff``
+     - Python linting and formatting (``conf.py``)
+   * - ``prettier``
+     - YAML and Markdown formatting
+   * - ``sphinx-build -W``
+     - Full documentation build with warnings-as-errors
+
+RST Writing Tips
+----------------
+
+- **Line length**: 120 characters max (enforced by ``doc8``).
+- **Indentation**: 3 spaces for directive content.
+- **Cross-references**: Use ``:doc:`/path/to/page``` for other pages,
+  ``:ref:`label-name``` for labeled sections.
+- **Code blocks**: Always specify the language:
+
+  .. code-block:: rst
+
+     .. code-block:: bash
+
+        srun --gres=gpu:1 --pty bash
+
+- **Admonitions**: Use ``.. note::``, ``.. warning::``, ``.. tip::`` for callouts.
+
+Project Structure
 -----------------
 
-We welcome contributions in various forms, such as reporting issues,
-suggesting new topics, or submitting pull requests for corrections and improvements.
+::
 
-All development happens on our GitHub repository: `hkust-hpc-team/hkust-hpc <https://github.com/hkust-hpc-team/hkust-hpc>`_
+   hkust-hpc/
+   ├── docs/src/              # RST source files
+   │   ├── index.rst          # Root toctree
+   │   ├── kb/                # Knowledge base articles
+   │   ├── compile-guides/    # Software compilation guides
+   │   ├── sysadmin/          # System administration
+   │   └── contrib/           # This guide
+   ├── examples/              # Code examples with README
+   ├── workshops/             # Workshop materials
+   ├── pyproject.toml         # Dependency and tool configuration
+   ├── .pre-commit-config.yaml
+   ├── .readthedocs.yaml
+   └── Makefile               # Build automation
 
-Please feel free to open an issue or a pull request.
+Editor Setup
+------------
 
-Editor Recommendations
-----------------------
+We recommend VS Code. The repository ships ``.vscode/extensions.json``
+(recommended extensions) and ``.vscode/settings.json`` (tool paths pointing
+to ``.venv``). Open the project in VS Code and accept the extension
+recommendations when prompted.
 
-We recommend using VS Code for editing the documentation. The repository includes a recommended workspace configuration.
+Key extensions:
 
-The following extensions are recommended and align with our pre-commit hooks:
-
-- **Python**
-  - ``ms-python.python``: Core Python support.
-  - ``ms-python.vscode-pylance``: Powerful language server for Python.
-  - ``charliermarsh.ruff``: Integrates the Ruff linter and formatter.
-
-- **reStructuredText**
-  - ``lextudio.restructuredtext``: Syntax highlighting and snippets.
-  - ``swyddfa.esbonio``: Live preview and language server for Sphinx projects.
-
-- **Other Languages**
-  - ``esbenp.prettier-vscode``: For formatting YAML and Markdown files.
-  - ``redhat.vscode-yaml``: Comprehensive YAML language support.
-  - ``tamasfe.even-better-toml``: Enhanced TOML file support.
-
-- **General Development**
-  - ``aaron-bond.better-comments``: Improve comments readability.
-  - ``EditorConfig.EditorConfig``: Enforces consistent coding styles.
-  - ``eamodio.gitlens``: Supercharges Git capabilities within VS Code.
+- ``swyddfa.esbonio`` -- Sphinx language server with live diagnostics
+- ``lextudio.restructuredtext`` -- RST syntax highlighting and linting
+- ``charliermarsh.ruff`` -- Python linter/formatter
+- ``esbenp.prettier-vscode`` -- YAML/Markdown formatting

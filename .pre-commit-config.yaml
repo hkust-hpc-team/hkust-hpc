@@ -3,8 +3,11 @@ ci:
   autofix_prs: true
   autoupdate_commit_msg: "chore(pre-commit): update hook revs"
   autoupdate_schedule: quarterly
+  # Skip hooks that require uv (language: system) -- pre-commit.ci doesn't have uv
+  skip: [doc8, rstcheck, ruff-check, ruff-format]
 minimum_pre_commit_version: "3.6.0"
 repos:
+  # ---------- managed by pre-commit (no uv needed) ----------
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
     hooks:
@@ -15,32 +18,6 @@ repos:
       - id: mixed-line-ending
       - id: trailing-whitespace
 
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.13.0
-    hooks:
-      - id: ruff
-        name: Run ruff linter
-        args: [--fix, --exit-non-zero-on-fix]
-      - id: ruff-format
-        name: Run ruff formatter
-
-  - repo: https://github.com/PyCQA/doc8
-    rev: v2.0.0
-    hooks:
-      - id: doc8
-        name: Check RST doc style with doc8
-        args: ["--max-line-length=120"]
-
-  - repo: https://github.com/rstcheck/rstcheck
-    rev: v6.2.5
-    hooks:
-      - id: rstcheck
-        name: Check RST syntax with rstcheck
-        additional_dependencies:
-          - rstcheck[sphinx, toml]
-
-        args: ["--config", "pyproject.toml"]
-
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: v4.0.0-alpha.8
     hooks:
@@ -48,3 +25,34 @@ repos:
         name: Format YAML and Markdown files
         types_or: [yaml, markdown]
         args: ["--print-width", "120"]
+
+  # ---------- language: system -- versions from uv.lock ----------
+  - repo: local
+    hooks:
+      - id: doc8
+        name: doc8 (RST style)
+        entry: uv run doc8
+        language: system
+        files: '\.rst$'
+        types: [rst]
+
+      - id: rstcheck
+        name: rstcheck (RST syntax)
+        entry: uv run rstcheck --config pyproject.toml
+        language: system
+        files: '\.rst$'
+        types: [rst]
+
+      - id: ruff-check
+        name: ruff check
+        entry: uv run ruff check --fix --exit-non-zero-on-fix
+        language: system
+        files: '\.py$'
+        types: [python]
+
+      - id: ruff-format
+        name: ruff format
+        entry: uv run ruff format
+        language: system
+        files: '\.py$'
+        types: [python]

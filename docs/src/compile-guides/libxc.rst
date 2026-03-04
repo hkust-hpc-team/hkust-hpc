@@ -1,5 +1,5 @@
 Libxc (Exchange-Correlation Functionals Library)
-===============================================
+================================================
 
 Libxc is a library of exchange-correlation functionals for density-functional theory (DFT). The library provides a comprehensive collection of local and semi-local functionals, as well as some hybrid functionals, widely used in quantum chemistry and solid-state physics applications.
 
@@ -18,7 +18,7 @@ Overview
 
 .. note::
    **Try Spack Pre-compiled Version First**
-   
+
    If you only need Libxc in its default configuration for your application, we strongly recommend using the pre-compiled version available through Spack. See the :doc:`Libxc Usage Guide </software/libxc/index>` for instructions on loading and using the module.
 
 This guide demonstrates how to compile Libxc using the HPC module system with multiple compiler toolchains. Libxc supports compilation with various compilers and can be built as both static and shared libraries.
@@ -85,7 +85,7 @@ Download Libxc Source Code
    # Create a working directory
    mkdir -p ~/libxc-build
    cd ~/libxc-build
-   
+
    # Clone Libxc repository (version 7.0.0)
    git clone --depth 1 -b 7.0.0 https://gitlab.com/libxc/libxc.git
    cd libxc
@@ -121,29 +121,29 @@ This configuration uses the AMD Optimizing C/C++ and Fortran Compilers.
 
    # Navigate to Libxc source directory
    cd ~/libxc-build/libxc
-   
+
    # Activate Spack environment
    export SPACK_ROOT="/opt/shared/.spack-edge"
    source "${SPACK_ROOT}/dist/bin/setup-env.sh" -y
-   
+
    # Load required build tools
    module purge
    module load autotools binutils
-   
+
    # Load AMD AOCC compiler
    module load aocc/5
-   
+
    # Verify modules are loaded
    module list
-   
+
    # Clean previous build artifacts
    rm -rf build configure
-   
+
    # Set compiler environment variables
    export CC="clang"
    export CXX="clang++"
    export FC="flang"
-   
+
    # Generate configure script
    autoreconf -i 2>&1 | tee hpc4_build.log
 
@@ -160,13 +160,13 @@ Before proceeding with the configure step, you must manually edit the ``m4/libto
 
    # After editing m4/libtool.m4, continue with configuration and build
    ./configure --prefix=$(pwd)/build --enable-shared --enable-static 2>&1 | tee -a hpc4_build.log
-   
+
    # Compile Libxc (use all available cores)
    make -j $(nproc) 2>&1 | tee -a hpc4_build.log
-   
+
    # Run test suite
    make check 2>&1 | tee -a hpc4_build.log
-   
+
    # Install to build directory
    make install 2>&1 | tee -a hpc4_build.log
 
@@ -179,41 +179,41 @@ This configuration uses the modern Intel OneAPI compilers (icx, icpx, ifx).
 
    # Navigate to Libxc source directory
    cd ~/libxc-build/libxc
-   
+
    # Activate Spack environment
    export SPACK_ROOT="/opt/shared/.spack-edge"
    source "${SPACK_ROOT}/dist/bin/setup-env.sh" -y
-   
+
    # Load required build tools
    module purge
    module load autotools binutils
-   
+
    # Load Intel OneAPI compilers
    module load intel-oneapi-compilers
-   
+
    # Verify modules are loaded
    module list
-   
+
    # Clean previous build artifacts
    rm -rf build configure
-   
+
    # Set compiler environment variables
    export CC="icx"
    export CXX="icpx"
    export FC="ifx"
-   
+
    # Generate configure script
    autoreconf -i 2>&1 | tee hpc4_build.log
-   
+
    # Configure build
    ./configure --prefix=$(pwd)/build --enable-shared --enable-static 2>&1 | tee -a hpc4_build.log
-   
+
    # Compile Libxc (use all available cores)
    make -j $(nproc) 2>&1 | tee -a hpc4_build.log
-   
+
    # Run test suite
    make check 2>&1 | tee -a hpc4_build.log
-   
+
    # Install to build directory
    make install 2>&1 | tee -a hpc4_build.log
 
@@ -226,41 +226,41 @@ This configuration uses the classic Intel compilers (icc, icpc, ifort).
 
    # Navigate to Libxc source directory
    cd ~/libxc-build/libxc
-   
+
    # Activate Spack environment
    export SPACK_ROOT="/opt/shared/.spack-edge"
    source "${SPACK_ROOT}/dist/bin/setup-env.sh" -y
-   
+
    # Load required build tools
    module purge
    module load autotools
-   
+
    # Load Intel Classic compilers
    module load intel-oneapi-compilers-classic
-   
+
    # Verify modules are loaded
    module list
-   
+
    # Clean previous build artifacts
    rm -rf build configure
-   
+
    # Set compiler environment variables
    export CC="icc"
    export CXX="icpc"
    export FC="ifort"
-   
+
    # Generate configure script
    autoreconf -i 2>&1 | tee hpc4_build.log
-   
+
    # Configure build
    ./configure --prefix=$(pwd)/build --enable-shared --enable-static 2>&1 | tee -a hpc4_build.log
-   
+
    # Compile Libxc (use all available cores)
    make -j $(nproc) 2>&1 | tee -a hpc4_build.log
-   
+
    # Run test suite
    make check 2>&1 | tee -a hpc4_build.log
-   
+
    # Install to build directory
    make install 2>&1 | tee -a hpc4_build.log
 
@@ -276,15 +276,15 @@ After compilation completes, verify that Libxc was built successfully:
 
    # Check installation directory
    ls -lh build/
-   
+
    # You should see directories such as:
    # - include/  (header files)
    # - lib/      (library files)
    # - share/    (documentation and data files)
-   
+
    # Check for library files
    ls -lh build/lib/
-   
+
    # You should see Libxc library files such as:
    # - libxc.a
    # - libxc.so
@@ -293,7 +293,7 @@ After compilation completes, verify that Libxc was built successfully:
 
 .. tip::
    **Verify Build Quality with Tests**
-   
+
    The ``make check`` command runs the test suite to ensure Libxc was built correctly and all functionals work as expected. This typically takes 5-10 minutes.
 
 Using Libxc in Your Application
@@ -308,10 +308,10 @@ After building Libxc, you need to set up the environment to use it in your appli
 
    # Set Libxc installation directory
    export LIBXC_ROOT=/path/to/libxc/build
-   
+
    # Add library path
    export LD_LIBRARY_PATH=${LIBXC_ROOT}/lib:${LD_LIBRARY_PATH}
-   
+
    # Add include path for compilation
    export CPATH=${LIBXC_ROOT}/include:${CPATH}
 
@@ -325,7 +325,7 @@ For advanced users who need specific optimizations or features, additional flags
 
    # Example: Disable Fortran interfaces if not needed
    ./configure --prefix=$(pwd)/build --enable-shared --enable-static --disable-fortran
-   
+
    # Example: Enable specific optimization flags
    CFLAGS="-O3 -march=native" ./configure --prefix=$(pwd)/build --enable-shared --enable-static
 

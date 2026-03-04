@@ -1,3 +1,5 @@
+:orphan:
+
 ======================
 Testing and Validation
 ======================
@@ -49,7 +51,7 @@ Baseline benchmarks serve two overlapping purposes: external validation (compari
 **Low-complexity validation** (minimal setup, often external validation available)
 
 - **HPL / HPCG** (CPU systems)
-  
+
   - **Setup effort:** Low - standardized benchmarks with established procedures
   - **External validation:** Yes - extensive published results from Top500, vendor benchmarks
   - **What it validates:** CPU/memory performance, basic point-to-point MPI
@@ -58,7 +60,7 @@ Baseline benchmarks serve two overlapping purposes: external validation (compari
   - **Archive baseline:** GFLOPS results, memory bandwidth (±5% tolerance)
 
 - **HPL-MxP + NCCL** (GPU systems)
-  
+
   - **Setup effort:** Low - well-documented, vendor-supported, standardized execution
   - **External validation:** Yes - vendor benchmarks, MLPerf results provide comparative context
   - **What it validates:** GPU compute performance, basic network throughput, multi-GPU collective operations
@@ -67,7 +69,7 @@ Baseline benchmarks serve two overlapping purposes: external validation (compari
   - **Archive baseline:** TFLOPS/node, NCCL bandwidth results
 
 - **STREAM** (memory bandwidth)
-  
+
   - **Setup effort:** Very low - single executable, minimal configuration
   - **External validation:** Yes - widely published results for various CPU architectures
   - **What it validates:** Memory subsystem bandwidth and NUMA configuration
@@ -77,7 +79,7 @@ Baseline benchmarks serve two overlapping purposes: external validation (compari
 **High-complexity validation** (significant setup, diagnostic depth)
 
 - **SPEC HPC 2021** (CPU HPC workloads)
-  
+
   - **Setup effort:** High - requires building multiple applications, configuring MPI runtimes, extensive environment tuning
   - **External validation:** Yes - published results from HPC centers provide comparative baseline
   - **What it validates:** End-to-end integration (scheduler, MPI runtime, compilers, network fabric, filesystem), parallel scaling, cross-node communication patterns
@@ -87,7 +89,7 @@ Baseline benchmarks serve two overlapping purposes: external validation (compari
   - **Archive baseline:** Full HTML reports, per-benchmark results, scaling efficiency (see :doc:`../benchmarks/multi-node` - 72% parallel efficiency across 32 nodes)
 
 - **MLPerf Training** (AI/ML workloads)
-  
+
   - **Setup effort:** High - requires dataset preparation, framework configuration, distributed training setup
   - **External validation:** Yes - standardized benchmark with published results from major AI infrastructure providers
   - **What it validates:** GPU training performance, gradient synchronization, data pipeline efficiency
@@ -95,7 +97,7 @@ Baseline benchmarks serve two overlapping purposes: external validation (compari
   - **Use case:** AI-focused infrastructure validation with external comparison
 
 - **LLM training benchmarks** (Llama2 7B FSDP training, TPS measurement)
-  
+
   - **Setup effort:** Very high - requires model weights, distributed framework (FSDP/DeepSpeed), extensive tuning
   - **External validation:** Limited - some published results from research groups, but configurations vary significantly
   - **What it validates:** Large-scale model parallelism, optimizer state sharding, activation checkpointing
@@ -103,7 +105,7 @@ Baseline benchmarks serve two overlapping purposes: external validation (compari
   - **Use case:** Production LLM infrastructure validation, primarily internal baseline
 
 - **Representative User Applications** (domain-specific)
-  
+
   - **Setup effort:** Very high - requires domain expertise, representative datasets, validation procedures
   - **External validation:** Rarely - unless application widely used, users may provide comparison data from other clusters
   - **What it validates:** Actual user workload performance - most relevant but most expensive to maintain
@@ -132,7 +134,7 @@ Hardware Topology Baselines
 
    # Archive network topology
    ibnetdiscover > /var/log/validation/ibnetdiscover-$(date +%Y%m%d).txt
-   
+
    # Later: Detect topology changes
    diff /var/log/validation/ibnetdiscover-{baseline,current}.txt
 
@@ -146,7 +148,7 @@ Hardware Topology Baselines
 
    # Archive NUMA topology
    lstopo --of txt > /var/log/validation/numa-topology.txt
-   
+
    # Verify GPU-CPU affinity
    nvidia-smi topo -m > /var/log/validation/gpu-topology.txt
 
@@ -167,10 +169,10 @@ Automated Performance Validation
 .. code-block:: bash
 
    # After major system changes (OS updates, driver updates, maintenance)
-   
+
    # 1. Run validation benchmark
    sbatch --partition=validation run-spechpc-validation.sh
-   
+
    # 2. Compare against baseline (±5% tolerance)
    compare-spechpc-results.sh \
        --baseline /var/log/validation/spechpc-baseline-2024.txt \
@@ -201,7 +203,7 @@ Configuration Drift Detection
    # Archive system configuration
    cat /proc/cmdline > /var/log/validation/kernel-cmdline-$(date +%Y%m%d).txt
    sysctl -a > /var/log/validation/sysctl-$(date +%Y%m%d).txt
-   
+
    # Compare after updates
    diff /var/log/validation/sysctl-{baseline,current}.txt
 
@@ -223,10 +225,10 @@ Diagnosing Performance Degradation
 
    # Persistent atop logging (configured at system level)
    systemctl enable --now atop
-   
+
    # Investigate past resource utilization
    atop -r /var/log/atop/atop_20260117  # View specific day
-   
+
    # Press: 'm' (memory), 'd' (disk), 'n' (network), 'g' (GPU)
 
 **What it catches:**
@@ -276,7 +278,7 @@ Some network administrators prefer RDMA tools for isolated two-node testing, byp
    # Point-to-point RDMA validation (two nodes)
    # Node 1 (server):
    ib_read_bw
-   
+
    # Node 2 (client):
    ib_read_bw node1
 
@@ -288,7 +290,7 @@ Some network administrators prefer RDMA tools for isolated two-node testing, byp
 
    # Validate fabric connectivity
    ibnetdiscover
-   
+
    # Check link quality
    ibdiagnet
 
@@ -306,21 +308,21 @@ Diagnosing Application Crashes
    # Enable core dumps (configure in /etc/security/limits.conf)
    * soft core unlimited
    * hard core unlimited
-   
+
    # Configure core dump location
    # /etc/sysctl.conf
    kernel.core_pattern = /var/crash/core.%e.%p.%t
 
 **User workflow:**
 
-.. code-block:: bash
+.. code-block:: text
 
    # Compile with debug symbols
    gcc -g -O2 myprogram.c -o myprogram
-   
+
    # Run application (crash generates core dump)
    ./myprogram
-   
+
    # Analyze crash
    gdb myprogram /var/crash/core.myprogram.12345.1234567890
    (gdb) bt          # Backtrace
@@ -348,7 +350,7 @@ Diagnosing Application Slowness
 
    # Trace system calls to identify I/O bottlenecks
    strace -f -tt -T -o trace.log ./myprogram
-   
+
    # Analyze: Look for slow system calls
    grep -E '<[0-9]+\.[0-9]+ ' trace.log | sort -t'<' -k2 -rn | head -20
 

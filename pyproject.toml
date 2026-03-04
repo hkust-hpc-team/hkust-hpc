@@ -17,21 +17,15 @@ authors = [
 ]
 
 [dependency-groups]
-dev = [
-    "black>=25.1.0",
+docs = [
     "doc8>=2.0.0",
+    "rstcheck[sphinx,toml]>=6.2.5",
+]
+dev = [
+    { include-group = "docs" },
     "esbonio>=0.16.5",
-    "flake8>=7.3.0",
-    "isort>=6.0.1",
     "pre-commit>=4.3.0",
-    "pylint>=3.3.8",
-    "restructuredtext-lint>=1.4.0",
-    "rstcheck>=6.2.5",
     "ruff>=0.13.0",
-    "tox>=4.30.2",
-    "typing-extensions>=4.15.0",
-    "yamllint>=1.37.1",
-    "yq>=3.4.3",
 ]
 
 [tool.ruff]
@@ -51,3 +45,22 @@ ignore = []
 
 [tool.ruff.format]
 quote-style = "double"
+
+[tool.doc8]
+# D001 (line-too-long) is not enforced: RST has no auto-formatter to fix it,
+# and source line length has zero impact on rendered HTML output.
+ignore = ["D001"]
+
+[tool.rstcheck]
+report_level = "warning"
+ignore_directives = [
+    "card",
+    "dropdown",
+    "grid",
+    "grid-item-card",
+    "tab-set",
+    "tab-item",
+]
+ignore_roles = [
+    "strike",
+]

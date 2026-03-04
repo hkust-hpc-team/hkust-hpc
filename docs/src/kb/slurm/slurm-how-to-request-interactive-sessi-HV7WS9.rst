@@ -48,7 +48,7 @@ For HPC4 cluster:
         --cpus-per-task=256 \
         --time=4:00:00 \
         --pty bash
-   
+
    # Or request session on Intel partition
    srun --account=exampleproj \
         --partition=intel \
@@ -110,7 +110,7 @@ Use Cases
 Compiling Software
 ^^^^^^^^^^^^^^^^^^
 
-See :doc:`Application Compile Notes </software/compile-notes/index>` for detailed compilation instructions of some common applications.
+See :doc:`Application Compile Notes </compile-guides/index>` for detailed compilation instructions of some common applications.
 
 GPU Development and Testing
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
