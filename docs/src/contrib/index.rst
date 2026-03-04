@@ -38,7 +38,7 @@ To build the HTML content, run:
 
 .. code-block:: bash
 
-    make build
+    make
 
 The output will be generated in the ``build/html`` directory. Open
 ``build/html/index.html`` in your browser to preview the site locally.
