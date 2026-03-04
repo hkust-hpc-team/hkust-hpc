@@ -26,18 +26,14 @@ jobs:
         run: uv run sphinx-build -M html "docs/src" "build" -j auto -W --keep-going
 
   trigger-rtd:
+    if: github.event_name == 'pull_request'
     needs: build
     runs-on: ubuntu-latest
     permissions: {}
     steps:
       - name: Determine RTD version slug
         id: rtd-version
-        run: |
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            echo "slug=pr-${{ github.event.pull_request.number }}" >> "$GITHUB_OUTPUT"
-          else
-            echo "slug=latest" >> "$GITHUB_OUTPUT"
-          fi
+        run: echo "slug=pr-${{ github.event.pull_request.number }}" >> "$GITHUB_OUTPUT"
 
       - name: Verify RTD configuration
         env:
