@@ -33,5 +33,5 @@ jobs:
       - name: Trigger Read the Docs build
         run: |
           curl -fsSX POST \
-            -H "Authorization: Token ${{ secrets.RTD_TOKEN }}" \
-            "https://readthedocs.org/api/v3/projects/${{ vars.RTD_PROJECT_SLUG }}/versions/latest/builds/"
+            -d "token=${{ secrets.RTD_TOKEN }}&branches=main" \
+            "https://app.readthedocs.org/api/v2/webhook/${{ vars.RTD_PROJECT_SLUG }}/${{ vars.RTD_WEBHOOK_ID }}/"
