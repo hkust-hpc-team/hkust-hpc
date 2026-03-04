@@ -5,5 +5,5 @@ build:
   commands:
     - pip install uv
     - uv sync --frozen
-    - uv run sphinx-build -M html docs/src $READTHEDOCS_OUTPUT/html
+    - uv run sphinx-build -b html docs/src $READTHEDOCS_OUTPUT/html
 version: 2
