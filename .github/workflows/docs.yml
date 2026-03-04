@@ -29,8 +29,17 @@ jobs:
     runs-on: ubuntu-latest
     permissions: {}
     steps:
+      - name: Determine RTD version slug
+        id: rtd-version
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "slug=pr-${{ github.event.pull_request.number }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "slug=latest" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Trigger Read the Docs build
         run: |
           curl -fsSX POST \
             -H "Authorization: Token ${{ secrets.RTD_TOKEN }}" \
-            "https://app.readthedocs.org/api/v3/projects/${{ vars.RTD_PROJECT_SLUG }}/versions/latest/builds/"
+            "https://app.readthedocs.org/api/v3/projects/${{ vars.RTD_PROJECT_SLUG }}/versions/${{ steps.rtd-version.outputs.slug }}/builds/"
