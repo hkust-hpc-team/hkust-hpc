@@ -45,13 +45,7 @@ All development happens on our GitHub repository: [hkust-hpc-team/hkust-hpc](htt
 
 ### Workflow
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b my-improvement`)
-3. Make your changes in `docs/src/`
-4. Build locally to verify (`make build`)
-5. Commit your changes (`git commit -m "Describe the change"`)
-6. Push to your fork (`git push origin my-improvement`)
-7. Open a Pull Request
+The detailed contribution workflow is documented in the Sphinx docs under `docs/src/contrib/index.rst`. Please follow the steps described there when proposing changes (fork the repository, create a feature branch, make and test your changes locally, then open a Pull Request).
 
 Pre-commit hooks will run automatically on your commits to check for common issues
 (trailing whitespace, RST syntax, code formatting). They will also run on your PR
