@@ -5,6 +5,7 @@ on:
     branches: [main]
   push:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -36,6 +37,33 @@ jobs:
             echo "slug=pr-${{ github.event.pull_request.number }}" >> "$GITHUB_OUTPUT"
           else
             echo "slug=latest" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Verify RTD configuration
+        env:
+          RTD_TOKEN: ${{ secrets.RTD_TOKEN }}
+          RTD_SLUG: ${{ vars.RTD_PROJECT_SLUG }}
+        run: |
+          if [ -z "$RTD_TOKEN" ]; then
+            echo "::error::RTD_TOKEN secret is not set"
+            exit 1
+          fi
+          if [ -z "$RTD_SLUG" ]; then
+            echo "::error::RTD_PROJECT_SLUG variable is not set"
+            exit 1
+          fi
+
+          echo "Project slug: $RTD_SLUG"
+          echo "Version slug: ${{ steps.rtd-version.outputs.slug }}"
+
+          HTTP_CODE=$(curl -s -o /dev/null -w '%{http_code}' \
+            -H "Authorization: Token $RTD_TOKEN" \
+            "https://app.readthedocs.org/api/v3/projects/$RTD_SLUG/")
+
+          echo "RTD API auth check - HTTP $HTTP_CODE"
+          if [ "$HTTP_CODE" -ne 200 ]; then
+            echo "::error::RTD API auth check failed (HTTP $HTTP_CODE). Verify RTD_TOKEN is a valid API token."
+            exit 1
           fi
 
       - name: Trigger Read the Docs build
