@@ -39,7 +39,22 @@ jobs:
           fi
 
       - name: Trigger Read the Docs build
+        env:
+          RTD_TOKEN: ${{ secrets.RTD_TOKEN }}
+          RTD_SLUG: ${{ vars.RTD_PROJECT_SLUG }}
+          RTD_VERSION: ${{ steps.rtd-version.outputs.slug }}
         run: |
-          curl -fsSX POST \
-            -H "Authorization: Token ${{ secrets.RTD_TOKEN }}" \
-            "https://app.readthedocs.org/api/v3/projects/${{ vars.RTD_PROJECT_SLUG }}/versions/${{ steps.rtd-version.outputs.slug }}/builds/"
+          URL="https://app.readthedocs.org/api/v3/projects/${RTD_SLUG}/versions/${RTD_VERSION}/builds/"
+          echo "→ POST ${URL}"
+          HTTP_CODE=$(curl -sS -o /tmp/rtd-response.json -w '%{http_code}' \
+            -X POST \
+            -H "Authorization: Token ${RTD_TOKEN}" \
+            "${URL}")
+          echo "← HTTP ${HTTP_CODE}"
+          cat /tmp/rtd-response.json 2>/dev/null || true
+          echo ""
+          if [ -z "$HTTP_CODE" ] || ! [ "$HTTP_CODE" -eq "$HTTP_CODE" ] 2>/dev/null; then
+            echo "::error::Failed to reach Read the Docs API"
+            exit 1
+          fi
+          [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]
