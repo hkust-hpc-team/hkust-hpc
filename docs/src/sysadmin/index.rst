@@ -11,3 +11,4 @@ HPC Administration Guide
    testing-tracing/index
    upstream-issues
    numa-optimizations
+   subsystems/index
