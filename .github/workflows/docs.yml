@@ -36,4 +36,4 @@ jobs:
           curl -fsSL -X POST \
             -H "Content-Type: application/json" \
             -d '{"token": "${{ secrets.RTD_TOKEN }}", "branches": ["${{ github.head_ref }}"]}' \
-            "https://readthedocs.org/api/v2/webhook/${{ vars.RTD_PROJECT_SLUG }}/${{ vars.RTD_WEBHOOK_ID }}/"
+            "${{ vars.RTD_WEBHOOK_URL }}"
