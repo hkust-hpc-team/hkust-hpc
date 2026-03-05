@@ -315,7 +315,7 @@ Diagnosing Application Crashes
 
 **User workflow:**
 
-.. code-block:: text
+.. code-block:: bash
 
    # Compile with debug symbols
    gcc -g -O2 myprogram.c -o myprogram

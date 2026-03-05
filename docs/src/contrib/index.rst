@@ -73,7 +73,7 @@ identical tool versions.
    * - Tool
      - Purpose
    * - ``doc8``
-     - RST style (line length, blank lines, indentation)
+     - RST style (blank lines, indentation; line-length check disabled — see below)
    * - ``rstcheck``
      - RST syntax validation
    * - ``ruff``
@@ -86,7 +86,9 @@ identical tool versions.
 RST Writing Tips
 ----------------
 
-- **Line length**: 120 characters max (enforced by ``doc8``).
+- **Line length**: No hard limit enforced. RST has no auto-formatter, so ``doc8``'s
+  line-length check (D001) is disabled to avoid false positives on pre-existing content.
+  Aim for ~120 characters as a guideline, but this is not a blocking check.
 - **Indentation**: 3 spaces for directive content.
 - **Cross-references**: Use ``:doc:`/path/to/page``` for other pages,
   ``:ref:`label-name``` for labeled sections.

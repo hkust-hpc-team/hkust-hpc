@@ -88,7 +88,8 @@ that configure all tools to use the same versions from `.venv/`.
 
 ## Writing RST
 
-- Use 120-character line length (enforced by `doc8`)
+- No hard line-length limit enforced. RST has no auto-formatter, so `doc8`'s
+  line-length check (D001) is disabled. Aim for ~120 characters as a guideline.
 - Use 3-space indentation for directives
 - Add cross-references with `:doc:` and `:ref:` roles
 - Test code blocks compile/run before including them
