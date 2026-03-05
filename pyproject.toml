@@ -50,16 +50,28 @@ quote-style = "double"
 # D001 (line-too-long) is not enforced: RST has no auto-formatter to fix it,
 # and source line length has zero impact on rendered HTML output.
 ignore = ["D001"]
+# netcdf-pnetcdf/index.rst contains Makefile code-block examples whose recipe
+# lines use literal tab characters (required by Make syntax). doc8's D003
+# (TabIndentation) fires on those lines even though they are inside code
+# blocks where the tab is intentional content, not RST indentation.
+ignore_path = ["docs/src/software/netcdf-pnetcdf/index.rst"]
 
 [tool.rstcheck]
 report_level = "warning"
 ignore_directives = [
+    # sphinx-design directives (unknown to rstcheck)
     "card",
     "dropdown",
     "grid",
     "grid-item-card",
     "tab-set",
     "tab-item",
+    # code-block content validation is skipped: rstcheck produces false
+    # positives for Helm templates, bash placeholders (<name>), C headers,
+    # and code-block directives without an explicit language specifier.
+    # Sphinx renders all of these correctly; only RST structure is checked.
+    "code-block",
+    "literalinclude",
 ]
 ignore_roles = [
     "strike",

@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HPC Account Email Generator</title>
+    <style>
+        :root {
+            --primary-color: #003366;
+            --secondary-color: #004a99;
+            --border-color: #ccc;
+            --background-light: #f7f7f7;
+            --background-white: #ffffff;
+            --text-color: #333;
+            --code-bg: #f5f5f5;
+            --info-bg: #e7f3fe;
+            --info-border: #2196F3;
+            --msc-color: #661146;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-light);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+            max-width: 1400px;
+            gap: 20px;
+        }
+        .controls, .preview {
+            background-color: var(--background-white);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .controls {
+            flex: 1;
+            min-width: 350px;
+        }
+        .preview {
+            flex: 2;
+            min-width: 500px;
+        }
+        h1, h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--secondary-color);
+        }
+        input[type="text"], select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+        }
+        #email-render-area {
+            width: 100%;
+            height: 60vh;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            overflow-y: auto;
+        }
+        .copy-button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+        }
+        .copy-button:hover {
+            background-color: var(--primary-color);
+        }
+        .copy-button.copied {
+            background-color: #28a745;
+        }
+        .partition-tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            min-height: 38px;
+        }
+        .partition-tag {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 5px 8px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+        }
+        .partition-tag .remove-tag {
+            cursor: pointer;
+            font-weight: bold;
+        }
+        #partition-input {
+            border: none;
+            outline: none;
+            flex-grow: 1;
+            padding: 5px;
+        }
+        .hidden {
+            display: none;
+        }
+        .nested-group {
+            padding-left: 25px;
+            margin-top: 10px;
+            border-left: 2px solid #e0e0e0;
+        }
+        .msc-section {
+            border-left: 4px solid var(--msc-color);
+            padding-left: 15px;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+        .msc-label {
+            color: var(--msc-color);
+        }
+        .tab-container {
+            display: flex;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .tab {
+            padding: 8px 16px;
+            cursor: pointer;
+            background-color: #f0f0f0;
+            border: 1px solid var(--border-color);
+            border-bottom: none;
+            border-radius: 5px 5px 0 0;
+            margin-right: 5px;
+        }
+        .tab.active {
+            background-color: white;
+            border-bottom: 1px solid white;
+            margin-bottom: -1px;
+            font-weight: bold;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>HPC Account Email Generator</h1>
+
+    <div class="container">
+        <div class="controls">
+            <h2>Parameters</h2>
+
+            <div class="form-group">
+                <label for="account_type">Account Type</label>
+                <select id="account_type">
+                    <option value="research" selected>Research Group</option>
+                    <option value="msc">MSc Program</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="groupname">Group Name</label>
+                <input type="text" id="groupname" value="">
+            </div>
+
+            <div class="form-group">
+                <label for="to_email_list">To Emails (comma-separated)</label>
+                <input type="text" id="to_email_list" value="">
+            </div>
+
+            <div class="form-group">
+                <label for="cc_email_list">CC Emails (comma-separated)</label>
+                <input type="text" id="cc_email_list" value="">
+            </div>
+
+            <div class="form-group">
+                <label for="cluster_type">Cluster Type</label>
+                <select id="cluster_type">
+                    <option value="hpc4">HPC4</option>
+                    <option value="spod">SuperPOD</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="partition-input">Available Partitions</label>
+                <div class="partition-tags-container" id="partition-tags-container">
+                    <input type="text" id="partition-input" placeholder="Type partition and press Enter...">
+                </div>
+            </div>
+
+            <!-- MSc Specific Parameters -->
+            <div id="msc-specific-params" class="hidden">
+                <div class="msc-section">
+                    <h3 class="msc-label">MSc Program Parameters</h3>
+
+                    <div class="form-group">
+                        <label for="gpu_hours_limit" class="msc-label">GPU Hours Limit</label>
+                        <input type="text" id="gpu_hours_limit" value="160">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="course_start_date" class="msc-label">Course Start Date (for squota command)</label>
+                        <input type="text" id="course_start_date" value="2025-09-01">
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-group-checkbox">
+                            <input type="checkbox" id="add_shared_scratch">
+                            <label for="add_shared_scratch" style="margin-bottom: 0;" class="msc-label">Add Shared Scratch Info</label>
+                        </div>
+                        <div id="shared-scratch-inputs" class="nested-group hidden">
+                            <div class="form-group">
+                                <label for="shared_scratch_path" class="msc-label">Shared Scratch Path</label>
+                                <input type="text" id="shared_scratch_path" value="/scratch/" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="shared_scratch_quota" class="msc-label">Shared Scratch Quota</label>
+                                <input type="text" id="shared_scratch_quota" value="10TB">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-group-checkbox">
+                            <input type="checkbox" id="add_genai_info">
+                            <label for="add_genai_info" style="margin-bottom: 0;" class="msc-label">Add GenAI Platform Info</label>
+                        </div>
+                        <div id="genai-info-inputs" class="nested-group hidden">
+                            <div class="form-group">
+                                <label for="genai_quota" class="msc-label">GenAI Quota (HKD)</label>
+                                <input type="text" id="genai_quota" value="200">
+                            </div>
+                            <div class="form-group">
+                                <label for="genai_expiry_date" class="msc-label">GenAI Expiry Date</label>
+                                <input type="text" id="genai_expiry_date" value="2026-05-29">
+                            </div>
+                            <div class="form-group">
+                                <label for="genai_subscription_product" class="msc-label">GenAI Subscription Product</label>
+                                <input type="text" id="genai_subscription_product" value="Azure OpenAI">
+                            </div>
+                            <div class="form-group">
+                                <label for="genai_balance_url" class="msc-label">GenAI Balance URL</label>
+                                <input type="text" id="genai_balance_url" value="https://hkust.azure-api.net/openai-balance/get">
+                            </div>
+                            <div class="form-group">
+                                <label for="genai_guide_url" class="msc-label">GenAI Guide URL</label>
+                                <input type="text" id="genai_guide_url" value="https://itso.hkust.edu.hk/services/it-infrastructure/azure-openai-api-service">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="form-group">
+                <div class="form-group-checkbox">
+                    <input type="checkbox" id="add-contributor-info">
+                    <label for="add-contributor-info" style="margin-bottom: 0;">Add Contributor Node Info</label>
+                </div>
+                <div id="contributor-info-inputs" class="nested-group hidden">
+                    <div class="form-group">
+                        <label for="contributor-partition-name">Contributor Partition Name</label>
+                        <input type="text" id="contributor-partition-name" value="contrib_partition">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="form-group-checkbox">
+                    <input type="checkbox" id="add-reserved-info">
+                    <label for="add-reserved-info" style="margin-bottom: 0;">Add Reserved Node Info</label>
+                </div>
+                <div id="reserved-info-inputs" class="nested-group hidden">
+                    <div class="form-group">
+                        <label for="reserved-partition-name">Reserved Partition Name</label>
+                        <input type="text" id="reserved-partition-name" value="res_partition">
+                    </div>
+                    <div class="form-group">
+                        <label for="reserved-period">Reservation Period</label>
+                        <input type="text" id="reserved-period" value="e.g., June 1, 2025 - July 1, 2025">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="preview">
+            <div class="tab-container">
+                <div class="tab active" data-tab="student">Student Email</div>
+                <div class="tab" data-tab="instructor">Instructor Email</div>
+            </div>
+
+            <div id="email-metadata"></div>
+            <div id="email-render-area"></div>
+            <button class="copy-button" onclick="copyToClipboard()">Copy HTML to Clipboard</button>
+        </div>
+    </div>
+
+    <script>
+    'use strict'; // Enforce stricter parsing & error handling
+
+    // =============================
+    // Configuration Objects
+    // =============================
+        const HPC4_CONFIG = {
+            name: "HKUST HPC4",
+            hostname: "hpc4.ust.hk",
+            partitions: ["amd", "intel", "gpu-a30", "gpu-l20", "gpu-rtx5880", "gpu-rtx4090d"],
+            project_quota: "10TB per group (NFS)",
+            scratch_quota: "500GB per user (SSD NFS)",
+            scratch_path: "/scratch/<username>",
+            scratch_cleanup: "60 days",
+            support_email: "hpc4support@ust.hk",
+            docs_url: "https://itso.hkust.edu.hk/services/academic-teaching-support/high-performance-computing/hpc4",
+            charging_url: "https://itso.hkust.edu.hk/services/academic-teaching-support/high-performance-computing/hpc4/charging",
+            container_info: `Singularity/Apptainer is supported. See <a href="https://itso.hkust.edu.hk/services/academic-teaching-support/high-performance-computing/hpc4/singularity-apptainer">documentation</a>.`,
+            spack_url: "https://itso.hkust.edu.hk/services/academic-teaching-support/high-performance-computing/hpc4/spack",
+            best_practice_cpu: [["AMD nodes", "1 CPU : 2.8 GB RAM"], ["Intel nodes", "1 CPU : 3.8 GB RAM"]],
+            best_practice_gpu: [["A30 / L20", "1 GPU : 16 Threads (HT off) : 7.5 GB RAM per Thread"], ["RTX4090D / RTX5880ADA", "1 GPU : 10 Threads (HT off) : 7.5 GB RAM per Thread"]],
+            signature: "Best regards,<br />HKUST HPC4 Operations Team"
+        };
+
+        const SPOD_CONFIG = {
+            name: "HKUST SuperPOD",
+            hostname: "superpod.ust.hk",
+            partitions: ["normal", "preempt", "cpu"],
+            project_quota: "5TB per group (NFS)",
+            scratch_quota: "5TB per group (Lustre)",
+            scratch_path: "/scratch/<groupname>",
+            scratch_cleanup: "30 days",
+            support_email: "spodsupport@ust.hk",
+            docs_url: "https://itso.hkust.edu.hk/services/academic-teaching-support/high-performance-computing/superpod",
+            charging_url: "https://itsc.hkust.edu.hk/services/academic-teaching-support/high-performance-computing/superpod/charging",
+            container_info: `Singularity or Enroot are supported. See <a href="https://hkust-hpc-docs.readthedocs.io/latest/kb/enroot/enroot-running-interactive-container-se-L58_Wq.html">Enroot documentation</a> and <a href="https://itso.hkust.edu.hk/services/academic-teaching-support/high-performance-computing/superpod/singularity-apptainer">Singularity documentation</a>.`,
+            spack_url: "https://hkust-hpc-docs.readthedocs.io/latest/kb/spack/index.html",
+            best_practice_cpu: [["CPU nodes", "Proportional RAM is allocated automatically based on CPU core request."]],
+            best_practice_gpu: [["H800", "1 GPU : 28 Threads (HT on) : 8 GB RAM per Thread"]],
+            signature: "Best regards,<br />HKUST SuperPOD Operations Team"
+        };
+
+    // =============================
+    // Utility Helpers (keep markup generation small & consistent)
+    // =============================
+    const bold = (text) => `<b>${text}</b>`;
+    const italic = (text) => `<i>${text}</i>`;
+    const url = (text, link) => `<a href="${link}">${text}</a>`;
+    const escapeHtml = (text) => text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    const escapeHtmlAttribute = (html) => html
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    const createTable = (headers, rows) => {
+        const tableStyle = "border-collapse: collapse; width: 100%; margin-top: 1em; margin-bottom: 1em; border: 1px solid #ddd;";
+        const thStyle = "text-align: left; padding: 6px 8px; background-color: #f2f2f2; font-weight: bold; border-bottom: 1px solid #ddd;";
+        const tdStyle = "text-align: left; padding: 6px 8px; border-bottom: 1px dotted #ccc;";
+        let headerHtml = headers.map(header => `<th style="${thStyle}">${header}</th>`).join('');
+        let rowsHtml = rows.map(row => `<tr>${row.map(cell => `<td style="${tdStyle}">${cell}</td>`).join('')}</tr>`).join('');
+        return `<table style="${tableStyle}"><thead><tr>${headerHtml}</tr></thead><tbody>${rowsHtml}</tbody></table>`;
+    };
+    const createCodeBlock = (code, language) => {
+        const escapedCode = code.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        return `<pre style="background-color: #f5f5f5; padding: 10px; border-radius: 5px; border: 1px solid #eee; white-space: pre-wrap; word-wrap: break-word;"><code class="${language}">${escapedCode}</code></pre>`;
+    };
+    const createUnorderedList = (items) => `<ul style="padding-left: 20px;">${items.map(item => `<li>${item}</li>`).join('')}</ul>`;
+    const createOrderedList = (items) => `<ol style="padding-left: 20px;">${items.map(item => `<li>${item}</li>`).join('')}</ol>`;
+
+    // Reusable styled box builders
+    const infoBox = (innerHtml) => `<div style="background-color: #e7f3fe; border-left: 6px solid #2196F3; padding: 10px 15px; margin-top: 1em; border-radius: 4px; font-size: 12px;">${innerHtml}</div>`;
+    const warnBox = (innerHtml) => `<div style="background-color: #fff3cd; border: 1px solid #ffeaa7; padding: 10px; border-radius: 4px; margin-top: 1em;">${innerHtml}</div>`;
+    const dangerInline = (innerHtml) => `<p style="background-color: #ffe1e1; border: 1px solid #ff2d2d; padding: 10px; border-radius: 4px;">${innerHtml}</p>`;
+    const tipBox = (innerHtml) => `<p style="background-color: #e6f9ed; border: 1px solid #52c41a; padding: 10px; border-radius: 4px;">${innerHtml}</p>`;
+
+        let partitions = [];
+        const partitionInput = document.getElementById('partition-input');
+        const tagsContainer = document.getElementById('partition-tags-container');
+
+        function renderPartitionTags() {
+            tagsContainer.innerHTML = '';
+            partitions.forEach(partition => {
+                const tagEl = document.createElement('div');
+                tagEl.className = 'partition-tag';
+                tagEl.innerHTML = `<span>${partition}</span><span class="remove-tag" data-partition="${partition}">&times;</span>`;
+                tagsContainer.appendChild(tagEl);
+            });
+            tagsContainer.appendChild(partitionInput);
+            partitionInput.value = '';
+        }
+
+        partitionInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && e.target.value.trim() !== '') {
+                e.preventDefault();
+                if (!partitions.includes(e.target.value.trim())) {
+                    partitions.push(e.target.value.trim());
+                    renderPartitionTags();
+                    generateEmail();
+                }
+                e.target.value = '';
+            }
+        });
+
+        tagsContainer.addEventListener('click', (e) => {
+            if (e.target.classList.contains('remove-tag')) {
+                const partitionToRemove = e.target.dataset.partition;
+                partitions = partitions.filter(p => p !== partitionToRemove);
+                renderPartitionTags();
+                generateEmail();
+            }
+        });
+
+        function resetPartitions() {
+            const clusterType = document.getElementById('cluster_type').value;
+            const accountType = document.getElementById('account_type').value;
+
+            if (accountType === 'msc') {
+                partitions = ['normal'];
+            } else {
+                const config = clusterType === 'spod' ? SPOD_CONFIG : HPC4_CONFIG;
+                partitions = [...config.partitions];
+            }
+            renderPartitionTags();
+        }
+
+        function generateEmail() {
+            const accountType = document.getElementById('account_type').value;
+            const activeTab = document.querySelector('.tab.active').dataset.tab;
+
+            if (accountType === 'research') {
+                generateResearchEmail();
+            } else { // MSc
+                if (activeTab === 'student') {
+                    generateSpodMscStudentEmail();
+                } else { // instructor
+                    generateSpodMscInstructorEmail();
+                }
+            }
+        }
+
+        function generateResearchEmail() {
+            const groupname = document.getElementById('groupname').value ;
+            const toEmailList = document.getElementById('to_email_list').value.split(',').map(e => e.trim());
+            const ccEmailList = document.getElementById('cc_email_list').value.split(',').map(e => e.trim());
+            const clusterType = document.getElementById('cluster_type').value;
+
+            const addContributorInfo = document.getElementById('add-contributor-info').checked;
+            const contributorPartitionName = document.getElementById('contributor-partition-name').value;
+            const addReservedInfo = document.getElementById('add-reserved-info').checked;
+            const reservedPartitionName = document.getElementById('reserved-partition-name').value;
+            const reservedPeriod = document.getElementById('reserved-period').value;
+
+            const config = clusterType === 'spod' ? SPOD_CONFIG : HPC4_CONFIG;
+            const subject = `Your ${config.name} Group ${groupname} is Ready`;
+
+            const generateSectionHeader = (title, isSubHeader = false) => {
+                if (isSubHeader) {
+                    return `<h4 style="color: #004a99; margin-top: 2em; margin-bottom: 0.5em; border-bottom: 1px solid #ccc; padding-bottom: 3px;">${title.toUpperCase()}</h4>`;
+                }
+                return `<h3 style="color: #003366; border-bottom: 2px solid #003366; padding-bottom: 5px; margin-top: 2em; margin-bottom: 1em;">${title.toUpperCase()}</h3>`;
+            };
+
+            const generateIntro = () => {
+                const emails = [...toEmailList, ...ccEmailList]
+                    .map(e => e.trim())
+                    .filter(e => e && e.includes('@'));
+                const usernames = [...new Set(emails.map(e => e.split('@')[0]))];
+                const accountList = usernames.join(', ');
+                const verbHelper = usernames.length > 1 ? 'have' : 'has';
+                return `<p>Dear All,</p><p>Your ITSO account(s): {<strong>${accountList}</strong>}, ${verbHelper} been associated with the <strong>${config.name}</strong> group <strong>${groupname}</strong>. This email contains essential information to help you access and effectively use the cluster.</p>`;
+            };
+
+            const generateAccountInfoTable = () => {
+                const scratchPath = config.scratch_path.replace('<groupname>', groupname);
+                const scratchDetails = `${config.scratch_quota} in ${bold(escapeHtml(scratchPath))}<br /><small><i>(Inactive files removed after ${config.scratch_cleanup}. ${url('More info', 'https://itso.hkust.edu.hk/services/academic-teaching-support/high-performance-computing/superpod/fileandstorage')})</i></small>`;
+                const projectDetails = `${config.project_quota} in ${bold(`/project/${groupname}`)}`;
+                const rows = [
+                    ['Partitions', partitions.join(', ')],
+                    ['Home quota', `200GB per user in ${bold(escapeHtml('/home/<username>'))}`],
+                    ['Project quota', projectDetails],
+                    ['Scratch quota', scratchDetails],
+                    ['Slurm account', groupname]
+                ];
+                return createTable(['Resource', 'Details'], rows);
+            };
+
+            const generateStorageGuidance = () => {
+                const scratchPath = `/scratch`;
+                const projectPath = `/project`;
+                const items = [
+                    `Keep active working data in <strong>${scratchPath}</strong>.`,
+                    `Put large or slower‑growing datasets in <strong>${projectPath}</strong>.`,
+                    `Archive inactive or bulk data to <strong>${projectPath}</strong> promptly.`,
+                    `Clean temporary files regularly.`
+                ];
+                let listHtml = createUnorderedList(items).replace('<ul', '<ul style="margin:6px 0 0 18px; padding:0; list-style: disc;"');
+                return `<div style="margin-top:-0.5em; font-size:90%; background:#e6f9ed; border:1px solid #52c41a; padding:10px 12px; border-radius:4px;"><strong>💡 Storage Tips:</strong>${listHtml}</div>`;
+            };
+
+            // Show a note about the preempt partition if applicable (missing earlier caused ReferenceError)
+            const generatePreemptPartitionNote = () => (clusterType === 'spod' && partitions.includes('preempt'))
+                ? infoBox(`<strong>Note on the 'preempt' partition:</strong> Jobs in <code>preempt</code> can be interrupted to free resources for higher‑priority work. Use it for flexible, checkpointed workloads.`)
+                : '';
+
+            const generateContributorInfo = () => {
+                const items = [
+                    `${bold('Priority access:')} Your group has free and priority use of the contributed node.`,
+                    `${bold('Maximized usage:')} Other users may run preemptive jobs on this node when it is idle.`,
+                    `${bold('Preemption:')} Any job submitted by your group stops others' preemptive job on your node, to let your job run.`
+                ];
+                const accessInstruction = `<p>Use this partition:</p>${createCodeBlock(`srun --partition=${contributorPartitionName} ...`, 'bash')}`;
+                const warning = warnBox(`<p style="margin: 0;"><strong>⚠️ Note:</strong> Jobs outside ${bold(contributorPartitionName)} incur normal charges. Only jobs in ${bold(contributorPartitionName)} are free.</p>`);
+                return `${generateSectionHeader('Contributor Node Access')}${createUnorderedList(items)}${accessInstruction}${warning}`;
+            };
+
+            const generateReservedInfo = () => {
+                const warning = warnBox(`<p style="margin: 0;"><strong>⚠️ Note:</strong> Jobs outside ${bold(reservedPartitionName)} cost normal rates. Only jobs in ${bold(reservedPartitionName)} during ${bold(reservedPeriod)} are free.</p>`);
+                return `${generateSectionHeader('Reserved Node Access')}<p>You have exclusive access to ${bold(reservedPartitionName)} for ${bold(reservedPeriod)}.</p>${warning}`;
+            };
+
+            const generateLoginInstructions = () => {
+                const sshCommand = `ssh <username>@${config.hostname}`;
+                const commandBox = infoBox(`<p style=\"margin: 0 0 0.5em;\"><strong>Run:</strong></p>${createCodeBlock(sshCommand, 'bash')}`);
+                const items = [
+                    `On campus: use wired or 'eduroam'. Off campus: connect first via ${url('Secure Remote Access VPN', 'https://itso.hkust.edu.hk/services/cyber-security/vpn')}.`,
+                    `<div>Install <a href="https://code.visualstudio.com/" target="_blank" rel="noopener">VS Code</a> or use a client:<ol type="a" style="margin-top:5px; margin-bottom:0;"><li><strong>Windows:</strong> PuTTY, MobaXterm, WSL.</li><li><strong>Mac/Linux:</strong> Terminal app.</li></ol></div>`,
+                    `SSH to the login node. Enter your ITSO password and complete 2FA (enroll both ${url('Microsoft and Duo MFA','https://itso.hkust.edu.hk/cyber-security/MFA')}).`,
+                    `${url('Set up passwordless SSH', 'https://hkust-hpc-docs.readthedocs.io/latest/kb/ssh/ssh-login-to-hpc-cluster-without-usi-ImiEj9.html#login-to-hpc-cluster-without-using-password')}.`,
+                    `Fix disconnects when idle with ${url('this guide', 'https://hkust-hpc-docs.readthedocs.io/latest/kb/ssh/ssh-how-to-prevent-ssh-session-disco-OoJVlR.html')}.`
+                ];
+                return `${createOrderedList(items)}${commandBox}${dangerInline('<strong>‼️ Warning:</strong> Do not run compute jobs on login nodes (no GPU). Start an interactive or batch job instead.')}`;
+            };
+            const generateInteractiveSessionInfo = () => {
+                const cpuCommand = `srun --account=${groupname} --partition=<partition_name> --ntasks-per-node=1 --cpus-per-task=16 --nodes=1 --time=<hh:mm:ss> --pty bash`;
+                const gpuCommand = `srun --account=${groupname} --partition=<partition_name> --gpus-per-node=1 --nodes=1 --time=<hh:mm:ss> --pty bash`;
+                const upfrontGuidanceItems = [
+                    `Request only the <strong>primary resource</strong>.`,
+                    `<strong>CPU jobs:</strong> use <code>--ntasks-per-node</code> and <code>--cpus-per-task</code>.`,
+                    `<strong>GPU jobs:</strong> use <code>--gpus-per-node</code>.`,
+                    `<strong>Avoid</strong> <code>--mem</code> or CPU flags for GPU jobs unless you have measured justification.`
+                ];
+                const warningListItems = [
+                    `Don't over‑request CPUs or memory; it slows scheduling, wastes resources, and <strong>adds cost</strong>.`,
+                    `Let Slurm size memory, unless benchmarks show you need more; random values cause <strong>OOM kills</strong>.`,
+                    `Use default CPU:RAM ratios; change only with measured need (see <a href="#best-practices-slurm"><strong>Best Practices</strong></a>).`
+                ];
+                const upfrontList = createUnorderedList(upfrontGuidanceItems);
+                const importantBlock = `<div style="background-color: #fffbe6; border: 1px solid #ffe58f; padding: 10px; border-radius: 4px;"><strong>⚠️ Important:</strong>${createUnorderedList(warningListItems)}</div>`;
+                const tipsBlock = tipBox(`<strong>💡 Tip:</strong> Adjust CPUs, GPUs, memory, time, and partition for the task. Smaller accurate requests start sooner. See ${url('this guide', 'https://scicomp.aalto.fi/triton/tut/slurm/#the-resources-slurm-manages')} for detail.`);
+                return `${upfrontList}<p>Run to start an ${bold('interactive CPU')} session:</p>${createCodeBlock(cpuCommand, 'bash')}<p>Run to start an ${bold('interactive GPU')} session:</p>${createCodeBlock(gpuCommand, 'bash')}${tipBox(`<strong>💡Tips:</strong> Replace <code>&lt;hh:mm:ss&gt;</code> with your desired time limit (e.g., <code>01:00:00</code> for 1 hour).`)}<p>See ${url('Slurm option reference', 'https://itso.hkust.edu.hk/services/academic-teaching-support/high-performance-computing/hpc4/slurm')}.</p>`;
+            };
+
+            const generateDataTransferInfo = () => {
+                const rsyncCmd = `rsync -avz /local/path <username>@${config.hostname}:/remote/path --progress`;
+                const scratchPathRaw = config.scratch_path.replace('<username>', '<username>').replace('<groupname>', groupname);
+                return `<p>Use ${bold('rsync')} or ${bold('fpsync')} to transfer files.</p><p>rsync:</p>${createCodeBlock(rsyncCmd, 'bash')}<p>fpsync:</p>${createCodeBlock(`fpsync -n 2 -v -o '-lptgoD --numeric-ids --block-size=131072 --outbuf=B --inplace' /local/path <username>@${config.hostname}:${scratchPathRaw}`, 'bash')}`;
+            };
+            const generateReminders = () => {
+                const items = [
+                    `Use only for HKUST research or coursework.`,
+                    `Check quotas before large runs.`,
+                    `Remove temporary files when done.`,
+                    `Keep jobs within time limits.`
+                ];
+                return `${createUnorderedList(items)}`;
+            };
+
+            const generateBatchJobInfo = () => {
+                const jobScript = `#!/bin/bash\n#SBATCH --account=${groupname}\n#SBATCH --partition=<partition_name>\n#SBATCH --ntasks=1\n#SBATCH --gpus-per-node=1\n#SBATCH --time=1:00:00\n\n# Load modules if needed (e.g., module load cuda)\n# Activate venv if needed (e.g., source activate my_env)\n\n# Your commands here\npython your_script.py`;
+                const steps = [
+                    `Create job script (e.g., ${italic('job.sh')}): ${createCodeBlock(jobScript, 'bash')}`,
+                    `Submit: ${createCodeBlock('sbatch job.sh', 'bash')}`,
+                    `Check status: ${createCodeBlock('squeue -u $USER', 'bash')}`
+                ];
+                return `<p>Use batch jobs for long tasks.</p>${createOrderedList(steps)}`;
+            };
+
+            const generateBillingInfo = () => {
+                let content = `<p>${config.name} usage bills monthly. The PI receives a statement. See ${url('charging details', config.charging_url)}.</p>`;
+                content += `<p>${bold('Project storage (/project):')} Usage exceeds default quota is subject to charge.</p>`;
+                return content;
+            };
+
+            const generateSlurmBestPractices = () => {
+                const intro = `<p>Request only the main resource you need (e.g., ${bold('--cpus-per-task')} or ${bold('--gpus-per-node')}). Slurm auto-allocates other resources (RAM/CPU) by default. Ratios:</p>`;
+                const rows = config.best_practice_cpu.concat(config.best_practice_gpu);
+                return intro + createTable(["Node/Resource Type", "Default Resource Allocation Ratio"], rows);
+            };
+
+            const generateContainerInfo = () => `<p>${config.container_info}</p>`;
+            const generateSpackInfo = () => `<p>Build your own software stack with Spack: ${url('Spack Documentation', config.spack_url)}</p>`;
+            // Added missing helpers referenced later (support & monitoring)
+            const generateSupportInfo = () => createUnorderedList([
+                `Email ${url(config.support_email, 'mailto:' + config.support_email)} for technical help (account / job / quota issues).`,
+                `${url(`HKUST ${config.name} Official Website`, config.docs_url)}`,
+                `${url('HKUST HPC Knowledge Base', 'https://hkust-hpc-docs.readthedocs.io/latest/')}`,
+                `For urgent service interruptions, include job IDs (use <code>squeue -u $USER</code>) and error outputs.`
+            ]);
+            const generateMonitoringInfo = () => {
+                const cmdGroupUsage = createCodeBlock(`squota -A ${groupname}`, 'bash');
+                const cmdUserUsage = createCodeBlock('squota', 'bash');
+                const cmdJobs = createCodeBlock('squeue -u $USER', 'bash');
+                return `<p>Monitor storage and job usage:</p>` +
+                    createUnorderedList([
+                        `Group storage & GPU/CPU accounting:`,
+                        `Personal usage summary:`,
+                        `Active / queued jobs:`,
+                        `Available resources overview: run <code>savail</code>`
+                    ])
+                    .replace('<ul', '<ul style="margin:6px 0 0 18px; padding:0; list-style: disc;"')
+                    + `<div style="margin-top:0.5em;">${cmdGroupUsage}${cmdUserUsage}${cmdJobs}</div>`;
+            };
+            const generateAvailableResourcesInfo = () => `<p>Run ${bold('savail')} to list free GPUs/CPUs and memory on each partition so you can select a less busy one. Refresh before launching large jobs.</p>`;
+            const generateAppendix = () => `<details style="margin-top: 2em; border: 1px solid #eee; padding: 15px; border-radius: 5px;"><summary style="font-weight: bold; cursor: pointer; color: #003366;">Appendix: Charging, Tips & Best Practices</summary><div style="padding-top: 1em; border-top: 1px solid #eee; margin-top: 1em;">${generateSectionHeader("Data Transfer", true)}${generateDataTransferInfo()}${generateSectionHeader("Monitoring Resources Usage and Availability", true)}${generateMonitoringInfo()}${generateAvailableResourcesInfo()}${generateSectionHeader("Batch Job Usage", true)}${generateBatchJobInfo()}${generateSectionHeader("Billing Statement & Charging", true)}${generateBillingInfo()}${generateSectionHeader("Best Practices with Slurm", true)}${generateSlurmBestPractices()}${generateSectionHeader("Container Usage", true)}${generateContainerInfo()}${generateSectionHeader("Building Software with Spack", true)}${generateSpackInfo()}</div></details>`;
+
+            const bodyParts = [];
+            bodyParts.push(generateIntro());
+            bodyParts.push(generateSectionHeader("Account & Resource Information"));
+            bodyParts.push(generateAccountInfoTable());
+            bodyParts.push(generateStorageGuidance());
+            bodyParts.push(generatePreemptPartitionNote());
+            if (addContributorInfo) bodyParts.push(generateContributorInfo());
+            if (addReservedInfo) bodyParts.push(generateReservedInfo());
+            bodyParts.push(generateSectionHeader("Login Instructions"));
+            bodyParts.push(generateLoginInstructions());
+            bodyParts.push(generateSectionHeader("Interactive Usage"));
+            bodyParts.push(generateInteractiveSessionInfo());
+            bodyParts.push(generateSectionHeader("Codes of Conduct"));
+            bodyParts.push(generateReminders());
+            bodyParts.push(generateSectionHeader("Support And Resources"));
+            bodyParts.push(generateSupportInfo());
+            bodyParts.push(generateAppendix());
+
+            const htmlBody = bodyParts.join('');
+            const fullHtml = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${subject}</title><style>body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #333; background-color: #f7f7f7; margin: 0; padding: 0; font-size: 11px; } h1, h2, h3, h4 { font-size: 14px; } h1 { font-size: 14px; } h2 { font-size: 13px; } h3 { font-size: 12px; } h4 { font-size: 11px; }</style></head><body><div style="max-width: 800px; margin: 20px auto; padding: 20px; background-color: #ffffff; border: 1px solid #e0e0e0; border-radius: 5px;">${htmlBody}<br />${config.signature}</div></body></html>`;
+            document.getElementById('email-render-area').innerHTML = `<iframe srcdoc="${escapeHtmlAttribute(fullHtml)}" style="width:100%; height:100%; border:none;"></iframe>`;
+            document.getElementById('email-render-area').dataset.rawHtml = fullHtml;
+
+            const metadataHtml = `
+                <div style="background-color: #f8f9fa; padding: 15px; border: 1px solid #e9ecef; border-radius: 5px; margin-bottom: 15px; font-size: 12px;">
+                    <h4 style="margin-top: 0; color: #495057;">Email Information</h4>
+                    <p style="margin: 5px 0;"><strong>From:</strong> ${config.support_email}</p>
+                    <p style="margin: 5px 0;"><strong>To:</strong> ${toEmailList.join('; ')}</p>
+                    ${ccEmailList.length > 0 && ccEmailList[0] !== '' ? `<p style="margin: 5px 0;"><strong>Cc:</strong> ${ccEmailList.join('; ')}</p>` : ''}
+                    <p style="margin: 5px 0;"><strong>Subject:</strong> ${subject}</p>
+                </div>
+            `;
+            document.getElementById('email-metadata').innerHTML = metadataHtml;
+        }
+
+        function generateSpodMscStudentEmail() {
+            // Get form values
+            const groupname = document.getElementById('groupname').value;
+            const toEmailList = document.getElementById('to_email_list').value.split(',').map(e => e.trim());
+            const ccEmailList = document.getElementById('cc_email_list').value.split(',').map(e => e.trim());
+            const clusterType = document.getElementById('cluster_type').value;
+            const gpuHoursLimit = document.getElementById('gpu_hours_limit').value;
+            const courseStartDate = document.getElementById('course_start_date').value;
+            const addSharedScratch = document.getElementById('add_shared_scratch').checked;
+            const sharedScratchPath = document.getElementById('shared_scratch_path').value;
+            const addGenaiInfo = document.getElementById('add_genai_info').checked;
+            const genaiQuota = document.getElementById('genai_quota').value;
+            const genaiExpiryDate = document.getElementById('genai_expiry_date').value;
+            const genaiSubscriptionProduct = document.getElementById('genai_subscription_product').value;
+            const genaiBalanceUrl = document.getElementById('genai_balance_url').value;
+            const genaiGuideUrl = document.getElementById('genai_guide_url').value;
+
+            const config = clusterType === 'spod' ? SPOD_CONFIG : HPC4_CONFIG;
+            const subject = `Your ${config.name} Account for ${groupname} is Ready`;
+
+            // --- Helper functions for generating email sections ---
+            const generateSectionHeader = (title, isSubHeader = false) => {
+                if (isSubHeader) return `<h4 style="color: #004a99; margin-top: 2em; margin-bottom: 0.5em; border-bottom: 1px solid #ccc; padding-bottom: 3px;">${title.toUpperCase()}</h4>`;
+                return `<h3 style="color: #003366; border-bottom: 2px solid #003366; padding-bottom: 5px; margin-top: 2em; margin-bottom: 1em;">${title.toUpperCase()}</h3>`;
+            };
+
+            const generateIntro = () => `<p>Dear Student,</p><p>Your ITSO account has been associated with the <strong>${config.name}</strong> group <strong>${groupname}</strong> for your course. This email contains essential information to help you access and effectively use the cluster.</p>`;
+
+            const generateAccountInfo = () => {
+                let rows = [
+                    ['Partitions', partitions.join(', ')],
+                    ['Home quota', `200GB per user in ${bold(escapeHtml('/home/<username>'))}`],
+                    ['Slurm account', groupname],
+                    ['GPU Hour Limit', `${bold(gpuHoursLimit + ' GPU hours')} on 'normal' partition.`]
+                ];
+                if (addSharedScratch) {
+                    rows.push(['Shared Scratch', `Read-only access to ${bold(escapeHtml(sharedScratchPath))}`]);
+                }
+                const usageNote = `<p>A usage cap of ${bold(gpuHoursLimit + ' GPU hours')} is imposed. Check your usage with:</p>${createCodeBlock(`squota -S ${courseStartDate}`, 'bash')}<p>Exceeding the limit will prevent new jobs. For increases, contact your instructor.</p>`;
+                return createTable(['Resource', 'Details'], rows) + usageNote;
+            };
+
+            const generateLoginInstructions = () => {
+                const sshCommand = `ssh <username>@${config.hostname}`;
+                const commandBox = infoBox(`<p style=\"margin: 0 0 0.5em;\"><strong>Run:</strong></p>${createCodeBlock(sshCommand, 'bash')}`);
+                const items = [
+                    `On campus: use wired or 'eduroam'. Off campus: connect first via ${url('Secure Remote Access VPN', 'https://itso.hkust.edu.hk/services/cyber-security/vpn')}.`,
+                    `<div>Install <a href="https://code.visualstudio.com/" target="_blank" rel="noopener">VS Code</a> or use a client:<ol type="a" style="margin-top:5px; margin-bottom:0;"><li><strong>Windows:</strong> PuTTY, MobaXterm, WSL.</li><li><strong>Mac/Linux:</strong> Terminal app.</li></ol></div>`,
+                    `SSH to the login node. Enter your ITSO password and complete 2FA (enroll both ${url('Microsoft and Duo MFA','https://itso.hkust.edu.hk/cyber-security/MFA')}).`,
+                    `${url('Set up passwordless SSH', 'https://hkust-hpc-docs.readthedocs.io/latest/kb/ssh/ssh-login-to-hpc-cluster-without-usi-ImiEj9.html#login-to-hpc-cluster-without-using-password')}.`,
+                ];
+                return `${createOrderedList(items)}${commandBox}${dangerInline('<strong>‼️ Warning:</strong> Do not run compute jobs on login nodes (no GPU). Start an interactive or batch job instead.')}`;
+            };
+
+            const generateInteractiveSessionInfo = () => {
+                const gpuCommand = `srun --account=${groupname} --partition=<partition_name> --gpus-per-node=1 --time=<hh:mm:ss> --pty bash`;
+                return `<p>Run to start an ${bold('interactive GPU')} session:</p>${createCodeBlock(gpuCommand, 'bash')}${tipBox(`<strong>💡Tips:</strong> Replace <code>&lt;hh:mm:ss&gt;</code> with your desired time limit (e.g., <code>01:00:00</code> for 1 hour).`)}<p>See ${url('Slurm option reference', 'https://itso.hkust.edu.hk/services/academic-teaching-support/high-performance-computing/hpc4/slurm')}.</p>`;
+            };
+
+            const generateGenaiInfo = () => {
+                if (!addGenaiInfo) return '';
+                const productText = `${genaiSubscriptionProduct}`;
+                const content = `
+<p>GenAI Platform (API) usage:</p>
+${createUnorderedList([
+    `Follow ${url('guide', genaiGuideUrl)}.`,
+    `Subscribe to "${bold(productText)}" in Developer Portal to get API key.`,
+    `Quota per user: ${bold('HKD ' + genaiQuota)} until ${bold(genaiExpiryDate)} (auto suspension after).`,
+    `Check remaining balance via ${url(genaiBalanceUrl, genaiBalanceUrl)} with your API key.`,
+    `Keep the API key secret; regenerate if leaked.`
+])}`;
+                return generateSectionHeader("GenAI Platform Information") + content;
+            };
+
+            const generateReminders = () => createUnorderedList([`Use only for HKUST coursework.`, `Check your usage limit before running jobs.`, `Remove temporary files when done.`]);
+
+            const generateSupportInfo = () => createUnorderedList([
+            `For questions related to your course, please contact your instructor or TA.`,
+            `For technical problems accessing ${config.name}, please email ${url(config.support_email, 'mailto:' + config.support_email)}.`,
+                `${url(`HKUST ${config.name} Official Website`, config.docs_url)}`,
+                `${url('HKUST HPC Knowledge Base', 'https://hkust-hpc-docs.readthedocs.io/latest/')}`
+            ]);
+
+            // --- Appendix Section Generators ---
+            const generateDataTransferInfo = () => {
+                const syntaxCmd = `rsync [options] SRC DEST`;
+                const localCopyCmd = `rsync -av ./src_dir/ ./dest_dir/`;
+                const toRemoteCmd = `rsync -avz /local/path/ <username>@${config.hostname}:/remote/path/ --progress`;
+                const fromRemoteCmd = `rsync -avz <username>@${config.hostname}:/remote/path/ /local/path/ --progress`;
+                const noteCmd = `# Trailing slash copies contents of the directory, without slash copies the directory itself.`;
+                return `
+<p>Use ${bold('rsync')} to transfer or synchronize files. Basic form:</p>
+${createCodeBlock(syntaxCmd, 'bash')}
+<p>Local to local (no remote):</p>
+${createCodeBlock(localCopyCmd, 'bash')}
+<p>Local to remote:</p>
+${createCodeBlock(toRemoteCmd, 'bash')}
+<p>Remote to local:</p>
+${createCodeBlock(fromRemoteCmd, 'bash')}
+${tipBox('<strong>💡 Tips:</strong> Trailing slash copies contents of the directory; without slash copies the directory itself.')}
+<p>Common useful options: <code>-a</code> (archive), <code>-v</code> (verbose), <code>-z</code> (compress), <code>--progress</code> (show progress).</p>`;
+            };
+            const generateMonitoringInfo = () => `<p>Run ${bold('squota -S ' + courseStartDate)} to show your usage against the course limit:</p>${createCodeBlock(`squota -S ${courseStartDate}`, 'bash')}`;
+            const generateAvailableResourcesInfo = () => `<p>Run ${bold('savail')} to show available resources:</p>${createCodeBlock('savail', 'bash')}`;
+            const generateBatchJobInfo = () => {
+                const jobScript = `#!/bin/bash\n#SBATCH --account=${groupname}\n#SBATCH --partition=normal\n#SBATCH --gpus-per-node=1\n#SBATCH --time=1:00:00\n\n# Your commands here\npython your_script.py`;
+                return `<p>Use batch jobs for long tasks.</p>${createOrderedList([`Create job script (e.g., ${italic('job.sh')}): ${createCodeBlock(jobScript, 'bash')}`, `Submit: ${createCodeBlock('sbatch job.sh', 'bash')}`, `Check status: ${createCodeBlock('squeue -u $USER', 'bash')}`])}`;
+            };
+            const generateBillingInfo = () => `<p>Your usage is tracked against a course-wide GPU hour limit. There are no direct charges to you. If you have questions about the usage limit, please contact your course instructor.</p>`;
+            const generateSlurmBestPractices = () => {
+                const intro = `<p>Request only the main resource you need (e.g., ${bold('--gpus-per-node')}). Slurm auto-allocates other resources (RAM/CPU) by default. Ratios:</p>`;
+                return intro + createTable(["Node/Resource Type", "Default Resource Allocation Ratio"], config.best_practice_gpu);
+            };
+            const generateContainerInfo = () => `<p>${config.container_info}</p>`;
+            const generateSpackInfo = () => `<p>Build your own software stack with Spack: ${url('Spack Documentation', config.spack_url)}</p>`;
+            const generateAppendix = () => `<details style="margin-top: 2em; border: 1px solid #eee; padding: 15px; border-radius: 5px;"><summary style="font-weight: bold; cursor: pointer; color: #003366;">Appendix: Tips & Best Practices</summary><div style="padding-top: 1em; border-top: 1px solid #eee; margin-top: 1em;">${generateSectionHeader("Data Transfer", true)}${generateDataTransferInfo()}${generateSectionHeader("Monitoring Usage and Availability", true)}${generateMonitoringInfo()}${generateAvailableResourcesInfo()}${generateSectionHeader("Batch Job Usage", true)}${generateBatchJobInfo()}${generateSectionHeader("Usage & Charging", true)}${generateBillingInfo()}${generateSectionHeader("Best Practices with Slurm", true)}${generateSlurmBestPractices()}${generateSectionHeader("Container Usage", true)}${generateContainerInfo()}${generateSectionHeader("Building Software with Spack", true)}${generateSpackInfo()}</div></details>`;
+
+            // --- Assemble and Render Email ---
+            const bodyParts = [
+                generateIntro(),
+                generateSectionHeader("Account & Resource Information"),
+                generateAccountInfo(),
+                generateSectionHeader("Login Instructions"),
+                generateLoginInstructions(),
+                generateSectionHeader("Interactive Usage"),
+                generateInteractiveSessionInfo(),
+                generateGenaiInfo(),
+                generateSectionHeader("Codes of Conduct"),
+                generateReminders(),
+                generateSectionHeader("Support And Resources"),
+                generateSupportInfo(),
+                generateAppendix()
+            ];
+
+            const htmlBody = bodyParts.join('');
+            const fullHtml = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${subject}</title><style>body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #333; background-color: #f7f7f7; margin: 0; padding: 0; font-size: 11px; } h1,h2,h3,h4{font-size:14px;} h1{font-size:14px;} h2{font-size:13px;} h3{font-size:12px;} h4{font-size:11px;}</style></head><body><div style="max-width: 800px; margin: 20px auto; padding: 20px; background-color: #ffffff; border: 1px solid #e0e0e0; border-radius: 5px;">${htmlBody}<br />${config.signature}</div></body></html>`;
+
+            document.getElementById('email-render-area').innerHTML = `<iframe srcdoc="${escapeHtmlAttribute(fullHtml)}" style="width:100%; height:100%; border:none;"></iframe>`;
+            document.getElementById('email-render-area').dataset.rawHtml = fullHtml;
+
+            const metadataHtml = `
+                <div style="background-color: #f8f9fa; padding: 15px; border: 1px solid #e9ecef; border-radius: 5px; margin-bottom: 15px; font-size: 12px;">
+                    <h4 style="margin-top: 0; color: #495057;">Email Information</h4>
+                    <p style="margin: 5px 0;"><strong>From:</strong> ${config.support_email}</p>
+                    <p style="margin: 5px 0;"><strong>To:</strong> ${toEmailList.join('; ')}</p>
+                    ${ccEmailList.length > 0 && ccEmailList[0] !== '' ? `<p style="margin: 5px 0;"><strong>Cc:</strong> ${ccEmailList.join('; ')}</p>` : ''}
+                    <p style="margin: 5px 0;"><strong>Subject:</strong> ${subject}</p>
+                </div>
+            `;
+            document.getElementById('email-metadata').innerHTML = metadataHtml;
+        }
+
+        function generateSpodMscInstructorEmail() {
+            // Get form values
+            const groupname = document.getElementById('groupname').value;
+            const toEmailList = document.getElementById('to_email_list').value.split(',').map(e => e.trim());
+            const ccEmailList = document.getElementById('cc_email_list').value.split(',').map(e => e.trim());
+            const clusterType = document.getElementById('cluster_type').value;
+            const gpuHoursLimit = document.getElementById('gpu_hours_limit').value;
+            const courseStartDate = document.getElementById('course_start_date').value;
+            const addSharedScratch = document.getElementById('add_shared_scratch').checked;
+            const sharedScratchPath = document.getElementById('shared_scratch_path').value;
+            const sharedScratchQuota = document.getElementById('shared_scratch_quota').value;
+
+            const config = clusterType === 'spod' ? SPOD_CONFIG : HPC4_CONFIG;
+            const subject = `Your ${config.name} Account for ${groupname} is Ready`;
+
+            // --- Helper functions for generating email sections ---
+            const generateSectionHeader = (title, isSubHeader = false) => {
+                if (isSubHeader) return `<h4 style="color: #004a99; margin-top: 2em; margin-bottom: 0.5em; border-bottom: 1px solid #ccc; padding-bottom: 3px;">${title.toUpperCase()}</h4>`;
+                return `<h3 style="color: #003366; border-bottom: 2px solid #003366; padding-bottom: 5px; margin-top: 2em; margin-bottom: 1em;">${title.toUpperCase()}</h3>`;
+            };
+
+            const generateIntro = () => `<p>Dear Instructor/TA,</p><p>Your ITSO account has been associated with the <strong>${config.name}</strong> group <strong>${groupname}</strong>. This email contains essential information for managing the course resources on the cluster.</p>`;
+
+            const generateAccountInfo = () => {
+                let rows = [
+                    ['Partitions', partitions.join(', ')],
+                    ['Home quota', `200GB per user in ${bold(escapeHtml('/home/<username>'))}`],
+                    ['Slurm account', groupname],
+                    ['GPU Hour Limit', `${bold(gpuHoursLimit + ' GPU hours')} per student on 'normal' partition.`]
+                ];
+                if (addSharedScratch) {
+                    rows.push(['Shared Scratch', `${bold(sharedScratchQuota)} at ${bold(escapeHtml(sharedScratchPath))}`]);
+                }
+                const usageNote = `<p>Monitor student usage with:</p>${createCodeBlock(`squota -A ${groupname} -S ${courseStartDate}`, 'bash')}`;
+                let scratchNote = '';
+                let scratchWarning = '';
+                if (addSharedScratch) {
+                    scratchNote = `<p>${tipBox(`<strong>💡Tips:</strong> Put shared material under ${bold(escapeHtml(sharedScratchPath))}. Students have read-only access. Advised to create a course subdirectory, e.g., ${bold(escapeHtml(sharedScratchPath) + '/COURSE_CODE')}, since the parent directory is for all courses under this programme.`)}</p>`;
+                    scratchWarning =`<p>${dangerInline(`<strong>‼️ Warning:</strong> Files under ${bold(escapeHtml(sharedScratchPath))} may be purged at semester end.`)}</p>`;
+                }
+                return createTable(['Resource', 'Details'], rows) + usageNote + scratchNote + scratchWarning;
+            };
+
+            const generateLoginInstructions = () => {
+                const sshCommand = `ssh <username>@${config.hostname}`;
+                const commandBox = infoBox(`<p style=\"margin: 0 0 0.5em;\"><strong>Run:</strong></p>${createCodeBlock(sshCommand, 'bash')}`);
+                const items = [
+                    `On campus: use wired or 'eduroam'. Off campus: connect first via ${url('Secure Remote Access VPN', 'https://itso.hkust.edu.hk/services/cyber-security/vpn')}.`,
+                    `<div>Install <a href="https://code.visualstudio.com/" target="_blank" rel="noopener">VS Code</a> or use a client:<ol type="a" style="margin-top:5px; margin-bottom:0;"><li><strong>Windows:</strong> PuTTY, MobaXterm, WSL.</li><li><strong>Mac/Linux:</strong> Terminal app.</li></ol></div>`,
+                    `SSH to the login node. Enter your ITSO password and complete 2FA (enroll both ${url('Microsoft and Duo MFA','https://itso.hkust.edu.hk/cyber-security/MFA')}).`,
+                    `${url('Set up passwordless SSH', 'https://hkust-hpc-docs.readthedocs.io/latest/kb/ssh/ssh-login-to-hpc-cluster-without-usi-ImiEj9.html#login-to-hpc-cluster-without-using-password')}.`,
+                    `Fix disconnects when idle with ${url('this guide', 'https://hkust-hpc-docs.readthedocs.io/latest/kb/ssh/ssh-how-to-prevent-ssh-session-disco-OoJVlR.html')}.`
+                ];
+                return `${createOrderedList(items)}${commandBox}${dangerInline('<strong>‼️ Warning:</strong> Do not run compute jobs on login nodes (no GPU). Start an interactive or batch job instead.')}`;
+            };
+
+            const generateInteractiveSessionInfo = () => {
+                const gpuCommand = `srun --account=${groupname} --partition=normal --gpus-per-node=1 --time=<hh:mm:ss> --pty bash`;
+                return `<p>To run interactive jobs under the course account, use:</p>${createCodeBlock(gpuCommand, 'bash')}${tipBox(`<strong>💡Tips:</strong> Replace <code>&lt;hh:mm:ss&gt;</code> with your desired time limit (e.g., <code>01:00:00</code> for 1 hour).`)}`;
+            };
+
+            const generateSupportInfo = () => createUnorderedList([
+                `For administrative questions, please contact your school administrator.`,
+                `For technical problems accessing ${config.name}, email ${url(config.support_email, 'mailto:' + config.support_email)}.`,
+                `${url(`HKUST ${config.name} Official Website`, config.docs_url)}`,
+                `${url('HKUST HPC Knowledge Base', 'https://hkust-hpc-docs.readthedocs.io/latest/')}`
+            ]);
+
+            // --- Appendix Section Generators ---
+            const generateBillingInfo = () => `<p>A monthly billing statement will be sent to the instructor. This statement is mainly for providing a detailed report of each student's usage.</p>`;
+            const generateAppendix = () => {
+                const dataTransferInfo = () => `
+<p>Use ${bold('rsync')} (or ${bold('fpsync')} for parallel copies) for moving course datasets:
+${createCodeBlock(`rsync -avz /local/path <username>@${config.hostname}:/scratch/${groupname}/dataset --progress`, 'bash')} ${createCodeBlock(`fpsync -n 2 -v -o '-lptgoD --numeric-ids --block-size=131072 --outbuf=B --inplace' /local/path <username>@${config.hostname}:/scratch/${groupname}/dataset`, 'bash')}</p>`;
+                const resourceRequestGuidance = () => `
+<p>Remind students:</p>
+${createUnorderedList([
+    `GPU tasks: focus on ${bold('--gpus-per-node=1')} first; scale out only with profiling justification`,
+    `Do not add ${bold('--mem')} option`,
+    `The shorter wall time requested, the sooner it starts`,
+])}`;
+                const studentPitfalls = () => `
+${createUnorderedList([
+    `Over-requesting CPUs with a single GPU (fair-share ratio is 1 GPU : 28 Threads (HT on) : 8 GB RAM per Thread)`,
+    `Using login nodes for training (train must be in interactive or batch jobs)`,
+    `Not using checkpoints for long runs (risk of losing all progress)`,
+    `Copying dataset per student instead of using a shared read-only copy (increases storage and I/O load)`,
+])}`;
+                const advisingBestPractices = () => `
+${createOrderedList([
+    `Weekly quick scan: run ${bold('squota')} and identify early heavy users`,
+    `Encourage students to benchmark small first, then scale`,
+    `Consolidate common environments using containers or shared modules`,
+    `Encourage students to start early to avoid long queues later in the semester`,
+])}`;
+                const storageDataMgmt = () => `
+${createUnorderedList([
+    `Put large immutable datasets under a shared directory with read-only permissions`,
+    `Remind students to archive or delete stale checkpoints and outputs`,
+    `Encourage naming convention for easy identification (e.g., <code>proj1_exp1_v1</code>)`,
+])}`;
+                const containerInfo = () => `<p>${config.container_info} Encourage advanced students to containerize complex stacks so others can reproduce with minimal setup.</p>`;
+                const spackInfo = () => `<p>For courses with custom native builds, maintain a shared Spack environment: ${url('Spack Documentation', config.spack_url)}</p>`;
+
+                return `<details style="margin-top: 2em; border: 1px solid #eee; padding: 15px; border-radius: 5px;"><summary style="font-weight: bold; cursor: pointer; color: #003366;">Appendix: Instructor Monitoring & Advising Toolkit</summary><div style="padding-top: 1em; border-top: 1px solid #eee; margin-top: 1em;">`
+                    + `${generateSectionHeader("Data Transfer & Staging", true)}${dataTransferInfo()}`
+                    + `${generateSectionHeader("Guiding Resource Requests", true)}${resourceRequestGuidance()}`
+                    + `${generateSectionHeader("Common Student Pitfalls", true)}${studentPitfalls()}`
+                    + `${generateSectionHeader("Advising Best Practices", true)}${advisingBestPractices()}`
+                    + `${generateSectionHeader("Storage & Data Management", true)}${storageDataMgmt()}`
+                    + `${generateSectionHeader("Container & Reproducibility", true)}${containerInfo()}`
+                    + `${generateSectionHeader("Shared Software (Spack)", true)}${spackInfo()}`
+                    + `</div></details>`;
+            };
+
+            // --- Assemble and Render Email ---
+            const bodyParts = [
+                generateIntro(),
+                generateSectionHeader("Account & Resource Information"),
+                generateAccountInfo(),
+                generateSectionHeader("Login & Usage"),
+                generateLoginInstructions(),
+                generateInteractiveSessionInfo(),
+                generateSectionHeader("Support"),
+                generateSupportInfo(),
+                generateAppendix()
+            ];
+
+            const htmlBody = bodyParts.join('');
+            const fullHtml = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${subject}</title><style>body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #333; background-color: #f7f7f7; margin: 0; padding: 0; font-size: 11px; } h1,h2,h3,h4{font-size:14px;} h1{font-size:14px;} h2{font-size:13px;} h3{font-size:12px;} h4{font-size:11px;}</style></head><body><div style="max-width: 800px; margin: 20px auto; padding: 20px; background-color: #ffffff; border: 1px solid #e0e0e0; border-radius: 5px;">${htmlBody}<br />${config.signature}</div></body></html>`;
+
+            document.getElementById('email-render-area').innerHTML = `<iframe srcdoc="${escapeHtmlAttribute(fullHtml)}" style="width:100%; height:100%; border:none;"></iframe>`;
+            document.getElementById('email-render-area').dataset.rawHtml = fullHtml;
+
+            const metadataHtml = `
+                <div style="background-color: #f8f9fa; padding: 15px; border: 1px solid #e9ecef; border-radius: 5px; margin-bottom: 15px; font-size: 12px;">
+                    <h4 style="margin-top: 0; color: #495057;">Email Information</h4>
+                    <p style="margin: 5px 0;"><strong>From:</strong> ${config.support_email}</p>
+                    <p style="margin: 5px 0;"><strong>To:</strong> ${toEmailList.join('; ')}</p>
+                    ${ccEmailList.length > 0 && ccEmailList[0] !== '' ? `<p style="margin: 5px 0;"><strong>Cc:</strong> ${ccEmailList.join('; ')}</p>` : ''}
+                    <p style="margin: 5px 0;"><strong>Subject:</strong> ${subject}</p>
+                </div>
+            `;
+            document.getElementById('email-metadata').innerHTML = metadataHtml;
+        }
+
+        function copyToClipboard() {
+            const htmlToCopy = document.getElementById('email-render-area').dataset.rawHtml;
+            if (navigator.clipboard && htmlToCopy) {
+                navigator.clipboard.writeText(htmlToCopy).then(() => {
+                    const button = document.querySelector('.copy-button');
+                    button.textContent = 'Copied!';
+                    button.classList.add('copied');
+                    setTimeout(() => {
+                        button.textContent = 'Copy HTML to Clipboard';
+                        button.classList.remove('copied');
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy: ', err);
+                    alert('Failed to copy HTML.');
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Update dynamic fields based on groupname
+            const updateDynamicFields = () => {
+                const groupname = document.getElementById('groupname').value;
+                if (groupname) {
+                    document.getElementById('shared_scratch_path').value = `/scratch/${groupname}`;
+                } else {
+                    document.getElementById('shared_scratch_path').value = '/scratch/';
+                }
+            };
+
+            document.getElementById('groupname').addEventListener('input', () => {
+                updateDynamicFields();
+                generateEmail();
+            });
+
+            // Initial setup on account type change
+            const setupAccountType = () => {
+                const isMsc = document.getElementById('account_type').value === 'msc';
+                document.getElementById('msc-specific-params').classList.toggle('hidden', !isMsc);
+                document.querySelector('.tab-container').classList.toggle('hidden', !isMsc);
+
+                // For MSc, hide research-specific options
+                document.getElementById('add-contributor-info').parentElement.parentElement.classList.toggle('hidden', isMsc);
+                document.getElementById('add-reserved-info').parentElement.parentElement.classList.toggle('hidden', isMsc);
+
+
+                if (isMsc) {
+                    document.getElementById('cluster_type').value = 'spod';
+                    document.querySelector('.tab[data-tab="student"]').classList.add('active');
+                    document.querySelector('.tab[data-tab="instructor"]').classList.remove('active');
+                }
+
+                resetPartitions();
+                updateDynamicFields();
+                generateEmail();
+            };
+
+            document.getElementById('account_type').addEventListener('change', setupAccountType);
+
+            // Tab switching
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', (e) => {
+                    if (document.getElementById('account_type').value !== 'msc') return;
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    e.target.classList.add('active');
+                    generateEmail();
+                });
+            });
+
+            // Listen for changes in all relevant inputs
+            const inputs = document.querySelectorAll('input[type="text"], input[type="checkbox"], select');
+            inputs.forEach(input => {
+                if(input.id !== 'account_type' && input.id !== 'groupname' && !input.classList.contains('tab')) {
+                    input.addEventListener('input', generateEmail);
+                    input.addEventListener('change', generateEmail);
+                }
+            });
+
+            document.getElementById('cluster_type').addEventListener('change', () => {
+                resetPartitions();
+                generateEmail();
+            });
+
+            // Toggle visibility of nested sections
+            document.getElementById('add_shared_scratch').addEventListener('change', (e) => {
+                document.getElementById('shared-scratch-inputs').classList.toggle('hidden', !e.target.checked);
+            });
+            document.getElementById('add_genai_info').addEventListener('change', (e) => {
+                document.getElementById('genai-info-inputs').classList.toggle('hidden', !e.target.checked);
+            });
+            document.getElementById('add-contributor-info').addEventListener('change', (e) => {
+                document.getElementById('contributor-info-inputs').classList.toggle('hidden', !e.target.checked);
+            });
+            document.getElementById('add-reserved-info').addEventListener('change', (e) => {
+                document.getElementById('reserved-info-inputs').classList.toggle('hidden', !e.target.checked);
+            });
+
+            // Initial page load setup
+            setupAccountType();
+        });
+    </script>
+</body>
+</html>

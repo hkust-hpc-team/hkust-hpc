@@ -33,7 +33,7 @@ Use ``scrontab`` to schedule periodic SLURM jobs. The ``scrontab`` command works
 
 .. note::
     **Job overlap prevention**: Only one instance of a scheduled job will run at any time. If a job takes longer than its scheduled interval, the next scheduled execution will be skipped until the current job completes. This prevents resource conflicts and ensures predictable behavior.
-    
+
     **Need overlapping jobs?** If you require multiple instances of the same job to run simultaneously (e.g., for parallel processing pipelines), see :doc:`slurm-how-to-submit-overlapping-slurm--sDhSiw` for details on achieving overlapping execution with scrontab.
 
 Setting up a periodic job
@@ -100,11 +100,11 @@ By default, SLURM output files (``slurm-<jobid>.out``) will overwrite each other
 
     #!/bin/bash
     #SBATCH --output=/dev/null
-    
+
     # Redirect to timestamped log file
     LOGFILE="/home/exampleuser/logs/job-$(date +%Y%m%d-%H%M%S).log"
     exec &> "$LOGFILE"
-    
+
     # Your job commands here
     echo "Job started at $(date)"
 

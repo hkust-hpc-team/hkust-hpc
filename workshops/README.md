@@ -32,7 +32,7 @@ Here are slides to workshops conducted by the HKUST HPC Team.
   - **Built-in Tracing in Frameworks**: Using environment variables like `NCCL_DEBUG` and `UCX_LOG_LEVEL` to diagnose framework-level issues, especially during initialization.
   - **Debugging with GDB**: A workflow for analyzing "Segmentation Fault" errors by compiling with debug flags (`-g`), enabling coredumps, and using GDB to inspect the program state at the time of the crash.
 
-### **Scaling Deep Learning Pipelines on H800 GPU Clusters** (Nov 19, 2024)  
+### **Scaling Deep Learning Pipelines on H800 GPU Clusters** (Nov 19, 2024)
 
 **Keywords**: Deep Learning, MLOps, Data Pipeline, H800, Data Acquisition, HuggingFace, Git LFS, Data Transfer, Data Preprocessing, Python, `multiprocessing`, Data Loading, Scale-out Training, Monitoring, `nvidia-smi`, Checkpointing, SLURM
 

@@ -99,17 +99,17 @@ Workflow orchestrates builds respecting hierarchical dependencies while maximizi
    ├── gcc/14.2
    ├── aocc/5.0
    └── intel-oneapi-compilers/2025
-   
+
    Tier 2: MPI Implementations (parallel per compiler)
    ├── gcc/14.2 → openmpi/4, openmpi/5
    ├── aocc/5.0 → openmpi/5
    └── intel/2025 → intel-oneapi-mpi/2021, openmpi/5
-   
+
    Tier 3: Scientific Libraries (parallel per compiler+MPI)
    ├── gcc/14.2 + openmpi/5 → netcdf, fftw, hdf5
    ├── aocc/5.0 + openmpi/5 → netcdf, fftw, amdlibs
    └── intel/2025 + intel-mpi/2021 → netcdf, fftw, mkl
-   
+
    Tier 4: Applications (parallel per toolchain)
    └── lammps, openfoam, mpas-model
 
@@ -128,7 +128,7 @@ Simplified Argo Workflow demonstrating dependency structure (excerpt from actual
      name: spack-build-workflow
    spec:
      entrypoint: main
-     
+
      templates:
      - name: main
        steps:
@@ -141,7 +141,7 @@ Simplified Argo Workflow demonstrating dependency structure (excerpt from actual
            template: run-relock-oneapi-impi-toolset
          - name: relock-python
            template: run-relock-python
-       
+
        # Step 2: Build compilers and independent toolsets (parallel)
        - - name: build-compilers
            template: run-build-compilers
@@ -151,7 +151,7 @@ Simplified Argo Workflow demonstrating dependency structure (excerpt from actual
            template: run-build-oneapi-impi-toolset
          - name: build-python
            template: run-build-python
-       
+
        # Step 3: Post-processing
        - - name: lmod-refresh
            template: run-make-target
@@ -159,7 +159,7 @@ Simplified Argo Workflow demonstrating dependency structure (excerpt from actual
              parameters:
              - name: make-target
                value: lmod
-     
+
      # Compiler builds (excerpt showing parallel structure)
      - name: run-build-compilers
        steps:
@@ -181,7 +181,7 @@ Simplified Argo Workflow demonstrating dependency structure (excerpt from actual
              parameters:
              - name: make-target
                value: build@1001-cuda
-     
+
      # Toolset builds (excerpt showing MPI + libraries)
      - name: run-build-oneapi-impi-toolset
        steps:
@@ -272,12 +272,12 @@ Automated tests validate compiler/MPI combinations and runtime environments as d
    ├── gcc/14.2 → compile C/C++/Fortran
    ├── aocc/5.0 → compile C/C++/Fortran
    └── intel/2025 → compile C/C++/Fortran
-   
+
    MPI Compiler Tests (parallel, 16 CPU, 48Gi RAM, 32Gi shm)
    ├── gcc/14.2 + openmpi/5 → MPI hello world
    ├── aocc/5.0 + openmpi/5 → MPI communication
    └── intel/2025 + intel-mpi/2021 → MPI collective ops
-   
+
    Runtime Tests (parallel)
    ├── python/3.11, 3.12, 3.13 → pip, poetry, pdm, uv
    ├── r/4.4 → CRAN package installation
@@ -296,7 +296,7 @@ Argo Workflow orchestrates test matrix execution (excerpt from actual Helm chart
      name: spack-tests
    spec:
      entrypoint: main
-     
+
      templates:
      - name: main
        inputs:
@@ -310,7 +310,7 @@ Argo Workflow orchestrates test matrix execution (excerpt from actual Helm chart
            template: mpi-compiler-tests
          - name: runtime-tests
            template: runtime-tests
-     
+
      # Compiler tests (parallel execution)
      - name: compiler-tests
        steps:
@@ -338,7 +338,7 @@ Argo Workflow orchestrates test matrix execution (excerpt from actual Helm chart
                value: "intel-oneapi-compilers"
              - name: cc-version
                value: "2025"
-     
+
      # MPI compiler tests (parallel, larger resources)
      - name: mpi-compiler-tests
        steps:
@@ -366,7 +366,7 @@ Argo Workflow orchestrates test matrix execution (excerpt from actual Helm chart
                value: "openmpi"
              - name: mpi-version
                value: "5"
-     
+
      # Runtime tests (parallel)
      - name: runtime-tests
        steps:

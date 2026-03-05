@@ -27,13 +27,13 @@ For immediate use in the current session, ``source ~/.bashrc.d/anaconda3.sh`` ma
 
    # Activate Spack environment
    source "${SPACK_ROOT}/dist/bin/setup-env.sh" -y
-   
+
    # Load Anaconda3 module
    module load anaconda3
-   
+
    # Activate conda for current session
    source ~/.bashrc.d/anaconda3.sh
-   
+
    # Verify installation
    conda --version
    python --version
@@ -52,10 +52,10 @@ Create a New Environment
 
    # Create environment with specific Python version
    conda create -n myenv python=3.11
-   
+
    # Create environment with packages
    conda create -n myenv python=3.11 numpy pandas matplotlib
-   
+
    # Create from environment file
    conda env create -f environment.yml
 
@@ -66,10 +66,10 @@ Activate and Deactivate Environments
 
    # Activate an environment
    conda activate myenv
-   
+
    # Deactivate current environment
    conda deactivate
-   
+
    # List all environments
    conda env list
 
@@ -80,13 +80,13 @@ Installing Packages
 
    # Install packages from conda
    conda install numpy scipy matplotlib
-   
+
    # Install from specific channel
    conda install -c conda-forge package_name
-   
+
    # Install using pip (when conda package not available)
    pip install package_name
-   
+
    # Search for packages
    conda search package_name
 
@@ -101,7 +101,7 @@ If you have an existing conda environment from another system (e.g., your local 
 
    # Export environment to a YAML file
    conda env export > environment.yml
-   
+
    # Or export with explicit package specifications only
    conda env export --from-history > environment.yml
 
@@ -112,10 +112,10 @@ If you have an existing conda environment from another system (e.g., your local 
    # On HPC cluster, after loading anaconda3
    module load anaconda3
    source ~/.bashrc.d/anaconda3.sh
-   
+
    # Create environment from the exported file
    conda env create -f environment.yml
-   
+
    # Activate the new environment
    conda activate myenv
 
@@ -129,16 +129,16 @@ Managing Environments
 
    # List all environments
    conda env list
-   
+
    # Clone an environment
    conda create --name newenv --clone oldenv
-   
+
    # Remove an environment
    conda env remove -n myenv
-   
+
    # Update all packages in current environment
    conda update --all
-   
+
    # List packages in current environment
    conda list
 
@@ -153,10 +153,10 @@ Example batch script using Anaconda3 environment:
 
    ## Your SBATCH settings here
    #SBATCH ...
-   
+
    # Activate your conda environment
    conda activate myenv
-   
+
    # Run your Python script
    python my_script.py
 
@@ -169,7 +169,7 @@ If you no longer wish to use the provided Anaconda3 module and prefer to use you
 
    # Remove the Anaconda3 activation script
    rm -f ~/.bashrc.d/anaconda3.sh
-   
+
    # Log out and log back in for changes to take effect
    logout
 
@@ -220,7 +220,7 @@ Troubleshooting
    export SPACK_ROOT="/path/to/spack"
    source "${SPACK_ROOT}/dist/bin/setup-env.sh" -y
    module load anaconda3
-   
+
    # Logout then login again to refresh environment
    logout
 
@@ -236,7 +236,7 @@ Troubleshooting
 
    # Clean package cache
    conda clean --all
-   
+
    # Remove unused environments
    conda env remove -n unused_env
 

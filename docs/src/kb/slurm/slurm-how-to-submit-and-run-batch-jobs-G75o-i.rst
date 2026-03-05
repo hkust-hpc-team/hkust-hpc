@@ -61,10 +61,10 @@ Basic CPU Job (HPC4)
    #SBATCH --time=24:00:00
    #SBATCH --output=job_%j.out
    #SBATCH --error=job_%j.err
-   
+
    # Load required modules
    module load python/3.12
-   
+
    # Run your application
    python my_script.py
 
@@ -84,11 +84,11 @@ GPU Job (Superpod)
    #SBATCH --time=2-00:00:00
    #SBATCH --output=gpu_job_%j.out
    #SBATCH --error=gpu_job_%j.err
-   
+
    # Load CUDA and other modules
    module load cuda/12.6
    module load python/3.12
-   
+
    # Run GPU application
    python train_model.py
 
@@ -106,11 +106,11 @@ MPI Parallel Job
    #SBATCH --time=12:00:00
    #SBATCH --output=mpi_%j.out
    #SBATCH --error=mpi_%j.err
-   
+
    # Load compiler and MPI
    module load intel-oneapi-compilers/2025
    module load intel-oneapi-mpi/2021
-   
+
    # Run MPI application
    srun ./my_mpi_program
 
@@ -158,7 +158,7 @@ Submitting Jobs
 
    # Submit a batch job
    sbatch my_job_script.sh
-   
+
    # Output shows job ID
    # Submitted batch job 12345
 
@@ -174,10 +174,10 @@ Check Job Status
 
    # View your jobs in the queue
    squeue -u $USER
-   
+
    # View specific job details
    squeue -j 12345
-   
+
    # View all jobs on a partition
    squeue -p amd
 
@@ -198,7 +198,7 @@ View Job Details
 
    # Detailed job information
    scontrol show job 12345
-   
+
    # Job accounting information
    sacct -j 12345 --format=JobID,JobName,Partition,State,Elapsed,MaxRSS
 
@@ -209,10 +209,10 @@ Canceling Jobs
 
    # Cancel a specific job
    scancel 12345
-   
+
    # Cancel all your jobs
    scancel -u $USER
-   
+
    # Cancel all your jobs in a partition
    scancel -u $USER -p amd
 
@@ -225,10 +225,10 @@ Output files are created in the directory where you submitted the job (unless yo
 
    # View output while job is running
    tail -f job_12345.out
-   
+
    # Check for errors
    cat job_12345.err
-   
+
    # View completed job output
    less job_12345.out
 
@@ -255,10 +255,10 @@ Chain jobs to run sequentially:
 
    # Submit first job
    JOB1=$(sbatch --parsable first_job.sh)
-   
+
    # Submit second job that depends on first
    sbatch --dependency=afterok:$JOB1 second_job.sh
-   
+
    # Or depend on successful completion
    sbatch --dependency=afterok:$JOB1 analysis_job.sh
 
@@ -325,7 +325,7 @@ References
 **Example Scripts**
 
 - `HPC4 Batch Job Examples <https://github.com/hkust-hpc-team/hkust-hpc/blob/main/examples/hpc4-hello-world>`_
-  
+
   - `CPU Batch Job <https://github.com/hkust-hpc-team/hkust-hpc/blob/main/examples/hpc4-hello-world/hpc4-batch-job-helloworld-cpu.sh>`_
   - `CPU MPI Batch Job <https://github.com/hkust-hpc-team/hkust-hpc/blob/main/examples/hpc4-hello-world/hpc4-batch-job-helloworld-cpu-mpi.sh>`_
   - `GPU Batch Job <https://github.com/hkust-hpc-team/hkust-hpc/blob/main/examples/hpc4-hello-world/hpc4-batch-job-helloworld-gpu.sh>`_

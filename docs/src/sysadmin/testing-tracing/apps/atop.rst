@@ -131,10 +131,10 @@ Atop requires systemd service activation to enable persistent logging. Without t
 
    # Enable and start atop logging service
    sudo systemctl enable --now atop
-   
+
    # Verify service status
    systemctl status atop
-   
+
    # Check log directory
    ls -lh /var/log/atop/
 
@@ -144,7 +144,7 @@ Atop requires systemd service activation to enable persistent logging. Without t
 
    # Current day's log should exist
    ls -lh /var/log/atop/atop_$(date +%Y%m%d)
-   
+
    # View recent snapshot
    atop -r
 
@@ -157,7 +157,7 @@ Default retention is 28 days with 600-second (10-minute) intervals. Modify ``/us
 
    # Retention period (number of daily logs to retain)
    LOGGENERATIONS=28
-   
+
    # Sampling interval in seconds (default 600 = 10 minutes)
    LOGINTERVAL=600       # Reduce for finer granularity, increase for lower overhead
 
@@ -312,13 +312,13 @@ User reports: "System feels slow right now"
 1. Launch ``atop -f``
 2. Observe CPU line: ``wait`` percentage high?
 3. Cross-validate with related metrics:
-   
+
    - **DSK line:** Check if any disk shows ``busy`` near 100%, high ``avio`` latency
    - **NFM/NFC lines:** If NFS is involved, check for high request rates or slow response
    - **PAG line:** Check for non-zero ``scan`` or ``stall`` (memory pressure causing swap I/O)
 
 4. If disk I/O confirmed:
-   
+
    - Press ``d`` to switch to disk view
    - Identify which disk (local or NFS mount) shows saturation
    - Press ``D`` to sort processes by disk I/O
@@ -342,7 +342,7 @@ User reports: "My job was slow yesterday at 14:30"
 
    # Yesterday's logs
    atop -r /var/log/atop/atop_$(date -d yesterday +%Y%m%d)
-   
+
    # Specific date (example: December 15, 2025)
    atop -r /var/log/atop/atop_20251215
 
@@ -399,16 +399,16 @@ Preset views and filters via command-line flags:
 
    # Sort by CPU during log review
    atop -r -C
-   
+
    # Sort by memory
    atop -r -M
-   
+
    # Sort by disk I/O
    atop -r -D
-   
+
    # Show only specific user's processes
    atop -r -U username
-   
+
    # Aggregate by program
    atop -r -p
 
@@ -453,7 +453,7 @@ Command-line options establish the initial view and behavior. All can be overrid
    atop -1      # Show per-second averages instead of interval totals
    atop -a      # Show all processes (including inactive)
    atop -y      # Show threads within processes
-   
+
    atop 5       # Update every 5 seconds (last argument = interval)
 
 **Common combinations:**
@@ -462,10 +462,10 @@ Command-line options establish the initial view and behavior. All can be overrid
 
    # Memory investigation with per-second updates
    atop -f -m -A -1 1
-   
+
    # Per-user CPU usage
    atop -u -C 2
-   
+
    # Disk activity by program
    atop -p -D -1 1
 

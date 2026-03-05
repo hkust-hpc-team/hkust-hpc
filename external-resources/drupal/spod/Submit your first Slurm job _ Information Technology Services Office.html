@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" prefix="content: http://purl.org/rss/1.0/modules/content/  dc: http://purl.org/dc/terms/  foaf: http://xmlns.com/foaf/0.1/  og: http://ogp.me/ns#  rdfs: http://www.w3.org/2000/01/rdf-schema#  schema: http://schema.org/  sioc: http://rdfs.org/sioc/ns#  sioct: http://rdfs.org/sioc/types#  skos: http://www.w3.org/2004/02/skos/core#  xsd: http://www.w3.org/2001/XMLSchema# ">
+  <head>
+    <meta charset="utf-8" />
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-72581360-1"></script>
+<script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments)};gtag("js", new Date());gtag("set", "developer_id.dMDhkMT", true);gtag("config", "UA-72581360-1", {"groups":"default","user_id":"Rkj1L1r6zMctVjAZxUfyADu2UwoI6NfggcSv3IcZLcQ","anonymize_ip":true,"page_placeholder":"PLACEHOLDER_page_path","allow_ad_personalization_signals":false});</script>
+<meta name="Generator" content="Drupal 10 (https://www.drupal.org)" />
+<meta name="MobileOptimized" content="width" />
+<meta name="HandheldFriendly" content="true" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<style>div#sliding-popup, div#sliding-popup .eu-cookie-withdraw-banner, .eu-cookie-withdraw-tab {background: #0779bf} div#sliding-popup.eu-cookie-withdraw-wrapper { background: transparent; } #sliding-popup h1, #sliding-popup h2, #sliding-popup h3, #sliding-popup p, #sliding-popup label, #sliding-popup div, .eu-cookie-compliance-more-button, .eu-cookie-compliance-secondary-button, .eu-cookie-withdraw-tab { color: #ffffff;} .eu-cookie-withdraw-tab { border-color: #ffffff;}</style>
+<link rel="icon" href="/sites/default/files/ITSO_favicon.png" type="image/png" />
+<link rel="alternate" hreflang="en" href="https://itso.hkust.edu.hk/services/academic-teaching-support/high-performance-computing/superpod/submit-first-job" />
+<link rel="canonical" href="https://itso.hkust.edu.hk/services/academic-teaching-support/high-performance-computing/superpod/submit-first-job" />
+<link rel="shortlink" href="https://itso.hkust.edu.hk/node/1441" />
+<link href="https://itso.hkust.edu.hk/sites/default/files/hkust_theme_configs/css/styles.css?1772607211" rel="stylesheet" />
+<script src="https://itso.hkust.edu.hk/sites/default/files/hkust_theme_configs/js/script.js?1772607211"></script>
+
+    <title>Submit your first Slurm job |  Information Technology Services Office</title>
+    <link rel="stylesheet" media="print" href="/sites/default/files/css/css_EtQXCoA8KVDuJ5G4W-KytYPBJSN-68mOClGVn4xB9j0.css?delta=0&amp;language=en&amp;theme=itso&amp;include=eJx9UNFuxCAM-yGuTNoHoRTSNioliARt_fvRK-g26bQnx3aUxIFwUHLKHGcotuOkBdEAOb-Bzqz2QuMjiJw2cUDjOXKZ-dsGXKDGZnJS_NYK0YZSM8TppTwipV3-b-mbDVbnmXfCBkeOBMmjfSe6sXktXPO43Gx7FbUzCN6l-_wAFziBEqffekuXC3sU4WJfUZ1vJh9O9IwovXeO7HexT_K4SXcinFy1W-7KA5SwvHWXGuMXBd26K7S2s2pBB8tCLZVi7zzakOm55-8dT-LAXkhpNaTCd6YMBdYCeZPx25cy1ZTrHEk2DEY2LuqrjrbBjVD7LLrMueYR-I1m5BTF495aBcsYdNUTtQ_ID3Bq7JA" />
+<link rel="stylesheet" media="all" href="/sites/default/files/css/css_ImYfviteCDBA4cUhqCZWqyc72I4734hr2j29zDamYhg.css?delta=1&amp;language=en&amp;theme=itso&amp;include=eJx9UNFuxCAM-yGuTNoHoRTSNioliARt_fvRK-g26bQnx3aUxIFwUHLKHGcotuOkBdEAOb-Bzqz2QuMjiJw2cUDjOXKZ-dsGXKDGZnJS_NYK0YZSM8TppTwipV3-b-mbDVbnmXfCBkeOBMmjfSe6sXktXPO43Gx7FbUzCN6l-_wAFziBEqffekuXC3sU4WJfUZ1vJh9O9IwovXeO7HexT_K4SXcinFy1W-7KA5SwvHWXGuMXBd26K7S2s2pBB8tCLZVi7zzakOm55-8dT-LAXkhpNaTCd6YMBdYCeZPx25cy1ZTrHEk2DEY2LuqrjrbBjVD7LLrMueYR-I1m5BTF495aBcsYdNUTtQ_ID3Bq7JA" />
+<link rel="stylesheet" media="all" href="/sites/default/files/css/css_STkxkC8L-oEE3DMSfLbqnlvdl2cXZBAWxl4_NkEmViA.css?delta=2&amp;language=en&amp;theme=itso&amp;include=eJx9UNFuxCAM-yGuTNoHoRTSNioliARt_fvRK-g26bQnx3aUxIFwUHLKHGcotuOkBdEAOb-Bzqz2QuMjiJw2cUDjOXKZ-dsGXKDGZnJS_NYK0YZSM8TppTwipV3-b-mbDVbnmXfCBkeOBMmjfSe6sXktXPO43Gx7FbUzCN6l-_wAFziBEqffekuXC3sU4WJfUZ1vJh9O9IwovXeO7HexT_K4SXcinFy1W-7KA5SwvHWXGuMXBd26K7S2s2pBB8tCLZVi7zzakOm55-8dT-LAXkhpNaTCd6YMBdYCeZPx25cy1ZTrHEk2DEY2LuqrjrbBjVD7LLrMueYR-I1m5BTF495aBcsYdNUTtQ_ID3Bq7JA" />
+<link rel="stylesheet" media="print" href="/sites/default/files/css/css_0QjiZIa2kUy9n73SykDhW0cluqzEFM8sEXVfov5vDd0.css?delta=3&amp;language=en&amp;theme=itso&amp;include=eJx9UNFuxCAM-yGuTNoHoRTSNioliARt_fvRK-g26bQnx3aUxIFwUHLKHGcotuOkBdEAOb-Bzqz2QuMjiJw2cUDjOXKZ-dsGXKDGZnJS_NYK0YZSM8TppTwipV3-b-mbDVbnmXfCBkeOBMmjfSe6sXktXPO43Gx7FbUzCN6l-_wAFziBEqffekuXC3sU4WJfUZ1vJh9O9IwovXeO7HexT_K4SXcinFy1W-7KA5SwvHWXGuMXBd26K7S2s2pBB8tCLZVi7zzakOm55-8dT-LAXkhpNaTCd6YMBdYCeZPx25cy1ZTrHEk2DEY2LuqrjrbBjVD7LLrMueYR-I1m5BTF495aBcsYdNUTtQ_ID3Bq7JA" />
+<link rel="stylesheet" media="all" href="/sites/default/files/css/css_IOYlx_KJIsfbRwuCGeHXnW0cTIkE6noOUVPMOXpV-Dg.css?delta=4&amp;language=en&amp;theme=itso&amp;include=eJx9UNFuxCAM-yGuTNoHoRTSNioliARt_fvRK-g26bQnx3aUxIFwUHLKHGcotuOkBdEAOb-Bzqz2QuMjiJw2cUDjOXKZ-dsGXKDGZnJS_NYK0YZSM8TppTwipV3-b-mbDVbnmXfCBkeOBMmjfSe6sXktXPO43Gx7FbUzCN6l-_wAFziBEqffekuXC3sU4WJfUZ1vJh9O9IwovXeO7HexT_K4SXcinFy1W-7KA5SwvHWXGuMXBd26K7S2s2pBB8tCLZVi7zzakOm55-8dT-LAXkhpNaTCd6YMBdYCeZPx25cy1ZTrHEk2DEY2LuqrjrbBjVD7LLrMueYR-I1m5BTF495aBcsYdNUTtQ_ID3Bq7JA" />
+
+    <script src="/sites/default/files/js/js_K3H33TPcH1AmnM14aKzFe8D33AjkRti-WXB10wGJ91c.js?scope=header&amp;delta=0&amp;language=en&amp;theme=itso&amp;include=eJx9UlFuwzAIvZATT9oJdhKLOCRBcYwFuGpvP6dp2qmq9gU8HvDAhnGjHIw5DSD-YXsTxH7hCwplw2wOKMQFbGDzE8vWaWPA5iInloGv_nReyIgT1GQNaB2uViH5UWqB1L-QLlFe9X_KQ1IjCZ5piEYXvFc7rCEyr4TNbCUR5Ij-E-hm5jlhgAzpZhTVvwNuITWWm99A1g60azuOblmrmh9A8XDD9xeEkTMYcf6LtxsV4YiqLP51sLCfUWg8aUPiuKq_B90RPDJKc-tapUmaJmqqDQ9a2IByf-cGtVvCZ8UeBPC7pTw7MuVDklLbG0PhUss58gPm3l8eNULBn_1X_AIfCNTn"></script>
+
+
+                              <script>!function(e){var n="https://s.go-mpulse.net/boomerang/";if("False"=="True")e.BOOMR_config=e.BOOMR_config||{},e.BOOMR_config.PageParams=e.BOOMR_config.PageParams||{},e.BOOMR_config.PageParams.pci=!0,n="https://s2.go-mpulse.net/boomerang/";if(window.BOOMR_API_key="WBAF8-VJJU3-VRE7P-RJPYC-4YFX3",function(){function e(){if(!o){var e=document.createElement("script");e.id="boomr-scr-as",e.src=window.BOOMR.url,e.async=!0,i.parentNode.appendChild(e),o=!0}}function t(e){o=!0;var n,t,a,r,d=document,O=window;if(window.BOOMR.snippetMethod=e?"if":"i",t=function(e,n){var t=d.createElement("script");t.id=n||"boomr-if-as",t.src=window.BOOMR.url,BOOMR_lstart=(new Date).getTime(),e=e||d.body,e.appendChild(t)},!window.addEventListener&&window.attachEvent&&navigator.userAgent.match(/MSIE [67]\./))return window.BOOMR.snippetMethod="s",void t(i.parentNode,"boomr-async");a=document.createElement("IFRAME"),a.src="about:blank",a.title="",a.role="presentation",a.loading="eager",r=(a.frameElement||a).style,r.width=0,r.height=0,r.border=0,r.display="none",i.parentNode.appendChild(a);try{O=a.contentWindow,d=O.document.open()}catch(_){n=document.domain,a.src="javascript:var d=document.open();d.domain='"+n+"';void(0);",O=a.contentWindow,d=O.document.open()}if(n)d._boomrl=function(){this.domain=n,t()},d.write("<bo"+"dy onload='document._boomrl();'>");else if(O._boomrl=function(){t()},O.addEventListener)O.addEventListener("load",O._boomrl,!1);else if(O.attachEvent)O.attachEvent("onload",O._boomrl);d.close()}function a(e){window.BOOMR_onload=e&&e.timeStamp||(new Date).getTime()}if(!window.BOOMR||!window.BOOMR.version&&!window.BOOMR.snippetExecuted){window.BOOMR=window.BOOMR||{},window.BOOMR.snippetStart=(new Date).getTime(),window.BOOMR.snippetExecuted=!0,window.BOOMR.snippetVersion=12,window.BOOMR.url=n+"WBAF8-VJJU3-VRE7P-RJPYC-4YFX3";var i=document.currentScript||document.getElementsByTagName("script")[0],o=!1,r=document.createElement("link");if(r.relList&&"function"==typeof r.relList.supports&&r.relList.supports("preload")&&"as"in r)window.BOOMR.snippetMethod="p",r.href=window.BOOMR.url,r.rel="preload",r.as="script",r.addEventListener("load",e),r.addEventListener("error",function(){t(!0)}),setTimeout(function(){if(!o)t(!0)},3e3),BOOMR_lstart=(new Date).getTime(),i.parentNode.appendChild(r);else t(!1);if(window.addEventListener)window.addEventListener("load",a,!1);else if(window.attachEvent)window.attachEvent("onload",a)}}(),"".length>0)if(e&&"performance"in e&&e.performance&&"function"==typeof e.performance.setResourceTimingBufferSize)e.performance.setResourceTimingBufferSize();!function(){if(BOOMR=e.BOOMR||{},BOOMR.plugins=BOOMR.plugins||{},!BOOMR.plugins.AK){var n=""=="true"?1:0,t="",a="r5mwjjixeokiq2nh24oq-f-def974322-clientnsv4-s.akamaihd.net",i="false"=="true"?2:1,o={"ak.v":"39","ak.cp":"1812017","ak.ai":parseInt("1205597",10),"ak.ol":"0","ak.cr":3,"ak.ipv":4,"ak.proto":"h3","ak.rid":"13b125d","ak.r":47333,"ak.a2":n,"ak.m":"dscb","ak.n":"essl","ak.bpcip":"143.89.100.0","ak.cport":52130,"ak.gh":"23.33.239.5","ak.quicv":"0x00000001","ak.tlsv":"tls1.3","ak.0rtt":"","ak.0rtt.ed":"","ak.csrc":"-","ak.acc":"","ak.t":"1772607261","ak.ak":"hOBiQwZUYzCg5VSAfCLimQ==PU0TVQAbsAedUGCN8BZg5TCrwY3WRzLP0HbvmYu/NjYqpJXCYL8SmVjTcEOyQkUdIjTY7/I9WqZ6fJIsEExCSOBfLCeM8WVXDeSz3f0UjAVk+tTR4E1o/I9E2gDiwGanCM0RWSK9vo1UCoeZ4c+c3Y9uZZ6KKDZ9CySw+Wavas5DuGvqBFblHRzhb7bT2BUuageNN/b1Ti5RlJeB9kobtBpfKW7XhsllvU00FTTNufQDthA/I77dgIlFqppbj4Bw34BpjpjH8mayJBK5Kb4gLtFt82OqnaYdHcLk57K92ftMUggQbeFG31o4PLQNNB7ErZajqv1bIorBHokVXKAZsgFr/3F8MtCV7ber+SKkgxm78KYT91/xcNARGYJuRp4U8q/AHdo0qPOSCCh38GYP5YkicHMtO8uR8sWieD7XD7Y=","ak.pv":"5","ak.dpoabenc":"","ak.tf":i};if(""!==t)o["ak.ruds"]=t;var r={i:!1,av:function(n){var t="http.initiator";if(n&&(!n[t]||"spa_hard"===n[t]))o["ak.feo"]=void 0!==e.aFeoApplied?1:0,BOOMR.addVar(o)},rv:function(){var e=["ak.bpcip","ak.cport","ak.cr","ak.csrc","ak.gh","ak.ipv","ak.m","ak.n","ak.ol","ak.proto","ak.quicv","ak.tlsv","ak.0rtt","ak.0rtt.ed","ak.r","ak.acc","ak.t","ak.tf"];BOOMR.removeVar(e)}};BOOMR.plugins.AK={akVars:o,akDNSPreFetchDomain:a,init:function(){if(!r.i){var e=BOOMR.subscribe;e("before_beacon",r.av,null,null),e("onbeacon",r.rv,null,null),r.i=!0}return this},is_complete:function(){return!0}}}}()}(window);</script></head>
+  <body class="toolbar-loading user-logged-in path-node page-node-type-itsc-content-page">
+        <a href="#main-content" class="visually-hidden focusable skip-link">
+      Skip to main content
+    </a>
+    <div id="toolbar-administration" role="group" aria-label="Site administration toolbar" class="toolbar">
+  <nav id="toolbar-bar" role="navigation" aria-label="Toolbar items" class="toolbar-bar clearfix">
+    <h2 class="visually-hidden">Toolbar items</h2>
+                <div class="home-toolbar-tab toolbar-tab">
+        <a href="/" title="Return to site content" class="toolbar-icon toolbar-icon-escape-admin toolbar-item" data-toolbar-escape-admin>Back to site</a>
+        <div><nav class="toolbar-lining clearfix" role="navigation"></nav></div>      </div>
+                <div class="toolbar-tab">
+        <a href="/" title="HKUST Drupal Platform" class="toolbar-icon toolbar-icon-menu trigger toolbar-item" data-drupal-subtrees="" id="toolbar-item-hkust-platform" data-toolbar-tray="toolbar-item-hkust-platform-tray" role="button" aria-pressed="false">HKUST Drupal Platform</a>
+        <div id="toolbar-item-hkust-platform-tray" data-toolbar-tray="toolbar-item-hkust-platform-tray" class="toolbar-tray"><nav class="toolbar-lining clearfix" role="navigation" aria-label="HKUST Platform Settings"><h3 class="toolbar-tray-name visually-hidden">HKUST Platform Settings</h3><div class="toolbar-menu-administration"><ul class="toolbar-menu"><li class="menu-item menu-item--expanded"><a href="/admin/content" title="Manage site landing pages/content pages/forms." class="toolbar-icon toolbar-icon-hkust-admin-ui-pages" data-drupal-link-system-path="admin/content">Pages/Content</a><ul class="toolbar-menu"><li class="menu-item menu-item--expanded"><a href="/admin/content" class="toolbar-icon toolbar-icon-hkust-admin-ui-pages-content-pages" title="" data-drupal-link-system-path="admin/content">Content Pages</a><ul class="toolbar-menu"><li class="menu-item"><a href="/node/add" class="toolbar-icon toolbar-icon-hkust-admin-ui-pages-content-pages-add" title="" data-drupal-link-system-path="node/add">Add Content Page</a></li></ul></li></ul></li><li class="menu-item menu-item--expanded"><a href="/admin/hkust_people_edit_form/cat" class="toolbar-icon toolbar-icon-hkust-people-sync" title="" data-drupal-link-system-path="admin/hkust_people_edit_form/cat">People Synchronisation</a><ul class="toolbar-menu"><li class="menu-item"><a href="/admin/hkust_people_edit_form/publications" class="toolbar-icon toolbar-icon-hkust-people-pub-list" title="" data-drupal-link-system-path="admin/hkust_people_edit_form/publications">Edit Publications</a></li><li class="menu-item"><a href="/admin/hkust_people_edit_form/ta" class="toolbar-icon toolbar-icon-hkust-people-ta-list" title="" data-drupal-link-system-path="admin/hkust_people_edit_form/ta">Edit Teaching Assignment</a></li><li class="menu-item"><a href="/admin/hkust_people_edit_form/cat" class="toolbar-icon toolbar-icon-hkust-people-cat-list" title="" data-drupal-link-system-path="admin/hkust_people_edit_form/cat">Sorting People</a></li></ul></li></ul></div></nav></div>      </div>
+                <div class="toolbar-tab">
+        <a href="/admin" title="Admin menu" class="toolbar-icon toolbar-icon-menu trigger toolbar-item" data-drupal-subtrees="" id="toolbar-item-administration" data-toolbar-tray="toolbar-item-administration-tray" role="button" aria-pressed="false">Manage</a>
+        <div id="toolbar-item-administration-tray" data-toolbar-tray="toolbar-item-administration-tray" class="toolbar-tray"><nav class="toolbar-lining clearfix" role="navigation" aria-label="Administration menu"><h3 class="toolbar-tray-name visually-hidden">Administration menu</h3><div class="toolbar-menu-administration"><ul class="toolbar-menu"><li class="menu-item menu-item--expanded"><a href="/admin/content" title="Find and manage content." class="toolbar-icon toolbar-icon-system-admin-content" data-drupal-link-system-path="admin/content">Content</a></li></ul></div></nav></div>      </div>
+                <div class="toolbar-tab">
+        <a href="/admin/config/user-interface/shortcut" title="Shortcuts" class="toolbar-icon toolbar-icon-shortcut trigger toolbar-item" id="toolbar-item-shortcuts" data-toolbar-tray="toolbar-item-shortcuts-tray" role="button" aria-pressed="false">Shortcuts</a>
+        <div id="toolbar-item-shortcuts-tray" data-toolbar-tray="toolbar-item-shortcuts-tray" class="toolbar-tray"><nav class="toolbar-lining clearfix" role="navigation" aria-label="User-defined shortcuts"><h3 class="toolbar-tray-name visually-hidden">User-defined shortcuts</h3><ul class="toolbar-menu"><li><a href="/node/1676/edit">Edit ITSC Content Page Logging enhancements</a></li><li><a href="/admin/content/pending">Pending Review</a></li></ul><a href="/admin/config/user-interface/shortcut/manage/default/customize" class="edit-shortcuts">Edit shortcuts</a></nav></div>      </div>
+                <div class="hidden contextual-toolbar-tab toolbar-tab">
+        <button class="toolbar-icon toolbar-icon-edit toolbar-item" aria-pressed="false" type="button">Edit</button>
+
+        <div><nav class="toolbar-lining clearfix" role="navigation"></nav></div>      </div>
+                <div class="toolbar-tab">
+        <a href="/user" title="My account" class="toolbar-icon toolbar-icon-user trigger toolbar-item" id="toolbar-item-user" data-toolbar-tray="toolbar-item-user-tray" role="button" aria-pressed="false">TAI, Chuen Hei</a>
+        <div id="toolbar-item-user-tray" data-toolbar-tray="toolbar-item-user-tray" class="toolbar-tray"><nav class="toolbar-lining clearfix" role="navigation" aria-label="User account actions"><h3 class="toolbar-tray-name visually-hidden">User account actions</h3><ul class="toolbar-menu"><li class="account"><a href="/user" title="User account">View profile</a></li><li class="account-edit"><a href="/user/19041/edit" title="Edit user account">Edit profile</a></li><li class="logout"><a href="/user/logout?token=XEQ4-O7F4W9LaQbN_y1YQhM7CL1RiPTBM1Ts_MD5mxQ">Log out</a></li></ul></nav></div>      </div>
+      </nav>
+
+</div>
+
+      <div class="dialog-off-canvas-main-canvas" data-off-canvas-main-canvas>
+    <div class="layout-container">
+
+  <header role="banner">
+    <div class="branding">
+      <div class="wrapper">
+          <div class="region region-header">
+    <div id="block-itso-hkustheaderblockaffiliate" class="contextual-region block block-hkust-signature-affiliate block-header-block">
+  <div class="wrapper">
+
+    <div data-contextual-id="block:block=itso_hkustheaderblockaffiliate:langcode=en" data-contextual-token="-g9Jd51oe2y7VYPPaYHqYniPtZvZrknrUMrzvnzFpB0" data-drupal-ajax-container=""></div>
+  <div class="block-body " >
+          <div class="drawer">
+    <div class="drawer-wrapper">
+        <div class="content-wrapper">
+            <div class="content">
+                <div class="more-about">More about HKUST</div>
+                                <div class="row">
+                                            <a href="https://www.ust.hk/news" class="page" target="_blank" rel="noreferrer" tabindex="-1">University News</a>
+                                            <a href="https://www.ust.hk/academics/list" class="page" target="_blank" rel="noreferrer" tabindex="-1">Academic Departments A-Z</a>
+                                            <a href="https://www.ust.hk/lifehkust" class="page" target="_blank" rel="noreferrer" tabindex="-1">Life@HKUST</a>
+                                            <a href="http://library.ust.hk/" class="page" target="_blank" rel="noreferrer" tabindex="-1">Library</a>
+
+                </div>
+                                <div class="row">
+                                            <a href="https://www.ust.hk/map-directions" class="page" target="_blank" rel="noreferrer" tabindex="-1">Map & Directions</a>
+                                            <a href="https://hkustcareers.ust.hk" class="page" target="_blank" rel="noreferrer" tabindex="-1">Careers at HKUST</a>
+                                            <a href="https://facultyprofiles.ust.hk/" class="page" target="_blank" rel="noreferrer" tabindex="-1">Faculty Profiles</a>
+                                            <a href="https://www.ust.hk/about" class="page" target="_blank" rel="noreferrer" tabindex="-1">About HKUST</a>
+
+                </div>
+                                <!--<div class="row">
+                    <a class="page" href="#" target="_blank">University News</a>
+                    <a class="page" href="#" target="_blank">Academic Departments A-Z</a>
+                    <a class="page" href="#" target="_blank">Life@HKUST</a>
+                    <a class="page" href="#" target="_blank">Library</a>
+                </div>
+                <div class="row">
+                    <a class="page" href="#" target="_blank">Map & Directions</a>
+                    <a class="page" href="#" target="_blank">Jobs@HKUST</a>
+                    <a class="page" href="#" target="_blank">Faculty Profile</a>
+                    <a class="page" href="#" target="_blank">About HKUST</a>
+                </div>-->
+            </div>
+        </div>
+    </div>
+</div>
+<div class="header-data-pc      no-cal">
+        <div id="header-desktop">
+        <div class="site-header-content clearfix">
+                        <div class="menu-top">
+                <ul class="top-menu-list"><li class="top-item has-child">
+                            <a href="#">Information for</a>
+                            <i class="fa fa-caret-down" aria-hidden="true"></i><ul class="submenu-list"><li class="sub-item"><a  href="/info/student"> Student </a></li><li class="sub-item"><a  href="/info/staff"> Staff </a></li><li class="sub-item"><a  href="/info/faculty"> Faculty </a></li><li class="sub-item"><a  href="/info/department"> Department </a></li></ul></li></ul>
+            </div>
+                        <div class="right">
+                                <div class="department-name">
+                                            <a href="https://itso.hkust.edu.hk" target="_blank" rel="noreferrer">Contact Us</a>
+                                    </div>
+                                <div class="drawer-toggle">
+                    <a href='#' title="Expand Drawer"><span class="fa fa-chevron-up"></span></a>
+                </div>
+                <div class="search-font accessibility">
+                    <a class="small-size size-small" href='#'>A</a>
+                    <a class="normal-size size-normal" href='#'>A</a>
+                    <a class="large-size size-large" href='#'>A</a>
+                </div>
+                            </div>
+        </div>
+    </div>
+
+
+    <div id="main-menu">
+        <div class="main-menu clearfix">
+            <div class="site-profile">
+                                    <div class="nav-right style-0 has-search">
+                                                                                                <a href="#" class="search" name="search"><span class="fa fa-search" aria-hidden="true"></span><span class="fa fa-times" aria-hidden="true"></span><span class="visually-hidden">Search</span></a>
+                                            </div>
+                    <div class="site-info style-0">
+                        <div class="site-logo">
+                                                        <a href="https://www.ust.hk" target="_blank" rel="noreferrer">
+                                <span class="visually-hidden">HKUST</span>
+                                <span class="logo-normal">HKUST</span>
+                                <span class="logo-white">HKUST</span>
+                            </a>
+                                                    </div>
+                                                <div class="school-name">
+                                                            <a class="with-dept-logo" href="https://itso.hkust.edu.hk/">
+                                    <img src="https://itso.hkust.edu.hk/sites/default/files/images/itsc_drupal_site_logo_0.png" alt="INFORMATION TECHNOLOGY&lt;br /&gt;
+SERVICES CENTER"  >
+                                </a>
+                                                    </div>
+
+                    </div>
+
+            </div>
+            <div class="menu ">
+                                                        <ul class="menu-lists"><li class="parent-item"><a  href="/services" class="has-sub-menu"> Services </a><ul class="sub-menu"><li class="sub-item"><a  href="/a-z"> A-Z Service Guide </a></li><li class="sub-item"><a  href="/info/student"> Student </a></li><li class="sub-item"><a  href="/info/faculty"> Faculty </a></li><li class="sub-item"><a  href="/info/staff"> Staff </a></li><li class="sub-item"><a  href="/info/department"> Department </a></li><li class="parent-item"><a  href="/services" class="has-sub-menu"> Service Catalog </a><ul class="sub-menu"><li class="sub-item"><a  href="/services/general-it-services"> General IT Services </a></li><li class="sub-item"><a  href="/services/academic-teaching-support"> Teaching, Learning & Research Services </a></li><li class="sub-item"><a  href="/services/workplace-services"> Workplace Services </a></li><li class="sub-item"><a  href="/services/it-infrastructure"> Infrastructure Services </a></li><li class="sub-item"><a  href="/services/cyber-security"> Cybersecurity Services </a></li><li class="sub-item"><a  href="/services/user-consultation-and-training-services"> User Consultation and Training Services </a></li><li class="sub-item"><a  href="/services/application-systems-services"> Application Systems Services </a></li></ul></li><li class="sub-item"><a  href="/itso-forms"> Forms </a></li></ul></li><li class="parent-item"><a  href="/it-policies-guidelines" class="has-sub-menu"> Guidelines </a><ul class="sub-menu"><li class="sub-item"><a  href="/it-policies-guidelines"> Policies and Guidelines </a></li><li class="sub-item"><a  href="/cyber-security"> Cybersecurity </a></li></ul></li><li class="parent-item"><a  href="#" class="has-sub-menu"> News & Events </a><ul class="sub-menu"><li class="sub-item"><a  href="/events-list"> Events </a></li><li class="sub-item"><a  href="/news"> News </a></li></ul></li><li class="parent-item"><a  href="#" class="has-sub-menu"> About Us </a><ul class="sub-menu"><li class="sub-item"><a  href="/mission"> Mission </a></li><li class="sub-item"><a  href="/org_chart"> Org chart </a></li><li class="sub-item"><a  href="/survey"> User Satisfaction Survey </a></li><li class="sub-item"><a  href="/it-community"> IT Community </a></li><li class="sub-item"><a  href="/contact-us"> Contact Us </a></li></ul></li></ul>
+                                                                </div>
+        </div>
+    </div>
+</div>
+
+<div class="header-data-mobile   clearfix">
+    <div class="content clearfix">
+        <div class="site-profile-wrapper">
+            <div class="site-profile-content">
+                <div id="header-mobile">
+                    <div class="site-header-content clearfix">
+                        <div class="search">
+                                                        <div class="department-name">
+                                                                    <a href="https://itso.hkust.edu.hk" target="_blank" rel="noreferrer">Contact Us</a>
+                                                            </div>
+                                                        <div class="drawer-toggle">
+                                <a href='#' title="Expand Drawer"><span class="fa fa-chevron-up"></span></a>
+                            </div>
+                            <div class="search-font accessibility">
+                                                                                                                                                                <a href="#" class="search" name="search"><span class="fa fa-search" aria-hidden="true"></span><span class="fa fa-times" aria-hidden="true"></span><span class="visually-hidden">Search</span></a>
+                                                            </div>
+                        </div>
+                    </div>
+                </div>
+                                    <div class="site-profile style-0">
+                        <div class="site-info">
+                            <div class="site-logo">
+                                                                <a href="https://www.ust.hk" target="_blank" rel="noreferrer">
+                                    <span class="visually-hidden">HKUST</span>
+                                    <span class="logo-normal">HKUST</span>
+                                    <span class="logo-white">HKUST</span>
+                                </a>
+                                                            </div>
+                                                        <div class="school-name">
+                                                                    <a class="with-dept-logo" href="https://itso.hkust.edu.hk/">
+                                        <img src="https://itso.hkust.edu.hk/sites/default/files/images/itsc_drupal_site_logo_0.png" alt="INFORMATION TECHNOLOGY&lt;br /&gt;
+SERVICES CENTER" width="0" height="0">
+                                    </a>
+                                                            </div>
+                                                    </div>
+                        <div class="responsive-menu-toggle">
+                            <a class="menus-bar" href="#" name="menus-bar">
+                                <span class="fa fa-bars" aria-hidden="true"></span>
+                                <span class="visually-hidden">Menu</span>
+                            </a>
+                        </div>
+                    </div>
+                                            </div>
+        </div>
+        <div class="responsive-menu-wrapper">
+            <div class="responsive-menu">
+                <div class="scrollable-wrapper mCustomScrollbar">
+                    <ul class="menu-lists">
+                        <li><a class="parent-item has-sub-menu" href="/services"> Services<span><i class="fa fa-caret-down" aria-hidden="true"></i></span></a><ul class="sub-menu"><li><a class="sub-item" href="/a-z"> A-Z Service Guide </a></li><li><a class="sub-item" href="/info/student"> Student </a></li><li><a class="sub-item" href="/info/faculty"> Faculty </a></li><li><a class="sub-item" href="/info/staff"> Staff </a></li><li><a class="sub-item" href="/info/department"> Department </a></li><li><a class="parent-item has-sub-menu" href="/services"> Service Catalog<span><i class="fa fa-caret-down" aria-hidden="true"></i></span></a><ul class="sub-menu"><li><a class="sub-item" href="/services/general-it-services"> General IT Services </a></li><li><a class="sub-item" href="/services/academic-teaching-support"> Teaching, Learning & Research Services </a></li><li><a class="sub-item" href="/services/workplace-services"> Workplace Services </a></li><li><a class="sub-item" href="/services/it-infrastructure"> Infrastructure Services </a></li><li><a class="sub-item" href="/services/cyber-security"> Cybersecurity Services </a></li><li><a class="sub-item" href="/services/user-consultation-and-training-services"> User Consultation and Training Services </a></li><li><a class="sub-item" href="/services/application-systems-services"> Application Systems Services </a></li></ul></li><li><a class="sub-item" href="/itso-forms"> Forms </a></li></ul></li><li><a class="parent-item has-sub-menu" href="/it-policies-guidelines"> Guidelines<span><i class="fa fa-caret-down" aria-hidden="true"></i></span></a><ul class="sub-menu"><li><a class="sub-item" href="/it-policies-guidelines"> Policies and Guidelines </a></li><li><a class="sub-item" href="/cyber-security"> Cybersecurity </a></li></ul></li><li><a class="parent-item has-sub-menu" href="#"> News & Events<span><i class="fa fa-caret-down" aria-hidden="true"></i></span></a><ul class="sub-menu"><li><a class="sub-item" href="/events-list"> Events </a></li><li><a class="sub-item" href="/news"> News </a></li></ul></li><li><a class="parent-item has-sub-menu" href="#"> About Us<span><i class="fa fa-caret-down" aria-hidden="true"></i></span></a><ul class="sub-menu"><li><a class="sub-item" href="/mission"> Mission </a></li><li><a class="sub-item" href="/org_chart"> Org chart </a></li><li><a class="sub-item" href="/survey"> User Satisfaction Survey </a></li><li><a class="sub-item" href="/it-community"> IT Community </a></li><li><a class="sub-item" href="/contact-us"> Contact Us </a></li></ul></li>
+                        <li><a href="" class="parent-item has-sub-menu">Information for<span><i class="fa fa-caret-down"></i></span></a><ul class="sub-menu"><li><a class="sub-item" href="/info/student">Student</a></li><li><a class="sub-item" href="/info/staff">Staff</a></li><li><a class="sub-item" href="/info/faculty">Faculty</a></li><li><a class="sub-item" href="/info/department">Department</a></li></ul></li>
+                                                <li class="school-name">
+                                                            <a href="https://itso.hkust.edu.hk" target="_blank">Contact Us</a>
+                                                    </li>
+
+                                                <!--<li class="top-menu-normal">
+                            <a href="#">Visit</a>
+                            <a href="#">Giving</a>
+                            <a href="#">Alumni</a>
+                            <a href="#">Events</a>
+                        </li>-->
+
+                                                                        <div class="tools clearfix">
+                                                    </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="search-layer">
+    <div class="search-layer-wrapper">
+        <form class="hkust-signature-affiliate-search-form" data-drupal-selector="hkust-signature-affiliate-search-form" action="/" method="post" id="hkust-signature-affiliate-search-form" accept-charset="UTF-8">
+  <div class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-keywords form-item-keywords form-no-label">
+      <label for="edit-keywords" class="visually-hidden">Enter your search terms</label>
+        <input data-drupal-selector="edit-keywords" type="text" id="edit-keywords" name="keywords" value="" size="60" maxlength="128" placeholder="Enter your search terms" class="form-text" />
+
+        </div>
+<input autocomplete="off" data-drupal-selector="form-ssitt9ljh83lvgbyexki984xxuahtzk8de-b84yojfg" type="hidden" name="form_build_id" value="form-SsItT9LJH83LvGbYexkI984XxuAHtZK8de_b84YOjFg" />
+<input data-drupal-selector="edit-hkust-signature-affiliate-search-form-form-token" type="hidden" name="form_token" value="rlxU7IKJlj6IYHz9g2O8xJ0sxV2-eZuPt7HYSXU2fuM" />
+<input data-drupal-selector="edit-hkust-signature-affiliate-search-form" type="hidden" name="form_id" value="hkust_signature_affiliate_search_form" />
+<div data-drupal-selector="edit-actions" class="form-actions js-form-wrapper form-wrapper" id="edit-actions"><input data-drupal-selector="edit-submit" type="submit" id="edit-submit--2" name="op" value="Search" class="button js-form-submit form-submit" />
+</div>
+
+</form>
+
+    </div>
+    <div class="search-layer-overlay"></div>
+</div>
+
+      </div>
+  </div>
+</div>
+
+  </div>
+
+        <div class="region-split region-header page-container">
+          <div class="col">
+
+          </div>
+          <div class="col">
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+      </header>
+
+
+
+  <div class="region region-breadcrumb">
+    <div class="page-container">
+      <div id="block-itso-breadcrumbs" class="contextual-region block block-system block-system-breadcrumb-block">
+  <div class="wrapper">
+
+    <div data-contextual-id="block:block=itso_breadcrumbs:langcode=en" data-contextual-token="fwXoavDG630iXzpnBbwZuSdI5fTXSXGtMmS6RVYJRIY" data-drupal-ajax-container=""></div>
+  <div class="block-body " >
+            <nav class="breadcrumb" role="navigation" aria-labelledby="system-breadcrumb">
+    <h2 id="system-breadcrumb" class="visually-hidden">Breadcrumb</h2>
+    <ol>
+          <li>
+                  <a href="/">Home</a>
+              </li>
+          <li>
+                  <a href="/services">Service Catalog</a>
+              </li>
+          <li>
+                  <a href="/services/academic-teaching-support">Teaching, Learning &amp; Research Services</a>
+              </li>
+          <li>
+                  <a href="/services/academic-teaching-support/high-performance-computing">Research Computing</a>
+              </li>
+          <li>
+                  <a href="/services/academic-teaching-support/high-performance-computing/superpod">HKUST SuperPOD</a>
+              </li>
+          <li>
+                  Submit your first Slurm job
+              </li>
+        </ol>
+  </nav>
+
+      </div>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+
+
+
+
+
+  <main role="main">
+    <a id="main-content" tabindex="-1"></a>
+
+    <div class="layout-content">
+
+
+  <div class="region region-content fixed-width">
+    <div data-drupal-messages-fallback class="hidden"></div><div id="block-itso-aichatbot" class="contextual-region block block-hkust-ai-processor block-hkust-ai-chatbot-block">
+  <div class="wrapper">
+
+    <div data-contextual-id="block:block=itso_aichatbot:langcode=en" data-contextual-token="mkM1ZYAPwXxOm6mJDE0be__JpWunbs9GK9k7Xvv08KY" data-drupal-ajax-container=""></div>
+  <div class="block-body " >
+          <div class="mc-creation-form">
+    <div id="live-chat">
+        <header class="clearfix">
+            <h4>HKUST ITSO AI Chatbot</h4>
+        </header>
+        <div class="chat">
+            <div class="chat-history">
+                <div class="chat-message bot">
+                                        <div class="chat-message-content">
+                        <p style="margin:0 !important;"><strong><span
+                                        style="color:#e74c3c;">Important reminder</span></strong><br>
+                            <br>
+                            <strong>Please do not disclose personal data such as your HKUST account number,
+                                staff/student ID or name in the chatbot. Information provided will be retained to
+                                enhance system performance.</strong><br>
+                            <br>
+                            <strong>By using the HKUST ITSO Chat service, you confirm that you have read, understood,
+                                and agreed to the <a href="/disclaimer" target="_blank">Disclaimer</a></strong></p>
+                    </div>
+                </div>
+                <hr>
+                                                <div class="clearfix chat-message chat-message--complete chat-message-wrapper--bot">
+
+
+    <div class="chat-message-content clearfix">
+
+
+        <div class="chat-message-message chat-message--bot">
+                            Welcome TAI, Chuen Hei, what can I help you with today?
+                    </div>
+
+            </div>
+
+</div>
+            </div>
+            <form class="ai-foundation-chat" data-drupal-selector="ai-foundation-chat" action="/services/academic-teaching-support/high-performance-computing/superpod/submit-first-job" method="post" id="ai-foundation-chat" accept-charset="UTF-8">
+  <div id="user-input-container" data-drupal-selector="edit-user-input-container" class="js-form-wrapper form-wrapper"><div class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-query form-item-query form-no-label">
+      <label for="edit-query" class="visually-hidden">Ask me a question</label>
+        <input placeholder="Type here.." class="chat-form-query form-text" id="user-input" data-drupal-selector="edit-query" type="text" name="query" value="" size="2000" maxlength="2000" />
+
+        </div>
+<img class="send-btn" alt="Send Icon" height="22px" src="https://chatbot.com.hk/hosting/web/chatroom/send_icon.png" width="22px" loading="lazy"><input data-ai-ajax="hkust-ai-chatbot-block-response" class="chat-form-send button js-form-submit form-submit" id="send-button-custom" data-drupal-selector="edit-submit" type="submit" name="op" value="" />
+</div>
+<input class="chat-form-clear-history button js-form-submit form-submit" data-drupal-selector="edit-clear-history" type="submit" id="edit-clear-history" name="op" value="Clear History" />
+<input class="chat-form-thread-id" data-drupal-selector="edit-thread-id" type="hidden" name="thread_id" value="" />
+<input autocomplete="off" data-drupal-selector="form-w7ksoyv6jcbnuvdlj4rulam2b6ncdgfy7j9imputsp0" type="hidden" name="form_build_id" value="form-W7kSoYv6jcbnuvdlJ4rUlAM2b6NCDgFY7J9IMPuTsp0" />
+<input data-drupal-selector="edit-ai-foundation-chat-form-token" type="hidden" name="form_token" value="PnV7-Ly1R49FnVRkZQvC5h5IIMbsvkEOZB0a5_qO8V4" />
+<input data-drupal-selector="edit-ai-foundation-chat" type="hidden" name="form_id" value="ai_foundation_chat" />
+
+</form>
+
+        </div>
+    </div>
+</div>
+      </div>
+  </div>
+</div>
+
+<article data-history-node-id="1441" class="contextual-region node node--type-itsc-content-page node--promoted node--view-mode-full" about="/services/academic-teaching-support/high-performance-computing/superpod/submit-first-job">
+
+
+    <div data-contextual-id="node:node=1441:changed=1723539050&amp;langcode=en" data-contextual-token="eT6r9D8k0DiDpDCz2oQNF_xfVbnbmIivFXxIXc048C4" data-drupal-ajax-container=""></div>
+
+
+  <div class="node__content">
+      <div class="layout layout--hkust-onecol layout--hkust-fullwidth">
+          <div >
+      <div  class="layout__region layout__region--content">
+        <div class="block block-layout-builder block-extra-field-blocknodeitsc-content-pagecontent-moderation-control">
+  <div class="wrapper">
+
+
+  <div class="block-body " >
+
+      </div>
+  </div>
+</div>
+
+      </div>
+    </div>
+  </div>
+  <div class="itsc-service-heading itsc-narrow-content layout layout--hkust-onecol layout--hkust-container">
+    <div class="page-container row">
+      <div class="wrapper">
+        <div  class="layout__region layout__region--content col-md-12">
+          <div class="block block-layout-builder block-field-blocknodeitsc-content-pagetitle">
+  <div class="wrapper">
+
+
+  <div class="block-body " >
+          <span class="field field--name-title field--type-string field--label-above">Submit your first Slurm job</span>
+
+      </div>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="itsc-description hkust-simple-text  itsc-narrow-content layout layout--hkust-onecol layout--hkust-container">
+    <div class="page-container row">
+      <div class="wrapper">
+        <div  class="region__empty layout__region layout__region--content col-md-12">
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="itsc-service hkust-simple-text  itsc-narrow-content layout layout--hkust-onecol layout--hkust-container">
+    <div class="page-container row">
+      <div class="wrapper">
+        <div  class="layout__region layout__region--content col-md-12">
+          <div class="block block-layout-builder block-field-blocknodeitsc-content-pagefield-itsc-content">
+  <div class="wrapper">
+
+
+  <div class="block-body " >
+
+            <div class="clearfix text-formatted field field--name-field-itsc-content field--type-text-long field--label-hidden field__item"><h4>Simple Python job example</h4>
+
+<p>1. SSH to SuperPod login node, please check here: <a href="https://itso.hkust.edu.hk/services/academic-teaching-support/high-performance-computing/superpod/usage-tips/login">How to login</a></p>
+
+<p>2. Save the below example python code as test.py in your home directory</p>
+
+<pre>
+import numpy as np
+import time
+
+# Generate two random arrays
+size = 300000
+a = np.random.rand(size)
+b = np.random.rand(size)
+
+# Method 1: Compute dot product using a loop
+dot_product = 0
+
+start = time.time()
+for i in range(size):
+&nbsp; dot_product += a[i] * b[i]
+end = time.time()
+
+print(f"Dot product using loop: {dot_product}")
+print("Time : ",end - start)
+
+# Method 2: Compute dot product using vectorization
+start2 = time.time()
+dot_product_vec = np.dot(a, b)
+end2 = time.time()
+
+print(f"Dot product using vectorization: {dot_product_vec}")
+print("Time : ",end2 - start2)
+</pre>
+
+<p>3. If you would like to try your code in login node, type below:</p>
+
+<pre>
+% module load Anaconda3/2023.09-0
+% python test.py
+Dot product using loop: 74979.16429226683
+Time : &nbsp;0.10371804237365723
+Dot product using vectorization: 74979.16429226879
+Time : &nbsp;0.026628971099853516
+</pre>
+
+<p>4, Prepare a sbatch&nbsp;script file, say&nbsp;test.sbatch&nbsp;for job submission,&nbsp;Remember to provide your&nbsp;partition name as appropriate.&nbsp; If you are not specifying the partition name (the #SBATCH line for partition name), it is default to the <i>normal&nbsp;</i>partition. For different account types, you can access to different&nbsp;partitions and different GPU configuration. Please refer to&nbsp;<a href="/services/academic-teaching-support/high-performance-computing/superpod/partitionandquota">here</a>&nbsp;and <a href="/services/academic-teaching-support/high-performance-computing/superpod/faq">FAQ </a>page for more information.&nbsp;If you belong to multiple project teams, please also specify the project name to be accounted in the sbatch&nbsp;job.</p>
+
+<pre>
+#!/bin/bash
+#SBATCH --job-name=test          # create a short name for your job
+#SBATCH --nodes=1                # node count
+#SBATCH --gpus=1                 # number of GPUs per node(only valid under large/normal partition)
+#SBATCH --time=00:20:00          # total run time limit (HH:MM:SS)
+#SBATCH --partition=&lt;queuename&gt;  # partition(large/normal/cpu) where you submit
+#SBATCH --account=&lt;project&gt;      # only require for multiple projects
+
+module purge                     # clear environment modules inherited from submission
+module load Anaconda3/2023.09-0  # load the exact modules required
+
+python test.py
+</pre>
+
+<p>5. Submit your task using "sbatch" command</p>
+
+<pre>
+% sbatch --wait -o slurm.out test.sbatch
+<yourusername></yourusername></pre>
+
+<p>6. Check the result and the output should be similar to the above running manually.</p>
+
+<pre>
+% cat slurm.out</pre>
+
+<p>&nbsp;</p>
+</div>
+
+      </div>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="itsc-service-extra  itsc-narrow-content layout layout--hkust-onecol layout--hkust-container">
+    <div class="page-container row">
+      <div class="wrapper">
+        <div  class="layout__region layout__region--content col-md-12">
+          <div class="block block-hkust-blocks block-hkust-simple-text">
+  <div class="wrapper">
+
+
+  <div class="block-body " >
+
+<div class="hkust-simple-text">
+  <hr>
+</div>
+      </div>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </div>
+
+</article>
+
+  </div>
+
+    </div>
+          <div class="layout-below-content">
+
+
+  <div class="region region-below-content">
+    <div id="block-itso-itsoservicedeskpopup" class="contextual-region block block-block-content block-block-contentbc5e8d99-8ccb-4623-aff4-17cfeda9c679">
+  <div class="wrapper">
+
+      <h3>Support</h3>
+    <div data-contextual-id="block:block=itso_itsoservicedeskpopup:langcode=en|block_content:block_content=40:changed=1754556431&amp;langcode=en" data-contextual-token="DSTBqoRca-aVlcLKPY2LdyxnIYcbF_Qduu8aVlCAueg" data-drupal-ajax-container=""></div>
+  <div class="block-body " >
+
+            <div class="clearfix text-formatted field field--name-body field--type-text-with-summary field--label-hidden field__item"><!--<div class="service-desk-row ai"><span class="name">AI-Assistant</span> <span class="content"><a>Get instant answers from our AI-Assistant</a></span></div>-->
+<div class="service-desk-row cchelp"><span class="name">General Enquiries</span> <span class="content"><a href="mailto:cchelp@ust.hk">cchelp@ust.hk</a></span></div>
+
+<div class="service-desk-row suggestions"><span class="name">Suggestions &amp; Complaints</span> <span class="content"><a href="mailto:cclisten@ust.hk">cclisten@ust.hk</a></span></div>
+
+<div class="service-desk-row hotline"><span class="name">Serviceline</span> <span class="content"><a href="tel:23586200">+852-2358-6200</a></span></div>
+</div>
+
+      </div>
+  </div>
+</div>
+
+  </div>
+
+      </div>
+
+
+  </main>
+
+
+  <footer role="contentinfo">
+    <div class="wrapper">
+
+
+  <div class="region region-footer">
+    <div id="block-itso-itsoservicedesk" class="contextual-region block block-block-content block-block-content1c098eb2-9731-4da4-a905-37100000c55d">
+	<div class="wrapper">
+		<div class="block-header">
+
+            <div class="field field--name-field-title field--type-string field--label-hidden field__item">HKUST ITSO Service Desk</div>
+
+
+            <div class="field field--name-field-link field--type-link field--label-hidden field__item"><a href="/services/user-consultation-and-training-services/consultation/itso-service-desk">Services Hours</a></div>
+
+		</div>
+		<div class="block-body " >
+
+      <div class="field field--name-field-item field--type-entity-reference-revisions field--label-hidden field__items">
+              <div class="field__item">  <div class="paragraph paragraph--type--itso-service-desk-item paragraph--view-mode--default">
+
+            <div class="field field--name-field-title field--type-string field--label-hidden field__item">General Enquires</div>
+
+            <div class="clearfix text-formatted field field--name-field-formatted-description field--type-text-long field--label-hidden field__item"><p><a href="mailto:cchelp@ust.hk">cchelp@ust.hk</a></p></div>
+
+      </div>
+</div>
+              <div class="field__item">  <div class="paragraph paragraph--type--itso-service-desk-item paragraph--view-mode--default">
+
+            <div class="field field--name-field-title field--type-string field--label-hidden field__item">Suggestion &amp; Complaints</div>
+
+            <div class="clearfix text-formatted field field--name-field-formatted-description field--type-text-long field--label-hidden field__item"><p><a href="mailto:cclisten@ust.hk">cclisten@ust.hk</a></p></div>
+
+      </div>
+</div>
+              <div class="field__item">  <div class="paragraph paragraph--type--itso-service-desk-item paragraph--view-mode--default">
+
+            <div class="field field--name-field-title field--type-string field--label-hidden field__item">Serviceline</div>
+
+            <div class="clearfix text-formatted field field--name-field-formatted-description field--type-text-long field--label-hidden field__item"><p>+852-2358-6200</p></div>
+
+      </div>
+</div>
+              <div class="field__item">  <div class="paragraph paragraph--type--itso-service-desk-item paragraph--view-mode--default">
+
+            <div class="field field--name-field-title field--type-string field--label-hidden field__item">Service Desk  </div>
+
+            <div class="clearfix text-formatted field field--name-field-formatted-description field--type-text-long field--label-hidden field__item"><p>Rm 2021, Lift 2, Academic Building</p></div>
+
+      </div>
+</div>
+              <div class="field__item">  <div class="paragraph paragraph--type--itso-service-desk-item paragraph--view-mode--default">
+
+            <div class="field field--name-field-title field--type-string field--label-hidden field__item">Student Consultation</div>
+
+            <div class="clearfix text-formatted field field--name-field-formatted-description field--type-text-long field--label-hidden field__item"><p>Barn B, Rm 1101, Academic Concourse</p></div>
+
+      </div>
+</div>
+              <div class="field__item">  <div class="paragraph paragraph--type--itso-service-desk-item paragraph--view-mode--default">
+
+            <div class="field field--name-field-title field--type-string field--label-hidden field__item">Zoom Appointment</div>
+
+            <div class="clearfix text-formatted field field--name-field-formatted-description field--type-text-long field--label-hidden field__item"><p><a href="http://ust.az1.qualtrics.com/jfe/form/SV_1RIigRNrtaWR3uJ" target="_blank">Schedule an appointment</a></p></div>
+
+      </div>
+</div>
+          </div>
+
+		</div>
+	</div>
+</div>
+<div id="block-itso-hkustfooterblockaffiliate" class="contextual-region block block-hkust-signature-affiliate block-footer-block">
+  <div class="wrapper">
+
+    <div data-contextual-id="block:block=itso_hkustfooterblockaffiliate:langcode=en" data-contextual-token="oLGgh2ngg4bMjzFzQl-6T-x_E34iHZEvBxkC_Mn3oOs" data-drupal-ajax-container=""></div>
+  <div class="block-body " >
+          <div class="footer ">
+	<div class="content-locator">
+		<div class="site-col">
+							<div class="hkust-logo desktop">
+											<a href="https://www.ust.hk" target="_blank" rel="noreferrer"><img src="/profiles/ust/modules/custom/hkust_signature_affiliate/assets/images/hkust_logo_small.svg" alt="HKUST Logo"/></a>
+									</div>
+						<div class="site-pages">
+				<a class="page" href="https://dataprivacy.ust.hk/university-data-privacy-policy-statement/" target="_blank" rel="noreferrer">Privacy</a>
+				<a class="page" href="/sitemap">Sitemap</a>
+
+
+															<div class="copyright desktop">Copyright © The Hong Kong University of Science and Technology. All rights reserved.</div>
+																		</div>
+		</div>
+
+					<div class="social-share-col">
+															<div class="text">Follow HKUST on</div>
+													<div class="icon-wrapper">
+					<a class="page" href="https://www.facebook.com/hkust/"  rel="noreferrer"><img src='https://itso.hkust.edu.hk/sites/default/files/menu_icons/s-icon-fb.svg' alt='Facebook'> <div class='visually-hidden'>Facebook</div> </a><a class="page" href="https://www.linkedin.com/school/hkust/"  rel="noreferrer"><img src='https://itso.hkust.edu.hk/sites/default/files/menu_icons/s-icon-in.svg' alt='LinkedIn'> <div class='visually-hidden'>LinkedIn</div> </a><a class="page" href="https://www.instagram.com/hkust"  rel="noreferrer"><img src='https://itso.hkust.edu.hk/sites/default/files/menu_icons/s-icon-ig.svg' alt='Instagram'> <div class='visually-hidden'>Instagram</div> </a><a class="page" href="https://www.youtube.com/user/hkust"  rel="noreferrer"><img src='https://itso.hkust.edu.hk/sites/default/files/menu_icons/s-icon-youtube.svg' alt='Youtube'> <div class='visually-hidden'>Youtube</div> </a><a class="page colorbox" href="/profiles/ust/modules/custom/hkust_signature_affiliate/assets/images/wechat_qrcode.JPG"  rel="noreferrer"><img src='https://itso.hkust.edu.hk/sites/default/files/menu_icons/wechat.png' alt='Wechat'> <div class='visually-hidden'>Wechat</div> </a>
+				</div>
+			</div>
+
+					<div class="hkust-logo mobile">
+									<a href="https://www.ust.hk" target="_blank" rel="noreferrer"><img src="/profiles/ust/modules/custom/hkust_signature_affiliate/assets/images/hkust_logo_small.svg" alt="HKUST Logo"/></a>
+							</div>
+
+		<div class="caring">
+			<a href="https://www.ust.hk" target="_blank" rel="noreferrer"><img src="/themes/itso/assets/images/ust_domain_logo.png" alt="HKUST Logo"/></a>
+			<span><img src="/profiles/ust/modules/custom/hkust_signature_affiliate/assets/images/5Year_caringLogo-01.png"></span>
+		</div>
+
+									<div class="copyright mobile">Copyright © The Hong Kong University of Science and Technology. All rights reserved.
+									</div>
+						</div>
+</div>
+
+      </div>
+  </div>
+</div>
+
+  </div>
+
+      <div class="region-split region-footer page-container">
+        <div class="col">
+
+        </div>
+        <div class="col">
+
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</div>
+  </div>
+
+
+    <script type="application/json" data-drupal-selector="drupal-settings-json">{"path":{"baseUrl":"\/","pathPrefix":"","currentPath":"node\/1441","currentPathIsAdmin":false,"isFront":false,"currentLanguage":"en"},"pluralDelimiter":"\u0003","suppressDeprecationErrors":true,"ajaxPageState":{"libraries":"eJyFU-1uxSAIfSFbl-wJ9iSGWtqSWjGC2_r2sx_mbsvN9gs4BwUOCuNG0SlzGCDb2_aaEfuF3zFTVIxqgJxfQAdWe9jv8cR566SegM34ACK7jTyi8Rw4D_xpm_NARpygBK1Avf1TCwQ75pIg9A-kCxRX-TvlbrcmZWw0eKV3PE8bLM4zr4TVbCkQRI_2GehaRzPzHNBBhLArebG_ATNnLqkJZRYS5bzbDfLagXRVhdEsaxG1Awhernt9ATdyBCWO3_GqYsrsUYSzfUjqfCV5c6J7QPkn91hSprFdOQT2q9gz6K7gZgLsXPSm3KEiUMT8lJ1KCB806nKzET8adbjn6eNZXJDQXGcruco0TVQVVbyTt1qiP7v4OcwZOLCHpTgbUuFLmAQZ5gxpkbbQB9KXmMoQSBYcjSyc1RdtaS02QnWr6BKnkpocTzAjuyhuV9Xf7x_FQ8K342-YIphbkcPvqU4vX_ePRu0","theme":"itso","theme_token":null},"ajaxTrustedUrl":{"form_action_p_pvdeGsVG5zNF_XLGPTvYSKCf43t8qZYSwcfZl2uzM":true,"\/":true},"google_analytics":{"account":"UA-72581360-1","trackOutbound":true,"trackMailto":true,"trackTel":true,"trackDownload":true,"trackDownloadExtensions":"7z|aac|arc|arj|asf|asx|avi|bin|csv|doc(x|m)?|dot(x|m)?|exe|flv|gif|gz|gzip|hqx|jar|jpe?g|js|mp(2|3|4|e?g)|mov(ie)?|msi|msp|pdf|phps|png|ppt(x|m)?|pot(x|m)?|pps(x|m)?|ppam|sld(x|m)?|thmx|qtm?|ra(m|r)?|sea|sit|tar|tgz|torrent|txt|wav|wma|wmv|wpd|xls(x|m|b)?|xlt(x|m)|xlam|xml|z|zip","trackColorbox":true},"simple_popup_blocks":{"settings":[]},"eu_cookie_compliance":{"cookie_policy_version":"1.0.0","popup_enabled":true,"popup_agreed_enabled":false,"popup_hide_agreed":false,"popup_clicking_confirmation":false,"popup_scrolling_confirmation":false,"popup_html_info":"\u003Cdiv aria-labelledby=\u0022popup-text\u0022  class=\u0022eu-cookie-compliance-banner eu-cookie-compliance-banner-info eu-cookie-compliance-banner--opt-in\u0022\u003E\n  \u003Cdiv class=\u0022popup-content info eu-cookie-compliance-content\u0022\u003E\n        \u003Cdiv id=\u0022popup-text\u0022 class=\u0022eu-cookie-compliance-message\u0022 role=\u0022document\u0022\u003E\n      \u003Ch2\u003EWe use cookies on this site to enhance your user experience\u003C\/h2\u003E\n\u003Cp\u003EBy clicking any link on this page you are giving your consent for us to set cookies.\u003C\/p\u003E\n\n              \u003Cbutton type=\u0022button\u0022 class=\u0022find-more-button eu-cookie-compliance-more-button\u0022\u003EMore info\u003C\/button\u003E\n          \u003C\/div\u003E\n\n    \n    \u003Cdiv id=\u0022popup-buttons\u0022 class=\u0022eu-cookie-compliance-buttons\u0022\u003E\n            \u003Cbutton type=\u0022button\u0022 class=\u0022agree-button eu-cookie-compliance-secondary-button\u0022\u003EOK, I agree\u003C\/button\u003E\n              \u003Cbutton type=\u0022button\u0022 class=\u0022decline-button eu-cookie-compliance-default-button\u0022\u003ENo, thanks\u003C\/button\u003E\n          \u003C\/div\u003E\n  \u003C\/div\u003E\n\u003C\/div\u003E","use_mobile_message":false,"mobile_popup_html_info":"\u003Cdiv aria-labelledby=\u0022popup-text\u0022  class=\u0022eu-cookie-compliance-banner eu-cookie-compliance-banner-info eu-cookie-compliance-banner--opt-in\u0022\u003E\n  \u003Cdiv class=\u0022popup-content info eu-cookie-compliance-content\u0022\u003E\n        \u003Cdiv id=\u0022popup-text\u0022 class=\u0022eu-cookie-compliance-message\u0022 role=\u0022document\u0022\u003E\n      \u003Ch2\u003EWe use cookies on this site to enhance your user experience\u003C\/h2\u003E\n\u003Cp\u003EBy tapping any link on this page you are giving your consent for us to set cookies.\u003C\/p\u003E\n\n              \u003Cbutton type=\u0022button\u0022 class=\u0022find-more-button eu-cookie-compliance-more-button\u0022\u003EMore info\u003C\/button\u003E\n          \u003C\/div\u003E\n\n    \n    \u003Cdiv id=\u0022popup-buttons\u0022 class=\u0022eu-cookie-compliance-buttons\u0022\u003E\n            \u003Cbutton type=\u0022button\u0022 class=\u0022agree-button eu-cookie-compliance-secondary-button\u0022\u003EOK, I agree\u003C\/button\u003E\n              \u003Cbutton type=\u0022button\u0022 class=\u0022decline-button eu-cookie-compliance-default-button\u0022\u003ENo, thanks\u003C\/button\u003E\n          \u003C\/div\u003E\n  \u003C\/div\u003E\n\u003C\/div\u003E","mobile_breakpoint":768,"popup_html_agreed":false,"popup_use_bare_css":false,"popup_height":"auto","popup_width":"100%","popup_delay":1000,"popup_link":"\/events\/cybersecurity-training-application-health-check-acunetix-and-coverity","popup_link_new_window":true,"popup_position":false,"fixed_top_position":true,"popup_language":"en","store_consent":false,"better_support_for_screen_readers":false,"cookie_name":"","reload_page":false,"domain":"","domain_all_sites":false,"popup_eu_only":false,"popup_eu_only_js":false,"cookie_lifetime":100,"cookie_session":null,"set_cookie_session_zero_on_disagree":0,"disagree_do_not_show_popup":false,"method":"opt_in","automatic_cookies_removal":true,"allowed_cookies":"","withdraw_markup":"\u003Cbutton type=\u0022button\u0022 class=\u0022eu-cookie-withdraw-tab\u0022\u003EPrivacy settings\u003C\/button\u003E\n\u003Cdiv aria-labelledby=\u0022popup-text\u0022 class=\u0022eu-cookie-withdraw-banner\u0022\u003E\n  \u003Cdiv class=\u0022popup-content info eu-cookie-compliance-content\u0022\u003E\n    \u003Cdiv id=\u0022popup-text\u0022 class=\u0022eu-cookie-compliance-message\u0022 role=\u0022document\u0022\u003E\n      \u003Ch2\u003EWe use cookies on this site to enhance your user experience\u003C\/h2\u003E\n\u003Cp\u003EYou have given your consent for us to set cookies.\u003C\/p\u003E\n\n    \u003C\/div\u003E\n    \u003Cdiv id=\u0022popup-buttons\u0022 class=\u0022eu-cookie-compliance-buttons\u0022\u003E\n      \u003Cbutton type=\u0022button\u0022 class=\u0022eu-cookie-withdraw-button \u0022\u003EWithdraw consent\u003C\/button\u003E\n    \u003C\/div\u003E\n  \u003C\/div\u003E\n\u003C\/div\u003E","withdraw_enabled":false,"reload_options":0,"reload_routes_list":"","withdraw_button_on_info_popup":false,"cookie_categories":[],"cookie_categories_details":[],"enable_save_preferences_button":true,"cookie_value_disagreed":"0","cookie_value_agreed_show_thank_you":"1","cookie_value_agreed":"2","containing_element":"body","settings_tab_enabled":false,"olivero_primary_button_classes":"","olivero_secondary_button_classes":"","close_button_action":"close_banner","open_by_default":true,"modules_allow_popup":true,"hide_the_banner":false,"geoip_match":true,"unverified_scripts":["\/"]},"history":{"nodesToMarkAsRead":{"1441":true}},"toolbar":{"breakpoints":{"toolbar.narrow":"only screen and (min-width: 16.5em)","toolbar.standard":"only screen and (min-width: 38.125em)","toolbar.wide":"only screen and (min-width: 61em)"},"subtreesHash":"XjWgqxGmvx6HvDnR5Tf-7XS_0KiimALr-oNn1TRnXBk"},"hoverIntentTimeout":500,"ai_chatbot":{"bot_name":"Generic Chatbot","bot_image":"\/core\/misc\/druplicon.png","default_username":"TAI, Chuen Hei","default_avatar":"\/core\/misc\/favicon.ico","toggle_state":"remember","output_type":"markdown","first_message":"Hello! How can I help you today?","has_history":false,"assistant_id":"itso_drupal_content_v2","thread_id":"6yjXbW1vxybjco_gB5T-t72dwavmJ_eEyQG_PfJ3X1k"},"user":{"uid":"19041","permissionsHash":"175cff1b002d279b7610124ba8f294fe0bc6d8350b2daa683a3e55f1116f9d07"}}</script>
+<script src="/sites/default/files/js/js_ZNuGIE599ompSC79oE-grYqDERSON7B4fQiuuy2fnGI.js?scope=footer&amp;delta=0&amp;language=en&amp;theme=itso&amp;include=eJx9UlFuwzAIvZATT9oJdhKLOCRBcYwFuGpvP6dp2qmq9gU8HvDAhnGjHIw5DSD-YXsTxH7hCwplw2wOKMQFbGDzE8vWaWPA5iInloGv_nReyIgT1GQNaB2uViH5UWqB1L-QLlFe9X_KQ1IjCZ5piEYXvFc7rCEyr4TNbCUR5Ij-E-hm5jlhgAzpZhTVvwNuITWWm99A1g60azuOblmrmh9A8XDD9xeEkTMYcf6LtxsV4YiqLP51sLCfUWg8aUPiuKq_B90RPDJKc-tapUmaJmqqDQ9a2IByf-cGtVvCZ8UeBPC7pTw7MuVDklLbG0PhUss58gPm3l8eNULBn_1X_AIfCNTn"></script>
+
+  </body>
+</html>

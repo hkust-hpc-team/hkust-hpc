@@ -184,10 +184,10 @@ SPEC HPC 2021 is a licensed commercial product. Organizations must purchase a li
    # Extract SPEC HPC distribution
    tar -xzf spechpc2021-1.1.9.tar.gz
    cd spechpc2021
-   
+
    # Install using provided script
    ./install.sh
-   
+
    # Source the environment
    source shrc
 
@@ -212,7 +212,7 @@ SPEC HPC uses a custom Perl interpreter (specperl) bundled with the suite. Verif
 
    # Test specperl
    specperl -v
-   
+
    # Should output SPEC-customized Perl version
    # If fails, reinstall or check architecture compatibility
 
@@ -228,24 +228,24 @@ A minimal SPEC HPC configuration file requires:
    # Output and reporting
    output_format = pdf,text
    teeout = yes
-   
+
    # System identification
    system_vendor = Your Organization
    system_name = Your System Name
    hw_vendor_list = Hardware Vendor
    hw_model_list = Hardware Model
-   
+
    # Compiler settings
    CC = mpicc
    CXX = mpicxx
    FC = mpifort
-   
+
    # Optimization flags
    OPTIMIZE = -O3 -march=native
-   
+
    # MPI configuration
    submit = mpirun -np $ranks $command
-   
+
    # Base run configuration
    default=base=default:
    pmodel = MPI
@@ -280,11 +280,11 @@ Load your compiler and MPI environment before invoking SPEC HPC:
    module purge
    module load compiler/intel-oneapi/2025.0
    module load mpi/intel-mpi/2021.14
-   
+
    # Source SPEC HPC environment
    cd /path/to/spechpc2021
    source shrc
-   
+
    # Verify MPI works
    mpirun -np 4 hostname
 
@@ -305,20 +305,20 @@ Mockup generates a report template with placeholder scores, performing comprehen
 **What mockup accomplishes:**
 
 1. **Reportability verification:** Validates configuration complies with SPEC run rules
-   
+
    - Checks all required metadata fields are present
    - Verifies compiler flags are properly documented
    - Ensures configuration meets SPEC submission requirements
 
 2. **Build verification:** Compiles all benchmarks without executing them
-   
+
    - Tests compiler toolchain integration
    - Validates library dependencies and paths
    - Identifies missing portability flags
    - Confirms MPI wrapper configuration
 
 3. **Report generation test:** Creates sample PDF/text reports with zero scores
-   
+
    - Validates LaTeX/PDF dependencies
    - Tests flagsurl accessibility and format
    - Verifies metadata formatting
@@ -392,7 +392,7 @@ Tiny suite completion takes 30 minutes to 2 hours depending on hardware. Small s
 
    # SPEC HPC writes progress to result directory
    tail -f result/SPEC*_myconfig_*/buildlogs/build.*.log
-   
+
    # Check for completed test cases
    ls result/SPEC*_myconfig_*/run/build_*/
 
@@ -449,7 +449,7 @@ Report files are generated in ``$SPECHPC/result/``:
 
    # View summary
    ls $SPECHPC/result/*.txt
-   
+
    # Check PDF report (if generated)
    ls $SPECHPC/result/*.pdf
 
@@ -468,7 +468,7 @@ Search for systems with identical or similar processor models. Published results
 **Configuration factors affecting performance:**
 
 - Node-local configuration: PCIe topology, memory configuration, BIOS settings
-- Kernel parameters: CPU governor, isolation settings, NUMA configuration  
+- Kernel parameters: CPU governor, isolation settings, NUMA configuration
 - Cooling and thermal characteristics
 - Network fabric configuration and topology
 
@@ -530,7 +530,7 @@ Modular Configuration Approach
 
 1. Initial deployment: Single node type, monolithic configuration
 2. First refactor: Support multiple node types
-3. Second refactor: Multi-node benchmark support  
+3. Second refactor: Multi-node benchmark support
 4. Third refactor: Multiple compiler + MPI combinations
 5. Fourth refactor: Decoupled compiler and MPI configurations
 
@@ -573,19 +573,19 @@ SPEC HPC allows base (conservative, portable) and peak (aggressive, platform-spe
 .. code-block:: perl
 
    # config/compilers/intel-oneapi.cfg
-   
+
    CC  = icx
-   CXX = icpx  
+   CXX = icpx
    FC  = ifx
    CXX = icpx
    FC  = ifx
-   
+
    # Base optimization flags
    OPTIMIZE = -march=common-avx512 -Ofast -flto -ffast-math
    COPTIMIZE = -ansi-alias
    CXXOPTIMIZE = -ansi-alias
    FOPTIMIZE = -nostandard-realloc-lhs -align array64byte
-   
+
    # Portability flags (required for some test cases)
    CPORTABILITY = -lstdc++
 
@@ -596,7 +596,7 @@ SPEC HPC allows base (conservative, portable) and peak (aggressive, platform-spe
    CC  = clang
    CXX = clang++
    FC  = flang
-   
+
    OPTIMIZE = -march=znver4 -O3 -ffast-math -flto
    PORTABILITY = -lm
 
@@ -649,8 +649,8 @@ Ensure MPI propagates environment variables to ranks:
 
    # Open MPI: -x VAR exports variable
    submit = mpirun -np $ranks -x OMP_NUM_THREADS -x OMP_PROC_BIND $command
-   
-   # Intel MPI: -genv VAR exports variable  
+
+   # Intel MPI: -genv VAR exports variable
    submit = mpiexec -n $ranks -genv OMP_NUM_THREADS $threads $command
 
 **NUMA and process binding:**
@@ -661,7 +661,7 @@ For optimal performance, bind MPI ranks to NUMA domains:
 
    # Open MPI with binding
    submit = mpirun -np $ranks --bind-to core --map-by socket $command
-   
+
    # Intel MPI with binding
    submit = mpiexec -n $ranks -genv I_MPI_PIN_DOMAIN=socket $command
 
@@ -674,14 +674,14 @@ Simplify repeated invocations with a shell script wrapper:
 
    #!/bin/bash
    # run-spechpc.sh
-   
+
    cd /path/to/spechpc2021
    source shrc
-   
+
    CONFIG="mysite"
    ACTION="$1"    # mockup, run, report, etc.
    SIZE="$2"      # tiny, small, medium, large
-   
+
    CMD="runhpc --config $CONFIG"
    CMD="$CMD --define host_def=dell-r6625"
    CMD="$CMD --define compiler_def=intel-oneapi"
@@ -689,7 +689,7 @@ Simplify repeated invocations with a shell script wrapper:
    CMD="$CMD --define env_def=mpi"
    CMD="$CMD --tune base --reportable"
    CMD="$CMD --action $ACTION --size ref $SIZE"
-   
+
    eval $CMD
 
 Usage: ``./run-spechpc.sh run small``
@@ -777,7 +777,7 @@ Maintain historical SPEC HPC results:
    SYSTEM=dell-r6625
    DATE=$(date +%Y%m%d)
    CONFIG=intel-oneapi-mpi
-   
+
    cp $SPECHPC/result/SPEChpc2021*.* \\
       /archive/spechpc/$SYSTEM/$DATE-$CONFIG/
 
@@ -803,10 +803,10 @@ Specperl requires libnl3 (Netlink Protocol Library Suite version 3). This librar
 
    # RHEL/Rocky/AlmaLinux
    sudo dnf install libnl3
-   
+
    # Ubuntu/Debian
    sudo apt install libnl-3-200
-   
+
    # Verify specperl works after installation
    specperl -v
 

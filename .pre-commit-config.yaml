@@ -6,6 +6,10 @@ ci:
   # Skip hooks that require uv (language: system) -- pre-commit.ci doesn't have uv
   skip: [doc8, rstcheck, ruff-check, ruff-format]
 minimum_pre_commit_version: "3.6.0"
+# external-resources/ contains archived Drupal HTML and welcome-email files
+# used as read-only reference material. They are never committed and should
+# not be linted or reformatted.
+exclude: ^external-resources/
 repos:
   # ---------- managed by pre-commit (no uv needed) ----------
   - repo: https://github.com/pre-commit/pre-commit-hooks

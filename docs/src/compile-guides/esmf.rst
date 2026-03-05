@@ -41,7 +41,7 @@ ESMF requires the following software components:
 
 .. caution::
    As tested on 2025-12-09, the Intel OneAPI compilers (icx, icpx, ifx) are not compatible with ESMF v9.0.0b06 when used with either Intel MPI or OpenMPI for missing ``-lmpi++`` linkage. There is no known workaround at this time.
-   
+
    Use Intel Classic compilers (icc, icpc, ifort) instead.
 
 System Requirements
@@ -100,11 +100,11 @@ Download ESMF Source Code
    # Create a working directory
    mkdir -p ~/esmf-build
    cd ~/esmf-build
-   
+
    # Clone ESMF repository
    git clone https://github.com/esmf-org/esmf.git
    cd esmf
-   
+
    # Checkout the desired version
    git checkout v9.0.0b06
 
@@ -136,29 +136,29 @@ This configuration uses the AMD Optimizing C/C++ and Fortran Compilers with Open
 
    # Navigate to ESMF source directory
    cd ~/esmf-build/esmf
-   
+
    # Activate Spack environment
    export SPACK_ROOT="/opt/shared/.spack-edge"
    source "${SPACK_ROOT}/dist/bin/setup-env.sh" -y
-   
+
    # Load build tools first
    module purge
    module load cmake
-   
+
    # Load AMD AOCC compiler and OpenMPI
    module load aocc/5
    module load openmpi/5
-   
+
    # Load required libraries
    module load hdf5
    module load netcdf-c
    module load netcdf-fortran
    module load parallel-netcdf
    module load parallelio
-   
+
    # Verify modules are loaded
    module list
-   
+
    # Set ESMF build environment variables
    export ESMF_DIR="$(pwd)"
    export ESMF_SITE="hkust_hpc4"
@@ -166,13 +166,13 @@ This configuration uses the AMD Optimizing C/C++ and Fortran Compilers with Open
    export ESMF_COMPILER="aocc"
    export ESMF_COMM="openmpi"
    export ESMF_ABI="64"
-   
+
    # Set library paths
    export ESMF_NETCDF="nc-config"
    export ESMF_PNETCDF="pnetcdf-config"
    export ESMF_PIO="external"
    export ESMF_NUMA="ON"
-   
+
    # Compile ESMF (use all available cores)
    make -j $(nproc) 2>&1 | tee hpc4_build.log
 
@@ -185,29 +185,29 @@ This configuration uses the classic Intel compilers (icc, icpc, ifort) with Inte
 
    # Navigate to ESMF source directory
    cd ~/esmf-build/esmf
-   
+
    # Activate Spack environment
    export SPACK_ROOT="/opt/shared/.spack-edge"
    source "${SPACK_ROOT}/dist/bin/setup-env.sh" -y
-   
+
    # Load build tools first
    module purge
    module load cmake
-   
+
    # Load Intel Classic compilers and MPI
    module load intel-oneapi-compilers-classic
    module load intel-oneapi-mpi
-   
+
    # Load required libraries
    module load hdf5
    module load netcdf-c
    module load netcdf-fortran
    module load parallel-netcdf
    module load parallelio
-   
+
    # Verify modules are loaded
    module list
-   
+
    # Set ESMF build environment variables
    export ESMF_DIR="$(pwd)"
    export ESMF_SITE="hkust_hpc4"
@@ -215,25 +215,25 @@ This configuration uses the classic Intel compilers (icc, icpc, ifort) with Inte
    export ESMF_COMPILER="intel"
    export ESMF_COMM="intelmpi"
    export ESMF_ABI="64"
-   
+
    # Explicitly set Intel Classic compilers
    export ESMF_C="icc"
    export ESMF_CXX="icpc"
    export ESMF_F90="ifort"
-   
+
    # Suppress Intel Classic compiler deprecation warnings
    export CFLAGS="-diag-disable=10441"
    export CXXFLAGS="-diag-disable=10441"
-   
+
    # Set library paths
    export ESMF_NETCDF="nc-config"
    export ESMF_PNETCDF="pnetcdf-config"
    export ESMF_PIO="external"
    export ESMF_NUMA="ON"
-   
+
    # Set optimization level
    export ESMF_BOPT="O"
-   
+
    # Compile ESMF library only (use all available cores)
    make -j $(nproc) lib 2>&1 | tee hpc4_build.log
 
@@ -257,27 +257,27 @@ You can check the build status and library files as follows:
 
    # Check build status
    make info
-   
+
    # The output should show:
    # - ESMF_VERSION_STRING
    # - Compiler settings
    # - Library locations
-   
+
    # Check for library files
    ls -lh lib/
-   
+
    # You should see ESMF library files such as:
    # - libesmf.a
    # - libesmf.so (if shared libraries were built)
 
 .. tip::
    **Verify Build Quality with Tests**
-   
+
    To ensure ESMF was built correctly and all functionality works as expected, run the test suites:
-   
+
    - **Quick verification** (recommended): Run ``make check`` to execute unit and system tests. This typically takes 15-30 minutes.
    - **Comprehensive testing**: Run ``make all_tests`` for the complete test suite, which includes additional validation tests. This may take several hours.
-   
+
    Both test commands should be run in the same environment (with the same modules loaded) used for compilation. Test failures may indicate compatibility issues or missing dependencies.
 
 Using ESMF in Your Application
@@ -292,7 +292,7 @@ After building ESMF, you need to set up the environment to use it in your applic
 
    # Set ESMF installation directory
    export ESMFMKFILE=/path/to/esmf/lib/libO/Linux.intel.64.intelmpi.default/esmf.mk
-   
+
    # Verify the file exists
    ls -l $ESMFMKFILE
 
@@ -313,11 +313,11 @@ To compile applications that use ESMF, include the ESMF makefile fragment:
 
    # Include ESMF configuration
    include $(ESMFMKFILE)
-   
+
    # Use ESMF variables in your build
    my_app: my_app.o
        $(ESMF_F90LINKER) $(ESMF_F90LINKOPTS) -o $@ $^ $(ESMF_F90LINKPATHS) $(ESMF_F90LINKLIBS)
-   
+
    my_app.o: my_app.F90
        $(ESMF_F90COMPILER) -c $(ESMF_F90COMPILEOPTS) $(ESMF_F90COMPILEPATHS) $<
 
@@ -413,7 +413,7 @@ ESMF supports different optimization levels through the ``ESMF_BOPT`` variable:
 
    # Optimized build (recommended for production)
    export ESMF_BOPT="O"
-   
+
    # Debug build (for development and troubleshooting)
    export ESMF_BOPT="g"
 
@@ -475,7 +475,7 @@ For a complete list of supported platforms, compilers, and configurations, see t
 
 .. important::
    This guide is specific to ESMF v9.x. For other versions:
-   
+
    - ESMF v8.x may have different build requirements
    - Older versions may only support Intel Classic compilers
    - Check the version-specific documentation for compatibility information

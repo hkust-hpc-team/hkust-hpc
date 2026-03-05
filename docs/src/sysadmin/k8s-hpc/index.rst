@@ -30,7 +30,7 @@ HPC system administrators face several recurring challenges:
 Our Approach: K8s as a Low-Risk Learning Platform
 ==================================================
 
-Our approach addresses these challenges by introducing GitOps and CI/CD practices to HPC systems in a measured, incremental way. 
+Our approach addresses these challenges by introducing GitOps and CI/CD practices to HPC systems in a measured, incremental way.
 
 Philosophy: "Do No Harm"
 ------------------------
@@ -49,25 +49,25 @@ What K8s Does in This Architecture
 Kubernetes excels at:
 
 1. **Automated CI/CD Pipelines**
-   
+
    - Automatically build software when source code changes
    - Run comprehensive test suites without manual intervention
    - Generate build reports and logs automatically
 
 2. **Reproducible Build Environments**
-   
+
    - Containerized builds ensure identical environments every time
    - No "works on my machine" problems
    - Easy to version and roll back build configurations
 
 3. **Self-Service Infrastructure**
-   
+
    - Developers can trigger builds without admin intervention
    - Container registry for sharing built images
    - Workflow engines (like Argo) for complex multi-step processes
 
 4. **Resource Management**
-   
+
    - Efficiently share build nodes among multiple projects
    - Automatic scheduling of build jobs
    - Handle long-running tasks in the background
