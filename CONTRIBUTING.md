@@ -74,7 +74,7 @@ environments all use the same pinned versions.
 
 | Tool           | Purpose                                       |
 | -------------- | --------------------------------------------- |
-| `doc8`         | RST style checking (line length, whitespace)  |
+| `doc8`         | RST style checking (whitespace, indentation)  |
 | `rstcheck`     | RST syntax validation                         |
 | `ruff`         | Python linting and formatting (for `conf.py`) |
 | `prettier`     | YAML and Markdown formatting                  |

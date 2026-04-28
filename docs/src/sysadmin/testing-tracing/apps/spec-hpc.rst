@@ -577,8 +577,6 @@ SPEC HPC allows base (conservative, portable) and peak (aggressive, platform-spe
    CC  = icx
    CXX = icpx
    FC  = ifx
-   CXX = icpx
-   FC  = ifx
 
    # Base optimization flags
    OPTIMIZE = -march=common-avx512 -Ofast -flto -ffast-math
