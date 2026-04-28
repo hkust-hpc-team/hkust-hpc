@@ -29,3 +29,5 @@ include Makefile.inc/dev/env.mk
 # For renaming kb articles into consistent URL slug
 include Makefile.inc/dev/kb-rename.mk
 include Makefile.inc/dev/debug-targets.mk
+
+.PHONY: $(.PHONY_TARGETS)

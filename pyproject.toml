@@ -51,3 +51,24 @@ ignore = []
 
 [tool.ruff.format]
 quote-style = "double"
+
+[tool.rstcheck]
+ignore_directives = [
+    "dropdown",
+]
+ignore_roles = [
+    "strike",
+]
+ignore_languages = [
+    "bash",
+    "c",
+    "yaml",
+]
+ignore_messages = "Duplicate implicit target name"
+
+[tool.doc8]
+ignore = [
+    "D001",
+    "D002",
+    "D003",
+]

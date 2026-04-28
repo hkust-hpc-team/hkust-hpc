@@ -1,0 +1,42 @@
+name: Docs
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  docs:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: uv sync --locked --dev
+
+      - name: Check Read the Docs requirements export
+        run: |
+          uv export --locked --no-dev --no-emit-project --no-header --output-file docs/requirements.txt
+          git diff --exit-code -- docs/requirements.txt
+
+      - name: Run pre-commit hooks
+        run: uv run pre-commit run --all-files
+
+      - name: Build docs strictly
+        run: make SPHINXOUTPUT="html singlehtml" strict
