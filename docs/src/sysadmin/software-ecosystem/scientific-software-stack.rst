@@ -46,7 +46,7 @@ Architecture
 The hierarchical structure enforces compatibility by hiding incompatible software combinations:
 
 .. important::
-   
+
    This software layer builds upon the base OS software stack (:doc:`os-software-stack`). System compilers (GCC, system libraries) must function correctly before scientific software deployment. Container-based testing validates base OS integrity before Spack-based software installation.
 
 .. code-block:: text
@@ -56,12 +56,12 @@ The hierarchical structure enforces compatibility by hiding incompatible softwar
    ├── Runtimes: python, R, matlab, julia
    ├── Tools: cmake, git, ninja, maven
    └── ...
-   
+
    Loading Compiler (e.g., aocc/5) reveals:
    ├── Compiler-specific libraries: boost, eigen, gsl
    ├── MPI implementations: openmpi, intel-oneapi-mpi
    └── Non-MPI scientific software
-   
+
    Loading Compiler + MPI (e.g., aocc/5 + openmpi/5) reveals:
    ├── MPI-dependent libraries: hdf5, netcdf, parallel-netcdf
    ├── MPI applications: lammps, openfoam, mpas-model
@@ -120,7 +120,7 @@ Software stacks are designed for seamless compiler/MPI substitution. Loading equ
 
    $ module load aocc/5 openmpi/5
    $ module load hdf5 netcdf-c netcdf-fortran fftw libxc
-   
+
    $ module load intel-oneapi-compilers/2025 intel-oneapi-mpi/2021
 
    Lmod is automatically replacing "aocc/5" with "oneapi/2025"
@@ -207,11 +207,11 @@ Example bootstrap configuration:
              cxx: /usr/bin/g++
              f77: /usr/bin/gfortran
              fc: /usr/bin/gfortran
-     
+
      packages:
        all:
          require: "target=x86_64_v4 %gcc@11.4.1.os"
-     
+
      specs:
        - "gcc@11.5.0 +binutils+bootstrap+graphite+piclibs+profiled \
           languages=c,c++,fortran,lto ^binutils@2.36:"
@@ -304,26 +304,26 @@ Tests execute in containers matching production environments:
    #!/bin/bash
    # run-test-spack-cc.sh
    set -e
-   
+
    # Load Spack
    source /opt/shared/.spack-edge/dist/bin/setup-env.sh
-   
+
    # Test multiple compilers
    for COMPILER in gcc@14 aocc@5 intel-oneapi-compilers@2025; do
        module purge
        module load ${COMPILER}
-       
+
        # Test C compiler
        echo "Testing ${COMPILER}"
        cat > test.c << 'EOF'
    #include <stdio.h>
    int main() { printf("Hello from C\n"); return 0; }
    EOF
-       
+
        which gcc || which clang || which icx
        cc test.c -o test_c
        ./test_c
-       
+
        echo "✓ ${COMPILER} validated"
    done
 
@@ -334,14 +334,14 @@ Tests execute in containers matching production environments:
    #!/bin/bash
    # run-test-spack-mpicc.sh
    set -e
-   
+
    source /opt/shared/.spack-edge/dist/bin/setup-env.sh
-   
+
    # Test compiler/MPI combinations
    for COMBO in "aocc/5 openmpi/5" "oneapi/2025 intel-oneapi-mpi/2021"; do
        module purge
        module load ${COMBO}
-       
+
        # MPI Hello World
        cat > mpi_hello.c << 'EOF'
    #include <mpi.h>
@@ -356,10 +356,10 @@ Tests execute in containers matching production environments:
        return 0;
    }
    EOF
-       
+
        mpicc mpi_hello.c -o mpi_hello
        mpirun -np 2 ./mpi_hello
-       
+
        echo "✓ ${COMBO} validated"
    done
 
@@ -374,19 +374,19 @@ Runtime testing validates not only executable presence but ecosystem functionali
    #!/bin/bash
    # run-test-spack-rt-python.sh
    set -e
-   
+
    source "${SPACK_ROOT}/dist/bin/setup-envs.sh" -y
    module load python/${PYTHON_VERSION}
-   
+
    # Basic interpreter
    python -c "print('Hello from Python')"
-   
+
    # Package managers (essential for user workflows)
    pip3 --version
    poetry --version
    pdm --version
    uv --version
-   
+
    # User package installation (validates ~/.local/ integration)
    pip3 install --user numpy
    python -c "import numpy; print(f'numpy {numpy.__version__}')"
@@ -403,20 +403,20 @@ Python modules must provide package managers (pip, poetry, pdm, uv) as researche
    if license('test', 'Distrib_Computing_Toolbox')
        disp('Creating parallel pool with 16 workers...');
        pool = parpool('local', 16);
-       
+
        n = 100;
        results = zeros(1, n);
        parfor i = 1:n
            results(i) = i^2;
        end
-       
+
        expected = (1:n).^2;
        if isequal(results, expected)
            disp('parfor computation successful');
        else
            error('parfor computation failed');
        end
-       
+
        delete(pool);
    else
        error('Parallel Computing Toolbox license not available');
@@ -436,10 +436,10 @@ MATLAB without Parallel Computing Toolbox provides limited utility for HPC appli
    #!/bin/bash
    # run-test-spack-rt-r.sh
    module load r/${R_VERSION}
-   
+
    # Basic interpreter
    Rscript -e "print('Hello from R')"
-   
+
    # CRAN repository access (essential for package ecosystem)
    Rscript -e "install.packages('ggplot2', repos='https://cran.rstudio.com/')"
    Rscript -e "library(ggplot2); print(packageVersion('ggplot2'))"
@@ -470,33 +470,33 @@ Bare minimum testing validates all compiler/MPI combinations execute successfull
    #include <mpi.h>
    #include <stdio.h>
    #include <unistd.h>
-   
+
    int main(int argc, char **argv) {
        int rank, size;
        char hostname[256];
        int sum_of_ranks;
-   
+
        MPI_Init(&argc, &argv);
        MPI_Comm_rank(MPI_COMM_WORLD, &rank);
        MPI_Comm_size(MPI_COMM_WORLD, &size);
-   
+
        gethostname(hostname, sizeof(hostname));
        printf("Hello from rank %d of %d on %s\n", rank, size, hostname);
-   
+
        // Verify inter-process synchronization
        MPI_Barrier(MPI_COMM_WORLD);
-   
+
        if (rank == 0) {
            printf("MPI Barrier completed successfully with %d processes\n", size);
        }
-   
+
        // Verify collective communication
        MPI_Allreduce(&rank, &sum_of_ranks, 1, MPI_INT, MPI_SUM, MPI_COMM_WORLD);
-   
+
        if (rank == 0) {
            printf("Sum of all ranks: %d\n", sum_of_ranks);
        }
-   
+
        MPI_Finalize();
        return 0;
    }
@@ -509,14 +509,14 @@ The test program validates both synchronization (``MPI_Barrier``) and collective
 
    #!/bin/bash
    #SBATCH --ntasks-per-node=256
-   
+
    set -euo pipefail
-   
+
    # Load compiler and MPI modules
    source "${SPACK_ROOT}/dist/bin/setup-envs.sh" -y
    module load ${CC_FAMILY}/${CC_VERSION}
    module load ${MPI_FAMILY}/${MPI_VERSION}
-   
+
    # Configure MPI compiler wrapper
    case $MPI_FAMILY in
      openmpi)
@@ -528,14 +528,14 @@ The test program validates both synchronization (``MPI_Barrier``) and collective
        MPICC="mpicc"
        ;;
    esac
-   
+
    # Compile test program
    ${MPICC} -o mpi_hello mpi_hello.c
-   
+
    # Execute with SLURM (uses srun for PMIx integration)
    EXPECTED_SUM=$((SLURM_NTASKS * (SLURM_NTASKS - 1) / 2))
    srun mpi_hello > output.log 2>&1
-   
+
    # Verify communication correctness
    ACTUAL_SUM=$(grep "Sum of all ranks:" output.log | awk '{print $NF}')
    if [ "$ACTUAL_SUM" = "$EXPECTED_SUM" ]; then
@@ -551,20 +551,20 @@ The test program validates both synchronization (``MPI_Barrier``) and collective
 
    #!/bin/bash
    # submit-mpi-tests.sh
-   
+
    submit_job() {
      local nodes="$1"
      local cc_family="$2"
      local cc_version="$3"
      local mpi_family="$4"
      local mpi_version="$5"
-     
+
      sbatch --nodes="$nodes" --time=00:30:00 \
        --export=ALL,CC_FAMILY="$cc_family",CC_VERSION="$cc_version",\
        MPI_FAMILY="$mpi_family",MPI_VERSION="$mpi_version" \
        run-test-slurm-mpicc.sh
    }
-   
+
    # Test all compiler/MPI combinations, single and cross-node
    for nodes in 1 2; do
      # Intel oneAPI with multiple MPI options
@@ -574,7 +574,7 @@ The test program validates both synchronization (``MPI_Barrier``) and collective
        submit_job "$nodes" "intel-oneapi-compilers" "$cc_ver" \
          "openmpi" "5"
      done
-     
+
      # AMD AOCC with OpenMPI
      submit_job "$nodes" "aocc" "5" "openmpi" "5"
    done
@@ -635,9 +635,9 @@ Comprehensive discussion of this approach presented at HPCSFcon 2025:
 
 .. raw:: html
 
-   <iframe width="560" height="315" src="https://www.youtube.com/embed/bvQs5R_Ey0g" 
-   title="An Opinionated-Default Approach to Enhance Spack Developer Experience" 
-   frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+   <iframe width="560" height="315" src="https://www.youtube.com/embed/bvQs5R_Ey0g"
+   title="An Opinionated-Default Approach to Enhance Spack Developer Experience"
+   frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
    allowfullscreen></iframe>
 
 `Watch on YouTube <https://www.youtube.com/watch?v=bvQs5R_Ey0g>`_

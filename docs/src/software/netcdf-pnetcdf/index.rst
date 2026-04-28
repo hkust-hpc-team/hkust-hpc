@@ -1,13 +1,13 @@
 NetCDF / Parallel-NetCDF
 ========================
 
-NetCDF (Network Common Data Form) and Parallel-NetCDF (PnetCDF) are available through the Spack package manager 
+NetCDF (Network Common Data Form) and Parallel-NetCDF (PnetCDF) are available through the Spack package manager
 for scientific data storage and parallel I/O operations.
 
-**NetCDF** provides comprehensive support for HDF5 backend, multiple compression formats, and both serial and parallel I/O. 
+**NetCDF** provides comprehensive support for HDF5 backend, multiple compression formats, and both serial and parallel I/O.
 Both NetCDF-C and NetCDF-Fortran libraries are available.
 
-**Parallel-NetCDF (PnetCDF)** is a high-performance I/O library optimized for parallel access to NetCDF files, 
+**Parallel-NetCDF (PnetCDF)** is a high-performance I/O library optimized for parallel access to NetCDF files,
 featuring burst buffering and relaxed consistency semantics for improved performance in MPI applications.
 
 .. contents:: Table of Contents
@@ -28,27 +28,27 @@ NetCDF Quick Start
 
    # Activate Spack environment
    source "${SPACK_ROOT}/dist/bin/setup-env.sh" -y
-   
+
    # Load a supported compiler and MPI
    module load intel-oneapi-compilers
    module load intel-oneapi-mpi
-   
+
    # Check available NetCDF versions
    module avail netcdf
-   
+
    # Load NetCDF-C
    module load netcdf-c
-   
+
    # Load NetCDF-Fortran
    module load netcdf-fortran
-   
+
    # Verify installation
    nc-config --version
    nf-config --version  # If Fortran loaded
 
 .. note::
    Module names may include a 7-digit hash suffix (e.g., ``netcdf-c/4.9.2-abc1234``).
-   You do **NOT** need to include this hash when loading - the version alone 
+   You do **NOT** need to include this hash when loading - the version alone
    (e.g., ``4.9.2``) is sufficient.
 
 Parallel NetCDF Quick Start
@@ -65,23 +65,23 @@ Parallel NetCDF Quick Start
 
    # Activate Spack environment
    source "${SPACK_ROOT}/dist/bin/setup-env.sh" -y
-   
+
    # Load a supported compiler and MPI
    module load intel-oneapi-compilers/2025
    module load intel-oneapi-mpi/2021
-   
+
    # Check available Parallel NetCDF versions
    module avail parallel-netcdf
-   
+
    # Load Parallel NetCDF
    module load parallel-netcdf
-   
+
    # Verify installation
    pnetcdf-config --version
 
 .. note::
    Module names may include a 7-digit hash suffix (e.g., ``parallel-netcdf/1.14.0-abc1234``).
-   You do **NOT** need to include this hash when loading - the version alone 
+   You do **NOT** need to include this hash when loading - the version alone
    (e.g., ``1.14.0``) is sufficient.
 
 Building with NetCDF
@@ -96,7 +96,7 @@ C Programs
    export CC=mpicc
    export CFLAGS="$(nc-config --cflags)"
    export LDFLAGS="$(nc-config --libs)"
-   
+
    # Direct compilation example
    $CC -o myprogram myprogram.c $CFLAGS $LDFLAGS
 
@@ -109,7 +109,7 @@ C++ Programs
    export CXX=mpicxx
    export CXXFLAGS="$(nc-config --cflags)"
    export LDFLAGS="$(nc-config --libs)"
-   
+
    # Direct compilation example
    $CXX -o myprogram myprogram.cpp $CXXFLAGS $LDFLAGS
 
@@ -122,7 +122,7 @@ Fortran Programs
    export FC=mpifort
    export FFLAGS="$(nf-config --fflags)"
    export LDFLAGS="$(nf-config --flibs)"
-   
+
    # Direct compilation example
    $FC -o myprogram myprogram.f90 $FFLAGS $LDFLAGS
 
@@ -134,27 +134,27 @@ Using Makefile
    CC ?= mpicc
    CXX ?= mpicxx
    FC ?= mpifort
-   
+
    # Set NetCDF related flags
    CFLAGS += $(shell nc-config --cflags)
    CXXFLAGS += $(shell nc-config --cflags)
    FFLAGS += $(shell nf-config --fflags)
-   
+
    LDFLAGS += $(shell nc-config --libs)
    FLDFLAGS += $(shell nf-config --flibs)
 
    # Build rule for C source files
    .c.o:
    	$(CC) $(CFLAGS) -c $< -o $@
-   
+
    # Build rule for C++ source files
    .cpp.o:
    	$(CXX) $(CXXFLAGS) -c $< -o $@
-   
+
    # Build rule for Fortran source files
    .f90.o:
    	$(FC) $(FFLAGS) -c $< -o $@
-   
+
    # Link example for a C program. For Fortran, use $(FC) and $(FLDFLAGS).
    myprogram: myprogram.o
    	$(CC) -o $@ $^ $(LDFLAGS)
@@ -167,7 +167,7 @@ Using FindNetCDF:
 .. code-block:: cmake
 
    find_package(NetCDF REQUIRED)
-   
+
    target_link_libraries(myprogram PRIVATE netCDF::netcdf)
 
 Using pkg-config in CMake:
@@ -176,7 +176,7 @@ Using pkg-config in CMake:
 
    find_package(PkgConfig REQUIRED)
    pkg_check_modules(NETCDF REQUIRED IMPORTED_TARGET netcdf)
-   
+
    target_link_libraries(myprogram PRIVATE PkgConfig::NETCDF)
 
 Using pkg-config
@@ -187,11 +187,11 @@ Using pkg-config
    # Query flags for NetCDF-C
    pkgconf --cflags --keep-system-cflags netcdf
    pkgconf --libs --keep-system-libs netcdf
-   
+
    # Query flags for NetCDF-Fortran
    pkgconf --cflags --keep-system-cflags netcdf-fortran
    pkgconf --libs --keep-system-libs netcdf-fortran
-   
+
    # Use in compilation
    export CC=mpicc
    export CFLAGS="$(pkgconf --cflags --keep-system-cflags netcdf)"
@@ -209,7 +209,7 @@ C Programs
    export CC=mpicc
    export CFLAGS="$(pnetcdf-config --cflags)"
    export LDFLAGS="$(pnetcdf-config --libs)"
-   
+
    # Direct compilation example
    $CC -o myprogram myprogram.c $CFLAGS $LDFLAGS
 
@@ -222,7 +222,7 @@ C++ Programs
    export CXX=mpicxx
    export CXXFLAGS="$(pnetcdf-config --cflags)"
    export LDFLAGS="$(pnetcdf-config --libs)"
-   
+
    # Direct compilation example
    $CXX -o myprogram myprogram.cpp $CXXFLAGS $LDFLAGS
 
@@ -235,7 +235,7 @@ Fortran Programs
    export FC=mpifort
    export FFLAGS="$(pnetcdf-config --fflags)"
    export LDFLAGS="$(pnetcdf-config --flibs)"
-   
+
    # Direct compilation example
    $FC -o myprogram myprogram.f90 $FFLAGS $LDFLAGS
 
@@ -247,27 +247,27 @@ Using Makefile
    CC ?= mpicc
    CXX ?= mpicxx
    FC ?= mpifort
-   
+
    # Set Parallel NetCDF related flags
    CFLAGS += $(shell pnetcdf-config --cflags)
    CXXFLAGS += $(shell pnetcdf-config --cflags)
    FFLAGS += $(shell pnetcdf-config --fflags)
-   
+
    LDFLAGS += $(shell pnetcdf-config --libs)
    FLDFLAGS += $(shell pnetcdf-config --flibs)
 
    # Build rule for C source files
    .c.o:
    	$(CC) $(CFLAGS) -c $< -o $@
-   
+
    # Build rule for C++ source files
    .cpp.o:
    	$(CXX) $(CXXFLAGS) -c $< -o $@
-   
+
    # Build rule for Fortran source files
    .f90.o:
    	$(FC) $(FFLAGS) -c $< -o $@
-   
+
    # Link example for a C program. For Fortran, use $(FC) and $(FLDFLAGS).
    myprogram: myprogram.o
    	$(CC) -o $@ $^ $(LDFLAGS)
@@ -280,7 +280,7 @@ Using pkg-config
    # Query flags for Parallel NetCDF
    pkgconf --cflags --keep-system-cflags pnetcdf
    pkgconf --libs --keep-system-libs pnetcdf
-   
+
    # Use in compilation
    export CC=mpicc
    export CFLAGS="$(pkgconf --cflags --keep-system-cflags pnetcdf)"

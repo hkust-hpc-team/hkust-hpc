@@ -113,7 +113,7 @@ After setup, check the job queue to verify multiple instances are running:
 In this output, you can see multiple instances of the same job running simultaneously, with the ``periodic_submit`` job scheduled to run again (PD status with BeginTime reason).
 
 .. note::
-    
+
     Be mindful of resource usage when allowing overlapping jobs. Ensure your account has sufficient allocation and the cluster has enough resources to accommodate multiple concurrent instances.
 
 .. warning::

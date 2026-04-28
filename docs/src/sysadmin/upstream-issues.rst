@@ -46,14 +46,14 @@ AOCC 5.0: Fortran Compiler Configuration Regression
    $ clang --version
    AMD clang version 17.0.6 (CLANG: AOCC_5.0.0-Build#1377 2024_09_24)
    Configuration file: .../aocc-5.0.0/bin/clang.cfg          # ✓ Reads config
-   
+
    $ clang -print-libgcc-file-name
    .../gcc-11.5.0/lib/gcc/x86_64-pc-linux-gnu/11.5.0/libgcc.a  # ✓ Correct path
-   
+
    $ flang --version
    AMD clang version 17.0.6 (CLANG: AOCC_5.0.0-Build#1377 2024_09_24)
    # No configuration file loaded                             # ✗ Ignores flang.cfg
-   
+
    $ flang -print-libgcc-file-name
    /usr/lib/gcc/x86_64-redhat-linux/11/libgcc.a               # ✗ Wrong path (system GCC)
 

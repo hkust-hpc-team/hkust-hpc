@@ -159,7 +159,7 @@ Kernel-specific Build
 """""""""""""""""""""
 
 .. code-block:: dockerfile
-    
+
     # Containerfile for Mellanox Drivers Build, RHEL9.x
     FROM core-devel:latest
 
@@ -267,7 +267,7 @@ Installation
         ucx{,-rdmacm,-cma,-devel,-static}
 
 .. note::
-    
+
     Designate one Subnet Manager (openibd) instance for the whole IB network (subnet), multiple instances will conflict.
 
     Switch may offer a Highly-available implementation of the Subnet Manager, it is better to use that instead of designating it to headnode and use custom HA solution.
@@ -306,7 +306,7 @@ Installation
     ARG OS_NVIDIA_DRIVER_INSTALL
     ARG OS_MLNX_OFED_INSTALL
 
-    # [nvidia] nvidia driver, below is a version for 
+    # [nvidia] nvidia driver, below is a version for
     RUN ! ( [ "${OS_NVIDIA_DRIVER_INSTALL}" == "y" ] && [ "${NVIDIA_DRIVER_FM_INSTALL}" == "n" ] ) \
       || (dnf --refresh makecache \
         && dnf module reset -y nvidia-driver \
@@ -334,7 +334,7 @@ Installation
     # [nvidia] surfaceless EGL render provider
     RUN ! [ "${OS_NVIDIA_DRIVER_INSTALL}" == "y" ] \
       || (dnf install -y libglvnd-devel libglvnd)
-    
+
     # [nvidia/cuda] devel
     RUN ! [ "${OS_NVIDIA_DRIVER_INSTALL}" == "y" ] \
       || (dnf --refresh makecache \
@@ -373,11 +373,11 @@ The old kernel module is called ``nv_peer_mem``, the new module is ``nvidia_peer
 
 .. code-block:: bash
 
-    # /etc/modules-load.d/nvidia_peermem.conf 
+    # /etc/modules-load.d/nvidia_peermem.conf
     nvidia_peermem
     # /etc/modprobe.d/nvidia_peermem.conf
     options nvidia_peermem peerdirect_support=1
- 
+
 Kernel
 ------
 
@@ -471,15 +471,15 @@ Start from gathering node information
     # cat /sys/devices/system/cpu/cpu/cpufreq/cpuinfo_{min,max}_freq
     1500000
     3100341
-    
+
     # cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies
     2250000 1800000 1500000
-    
+
     # cpupower idle-info
     CPUidle driver: acpi_idle
     CPUidle governor: menu
     analyzing CPU 239:
-    
+
     Number of idle states: 3
     Available idle states: POLL C1 C2
     POLL:
@@ -520,11 +520,11 @@ Note the systemd file is **modified** from the default shipped with ``cpupower``
     WantedBy=multi-user.target
 
 .. tip::
-    
+
     For performance mode, it is better to test the maximum sustainable frequency given your data center cooling capability. (e.g. 2.7 GHz instead of full turbo 3.1 GHz)
 
     It is expected systems will run at sustained maximum load for all kinds of long-running AI/HPC workloads.
-    
+
     Setting a too high maximum frequency may lead to thermal throttling under sustained load, which is counter-productive.
 
 .. code-block:: shell
@@ -539,18 +539,18 @@ Note the systemd file is **modified** from the default shipped with ``cpupower``
 This can then be integrated to SLURM as job prolog/epilog scripts (root portion) to set performance profile during job execution, and power-saving profile when idle.
 
 .. important::
-    
+
     The ``cpupower`` service should be configured such that
 
       - ``started`` state if ANY job is executing on node;
       - ``stopped`` state ONLY if no job is executing.
 
-    You may use 
-      
-      - [recommended] checking ``slurmstepd.scope`` children 
+    You may use
+
+      - [recommended] checking ``slurmstepd.scope`` children
       - ``squeue``
       - other method
-      
+
     to check for other running jobs before stopping ``cpupower`` service in job epilog.
 
 .. code-block:: bash
@@ -560,7 +560,7 @@ This can then be integrated to SLURM as job prolog/epilog scripts (root portion)
     # Job starts, unconditionally start cpupower service to set performance profile
     systemctl start cpupower.service
 
-    
+
 .. code-block:: bash
 
     # /etc/slurm/job-epilog.sh
@@ -739,7 +739,7 @@ This script waits for the Infiniband device driver to load, then set the traffic
 
     # /etc/systemd/system/mlx5-class-infiniband-mlx5_0.service
     [Unit]
-    Description=Set RoCEv2 Infiniband traffic class 
+    Description=Set RoCEv2 Infiniband traffic class
     After=network.target
 
     [Service]
@@ -851,7 +851,7 @@ Performance Tuning
     # All these settings are non-persistent and need to be applied on each boot
     # /etc/systemd/system/mlx5-mlnx-ethtool.service
     [Unit]
-    Description=Set ethtool settings according to private communication with Nvidia TAM 
+    Description=Set ethtool settings according to private communication with Nvidia TAM
     After=network.target
     Requires=mlx5-mlnx-tune.service
 
@@ -871,7 +871,7 @@ File Systems
 ------------
 
 .. important::
-  
+
     It is very important that the time on the storage server and compute nodes are
     - synchronized to the same set of time servers
     - configured a compatible authentication and authorization scheme
@@ -887,7 +887,7 @@ NFS Client Tuning
     # read-only large amount of small program files (LD_LIBRARY_PATH, python etc.)
     ro,noatime,vers=3,rsize=1048576,wsize=1048576,acregmin=10,hard,forcerdirplus,proto=tcp,nconnect=16,timeo=600,retrans=2,sec=sys,fsc,local_lock=none,lookupcache=all
 
-    # use attr cache cache=pos when there are frequent writes to files 
+    # use attr cache cache=pos when there are frequent writes to files
     rw,relatime,vers=3,rsize=1048576,wsize=1048576,hard,forcerdirplus,proto=tcp,nconnect=16,timeo=600,retrans=2,sec=sys,fsc,local_lock=none,lookupcache=pos
 
 Cachefilesd
@@ -897,7 +897,7 @@ If local fast SSD is available, we can enable cachefilesd for NFS client side ca
 
 .. code-block:: shell
 
-    # /etc/cachefilesd.conf 
+    # /etc/cachefilesd.conf
     # dir should point to a local fast SSD, preferably RAID0 of multiple NVMe drives, mdraid can be used for this.
     dir /raid
     tag nvcache
@@ -950,7 +950,7 @@ Generally, unlock all quotas and limits on compute nodes, resource control is do
 On login nodes, you may want to set reasonable limits to prevent abuse and improve system stability.
 
 
-Philosophy: 
+Philosophy:
 - Reserve some resources for system slices to protect system stability
 - Set user quotas according to permitted usage pattern
 
@@ -1002,7 +1002,7 @@ Resource Control
 
 Slurm uses slurmstepd to enforce per-job resource limits, the configuration is in /etc/slurm/cgroup.conf.
 
-Regular ``/etc/security/limits`` does not apply, since the limit is inherited from slurmstepd. 
+Regular ``/etc/security/limits`` does not apply, since the limit is inherited from slurmstepd.
 
 .. code-block:: systemd
 
@@ -1055,7 +1055,7 @@ To fulfill user's need to "peek at a running compute job", user can use ``srun -
     # User is now in the compute node allocated to job 390361
     # Visible resources are limited to those allocated to the job
     [kftse@gpu32 ~]$ nvidia-smi -l
-    Fri Dec 19 10:10:25 2025       
+    Fri Dec 19 10:10:25 2025
     +-----------------------------------------------------------------------------------------+
     | NVIDIA-SMI 565.57.01              Driver Version: 565.57.01      CUDA Version: 12.7     |
     |-----------------------------------------+------------------------+----------------------+
@@ -1071,7 +1071,7 @@ To fulfill user's need to "peek at a running compute job", user can use ``srun -
     |  0%   43C    P0             46W /  425W |       2MiB /  23028MiB |      0%      Default |
     |                                         |                        |                  N/A |
     +-----------------------------------------+------------------------+----------------------+
-                                                                                            
+
     +-----------------------------------------------------------------------------------------+
     | Processes:                                                                              |
     |  GPU   GI   CI        PID   Type   Process name                              GPU Memory |
@@ -1087,7 +1087,7 @@ To fulfill user's need to "peek at a running compute job", user can use ``srun -
     # In cgroup hierarchy, both root shell are spawned under slurmstepd.scope/job_390361
     │ ├─slurmstepd.scope
     │ │ ├─job_390361
-    # - step_0/task_0: "peeking" processes 
+    # - step_0/task_0: "peeking" processes
     │ │ │ ├─step_0
     │ │ │ │ ├─slurm
     │ │ │ │ │ └─26095 "slurmstepd: [390361.0]"
@@ -1105,7 +1105,7 @@ To fulfill user's need to "peek at a running compute job", user can use ``srun -
     │ │ │       └─26081 sleep 3600
 
 OOM Handling
-^^^^^^^^^^^^ 
+^^^^^^^^^^^^
 
 OOM is one of the most disruptive events in a multi-tenant HPC cluster, as it may lead to node instability, job failures, and impact other users' jobs.
 
@@ -1133,10 +1133,10 @@ Customize OOM Control
     # Monitor for CREATE events on directories (-r for recursive if you need steps inside jobs)
     # We use --format to get just the filename
     inotifywait -m -r -e create --format '%w%f' "$WATCH_DIR" | while read -r NEW_CGROUP; do
-        
+
         # Check if this is a job or step directory
         if [[ "$NEW_CGROUP" =~ job_[0-9]+ ]]; then
-            
+
             # Run logic in background to not block the watcher loop
             (
                 # Wait briefly for the directory structure to settle (cgroup v2 atomicity)
@@ -1150,10 +1150,10 @@ Customize OOM Control
 
                 # 1. Enable OOM Group Kill (Kill whole job if one task OOMs)
                 echo 1 > "$NEW_CGROUP/memory.oom.group" 2>/dev/null
-                
+
                 # 2. Disable Swap (Force 0)
                 echo 0 > "$NEW_CGROUP/memory.swap.max" 2>/dev/null
-                
+
                 logger -t "$LOG_TAG" "Applied OOM/Swap constraints to $NEW_CGROUP"
             ) &
         fi

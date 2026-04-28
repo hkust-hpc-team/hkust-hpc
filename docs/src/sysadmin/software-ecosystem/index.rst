@@ -18,7 +18,7 @@ The ecosystem provides software at three tiers, each addressing different requir
 
 **Tier 1: Base OS Software Stack**
   System-level software requiring root privileges or deep OS integration:
-  
+
   - **Essential:** SLURM client, baseline GCC toolchain, X11 forwarding, GPU drivers, network fabric drivers
   - **Generic utilities:** GUI libraries (Qt, GTK), system tools (git, vim, atop, tmux, rsync), compression utilities (zip, gzip, xz, zstd)
   - **Developer tools:** Build systems (CMake, Make, Autotools), version control, module system (Lmod)
@@ -27,7 +27,7 @@ The ecosystem provides software at three tiers, each addressing different requir
 
 **Tier 2: Scientific Software Stack (Spack/Lmod)**
   Hierarchical module system addressing toolchain diversity and compatibility:
-  
+
   - Multiple compiler toolchains (GCC, Intel oneAPI, AMD AOCC, NVIDIA HPC SDK)
   - MPI implementations with fabric-specific optimizations
   - Scientific libraries with architecture-specific builds
@@ -36,7 +36,7 @@ The ecosystem provides software at three tiers, each addressing different requir
 
 **Tier 3: Container Support**
   Enable researchers to bring their own complete software environments:
-  
+
   - GPU-accelerated containers (Enroot/Pyxis with SLURM integration)
   - Standard container runtimes (Apptainer/Singularity)
   - Host resource integration (GPUs, network fabric, shared storage)

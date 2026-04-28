@@ -1,7 +1,7 @@
 Perl
 ====
 
-Perl is available through the Spack package manager with support for 
+Perl is available through the Spack package manager with support for
 scripting, CPAN package management, and comprehensive standard library.
 
 .. contents:: Table of Contents
@@ -22,25 +22,25 @@ Quick Start
 
    # Activate Spack environment
    source "${SPACK_ROOT}/dist/bin/setup-env.sh" -y
-   
+
    # Check available Perl versions
    module avail perl
-   
+
    # Load Perl
    module load perl/5.40
-   
+
    # Verify installation
    perl --version
-   
+
    # Run Perl code
    perl -e 'print "Hello, World!\n"'
-   
+
    # Run a script
    perl my_script.pl
 
 .. note::
    Module names may include a 7-digit hash suffix (e.g., ``perl/5.40.0-abc123d``).
-   You do **NOT** need to include this hash when loading - the version alone 
+   You do **NOT** need to include this hash when loading - the version alone
    (e.g., ``5.40``) is sufficient.
 
 Tutorials
@@ -116,8 +116,8 @@ Specifies the CPAN mirror URL for downloading Perl modules.
 **Default:** ``https://www.cpan.org/``
 
 .. note::
-   These environment variables are automatically configured when you load the Perl module. 
-   They enable local installation of CPAN modules in your home directory without requiring 
+   These environment variables are automatically configured when you load the Perl module.
+   They enable local installation of CPAN modules in your home directory without requiring
    root privileges. You typically don't need to modify them manually.
 
 Support and Resources

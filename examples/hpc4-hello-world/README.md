@@ -5,6 +5,7 @@ This example demonstrates how to submit your first job to the SLURM workload man
 ## Prerequisites
 
 Before running these examples, make sure you:
+
 1. Have access to the HPC cluster
 2. Know your SLURM account name (replace `exampleproj` in the scripts)
 3. Are familiar with basic Linux commands
@@ -25,24 +26,28 @@ An interactive session gives you a live shell on a compute node with allocated r
 ### How to Use
 
 1. **Edit the script** to update your account name and choose your resource type:
+
    ```bash
    nano hpc4-interactive-helloworld.sh
    ```
+
    Change `--account=exampleproj` to your actual account name.
-   
+
    The script contains three example commands (uncomment the one you want to use):
    - **AMD CPU** (256 cores): Uses `--partition=amd`
    - **Intel CPU** (128 cores): Uses `--partition=intel`
    - **GPU (Nvidia A30)**: Uses `--partition=gpu-a30`
 
 2. **Start an interactive session** by uncommenting one line in the script and running:
+
    ```bash
    bash hpc4-interactive-helloworld.sh
    ```
-   
+
    Or directly run one of these commands:
-   
+
    **For AMD CPU:**
+
    ```bash
    srun --account=<your_account> \
         --partition=amd \
@@ -52,8 +57,9 @@ An interactive session gives you a live shell on a compute node with allocated r
         --time=4:0:0 \
         --pty bash
    ```
-   
+
    **For GPU:**
+
    ```bash
    srun --account=<your_account> \
         --partition=gpu-a30 \
@@ -66,13 +72,14 @@ An interactive session gives you a live shell on a compute node with allocated r
    ```
 
 3. **You'll get a shell prompt on the compute node** where you can run commands interactively:
+
    ```bash
    echo "Hello from $(hostname)"
    nvidia-smi
    # Run any other commands you need
    ```
 
-    Note that billing **starts from the moment the interactive session is allocated, until you exit the session** with the `exit` command below.
+   Note that billing **starts from the moment the interactive session is allocated, until you exit the session** with the `exit` command below.
 
 4. **Exit the session** when done:
    ```bash
@@ -91,19 +98,23 @@ A batch job is submitted to the queue and runs without user interaction. Once yo
    - `hpc4-batch-job-helloworld-cpu.sh` - For CPU-only jobs
    - `hpc4-batch-job-helloworld-cpu-mpi.sh` - For multi-process CPU jobs
    - `hpc4-batch-job-helloworld-gpu.sh` - For GPU jobs
-   
+
    ```bash
    nano hpc4-batch-job-helloworld-cpu.sh
    ```
+
    Change `--account=exampleproj` to your actual account name.
 
 2. **Submit the job** to SLURM:
+
    ```bash
    sbatch hpc4-batch-job-helloworld-cpu.sh
    ```
+
    (or use the GPU/MPI variant as needed)
 
 3. **Check job status**:
+
    ```bash
    squeue -u $USER
    ```
@@ -117,6 +128,7 @@ A batch job is submitted to the queue and runs without user interaction. Once yo
 ### What the Scripts Do
 
 **CPU Script** (`hpc4-batch-job-helloworld-cpu.sh`):
+
 - Requests 1 AMD node with 256 CPU cores
 - Prints "Hello, World!" with job information
 - Shows which node(s) are allocated
@@ -124,12 +136,14 @@ A batch job is submitted to the queue and runs without user interaction. Once yo
 - Writes all output to `slurm-<job_id>.out`
 
 **CPU MPI Script** (`hpc4-batch-job-helloworld-cpu-mpi.sh`):
+
 - Requests 1 AMD node with 256 MPI tasks
 - Runs a parallel "Hello, World!" from each rank/process
 - Demonstrates multi-process execution using `srun`
 - Writes all output to `slurm-<job_id>.out`
 
 **GPU Script** (`hpc4-batch-job-helloworld-gpu.sh`):
+
 - Requests 1 GPU node (Nvidia A30) with 16 CPU cores
 - Prints "Hello, World!" with job information
 - Shows GPU information using `nvidia-smi`
@@ -138,6 +152,7 @@ A batch job is submitted to the queue and runs without user interaction. Once yo
 ## Resource Allocation Explained
 
 All scripts request the following common resources:
+
 - `--account`: Your billing account
 - `--partition`: The job queue/partition to use (specific to resource type)
 - `--nodes=1`: Number of compute nodes
@@ -148,24 +163,29 @@ All scripts request the following common resources:
 ### HPC4 Partitions and Resources
 
 **CPU Partitions:**
+
 - `amd`: AMD EPYC processors with 256 cores per node
 - `intel`: Intel processors with 128 cores per node
 
 **GPU Partition:**
+
 - `gpu-a30`: Nvidia A30 GPUs with 16 CPU cores per GPU
 - `gpu-l20`: Nvidia L40 GPUs with 16 CPU cores per GPU
 
 ### Resource Parameters
 
 **For CPU jobs:**
+
 - `--ntasks-per-node=1`: One task per node (single-process)
 - `--cpus-per-task=256`: All 256 CPU cores for AMD (or 128 for Intel)
 
 **For CPU MPI jobs:**
+
 - `--ntasks-per-node=256`: 256 MPI tasks per node (multi-process)
 - `--cpus-per-task=1`: One CPU core per task
 
 **For GPU jobs:**
+
 - `--gpus-per-node=1`: One GPU per node
 - `--ntasks-per-node=1`: One task per node
 - `--cpus-per-task=16`: 16 CPU cores per task
@@ -181,6 +201,7 @@ You can adjust these parameters based on your needs and available resources. The
 ## Next Steps
 
 After successfully running this hello world example, you can:
+
 1. **Follow our workshops** for more in-depth tutorials and real-world examples: https://github.com/hkust-hpc-team/hkust-hpc/tree/main/workshops
 2. Modify the scripts to run your own applications
 3. Explore other examples in the parent directory

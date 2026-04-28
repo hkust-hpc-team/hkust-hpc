@@ -16,9 +16,6 @@ strict: build
 html dirhtml singlehtml:
 	$(MAKE) --no-print-directory SPHINXOUTPUT=$@ build
 
-docs/requirements.txt: pyproject.toml uv.lock
-	uv export --locked --no-dev --no-emit-project --no-header --output-file $@
-
 $(SPHINXBUILDS): $(.SOURCE_FILES_PYPROJECT) $(.SOURCE_FILES_MK) $(.SOURCE_FILES_SPHINX_CONFIG) $(.SOURCE_FILES_SPHINX)
 $(BUILDDIR)/%:
 	$(SPHINXBUILD) -M $* "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
@@ -30,5 +27,5 @@ clean:
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
-.FILE_TARGETS += $(SPHINXBUILDS) docs/requirements.txt
+.FILE_TARGETS += $(SPHINXBUILDS)
 .PHONY_TARGETS += clean help build strict html dirhtml singlehtml

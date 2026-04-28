@@ -1,7 +1,7 @@
 MATLAB
 ======
 
-MATLAB is available through the Spack package manager with support for 
+MATLAB is available through the Spack package manager with support for
 parallel computing, GPU acceleration, and comprehensive toolboxes.
 
 .. contents:: Table of Contents
@@ -22,23 +22,23 @@ Quick Start
 
    # Activate Spack environment
    source "${SPACK_ROOT}/dist/bin/setup-env.sh" -y
-   
+
    # Check available MATLAB versions
    module avail matlab
-   
+
    # Load MATLAB
    module load matlab/R2023b
-   
+
    # Start MATLAB
    matlab -nodisplay           # Command-line mode
    matlab                      # GUI mode (on login node)
-   
+
    # Run a script in batch mode
    matlab -batch "my_script"
 
 .. note::
    Module names may include a 7-digit hash suffix (e.g., ``matlab/R2023b-7r5y3as``).
-   You do **NOT** need to include this hash when loading - the version alone 
+   You do **NOT** need to include this hash when loading - the version alone
    (e.g., ``R2023b``) is sufficient.
 
 Features Availability
@@ -109,7 +109,7 @@ Specifies the user-specific directory for MATLAB paths and user settings.
 **Default:** ``$HOME/.matlab/<version>``
 
 .. note::
-   These environment variables are automatically configured when you load the MATLAB module. 
+   These environment variables are automatically configured when you load the MATLAB module.
    You typically don't need to modify them manually.
 
 Support and Resources

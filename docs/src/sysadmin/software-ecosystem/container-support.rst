@@ -94,11 +94,11 @@ This environment variable ensures containers access all NVIDIA driver capabiliti
 
    # /etc/enroot/hooks.d/98-nvidia.sh
    # https://github.com/nvidia/nvidia-container-runtime#nvidia_driver_capabilities
-   
+
    if [ -z "${NVIDIA_DRIVER_CAPABILITIES-}" ]; then
        NVIDIA_DRIVER_CAPABILITIES="utility"
    fi
-   
+
    for cap in ${NVIDIA_DRIVER_CAPABILITIES//,/ }; do
        case "${cap}" in
        all)
@@ -125,7 +125,7 @@ This hook translates ``NVIDIA_DRIVER_CAPABILITIES`` into enroot's internal flags
    /cm/shared       /cm/shared       none  x-create=dir,rbind,ro,nosuid,noexec,rslave  0  -1
    /opt/shared      /opt/shared      none  x-create=dir,rbind,ro,nosuid,noexec,rslave  0  -1
    /data            /data            none  x-create=dir,rbind,rw,nosuid,noexec,rslave  0  -1
-   
+
    # Security: nosuid prevents setuid execution, noexec blocks direct execution
    # rslave ensures mount propagation works correctly
 

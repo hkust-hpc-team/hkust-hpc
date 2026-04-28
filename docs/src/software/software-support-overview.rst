@@ -68,7 +68,7 @@ We maintain multiple Spack instances to provide different sets of software packa
 .. tip::
 
    We recommend using the **edge instance** for all new work as it provides the latest software packages and is forward-compatible with future updates.
-   
+
    The default instance is deprecated and maintained only for backward compatibility.
 
 Activating a Spack Instance
@@ -265,7 +265,7 @@ We adopt a **hierarchical module system** where loading a compiler or MPI librar
       ---- Core Modules ----
       ...
 
-      ---- /opt/shared/.spack-edge/share/spack/lmod/linux-rocky9-x86_64/oneapi/2025.0.4 ----       
+      ---- /opt/shared/.spack-edge/share/spack/lmod/linux-rocky9-x86_64/oneapi/2025.0.4 ----
       fftw/3.3.10                   openmpi/4.1.8
       intel-oneapi-mpi/2021.14.2    openmpi/5.0.6              (D)
       ...
@@ -328,7 +328,7 @@ This example demonstrates the hierarchical module system: first load the compile
 
 .. seealso::
    For essential ``#SBATCH`` parameters and complete job submission examples, refer to:
-   
+
    - HPC4: https://github.com/hkust-hpc-team/hkust-hpc/tree/main/examples/hpc4-hello-world
    - Superpod: https://github.com/hkust-hpc-team/hkust-hpc/tree/main/examples/superpod-hello-world
 
@@ -340,15 +340,15 @@ Here is a list of maintained C/C++/Fortran compilers for building high-performan
 .. danger:: **Architecture Compatibility Warning**
 
    Libraries built with the **AMD AOCC** compiler are strictly optimized for the **AMD Zen4** architecture.
-   
+
    *   **Do not** load AOCC modules on Intel nodes.
    *   **Do not** submit jobs using AOCC-compiled code to Intel partitions.
-   
+
    Doing so will result in `Illegal Instruction` errors and immediate job failure.
 
 .. note::
    **Bold** versions are the default versions loaded when using ``module load`` without specifying a version number.
-   
+
    Deprecated packages are marked as :strike:`versions @edge` in the ``edge`` Spack variant, deprecated packages will be removed in the next production variant.
 
 .. list-table::
@@ -374,8 +374,8 @@ Here is a list of maintained C/C++/Fortran compilers for building high-performan
      - | 12.4.0
        | 13.3.0
        | **14.2.0**
-     - 
-     - 
+     -
+     -
      - .. code-block::
 
           CC=gcc
@@ -407,8 +407,8 @@ Here is a list of maintained C/C++/Fortran compilers for building high-performan
      - | 23.11
        | 24.11
        | **25.1**
-     - 
-     - 
+     -
+     -
      - .. code-block::
 
           CC=nvc
@@ -430,13 +430,13 @@ The following table shows tested compiler and MPI combinations available in the 
      - OpenMPI 4.1.x
      - OpenMPI 5.x
    * - **AOCC 5.0**
-     - 
+     -
      - ✓
      - ✓
    * - **AOCC 4.2**
-     - 
-     - 
-     - 
+     -
+     -
+     -
    * - **Intel OneAPI 2025.x**
      - ✓
      - ✓
@@ -450,41 +450,41 @@ The following table shows tested compiler and MPI combinations available in the 
      - ✓
      - ✓
    * - **Intel OneAPI 2022.x**
-     - 
-     - 
-     - 
+     -
+     -
+     -
    * - **Intel OneAPI 2021.x**
-     - 
-     - 
-     - 
+     -
+     -
+     -
    * - **Intel Classic 2021.10 (OneAPI 2023)**
      - ✓
-     - 
-     - 
+     -
+     -
    * - **NVHPC 25.1**
-     - 
+     -
      - ✓
      - ✓
    * - **NVHPC 24.11**
-     - 
+     -
      - ✓
      - ✓
    * - **NVHPC 23.11**
-     - 
+     -
      - ✓
      - ✓
    * - **GCC 14.x**
-     - 
-     - 
-     - 
+     -
+     -
+     -
    * - **GCC 13.x**
-     - 
-     - 
-     - 
+     -
+     -
+     -
    * - **GCC 12.x**
-     - 
-     - 
-     - 
+     -
+     -
+     -
 
 CUDA Support
 ^^^^^^^^^^^^
@@ -507,17 +507,17 @@ The following table shows which compilers have CUDA support enabled for GPU prog
      - OpenMPI 5.x
    * - **NVHPC 25.1**
      - ✓
-     - 
+     -
      - ✓
      - ✓
    * - **NVHPC 24.11**
      - ✓
-     - 
+     -
      - ✓
      - ✓
    * - **NVHPC 23.11**
      - ✓
-     - 
+     -
      - ✓
      - ✓
    * - **Intel OneAPI 2025**
@@ -537,29 +537,29 @@ The following table shows which compilers have CUDA support enabled for GPU prog
      - ✓
    * - **Intel OneAPI 2022**
      - ✗
-     - 
-     - 
-     - 
+     -
+     -
+     -
    * - **Intel OneAPI 2021**
      - ✗
-     - 
-     - 
-     - 
+     -
+     -
+     -
    * - **Intel Classic 2021.10**
      - ✗
-     - 
-     - 
-     - 
+     -
+     -
+     -
    * - **GCC (all versions)**
      - ✗
-     - 
-     - 
-     - 
+     -
+     -
+     -
    * - **AOCC (all versions)**
      - ✗
-     - 
-     - 
-     - 
+     -
+     -
+     -
 
 List of pre-built software and libraries
 ----------------------------------------
@@ -569,15 +569,15 @@ Libraries compiled by Intel compilers are optimized for latest Intel and AMD CPU
 .. danger:: **Architecture Compatibility Warning**
 
    Libraries built with the **AMD AOCC** compiler are strictly optimized for the **AMD Zen4** architecture.
-   
+
    *   **Do not** load AOCC modules on Intel nodes.
    *   **Do not** submit jobs using AOCC-compiled code to Intel partitions.
-   
+
    Doing so will result in `Illegal Instruction` errors and immediate job failure.
 
 .. note::
    **Bold** versions are the default versions loaded when using ``module load`` without specifying a version number.
-   
+
    Deprecated packages are marked as :strike:`versions @edge` in the ``edge`` Spack variant, deprecated packages will be removed in the next production variant.
 
 
@@ -608,14 +608,14 @@ These applications are scientific software that is built for general use. They m
        | **8.1.0**
      - | - Intel OneAPI 2025
        | - Intel MPI 2021.14
-     - 
+     -
    * - openfoam-org
      - OpenFOAM CFD Toolbox (org version)
      - | 11
        | **12**
      - | - Intel OneAPI 2025
        | - Intel MPI 2021.14
-     - 
+     -
 
 
 MPI-enabled Libraries
@@ -635,12 +635,12 @@ These libraries become available after loading both a compiler and an MPI implem
      - | Fastest Fourier Transform in the West
        | - Single & Double precision
      - **3.3.10**
-     - 
+     -
    * - **hdf5**
      - | Hierarchical Data Format 5
        | - Subfile, szip enabled
      - **1.14.5**
-     - 
+     -
    * - **netcdf-c**
      - | Network Common Data Form (C library)
        | - Pnetcdf, szip enabled
@@ -658,7 +658,7 @@ These libraries become available after loading both a compiler and an MPI implem
      - | High-level parallel I/O library
        | - Pnetcdf enabled
      - **2.6.3**
-     - 
+     -
 
 Intel Compiler Specific Libraries
 """"""""""""""""""""""""""""""""""
@@ -679,7 +679,7 @@ Libraries exclusively available when using Intel OneAPI or Intel Classic compile
      - | 2023.2.0
        | 2024.2.2
        | **2025.0.1**
-     - 
+     -
 
 Compiler-optimized Libraries
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -698,24 +698,24 @@ These libraries are optimized for specific compiler toolchains and become availa
      - | Boost C++ Libraries
        | - all subsets included
      - **1.87.0**
-     - 
+     -
    * - **eigen**
      - C++ Template Library for Linear Algebra
      - **3.4.0**
-     - 
+     -
    * - **fftw**
      - | Fastest Fourier Transform in the West
        | - Single & Double precision
      - **3.3.10**
-     - 
+     -
    * - **glib**
      - GNOME Core Library
      - **2.72.4**
-     - 
+     -
    * - **gsl**
      - GNU Scientific Library
      - **2.8**
-     - 
+     -
    * - **libxc**
      - Library of Exchange and Correlation Functionals
      - **7.0.0**
@@ -738,23 +738,23 @@ AMD-optimized libraries available exclusively with AMD Optimizing C/C++ Compiler
      - | AMD AOCL Libraries
        | - all features enabled
      - **5.0**
-     - 
+     -
    * - **amdblis**
      - AMD BLAS-Like Instant Software (Optimized BLAS)
      - **5.0**
-     - 
+     -
    * - **amdfftw**
      - AMD Optimized FFTW (Fast Fourier Transform)
      - **5.0**
-     - 
+     -
    * - **amdlibflame**
      - AMD FLAME Library (Linear algebra)
      - **5.0**
-     - 
+     -
    * - **amdlibm**
      - AMD Math Library (Optimized libm)
      - **5.0**
-     - 
+     -
 
 Generic Software
 ^^^^^^^^^^^^^^^^
@@ -783,12 +783,12 @@ Core libraries and drivers for GPU computing.
        | 12.5.1
        | 12.6.3
        | **12.8.0**
-     - 
+     -
    * - **cuDNN**
      - NVIDIA CUDA Deep Neural Network library for CUDA 11/12
      - | 8.9.7
        | **9.2.0**
-     - 
+     -
 
 Math & Data Science
 """""""""""""""""""
@@ -812,7 +812,7 @@ Platforms for mathematical computing, statistical analysis, and data science.
    * - **Octave**
      - Scientific Programming Language (MATLAB-compatible)
      - **9.4.0**
-     - 
+     -
    * - **Python**
      - Python Programming Language
      - | 3.9.21
@@ -856,11 +856,11 @@ Runtime environments for various programming languages.
    * - **Rust**
      - Rust Systems Programming Language
      - **1.85.0**
-     - 
+     -
    * - **Go**
      - The Go Programming Language
      - **1.24.1**
-     - 
+     -
 
 Visualization & Media
 """""""""""""""""""""
@@ -878,22 +878,22 @@ Tools for graphics, visualization, and media processing.
    * - **Gnuplot**
      - Portable command-line driven graphing utility
      - **6.0.0**
-     - 
+     -
    * - **VMD**
      - Visual Molecular Dynamics
      - **1.9.3**
-     - 
+     -
    * - **ImageMagick**
      - Image creation and modification tools
      - **7.1.1-39**
-     - 
+     -
    * - **FFmpeg**
      - Video and Audio processing suite
      - | 4.4.4
        | 5.1.4
        | 6.1.1
        | **7.1**
-     - 
+     -
 
 Libraries
 """""""""
@@ -912,15 +912,15 @@ Core system libraries and development tools.
      - JPEG-2000 codec library
      - | 1.900.31
        | **4.2.8**
-     - 
+     -
    * - **libpng**
      - PNG reference library
      - **1.6.39**
-     - 
+     -
    * - **libtirpc**
      - Transport Independent RPC library
      - **1.3.3**
-     - 
+     -
 
 Build Tools & Development
 """""""""""""""""""""""""
@@ -938,23 +938,23 @@ Tools for building, configuring, and managing software projects.
    * - **Binutils**
      - GNU Binary Utilities
      - **2.43.1**
-     - 
+     -
    * - **CMake**
      - Cross-platform build system generator
      - **3.31.6**
-     - 
+     -
    * - **Meson**
      - Modern build system
      - **1.7.0**
-     - 
+     -
    * - **Ninja**
      - Small build system with a focus on speed
      - **1.12.1**
-     - 
+     -
    * - **Gmake**
      - GNU Make
      - **4.4.1**
-     - 
+     -
 
 Git Version Control
 """""""""""""""""""
@@ -972,11 +972,11 @@ Version control tools for managing code repositories and large files.
    * - **Git**
      - Distributed version control system
      - **2.48.1**
-     - 
+     -
    * - **Git-LFS**
      - Git Large File Storage
      - **3.5.1**
-     - 
+     -
 
 Other Packages
 """"""""""""""
@@ -1007,23 +1007,23 @@ Other Packages
     * - **Ruby**
       - Dynamic, open source programming language
       - **3.3.5**
-      - 
+      -
     * - **Lua**
       - Lightweight, multi-paradigm scripting language
       - **5.4.6**
-      - 
+      -
     * - **Tcl**
       - Tool Command Language
       - **8.6.12**
-      - 
+      -
     * - **Bash**
       - GNU Bourne Again Shell
       - **5.2**
-      - 
+      -
     * - **Tcsh**
       - C Shell with file name completion
       - **6.24.14**
-      - 
+      -
 
 .. dropdown:: Other Version Control Systems
 
@@ -1038,15 +1038,15 @@ Other Packages
     * - **Subversion**
       - Centralized version control system
       - **1.14.2**
-      - 
+      -
     * - **Mercurial**
       - Distributed version control system
       - **6.7.3**
-      - 
+      -
     * - **CVS**
       - Concurrent Versions System
       - **1.12.13**
-      - 
+      -
 
 .. dropdown:: Debugging & Profiling
 
@@ -1061,11 +1061,11 @@ Other Packages
     * - **GDB**
       - GNU Debugger
       - **15.2**
-      - 
+      -
     * - **GoogleTest**
       - Google C++ Testing Framework
       - **1.15.2**
-      - 
+      -
 
 .. dropdown:: Utilities & Tools
 
@@ -1080,31 +1080,31 @@ Other Packages
     * - **Emacs**
       - Extensible text editor
       - **30.1**
-      - 
+      -
     * - **Neovim**
       - Hyperextensible Vim-based text editor
       - **0.11.5**
-      - 
+      -
     * - **Zsh**
       - Z Shell
       - **5.9**
-      - 
+      -
     * - **Screen**
       - Terminal multiplexer
       - **4.9.1**
-      - 
+      -
     * - **Parallel**
       - GNU Parallel (Shell tool for executing jobs in parallel)
       - **20240822**
-      - 
+      -
     * - **dos2unix**
       - Text file format converter
       - **7.4.4**
-      - 
+      -
     * - **EasyBuild**
       - Software build and installation framework
       - **4.7.0**
-      - 
+      -
 
 .. dropdown:: Cloud CLI
 
@@ -1119,11 +1119,11 @@ Other Packages
     * - **AWS CLI v2**
       - Amazon Web Services Command Line Interface
       - **2.24.24**
-      - 
+      -
     * - **Google Cloud CLI**
       - Google Cloud SDK
       - **504.0.1**
-      - 
+      -
 
 .. dropdown:: Package Managers
 
@@ -1138,15 +1138,15 @@ Other Packages
     * - **NPM**
       - Node Package Manager
       - **11.2.0**
-      - 
+      -
     * - **Yarn**
       - JavaScript package manager
       - **1.22.22**
-      - 
+      -
     * - **FPM**
       - Fortran Package Management
       - **0.10.0**
-      - 
+      -
 
 .. dropdown:: Additional Build Tools
 
@@ -1161,27 +1161,27 @@ Other Packages
     * - **Autotools**
       - GNU Build System (Autoconf, Automake, Libtool)
       - **master**
-      - 
+      -
     * - **SCons**
       - Software construction tool
       - **4.7.0**
-      - 
+      -
     * - **Bazel**
       - Build and test tool (Google)
       - **7.0.2**
-      - 
+      -
     * - **Maven**
       - Build automation tool for Java
       - **3.9.8**
-      - 
+      -
     * - **Gradle**
       - Build automation tool for multi-language
       - **8.10.2**
-      - 
+      -
     * - **Ant**
       - Java build tool
       - **1.10.14**
-      - 
+      -
 
 .. dropdown:: Additional Language Runtimes
 
@@ -1196,12 +1196,12 @@ Other Packages
     * - **Dotnet Core SDK**
       - .NET Core Software Development Kit
       - **8.0.4**
-      - 
+      -
     * - **Node.js**
       - JavaScript runtime built on Chrome's V8
       - **22.14.0**
-      - 
+      -
     * - **OCaml**
       - Functional programming language
       - **5.2.1**
-      - 
+      -

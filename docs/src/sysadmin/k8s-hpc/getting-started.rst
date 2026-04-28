@@ -119,7 +119,7 @@ Following OS installation, each node requires preparation for Kubernetes operati
     # 4. Configure firewall
     # Option A: Disable for simplicity (learning environment)
     systemctl disable --now firewalld
-    
+
     # Option B: Open required ports (production-like)
     # firewall-cmd --permanent --add-port=6443/tcp  # K8s API
     # firewall-cmd --permanent --add-port=2379-2380/tcp  # etcd
@@ -160,7 +160,7 @@ Following OS installation, each node requires preparation for Kubernetes operati
     # On k8s-master1
     sudo bash prepare-node.sh k8s-master1
 
-    # On k8s-master2  
+    # On k8s-master2
     sudo bash prepare-node.sh k8s-master2
 
     # On k8s-master3
@@ -499,11 +499,11 @@ Example namespace chart implementation:
 .. code-block:: yaml
 
     environment: dev  # dev or prod
-    
+
     namespaces:
       dev: dev-hpc4
       prod: prod-hpc4
-    
+
     commonConfig:
       labels:
         managed-by: helm
@@ -647,7 +647,7 @@ Deploy Gitea (lightweight Git service) on K8s:
     # Add Gitea Helm repo
     helm repo add gitea-charts https://dl.gitea.io/charts/
     helm repo update
-    
+
     # Install Gitea
     helm install gitea gitea-charts/gitea \
       --namespace git \
@@ -665,24 +665,24 @@ Deploy Gitea (lightweight Git service) on K8s:
 .. warning::
 
    When deploying Git on K8s (Option B), maintain architectural awareness that the K8s cluster is disposable by design:
-   
+
    - Designate a **cloud Git service as the authoritative source** (GitHub, GitLab)
    - Configure K8s-hosted Git as a **local mirror/cache layer**
    - Establish upstream remote: ``git remote add upstream https://github.com/yourorg/hpc-automation.git``
    - Maintain regular synchronization: ``git push upstream main``
-   
+
    **Rationale:** Cluster rebuilds (an expected operational pattern in this experimental approach) should not result in repository history loss. The K8s Git instance can be rapidly reconstructed and synchronized from the authoritative cloud source.
-   
+
    **Architecture pattern:**
-   
+
    .. code-block:: text
-   
+
        Cloud Git (GitHub/GitLab)  ← Authoritative source
             ↓ synchronization
        K8s Git (Gitea)           ← Local cache (performance optimization)
             ↓ consumption
        Argo Workflows            ← Executes from local instance
-   
+
    This architecture ensures cluster disposability without data loss.
 
 **Recommended repository structure:**
@@ -790,14 +790,14 @@ Use official Docker registry for basic needs:
 .. code-block:: bash
 
     kubectl apply -f registry-deployment.yaml
-    
+
     # Access from nodes (for Docker/Podman)
     # Add to /etc/hosts on each K8s node:
     # <node-ip>  registry.local
-    
+
     # Or use port-forward for testing:
     kubectl port-forward -n registry svc/registry 5000:5000
-    
+
     # Test (from node or with port-forward):
     curl http://localhost:5000/v2/_catalog
 
@@ -812,7 +812,7 @@ On each K8s node, configure containerd:
       registry.local:5000:
         endpoint:
           - "http://registry.local:5000"
-    
+
     configs:
       "registry.local:5000":
         tls:
@@ -836,7 +836,7 @@ Harbor provides enterprise features:
     # Add Harbor Helm repo
     helm repo add harbor https://helm.goharbor.io
     helm repo update
-    
+
     # Install Harbor (requires significant resources)
     helm install harbor harbor/harbor \
       --namespace harbor \
@@ -948,11 +948,11 @@ Verification
 
     # Test pull
     docker pull registry.local:5000/test-image:latest
-    
+
     # Test push
     docker tag alpine:latest registry.local:5000/test-image:latest
     docker push registry.local:5000/test-image:latest
-    
+
     # List images
     curl http://registry.local:5000/v2/_catalog
 
@@ -977,7 +977,7 @@ Create a test workflow that accesses both:
             template: clone-repo
           - name: test-registry
             template: pull-image
-      
+
       - name: clone-repo
         container:
           image: alpine/git:latest
@@ -986,7 +986,7 @@ Create a test workflow that accesses both:
           - |
             git clone https://github.com/yourorg/hpc-automation.git /tmp/repo
             ls -la /tmp/repo
-      
+
       - name: pull-image
         container:
           image: registry.local:5000/test-image:latest
@@ -1020,7 +1020,7 @@ Install Argo Workflows via Helm
     type: application
     version: 0.1.0
     appVersion: "3.5.0"
-    
+
     dependencies:
       - name: argo-workflows
         version: "0.41.0"
@@ -1036,7 +1036,7 @@ Install Argo Workflows via Helm
       server:
         enabled: true
         serviceType: ClusterIP  # Access via kubectl port-forward
-      
+
       # Workflow controller configuration
       controller:
         workflowNamespaces:
@@ -1048,14 +1048,14 @@ Install Argo Workflows via Helm
 .. code-block:: bash
 
     cd charts/argo-workflows-hpc4
-    
+
     # Add Argo Helm repo
     helm repo add argo https://argoproj.github.io/argo-helm
     helm repo update
-    
+
     # Install
     helm install argo-workflows . --namespace argo --create-namespace
-    
+
     # Verify
     kubectl get pods -n argo
 
@@ -1066,7 +1066,7 @@ Access Argo UI
 
     # Establish port forwarding for local access
     kubectl port-forward -n argo svc/argo-workflows-server 2746:2746
-    
+
     # Navigate to: https://localhost:2746
 
 **Note:** Default installation requires authentication tokens. To disable authentication for development environments (unsuitable for production):
@@ -1107,7 +1107,7 @@ Initial validation workflow (``workflows/hello-world.yaml``):
               parameters:
               - name: message
                 value: "Hello from K8s!"
-      
+
       - name: print-message
         inputs:
           parameters:
@@ -1161,7 +1161,7 @@ Example: Write to shared storage:
             requests:
               storage: 1Gi
           volumeName: pv-shared-software
-      
+
       templates:
       - name: main
         steps:
@@ -1169,19 +1169,19 @@ Example: Write to shared storage:
             template: write
         - - name: read-file
             template: read
-      
+
       - name: write
         container:
           image: alpine:latest
           command: [sh, -c]
-          args: 
+          args:
             - |
               echo "Hello from workflow at $(date)" > /work/hello.txt
               ls -la /work/
           volumeMounts:
           - name: workdir
             mountPath: /work
-      
+
       - name: read
         container:
           image: alpine:latest
