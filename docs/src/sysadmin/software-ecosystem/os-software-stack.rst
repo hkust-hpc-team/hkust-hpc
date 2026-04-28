@@ -102,14 +102,14 @@ The following test examples demonstrate validation approaches that can be replic
      #!/bin/bash
      # run-test-commandline-utils.sh
      set -e
-     
+
      # Test common utilities
      command -v bash || exit 1
      command -v make || exit 1
      command -v cmake || exit 1
      command -v git || exit 1
      command -v tmux || exit 1
-     
+
      echo "✓ Command-line utilities validated"
 
 **System compilers**
@@ -120,16 +120,16 @@ The following test examples demonstrate validation approaches that can be replic
      #!/bin/bash
      # run-test-os-gcc.sh
      set -e
-     
+
      # Test C compiler
      cat > test.c << 'EOF'
      #include <stdio.h>
      int main() { printf("Hello from C\n"); return 0; }
      EOF
-     
+
      gcc test.c -o test_c
      ./test_c
-     
+
      echo "✓ OS GCC validated"
 
   Similar tests validate G++ (C++), GFortran (Fortran).
@@ -142,7 +142,7 @@ The following test examples demonstrate validation approaches that can be replic
      #!/bin/bash
      # run-test-curl-devel.sh
      set -e
-     
+
      # Test libcurl development files
      cat > test_curl.c << 'EOF'
      #include <curl/curl.h>
@@ -155,10 +155,10 @@ The following test examples demonstrate validation approaches that can be replic
          return 1;
      }
      EOF
-     
+
      gcc test_curl.c -lcurl -o test_curl
      ./test_curl
-     
+
      echo "✓ curl-devel validated"
 
   Similar tests verify fontconfig, pmix, munge, and other libraries. These compilation tests have caught missing ``-devel`` packages that would otherwise prevent building dependent software.
@@ -171,46 +171,46 @@ The following test examples demonstrate validation approaches that can be replic
      #!/bin/bash
      # run-test-mlnx-openmpi.sh
      set -e
-     
+
      # Locate MPI compiler
      MPICC=$(command -v mpicc) || exit 1
-     
+
      # Test MPI program with communication
      cat > mpi_hello.c << 'EOF'
      #include <mpi.h>
      #include <stdio.h>
      #include <unistd.h>
-     
+
      int main(int argc, char **argv) {
          int rank, size;
          char hostname[256];
-         
+
          MPI_Init(&argc, &argv);
          MPI_Comm_rank(MPI_COMM_WORLD, &rank);
          MPI_Comm_size(MPI_COMM_WORLD, &size);
-         
+
          gethostname(hostname, sizeof(hostname));
          printf("Hello from rank %d of %d on %s\n", rank, size, hostname);
-         
+
          // Verify actual communication with barrier
          MPI_Barrier(MPI_COMM_WORLD);
-         
+
          if (rank == 0) {
              printf("MPI Barrier completed successfully with %d processes\n", size);
          }
-         
+
          MPI_Finalize();
          return 0;
      }
      EOF
-     
+
      $MPICC mpi_hello.c -o mpi_hello
      mpirun -np 2 ./mpi_hello
-     
+
      echo "✓ MPI functionality validated"
 
   .. important::
-     
+
      The barrier call validates actual inter-process communication. Operational experience demonstrates that MPI initialization may succeed while inter-process communication fails, necessitating explicit communication validation.
 
 **Alternative selection (Lmod vs environment-modules)**
@@ -221,12 +221,12 @@ The following test examples demonstrate validation approaches that can be replic
      #!/bin/bash
      # run-test-lmod.sh
      set -euo pipefail
-     
+
      echo "=== Testing Lmod ==="
-     
+
      echo "Checking module command is Lmod:"
      module --version 2>&1 | tee /tmp/lmod-version.txt
-     
+
      echo "Verifying Lmod version output:"
      if grep -q "Modules based on Lua" /tmp/lmod-version.txt; then
          echo "✓ Lmod is correctly installed and based on Lua"
@@ -234,10 +234,10 @@ The following test examples demonstrate validation approaches that can be replic
          echo "✗ Failed to verify Lmod (might be environment-modules)"
          exit 1
      fi
-     
+
      echo "Listing available modules:"
      module avail
-     
+
      echo "=== Lmod Test Complete ==="
 
   This test specifically verifies Lmod (Lua-based) rather than the older environment-modules implementation, as both provide a ``module`` command but with different capabilities.
@@ -250,13 +250,13 @@ The following test examples demonstrate validation approaches that can be replic
      #!/bin/bash
      # run-test-qt5.sh
      set -euo pipefail
-     
+
      echo "=== Testing Qt5 ==="
-     
+
      # Verify qtpaths command and Qt5 version
      command -v qtpaths
      qtpaths --qt-version
-     
+
      # Check install prefix
      INSTALL_PREFIX=$(qtpaths --install-prefix)
      if [[ "$INSTALL_PREFIX" == /usr* ]]; then
@@ -265,11 +265,11 @@ The following test examples demonstrate validation approaches that can be replic
          echo "✗ Unexpected Qt5 prefix: $INSTALL_PREFIX"
          exit 1
      fi
-     
+
      # Test pkg-config integration
      pkg-config --exists Qt5Core || exit 1
      pkg-config --modversion Qt5Core
-     
+
      echo "✓ Qt5 test complete"
 
   This validation confirms Qt5 installation location, command availability, and pkg-config integration support for dependent software compilation. Analogous validation strategies apply to other GUI frameworks (GTK, ATK, wxWidgets) using framework-specific tools and pkg-config packages.
@@ -306,7 +306,7 @@ Base OS validation proceeds in stages, each addressing different validation dime
 
 **Stage 1: Container-based software validation**
   Automated tests execute in containers, validating software functionality:
-  
+
   - Command-line utilities present and executable
   - Compilers compile and execute test programs
   - Development libraries support compilation and linking
@@ -316,7 +316,7 @@ Base OS validation proceeds in stages, each addressing different validation dime
 
 **Stage 2: Deployment validation**
   Images passing container tests deploy to isolated test nodes for bare-metal validation:
-  
+
   - **Bootability:** PXE boot process, GRUB configuration, initramfs integrity
   - **Driver sanity:** GPU drivers recognize hardware, network drivers initialize
   - **Kernel module availability:** Required modules load successfully
@@ -328,14 +328,14 @@ Base OS validation proceeds in stages, each addressing different validation dime
 
 **Stage 3: Progressive production rollout**
   After successful test node validation:
-  
+
   1. Deploy to small production subset (5-10 nodes)
   2. Monitor for unexpected behavior (24-48 hours)
   3. Gradually expand to remaining infrastructure
   4. Maintain rollback capability throughout deployment
 
 .. important::
-   
+
    Container-based tests validate software layer integrity but cannot verify deployment-specific aspects requiring bare-metal hardware. Images must pass both container validation and bare-metal deployment testing before production rollout.
 
 Bootability and Driver Validation
@@ -350,7 +350,7 @@ Deployment validation addresses aspects inaccessible to container testing:
    # Deploy image to test node via PXE
    # Monitor boot process for failures
    # Verify successful multi-user.target
-   
+
    ssh test-node 'systemctl status multi-user.target'
    ssh test-node 'journalctl -b | grep -i error'
 
@@ -361,7 +361,7 @@ Deployment validation addresses aspects inaccessible to container testing:
    # Verify GPU recognition
    ssh test-node 'nvidia-smi'
    ssh test-node 'nvidia-smi --query-gpu=name,driver_version --format=csv'
-   
+
    # Test CUDA runtime
    ssh test-node 'nvidia-smi topo -m'  # Topology verification
 
@@ -372,7 +372,7 @@ Deployment validation addresses aspects inaccessible to container testing:
    # Verify InfiniBand/RoCE interfaces
    ssh test-node 'ibstat'
    ssh test-node 'ip link show | grep ib'
-   
+
    # Test RDMA capabilities
    ssh test-node 'ibv_devinfo'
 
@@ -382,7 +382,7 @@ Deployment validation addresses aspects inaccessible to container testing:
 
    # Verify critical modules loaded
    ssh test-node 'lsmod | grep -E "mlx5|nvidia|ib_core"'
-   
+
    # Test module loading
    ssh test-node 'modprobe -n <module_name>'  # Dry-run test
 
@@ -392,7 +392,7 @@ Deployment validation addresses aspects inaccessible to container testing:
 
    # Submit test job
    srun --nodes=1 --nodelist=test-node hostname
-   
+
    # Verify PMIx communication
    srun --nodes=2 --ntasks=2 --nodelist=test-node[1-2] \
         --mpi=pmix /path/to/mpi_hello

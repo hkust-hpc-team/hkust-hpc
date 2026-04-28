@@ -35,7 +35,7 @@ Traditional PXE image builds require extensive manual validation before deployme
 2. Deploy test image to PXE infrastructure
 3. Boot test node from network
 4. SSH to test node and manually verify:
-   
+
    - System boot successful
    - Kernel modules load correctly
    - Compilers function properly
@@ -151,24 +151,24 @@ Representative test structure (system compiler validation):
    #!/bin/bash
    # run-test-os-gcc.sh
    set -euo pipefail
-   
+
    echo "=== Testing OS-provided GCC ==="
-   
+
    # Verify compiler exists
    command -v gcc || exit 1
-   
+
    # Test compilation
    cat > test.c << 'EOF'
    #include <stdio.h>
-   int main() { 
-       printf("Compiler validation successful\n"); 
-       return 0; 
+   int main() {
+       printf("Compiler validation successful\n");
+       return 0;
    }
    EOF
-   
+
    gcc test.c -o test_c
    ./test_c
-   
+
    echo "✓ OS GCC validated"
 
 See :doc:`../software-ecosystem/os-software-stack` for comprehensive test examples and rationale.
@@ -200,7 +200,7 @@ Container testing validates software functionality but cannot verify deployment-
 - Single-node MPI initialization and intra-process communication
 
 .. important::
-   
+
    Container tests serve as unit tests validating software layer integrity. Successful container tests indicate the image warrants deployment validation, but cannot verify bootability, hardware driver operation, or production integration. See :doc:`../software-ecosystem/os-software-stack` for comprehensive validation methodology including bare-metal testing and progressive rollout procedures.
 
 Workflow Implementation
@@ -219,27 +219,27 @@ Simplified workflow template demonstrating test orchestration:
      name: pxe-image-build-test
    spec:
      entrypoint: main
-     
+
      templates:
      - name: main
        steps:
        - - name: build-image
            template: build-pxe-image
-       
+
        - - name: test-image
            template: run-test-suite
            arguments:
              artifacts:
              - name: image
                from: "{{steps.build-image.outputs.artifacts.image}}"
-       
+
        - - name: generate-report
            template: create-test-report
            arguments:
              parameters:
              - name: results
                value: "{{steps.test-image.outputs.parameters.results}}"
-     
+
      - name: build-pxe-image
        container:
          image: rhel9-build-tools:latest
@@ -251,7 +251,7 @@ Simplified workflow template demonstrating test orchestration:
          artifacts:
          - name: image
            path: /output/pxe-image.img
-     
+
      - name: run-test-suite
        inputs:
          artifacts:
@@ -266,7 +266,7 @@ Simplified workflow template demonstrating test orchestration:
            template: test-mpi-suite
          - name: test-modules
            template: test-module-system
-     
+
      - name: test-compiler-suite
        script:
          image: "{{workflow.parameters.test-image}}"

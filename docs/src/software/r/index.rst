@@ -1,7 +1,7 @@
 R and RStudio
 =============
 
-R is available through the Spack package manager with support for 
+R is available through the Spack package manager with support for
 statistical computing, CRAN package management, and RStudio IDE.
 
 .. contents:: Table of Contents
@@ -22,26 +22,26 @@ R Quick Start
 
    # Activate Spack environment
    source "${SPACK_ROOT}/dist/bin/setup-env.sh" -y
-   
+
    # Check available R versions
    module avail r
-   
+
    # Load R
    module load r/4.4
-   
+
    # Verify installation
    R --version
-   
+
    # Start R
    R                           # Interactive mode
    R --quiet --no-save        # Quiet mode
-   
+
    # Run a script
    Rscript my_script.R
 
 .. note::
    Module names may include a 7-digit hash suffix (e.g., ``r/4.4.2-4pchx4a``).
-   You do **NOT** need to include this hash when loading - the version alone 
+   You do **NOT** need to include this hash when loading - the version alone
    (e.g., ``4.4``) is sufficient.
 
 RStudio Quick Start
@@ -58,20 +58,20 @@ RStudio Quick Start
 
    # Activate Spack environment
    source "${SPACK_ROOT}/dist/bin/setup-env.sh" -y
-   
+
    # Load RStudio (will automatically load R 4.x)
    module load rstudio
-   
+
    # Or explicitly specify R version (recommended)
    module load r/4.4
    module load rstudio
-   
+
    # Launch RStudio (requires GUI/X11)
    rstudio
 
 .. note::
-   RStudio will automatically load a compatible R 4.x backend if you don't 
-   specify one. However, it's recommended to explicitly load your preferred 
+   RStudio will automatically load a compatible R 4.x backend if you don't
+   specify one. However, it's recommended to explicitly load your preferred
    R version first to ensure consistency.
 
 Tutorials
@@ -131,8 +131,8 @@ Specifies the user-specific library directory for R packages. Packages installed
 **Default:** ``$HOME/.R/R-<version>-<compiler>-<target>/library``
 
 .. note::
-   These environment variables are automatically configured when you load the R module. 
-   You typically don't need to modify them manually. 
+   These environment variables are automatically configured when you load the R module.
+   You typically don't need to modify them manually.
 
 Support and Resources
 ---------------------

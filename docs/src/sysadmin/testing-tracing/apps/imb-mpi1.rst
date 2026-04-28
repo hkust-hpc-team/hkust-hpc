@@ -132,10 +132,10 @@ Most MPI distributions include IMB in their installation directory. Common locat
 
    # Intel MPI
    /opt/intel/oneapi/mpi/*/benchmarks/IMB-MPI1
-   
+
    # Mellanox/NVIDIA OpenMPI (from RPM)
    /usr/mpi/gcc/openmpi-*/tests/imb/IMB-MPI1
-   
+
    # System OpenMPI
    /usr/lib64/openmpi/tests/imb/IMB-MPI1
 
@@ -151,17 +151,17 @@ If IMB is not bundled with your MPI distribution:
    # Download Intel MPI Benchmarks
    git clone https://github.com/intel/mpi-benchmarks.git
    cd mpi-benchmarks
-   
+
    # Set compiler wrapper and build
    export CC=mpicc   # or mpiicc for Intel MPI
    make IMB-MPI1
-   
+
    # Additional components (optional)
    # make IMB-EXT    # One-sided communications
    # make IMB-IO     # I/O benchmarks
    # make IMB-NBC    # Non-blocking collectives
    # make IMB-RMA    # RMA benchmarks
-   
+
    # Run the built benchmark
    mpirun -n <processes> ./IMB-MPI1 [options]
 
@@ -176,7 +176,7 @@ Confirm IMB runs successfully:
 
    # Simple 2-process test
    mpirun -np 2 IMB-MPI1 PingPong
-   
+
    # Should output latency measurements
    # If it fails, check MPI environment setup
 
@@ -194,7 +194,7 @@ Run specific benchmarks with default settings:
 
    # Single benchmark
    mpirun -np 256 IMB-MPI1 Allreduce
-   
+
    # Multiple benchmarks
    mpirun -np 256 IMB-MPI1 PingPong Bcast Allreduce Barrier
 
@@ -242,7 +242,7 @@ From our operational validation, a typical collective communication test:
 
 .. code-block:: text
 
-   Benchmarking Bcast 
+   Benchmarking Bcast
           #bytes #repetitions  t_min[usec]  t_max[usec]  t_avg[usec]
                0         1000         0.03         0.79         0.04
                8         1000         0.90        41.66        22.70
@@ -251,7 +251,7 @@ From our operational validation, a typical collective communication test:
           131072         1000       588.53       920.17       835.79
           524288         1000      2903.33      3689.43      3491.15
 
-   Benchmarking Reduce 
+   Benchmarking Reduce
           #bytes #repetitions  t_min[usec]  t_max[usec]  t_avg[usec]
                0         1000         0.03         0.45         0.04
                8         1000         9.14        39.38        24.57
@@ -381,7 +381,7 @@ When deploying new hardware, compare against documented baselines from previous 
 Example comparison table structure:
 
 - PingPong latency (0-128 bytes): Network/protocol baseline
-- Allreduce bandwidth (128K-4M): Collective operation efficiency  
+- Allreduce bandwidth (128K-4M): Collective operation efficiency
 - Barrier synchronization time: Multi-rank coordination overhead
 
 Document baseline conditions (MPI library version, process binding, network topology) to ensure valid comparisons.
@@ -389,12 +389,12 @@ Document baseline conditions (MPI library version, process binding, network topo
 .. tip::
 
    **Maintain separate baselines for intra-node and inter-node configurations.**
-   
+
    Communication performance characteristics differ significantly between single-node (intra-node, shared memory) and multi-node (inter-node, network fabric) execution:
-   
+
    - Intra-node baselines: Validate shared memory transports, NUMA effects, process binding
    - Inter-node baselines: Validate network fabric, switch topology, multi-node scaling
-   
+
    Comparing single-node results to multi-node results may lead to incorrect regression conclusions. Establish and maintain distinct baseline sets for each configuration type.
 
 Lack of External Validation
@@ -451,14 +451,14 @@ Evaluate the impact of enabling the XPMEM kernel module on MPI communication per
    # Test configuration: enable XPMEM kernel module
    modprobe xpmem
    # Execute identical benchmark command
-   
+
 4. Analyze performance differences:
 
 .. code-block:: text
 
    Example comparison: Baseline vs Modified Configuration
    Performance shown as speed multiplier (higher = faster, 1.00x = baseline)
-   
+
    Benchmark     | 0-32 bytes | 64-4K bytes | 8K-256K    | 512K-4M
    ------------------------------------------------------------------
    PingPong      | 1.00x      | 0.97x       | 0.85x      | 2.28x
@@ -476,7 +476,7 @@ Analyze results across message size ranges to identify performance trade-offs. I
 - Decided to enable XPMEM due to significant large-message gains, investigate small-message regressions further
 
 .. note::
-  
+
    Specific performance values are system-dependent. The methodology demonstrated here applies regardless of absolute performance numbers obtained on different hardware platforms.
 
 Best Practices
@@ -503,7 +503,7 @@ Maintain historical IMB results for long-term tracking:
    SYSTEM=hpc4-node001
    DATE=$(date +%Y%m%d)
    CONFIG=baseline-openmpi4.1
-   
+
    mpirun ... IMB-MPI1 ... | tee imb-${SYSTEM}-${DATE}-${CONFIG}.log
 
 Store logs with system documentation for future reference.

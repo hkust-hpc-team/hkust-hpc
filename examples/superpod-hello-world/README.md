@@ -5,6 +5,7 @@ This example demonstrates how to submit your first job to the SLURM workload man
 ## Prerequisites
 
 Before running these examples, make sure you:
+
 1. Have access to the HPC cluster
 2. Know your SLURM account name (replace `exampleproj` in the scripts)
 3. Are familiar with basic Linux commands
@@ -23,16 +24,21 @@ An interactive session gives you a live shell on a compute node with allocated r
 ### How to Use
 
 1. **Edit the script** to update your account name:
+
    ```bash
    nano superpod-interactive-helloworld.sh
    ```
+
    Change `--account=exampleproj` to your actual account name.
 
 2. **Start an interactive session**:
+
    ```bash
    bash superpod-interactive-helloworld.sh
    ```
+
    Or directly with:
+
    ```bash
    srun --account=<your_account> \
         --partition=normal \
@@ -45,13 +51,14 @@ An interactive session gives you a live shell on a compute node with allocated r
    ```
 
 3. **You'll get a shell prompt on the compute node** where you can run commands interactively:
+
    ```bash
    echo "Hello from $(hostname)"
    nvidia-smi
    # Run any other commands you need
    ```
 
-    Note that billing **starts from the moment the interactive session is allocated, until you exit the session** with the `exit` command below.
+   Note that billing **starts from the moment the interactive session is allocated, until you exit the session** with the `exit` command below.
 
 4. **Exit the session** when done:
    ```bash
@@ -67,17 +74,21 @@ A batch job is submitted to the queue and runs without user interaction. Once yo
 ### How to Use
 
 1. **Edit the script** to update your account name:
+
    ```bash
    nano superpod-batch-job-helloworld.sh
    ```
+
    Change `--account=exampleproj` to your actual account name.
 
 2. **Submit the job** to SLURM:
+
    ```bash
    sbatch superpod-batch-job-helloworld.sh
    ```
 
 3. **Check job status**:
+
    ```bash
    squeue -u $USER
    ```
@@ -91,6 +102,7 @@ A batch job is submitted to the queue and runs without user interaction. Once yo
 ### What the Script Does
 
 The batch job script:
+
 - Requests 1 node with 1 GPU and 28 CPU cores
 - Prints "Hello, World!" with job information
 - Shows which node(s) are allocated
@@ -101,6 +113,7 @@ The batch job script:
 ## Resource Allocation Explained
 
 Both scripts request the following resources:
+
 - `--account`: Your billing account
 - `--partition=normal`: The job queue/partition to use
 - `--nodes=1`: Number of compute nodes
@@ -122,6 +135,7 @@ You can adjust these parameters based on your needs and available resources. The
 ## Next Steps
 
 After successfully running this hello world example, you can:
+
 1. **Follow our workshops** for more in-depth tutorials and real-world examples: https://github.com/hkust-hpc-team/hkust-hpc/tree/main/workshops
 2. Modify the scripts to run your own applications
 3. Explore other examples in the parent directory

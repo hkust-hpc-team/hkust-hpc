@@ -1,7 +1,7 @@
 Python Ecosystems
 =================
 
-Python is available through the Spack package manager with support for 
+Python is available through the Spack package manager with support for
 multiple versions, package managers, and development tools.
 
 We provide two main Python options:

@@ -17,7 +17,7 @@ HPC systems should exhibit balanced NUMA topology with equal resource distributi
 
    # Visualize NUMA topology
    lstopo
-   
+
    # Text-based output
    lstopo --no-graphics
 
@@ -49,7 +49,7 @@ This prevents single-node memory bandwidth saturation. Without explicit policy, 
 **Potential performance impact:** ~20-30% (memory-intensive OpenMP applications with uniform memory access patterns)
 
 .. tip::
-   
+
    For threading applications that use threads across all cores but don't fill all system memory, interleaved allocation (``-i all``) distributes memory across all NUMA nodes, enabling access to all memory channels' bandwidth even with modest memory usage. Default local allocation often concentrates memory on one NUMA node regardless of available capacity elsewhere. Test if your application benefits—mileage varies.
 
 MPI Applications
@@ -65,7 +65,7 @@ MPI runtimes provide NUMA-aware process placement. Combine MPI CPU pinning with 
    export I_MPI_PIN=1
    export I_MPI_PIN_CELL=core
    export I_MPI_PIN_PROCESSOR_LIST=all
-   
+
    # Launch with local memory allocation
    mpirun -np ${ranks} numactl -l ${command}
 
@@ -107,18 +107,18 @@ RoCEv2 CPU Core Reservation for Network Processing
    function set_binding() {
      local ntasks_per_node=$(($total_cores - $num_reserved_cores))
      local ntasks=$(($SLURM_NNODES * $ntasks_per_node))
-     
+
      if [[ $ntasks_per_node -lt $total_cores ]]; then
        # Map tasks to non-reserved cores
        local cpu_bind="verbose,map_cpu:$(seq --sep=, 0 $(($roce_core_start - 1))),$(seq --sep=, $(($roce_core_end + 1)) $(($total_cores - 1)))"
      else
        local cpu_bind="verbose,core"
      fi
-     
+
      local mem_bind="verbose,local"
      export SRUN_NTASKS=$ntasks
      export SRUN_TASK_ARGS="--ntasks=$ntasks --ntasks-per-node=$ntasks_per_node --cpu-bind=$cpu_bind --mem-bind=$mem_bind"
-     
+
      echo "SRUN_NTASKS: $SRUN_NTASKS"
      echo "SRUN_TASK_ARGS: $SRUN_TASK_ARGS"
    }
@@ -146,7 +146,7 @@ Job schedulers should assign NUMA-local CPU and GPU resources together. GPU-CPU 
 
    # Verify GPU-CPU NUMA affinity
    nvidia-smi topo -m
-   
+
    # Check SLURM GPU GRES configuration
    scontrol show node <nodename> | grep Gres
 

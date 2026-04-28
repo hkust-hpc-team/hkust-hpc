@@ -1,10 +1,22 @@
 {
-  "ipynb.experimental.serialization": true,
-  "makefile.configureOnOpen": false,
-  "esbonio.sphinx.buildDir": "${workspaceFolder}/build",
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+
+  "esbonio.sphinx.pythonPath": "${workspaceFolder}/.venv/bin/python",
+  "esbonio.sphinx.buildDir": "${workspaceFolder}/build/html",
   "esbonio.sphinx.confDir": "${workspaceFolder}/docs/src",
-  "esbonio.sphinx.numJobs": 1,
-  "restructuredtext.linter.doc8.extraArgs": [
-    "--max-line-length 120"
-  ]
+
+  "restructuredtext.linter.run": "onSave",
+  "restructuredtext.linter.doc8.executablePath": "${workspaceFolder}/.venv/bin/doc8",
+  "restructuredtext.linter.rstcheck.executablePath": "${workspaceFolder}/.venv/bin/rstcheck",
+
+  "ruff.path": ["${workspaceFolder}/.venv/bin/ruff"],
+  "ruff.lint.run": "onSave",
+
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "[restructuredtext]": {
+    "editor.rulers": [120],
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.wordWrapColumn": 120
+  }
 }

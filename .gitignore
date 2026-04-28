@@ -1,6 +1,10 @@
 # Custom
 tmp
 repo.txt
+# Reference-only archived HTML files (Drupal export, welcome email).
+# These are local working copies for content migration research; they are
+# never part of the publishable documentation.
+external-resources/
 # MacOS
 .DS_Store
 
