@@ -76,4 +76,4 @@ ignore_directives = [
 ignore_roles = [
     "strike",
 ]
-ignore_messages = "Duplicate implicit target name"
+ignore_messages = ["Duplicate implicit target name"]

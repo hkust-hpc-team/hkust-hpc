@@ -5,18 +5,17 @@ SPHINXSTRICT        ?= -W --keep-going
 SPHINXBUILDS        = $(SPHINXOUTPUT:%=$(BUILDDIR)/%)
 .SOURCE_FILES_SPHINX = $(shell find $(SOURCEDIR) -type f -name '*.rst')
 
-build:
-	@for output in $(SPHINXOUTPUT); do \
-		$(MAKE) --no-print-directory SPHINXOUTPUT="$$output" SPHINXOPTS="$(SPHINXOPTS)" SPHINXBUILD="$(SPHINXBUILD)" SOURCEDIR="$(SOURCEDIR)" BUILDDIR="$(BUILDDIR)" O="$(O)" "$(BUILDDIR)/$$output" || exit $$?; \
-	done
+build: $(SPHINXBUILDS)
 
-full-build: clean build
+full-build:
+	$(MAKE) clean
+	$(MAKE) build
 
 strict: SPHINXOPTS += $(SPHINXSTRICT)
 strict: build
 
 html dirhtml singlehtml:
-	$(MAKE) --no-print-directory SPHINXOUTPUT=$@ build
+	$(MAKE) SPHINXOUTPUT=$@ SPHINXOPTS="$(SPHINXOPTS)" $(BUILDDIR)/$@
 
 $(SPHINXBUILDS): $(.SOURCE_FILES_PYPROJECT) $(.SOURCE_FILES_MK) $(.SOURCE_FILES_SPHINX_CONFIG) $(.SOURCE_FILES_SPHINX)
 $(BUILDDIR)/%:
