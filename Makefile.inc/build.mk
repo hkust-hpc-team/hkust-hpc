@@ -5,10 +5,12 @@ SPHINXSTRICT        ?= -W --keep-going
 SPHINXBUILDS        = $(SPHINXOUTPUT:%=$(BUILDDIR)/%)
 .SOURCE_FILES_SPHINX = $(shell find $(SOURCEDIR) -type f -name '*.rst')
 
-build: clean
+build:
 	@for output in $(SPHINXOUTPUT); do \
 		$(MAKE) --no-print-directory SPHINXOUTPUT="$$output" SPHINXOPTS="$(SPHINXOPTS)" SPHINXBUILD="$(SPHINXBUILD)" SOURCEDIR="$(SOURCEDIR)" BUILDDIR="$(BUILDDIR)" O="$(O)" "$(BUILDDIR)/$$output" || exit $$?; \
 	done
+
+full-build: clean build
 
 strict: SPHINXOPTS += $(SPHINXSTRICT)
 strict: build
@@ -28,4 +30,4 @@ help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
 .FILE_TARGETS += $(SPHINXBUILDS)
-.PHONY_TARGETS += clean help build strict html dirhtml singlehtml
+.PHONY_TARGETS += clean help build full-build strict html dirhtml singlehtml
