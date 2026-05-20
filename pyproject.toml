@@ -49,6 +49,7 @@ quote-style = "double"
 [tool.doc8]
 # D001 (line-too-long) is not enforced: RST has no auto-formatter to fix it,
 # and source line length has zero impact on rendered HTML output.
+# D003 (TabIndentation) is ignored because Makefile code blocks require literal tabs.
 ignore = ["D001", "D003"]
 
 [tool.rstcheck]
