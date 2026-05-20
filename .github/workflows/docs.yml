@@ -26,5 +26,5 @@ jobs:
       - name: Run pre-commit hooks
         run: uv run pre-commit run --all-files
 
-      - name: Build Sphinx docs
-        run: uv run sphinx-build -W --keep-going docs/src build/html
+      - name: Build docs strictly
+        run: make SPHINXOUTPUT="html singlehtml" strict

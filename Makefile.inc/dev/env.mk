@@ -2,21 +2,24 @@
 # If not in CI, then allow interactive commands.
 # For contributors to the project, this Makefile is for automating installations
 
-UV_PATH          = $(shell which uv 2>/dev/null)
-VIRTUAL_ENV      = .venv
-VENV             = $(VIRTUAL_ENV)/bin/activate
+UV_PATH       ?= $(shell command -v uv 2>/dev/null)
+VIRTUAL_ENV   ?= .venv
+VENV          ?= $(VIRTUAL_ENV)/bin/activate
+VENV_STAMP    ?= $(VIRTUAL_ENV)/.uv-sync.stamp
 
-install: $(VENV) .install_check_impl
+install: $(VENV_STAMP) | check-uv
 	uv run pre-commit install --hook-type pre-commit --hook-type commit-msg
 
-$(VENV): pyproject.toml uv.lock .install_check_impl
+$(VENV_STAMP): pyproject.toml uv.lock | check-uv
 	uv sync --dev
+	@mkdir -p "$(VIRTUAL_ENV)"
+	@touch "$@"
 
-.install_check_impl:
-	if [ -z "$(UV_PATH)" ]; then \
+check-uv:
+	@if [ -z "$(UV_PATH)" ]; then \
 		echo "A version of uv is required. Please run 'wget -qO- https://astral.sh/uv/install.sh | sh'"; \
 		exit 1; \
 	fi
 
-.PHONY_TARGETS += install .install_check_impl
-.FILE_TARGETS  += $(VENV)
+.PHONY_TARGETS += install check-uv
+.FILE_TARGETS  += $(VENV_STAMP)

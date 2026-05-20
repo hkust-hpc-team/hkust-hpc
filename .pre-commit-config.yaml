@@ -28,6 +28,7 @@ repos:
       - id: prettier
         name: Format YAML and Markdown files
         types_or: [yaml, markdown]
+        exclude: ^(examples|workshops)/
         args: ["--print-width", "120"]
 
   # ---------- language: system -- versions from uv.lock ----------

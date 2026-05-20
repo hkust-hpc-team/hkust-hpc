@@ -14,7 +14,7 @@ list-configs:
 
 list-sources:
 	@echo Sphinx Sources:
-	@echo $(SOURCE_FILES_SPHINX)
+	@echo $(.SOURCE_FILES_SPHINX)
 
 
 .PHONY_TARGETS += list-file-targets list-phony-targets list-configs list-sources
