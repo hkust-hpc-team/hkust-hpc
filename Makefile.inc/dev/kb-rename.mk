@@ -1,16 +1,17 @@
-KB_DIR        = docs/src/kb
-KB_KEYS       = $(notdir $(patsubst %/,%,$(wildcard $(KB_DIR)/*/)))
-KB_TITLE_LEN	= 32
-KB_HASH_LEN	  = 6
+KB_DIR             = docs/src/kb
+KB_SECTION_INDEXES = $(wildcard $(KB_DIR)/*/index.rst)
+KB_KEYS            = $(patsubst $(KB_DIR)/%/index.rst,%,$(KB_SECTION_INDEXES))
+KB_TITLE_LEN       = 32
+KB_HASH_LEN        = 6
 
 # Hash is in url-safe base64 encoding:
 #   - '/' and '+' are replaced with '_' and '-' respectively.
 #   - '=' is removed.
 #* Hash is invariant unless title (first line of text) changed.
-kb-rename.%: $(KB_DIR)/%
+kb-rename.%: $(KB_DIR)/%/index.rst
 	@kb_key="$*"; \
 	kb_dir="$(KB_DIR)/$$kb_key"; \
-	find "$$kb_dir" -maxdepth 1 -name '*.rst' ! -name 'index.rst' -exec sh -c ' \
+	find "$$kb_dir" -maxdepth 1 -type f -name '*.rst' ! -name 'index.rst' -exec sh -c ' \
 		kb_key="$1"; \
 		kb_dir="$2"; \
 		shift 2; \

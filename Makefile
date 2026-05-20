@@ -4,6 +4,8 @@
 CI            ?= 1
 SPHINXOPTS    ?= -j auto
 SPHINXBUILD   ?= uv run sphinx-build
+VIRTUAL_ENV   ?= .venv
+VENV_STAMP    ?= $(VIRTUAL_ENV)/.uv-sync.stamp
 
 .PHONY_TARGETS              =
 .FILE_TARGETS               =
@@ -11,7 +13,7 @@ SPHINXBUILD   ?= uv run sphinx-build
 .SOURCE_FILES_SPHINX_CONFIG = .readthedocs.yaml docs/src/conf.py
 .SOURCE_FILES_PYPROJECT     = pyproject.toml uv.lock
 ifeq ($(CI),0)
-	.SOURCE_FILES_PYPROJECT  += .venv .python-version
+	.SOURCE_FILES_PYPROJECT  += $(VENV_STAMP) .python-version
 endif
 
 ifeq ($(CI),0)

@@ -1,11 +1,23 @@
-SOURCEDIR           ?= docs/src
-BUILDDIR            ?= build
-SPHINXOUTPUT        ?= html
-SPHINXSTRICT        ?= -W --keep-going
-SPHINXBUILDS        = $(SPHINXOUTPUT:%=$(BUILDDIR)/%)
-.SOURCE_FILES_SPHINX = $(shell find $(SOURCEDIR) -type f -name '*.rst')
+SOURCEDIR            ?= docs/src
+BUILDDIR             ?= build
+SPHINXOUTPUT         ?= html
+SPHINXSTRICT         ?= -W --keep-going
+SPHINX_STAMPS         = $(SPHINXOUTPUT:%=$(BUILDDIR)/.stamp-%)
+.SOURCE_FILES_SPHINX  = $(shell find $(SOURCEDIR) -type f)
+.SPHINX_DEPS          = $(.SOURCE_FILES_PYPROJECT) $(.SOURCE_FILES_MK) $(.SOURCE_FILES_SPHINX_CONFIG) $(.SOURCE_FILES_SPHINX)
 
-build: $(SPHINXBUILDS)
+# Sphinx builders share $(BUILDDIR)/.doctrees, so keep multi-output builds sequential.
+build:
+	@set -e; \
+	for output in $(SPHINXOUTPUT); do \
+		$(MAKE) --no-print-directory \
+			SPHINXBUILD="$(SPHINXBUILD)" \
+			SPHINXOPTS="$(SPHINXOPTS)" \
+			SOURCEDIR="$(SOURCEDIR)" \
+			BUILDDIR="$(BUILDDIR)" \
+			O="$(O)" \
+			"$(BUILDDIR)/.stamp-$$output"; \
+	done
 
 full-build:
 	$(MAKE) clean
@@ -15,18 +27,25 @@ strict: SPHINXOPTS += $(SPHINXSTRICT)
 strict: build
 
 html dirhtml singlehtml:
-	$(MAKE) SPHINXOUTPUT=$@ SPHINXOPTS="$(SPHINXOPTS)" $(BUILDDIR)/$@
+	@$(MAKE) --no-print-directory \
+		SPHINXBUILD="$(SPHINXBUILD)" \
+		SPHINXOPTS="$(SPHINXOPTS)" \
+		SOURCEDIR="$(SOURCEDIR)" \
+		BUILDDIR="$(BUILDDIR)" \
+		O="$(O)" \
+		"$(BUILDDIR)/.stamp-$@"
 
-$(SPHINXBUILDS): $(.SOURCE_FILES_PYPROJECT) $(.SOURCE_FILES_MK) $(.SOURCE_FILES_SPHINX_CONFIG) $(.SOURCE_FILES_SPHINX)
-$(BUILDDIR)/%:
+
+$(BUILDDIR)/.stamp-%: $(.SPHINX_DEPS)
+	@mkdir -p "$(BUILDDIR)"
 	$(SPHINXBUILD) -M $* "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
-	@if [ "$*" != "clean" ]; then touch "$(BUILDDIR)/$*"; fi
+	@touch "$@"
 
 clean:
-	rm -rf $(BUILDDIR)
+	rm -rf "$(BUILDDIR)"
 
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
-.FILE_TARGETS += $(SPHINXBUILDS)
+.FILE_TARGETS += $(SPHINX_STAMPS)
 .PHONY_TARGETS += clean help build full-build strict html dirhtml singlehtml
