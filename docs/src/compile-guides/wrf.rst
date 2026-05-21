@@ -168,7 +168,8 @@ Compile WRF with parallel make:
 
    # Compile WRF (use multiple cores for faster compilation)
    # Replace 8 with the number of CPU cores you want to use
-   ./compile em_real >& compile.log
+   export J=8
+   ./compile em_real &> compile.log
 
    # Monitor compilation progress in another terminal
    tail -f compile.log
