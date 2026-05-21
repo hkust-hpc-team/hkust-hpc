@@ -40,13 +40,13 @@ Search for files or directories by name:
     $ find . -name "report.txt"
     ./project/report.txt
     ./backup/report.txt
-    
+
     $ # Search with wildcards (use quotes)
     $ find . -name "*report*"
     ./documents/annual_report.pdf
     ./reports/monthly_report_2024.xlsx
     ./backup/old_reports/
-    
+
     $ # Case-insensitive search
     $ find . -iname "*report*"
     ./documents/annual_report.pdf
@@ -64,12 +64,12 @@ Search only files or only directories:
     $ find . -type f -name "*report*"
     ./documents/annual_report.pdf
     ./reports/monthly_report_2024.xlsx
-    
+
     $ # Search only directories
     $ find . -type d -name "*backup*"
     ./backup/old_reports/
     ./data/backup/
-    
+
     $ # Search for a directory named "data"
     $ find . -type d -name "data"
     ./projects/data
@@ -84,7 +84,7 @@ Search with file extensions:
     $ find . -type f -name "*.py"
     ./scripts/process_data.py
     ./tools/helper.py
-    
+
     $ # Find all PDF files
     $ find . -type f -name "*.pdf"
     ./documents/manual.pdf
@@ -102,12 +102,12 @@ Find files modified within a specific time period:
     ./data/output.csv
     ./logs/application.log
     ./workspace/notes.txt
-    
+
     $ # Files modified in the last 7 days
     $ find . -type f -mtime -7
     ./reports/weekly_summary.xlsx
     ./data/recent_analysis.csv
-    
+
     $ # Files modified more than 30 days ago
     $ find . -type f -mtime +30
     ./archive/old_data.csv
@@ -125,7 +125,7 @@ For more precise time control (minutes):
     $ # Files modified in the last 60 minutes (1 hour)
     $ find . -type f -mmin -60
     ./logs/application.log
-    
+
     $ # Files modified in the last 10 minutes
     $ find . -type f -mmin -10
     ./workspace/current_work.txt
@@ -140,12 +140,12 @@ Combine name patterns with time filters:
     $ # Find PDF files modified in the last day
     $ find . -type f -name "*.pdf" -mtime -1
     ./reports/daily_report_2024-12-20.pdf
-    
+
     $ # Find Python files in scripts directory modified in last week
     $ find ./scripts -type f -name "*.py" -mtime -7
     ./scripts/new_feature.py
     ./scripts/bugfix.py
-    
+
     $ # Find log files older than 7 days
     $ find . -type f -name "*.log" -mtime +7
     ./logs/application.log.2024-12-01
@@ -158,7 +158,7 @@ Limit search depth:
     $ # Search only in current directory (not subdirectories)
     $ find . -maxdepth 1 -name "*report*"
     ./report.txt
-    
+
     $ # Search only 2 levels deep
     $ find . -maxdepth 2 -type f -name "*.txt"
     ./notes.txt
@@ -182,16 +182,16 @@ Common scenarios for locating files:
 
     $ # Find all files modified today in home directory
     $ find ~ -type f -mtime -1
-    
+
     $ # Find a file you worked on yesterday (more precise)
     $ find ~ -type f -daystart -mtime 1 -name "*presentation*"
-    
+
     $ # Find all Excel files in home directory
     $ find ~ -type f -name "*.xlsx" -o -name "*.xls"
-    
+
     $ # Find large files (bigger than 100MB) modified this week
     $ find . -type f -size +100M -mtime -7
-    
+
     $ # Find files owned by specific user
     $ find . -type f -user username
 
