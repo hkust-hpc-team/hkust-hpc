@@ -48,11 +48,11 @@ Download WRF Source Code
    # Create a working directory
    mkdir -p ~/wrf-build
    cd ~/wrf-build
-   
+
    # Clone WRF repository
    git clone https://github.com/wrf-model/WRF.git
    cd WRF
-   
+
    # Checkout the desired version
    git checkout v4.7.1
 
@@ -82,24 +82,27 @@ Step 1: Load Required Modules
 
    # Modify this path accordingly
    export SPACK_ROOT="/path/to/spack"
-   
+
    # Activate Spack environment
    source "${SPACK_ROOT}/dist/bin/setup-env.sh" -y
-   
+
    # Load Intel OneAPI compiler
    module load intel-oneapi-compilers/2025
-   
+
    # Load Intel OneAPI MPI
    module load intel-oneapi-mpi
-   
+
    # Load NetCDF and HDF5 libraries
    module load hdf5
    module load netcdf-c
    module load netcdf-fortran
    module load parallel-netcdf
-   
-   # Verify modules are loaded
-   module list
+
+    # Verify modules are loaded
+    module list
+
+.. note::
+   If ``module load`` fails with "module unknown" on some compute nodes, the LMOD cache may be stale. Use ``module --ignore_cache load <name>`` to bypass the cache.
 
 Step 2: Set Environment Variables
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -108,27 +111,18 @@ WRF requires specific environment variables to locate libraries:
 
 .. code-block:: bash
 
-   # Set NetCDF paths
-   export NETCDF=$(nc-config --prefix)
-   export NETCDFF=$(nf-config --prefix)
-   
-   # Set Parallel-NetCDF path
-   export PNETCDF=$(pnetcdf-config --prefix)
-   
-   # Set HDF5 path
-   export HDF5=$(pkg-config --variable=prefix hdf5)
-   
-   # Set compiler environment variables
-   export CC=mpicc
-   export CXX=mpicxx
-   export FC=mpifort
-   export F77=mpifort
-   
-   # Verify paths
-   echo "NETCDF: $NETCDF"
-   echo "NETCDFF: $NETCDFF"
-   echo "PNETCDF: $PNETCDF"
-   echo "HDF5: $HDF5"
+    # Set NetCDF paths
+    # Use netcdf-fortran prefix for NETCDF so WRF finds netcdf.inc
+    export NETCDF=$(nf-config --prefix)
+    export NETCDFF=$(nf-config --prefix)
+
+    # Set Parallel-NetCDF path
+    export PNETCDF=$(pnetcdf-config --prefix)
+
+    # Verify paths
+    echo "NETCDF: $NETCDF"
+    echo "NETCDFF: $NETCDFF"
+    echo "PNETCDF: $PNETCDF"
 
 Step 3: Configure WRF
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -139,13 +133,13 @@ Run the WRF configuration script:
 
    # Clean any previous configuration
    ./clean -a
-   
+
    # Run configure script
    ./configure
 
-The configure script will present options for your system. For Intel compilers with distributed memory (MPI):
+The configure script will present options for your system. With Intel OneAPI 2025, the Fortran compiler is ``ifx`` (not ``ifort``).
 
-**Recommended Option:** Select option **15** (dmpar - Distributed Memory Parallel) for Intel compilers
+**Recommended Option:** Select option **78** (dmpar - Distributed Memory Parallel) for Intel ifx/icx (oneAPI LLVM)
 
 **Nesting Option:** Select **1** (basic) unless you need specialized nesting
 
@@ -154,15 +148,16 @@ Example configuration selection:
 .. code-block:: text
 
    Please select from among the following Linux x86_64 options:
-   
-   1. (serial)   2. (smpar)   3. (dmpar)   4. (dm+sm)   PGI (pgf90/gcc)
    ...
-   15. (dmpar)  INTEL (ifort/icc)
+   76. (serial)  77. (smpar)  78. (dmpar)  79. (dm+sm)   INTEL (ifx/icx) : oneAPI LLVM
    ...
-   
-   Enter selection [1-75] : 15
-   
+
+   Enter selection [1-83] : 78
+
    Compile for nesting? (1=basic, 2=preset moves, 3=vortex following) [default 1]: 1
+
+.. note::
+   Option **15** (ifort/icc) does **not** work with Intel OneAPI 2025 because ``ifort`` has been replaced by ``ifx``. Option 15 will fail with a NetCDF4 detection error.
 
 Step 4: Compile WRF
 ^^^^^^^^^^^^^^^^^^^
@@ -174,12 +169,12 @@ Compile WRF with parallel make:
    # Compile WRF (use multiple cores for faster compilation)
    # Replace 8 with the number of CPU cores you want to use
    ./compile em_real >& compile.log
-   
+
    # Monitor compilation progress in another terminal
    tail -f compile.log
 
 .. tip::
-   Compilation typically takes 20-30 minutes. You can monitor progress by watching the ``compile.log`` file.
+   Compilation typically takes 15-20 minutes. You can monitor progress by watching the ``compile.log`` file.
 
 Step 5: Verify Compilation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -190,7 +185,7 @@ After compilation completes, verify that the executables were created:
 
    # Check for required executables
    ls -lh main/*.exe
-   
+
    # You should see these files:
    # - ndown.exe
    # - real.exe
@@ -225,30 +220,27 @@ SLURM Batch Script Example
    #SBATCH --ntasks-per-node=32
    #SBATCH --time=24:00:00
    #SBATCH --partition=cpu
-   
+
    # Activate Spack environment
    export SPACK_ROOT="/path/to/spack"
    source "${SPACK_ROOT}/dist/bin/setup-env.sh" -y
-   
-   # Load the same modules used for compilation
-   module load intel-oneapi-compilers/2025
-   module load intel-oneapi-mpi/2021
-   module load netcdf-c/4.9.2
-   module load netcdf-fortran/4.6.1
-   module load parallel-netcdf/1.14.0
-   module load hdf5/1.14.6
-   
-   # Set environment variables
-   export NETCDF=$(nc-config --prefix)
-   export NETCDFF=$(nf-config --prefix)
-   export PNETCDF=$(pnetcdf-config --prefix)
-   
+
+    # Load the same modules used for compilation
+    module load intel-oneapi-compilers/2025
+    module load intel-oneapi-mpi
+    module load hdf5 netcdf-c netcdf-fortran parallel-netcdf
+
+    # Set environment variables
+    export NETCDF=$(nf-config --prefix)
+    export NETCDFF=$(nf-config --prefix)
+    export PNETCDF=$(pnetcdf-config --prefix)
+
    # Navigate to run directory
    cd $SLURM_SUBMIT_DIR
-   
+
    # Run real.exe to initialize
    srun -n 64 ./real.exe
-   
+
    # Run wrf.exe for simulation
    srun -n 64 ./wrf.exe
 
@@ -264,17 +256,16 @@ Compilation Errors
 
    # Verify NetCDF modules are loaded
    module list | grep netcdf
-   
+
    # Check environment variables
    echo $NETCDF
    echo $NETCDFF
-   
-   # Reload modules if necessary
-   module purge
-   module load intel-oneapi-compilers/2025
-   module load intel-oneapi-mpi/2021
-   module load netcdf-c/4.9.2
-   module load netcdf-fortran/4.6.1
+
+    # Reload modules if necessary
+    module purge
+    module load intel-oneapi-compilers/2025
+    module load intel-oneapi-mpi
+    module load hdf5 netcdf-c netcdf-fortran parallel-netcdf
 
 **Error: Missing executables after compilation**
 
@@ -283,7 +274,7 @@ Compilation Errors
    # Check compile.log for errors
    grep -i error compile.log
    grep -i failed compile.log
-   
+
    # Clean and recompile
    ./clean -a
    ./configure
@@ -304,7 +295,7 @@ Runtime Errors
 
    # Verify MPI module is loaded
    module list | grep mpi
-   
+
    # Check that you're using srun (not mpirun) in SLURM scripts
    srun -n <ntasks> ./wrf.exe
 
@@ -320,10 +311,10 @@ For production runs, you may want to modify compiler flags in ``configure.wrf``:
 
    # After running ./configure, edit configure.wrf
    # Look for FCOPTIM and CFLAGS lines
-   
-   # Example optimizations for Intel compilers:
-   FCOPTIM = -O3 -xHost -ip -fp-model fast=2
-   CFLAGS  = -O3 -xHost -ip -fp-model fast=2
+
+    # Example optimizations for Intel compilers (ifx):
+    FCOPTIM = -O3 -xCORE-AVX2 -ip -fp-model fast=2
+    CFLAGS  = -O3 -xCORE-AVX2 -ip -fp-model fast=2
 
 Domain Decomposition
 ^^^^^^^^^^^^^^^^^^^^
