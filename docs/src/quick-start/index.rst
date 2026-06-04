@@ -11,9 +11,7 @@ Quick Start
 
 Use this page as the main onboarding entry for new HPC4 users.
 If you received a welcome email with your initial credentials,
-it was generated from the
-`HPC Account Email Generator <https://github.com/hkust-hpc-team/hpc-account-email-generator>`__
-— keep that email handy as you follow this guide.
+keep that email handy as you follow this guide.
 
 .. _understanding-the-cluster:
 

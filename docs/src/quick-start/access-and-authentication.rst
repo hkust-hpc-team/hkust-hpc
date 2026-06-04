@@ -26,9 +26,7 @@ Account Application
 
 - Available to HKUST researchers.
 - Details about your initial credentials are provided in your HPC welcome
-  email.  See the `HPC Account Email Generator
-  <https://github.com/hkust-hpc-team/hpc-account-email-generator>`__
-  for the template used to generate that email.
+  email — keep it handy as you follow this guide.
 - Account applications are available to HKUST faculty members acting as principal investigators (PIs) for their research projects.
 - Users must apply for an account before accessing the HPC4 cluster.
 - All applications must be sponsored by a principal investigator (PI), who must be a faculty member of the university.
