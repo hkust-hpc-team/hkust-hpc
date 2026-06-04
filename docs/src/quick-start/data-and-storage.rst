@@ -53,6 +53,9 @@ File Transfer
 -------------
 
 HPC4 file transfer is typically done over SSH-based tools.
+**File transfers should be initiated from the login node;**
+do not run ``rsync`` or ``scp`` from inside a compute job unless your
+workflow specifically requires it.
 
 The examples below were tested with a user home directory on 2026-06-04.
 They are suitable as smoke tests before you start transferring project data.

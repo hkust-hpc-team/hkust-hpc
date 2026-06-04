@@ -147,21 +147,63 @@ Example output from one HPC4 login-node session:
 Using uv for Pure-Python Workflows
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-For pure-Python projects, ``uv`` is a fast alternative to creating a Conda environment.
-This works well when you only need a Python interpreter plus packages from PyPI.
+For pure-Python projects, `uv <https://docs.astral.sh/uv/>`__ is a fast,
+modern package manager that works in user space — no administrator access
+needed.  We also recommend `ruff <https://docs.astral.sh/ruff/>`__
+(a fast Python linter and formatter) as a companion tool.
+
+Install uv once on the login node:
+
+.. code-block:: bash
+
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+
+The installer places ``uv`` in ``~/.local/bin/uv``.  Add it to your
+``PATH`` for convenience:
+
+.. code-block:: bash
+
+    echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
+    source ~/.bashrc
+
+Basic workflow with edge Python + uv:
 
 .. code-block:: bash
 
     module purge
     source /opt/shared/.spack-edge/dist/bin/setup-env.sh -y
     module load python/3.13.2
-    uv venv myenv
-    source myenv/bin/activate
+    uv venv
+    source .venv/bin/activate
     uv pip install numpy pandas matplotlib
+    uv pip install ruff
     python --version
 
-Use Conda-based modules when you specifically want a bundled scientific Python distribution.
-For more complete Python workflow guidance, including ``uv``, see :doc:`/software/python/python`.
+In a SLURM job script:
+
+.. code-block:: bash
+
+    #!/bin/bash
+    #SBATCH --job-name=my-python-job
+    #SBATCH --output=py-%j.out
+    #SBATCH --time=01:00:00
+    #SBATCH --nodes=1
+    #SBATCH --ntasks=1
+    #SBATCH --cpus-per-task=4
+    #SBATCH --account=<your-account>
+    #SBATCH --partition=amd
+
+    module purge
+    source /opt/shared/.spack-edge/dist/bin/setup-env.sh -y
+    module load python/3.13.2
+    source /path/to/project/.venv/bin/activate
+    python my_script.py
+
+Use Conda-based modules (``anaconda3`` or ``miniconda3``) when you
+specifically need packages from the conda ecosystem that are not on
+PyPI, or when your project mixes Python with compiled C/C++/Fortran
+code.  For more complete Python workflow guidance, see
+:doc:`/software/python/python`.
 
 Compiler and MPI Environment
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~

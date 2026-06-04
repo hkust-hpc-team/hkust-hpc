@@ -10,12 +10,59 @@ Quick Start
     | Last updated: 2026-06-04
 
 Use this page as the main onboarding entry for new HPC4 users.
+If you received a welcome email with your initial credentials,
+it was generated from the
+`HPC Account Email Generator <https://github.com/hkust-hpc-team/hpc-account-email-generator>`__
+— keep that email handy as you follow this guide.
 
-Background
-----------
+.. _understanding-the-cluster:
 
-HPC4 is designed for CPU-intensive computational jobs and jobs requiring GPU coprocessor support.
-It is open to approved university researchers.
+Understanding the Cluster
+--------------------------
+
+What is an HPC cluster?
+~~~~~~~~~~~~~~~~~~~~~~~
+
+A cluster is many computers (*nodes*) connected by a high-speed network
+and managed as a single shared system.  Hundreds of people use it at the
+same time.  HPC4 provides:
+
+- **Login nodes** — where you land when you SSH in.  Shared by everyone.
+  Use them only for editing files, light compiling, submitting jobs, and
+  transferring data.  **Do not run heavy computations on login nodes** —
+  they will be killed by the system administrators.
+
+- **Compute nodes** — the machines that actually run your work.  They
+  come in CPU-only and GPU-equipped variants.  You never SSH directly to
+  them; instead you submit jobs to the scheduler.
+
+The HPC4 scheduler: Slurm
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Slurm is the software that manages access to compute nodes.  Think of it as a
+restaurant host:
+
+- You tell Slurm what resources you need (CPUs, memory, time, GPUs)
+  by writing a *batch script*.
+- Slurm puts your job in a queue and starts it when resources are free.
+- Requesting **more** resources than you need will make you wait **longer**.
+  Start small, measure, then scale up.
+
+Slurm also enforces fair sharing: no single user can monopolise the cluster.
+
+Cluster vs your laptop
+~~~~~~~~~~~~~~~~~~~~~~
+
+.. list-table::
+   :header-rows: 1
+
+   * -                        | Your laptop          | HPC4 cluster
+   * - Who uses it            | You alone            | Shared by hundreds of users
+   * - Starting work          | Open a terminal      | Submit a job via ``sbatch``
+   * - Getting results        | Immediately          | After the job runs (queued)
+   * - Software               | Install anything     | Load via ``module`` commands
+   * - File system            | Local SSD            | Network-mounted (NFS)
+   * - GPUs                   | Usually 0–1          | Many, shared via scheduler
 
 Use the pages below as the main onboarding path.
 Each item includes a short description so readers can decide where to start.
@@ -29,6 +76,7 @@ Each item includes a short description so readers can decide where to start.
     data-and-storage
     software-environment
     first-job-template
+    job-submission
 
 .. grid:: 1 2 2 2
     :gutter: 2

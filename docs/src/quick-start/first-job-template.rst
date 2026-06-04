@@ -12,12 +12,6 @@ Submit Your First HPC4 Job
 This page is the shortest path to a first successful HPC4 batch job.
 It keeps the scope narrow: one small CPU script, one ``sbatch``, one output file.
 
-.. toctree::
-    :maxdepth: 1
-    :titlesonly:
-
-    job-submission
-
 Before You Start
 ----------------
 
