@@ -38,7 +38,7 @@ Use your own account and partition values from that query.
 Example output from one HPC4 account included entries for:
 
 - account ``hpcintern`` on partitions ``amd`` and ``intel``
-- account ``hpcintern`` on GPU partitions such as ``gpu-rtx4090d``, ``gpu-rtx5880``, ``gpu-l20``, and ``gpu-a30``
+- account ``hpcintern`` on GPU partitions such as ``gpu-a30``, ``gpu-l20``, and ``gpu-rtx5880``
 
 One tested CPU combination on one account was:
 

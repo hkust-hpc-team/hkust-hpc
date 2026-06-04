@@ -20,15 +20,11 @@ keep that email handy as you follow this guide.
 
    - SuperPOD primarily uses **container-based environments**
      (Enroot with Pyxis SLURM integration).  See :doc:`/kb/enroot/index`.
-   - The edge Spack instance is located at ``/scratch/spack/2025``
-     (not ``/opt/shared/.spack-edge``).
-   - Available partitions are ``normal``, ``preempt``, and ``cpu``.
-   - Interactive sessions have a maximum walltime of 2 hours
-     (4 hours on HPC4).
-
-   Check your welcome email and the
-   `SuperPOD website <https://itso.hkust.edu.hk/services/academic-teaching-support/high-performance-computing/superpod>`__
-   for details.
+   - The edge Spack instance is at ``/scratch/spack/2025``
+     (not ``/opt/shared/.spack-edge``).  Module commands require a
+     login shell (``bash -l``) or sourcing Lmod explicitly.
+   - See the `SuperPOD website <https://itso.hkust.edu.hk/services/academic-teaching-support/high-performance-computing/superpod>`__
+     for partition and quota details.
 
 .. _understanding-the-cluster:
 
