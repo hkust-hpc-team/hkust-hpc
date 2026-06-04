@@ -1,6 +1,14 @@
 Submit Your First HPC4 Job
 ==========================
 
+.. meta::
+    :description: Minimal first SLURM batch job walkthrough for HPC4 users who want one fast, successful CPU submission.
+    :keywords: HPC4, SLURM, sbatch, first job, quick start, batch job
+
+.. rst-class:: header
+
+    | Last updated: 2026-06-04
+
 This page is the shortest path to a first successful HPC4 batch job.
 It keeps the scope narrow: one small CPU script, one ``sbatch``, one output file.
 
@@ -103,3 +111,9 @@ Next Step
 ---------
 
 After this first CPU job works, move on to :doc:`job-submission` for GPU batch jobs, MPI batch jobs, interactive ``srun`` sessions, and ``squeue`` or ``scancel`` usage.
+
+See Also
+--------
+
+- :doc:`/software/software-support-overview`
+- :doc:`How to Submit and Run Batch Jobs with SLURM </kb/slurm/slurm-how-to-submit-and-run-batch-jobs-G75o-i>`

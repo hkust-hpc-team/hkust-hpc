@@ -1,6 +1,14 @@
 Job Submission
 ==============
 
+.. meta::
+    :description: Quick-start SLURM guide for HPC4 users covering CPU, GPU, MPI, interactive sessions, and basic job control.
+    :keywords: HPC4, SLURM, sbatch, srun, squeue, scancel, GPU, MPI
+
+.. rst-class:: header
+
+    | Last updated: 2026-06-04
+
 This page extends :doc:`first-job-template`.
 Use it after your first simple CPU batch job already works and you need GPU, MPI, interactive, or job-control patterns.
 
@@ -30,7 +38,7 @@ Use your own account and partition values from that query.
 Example output from one HPC4 account included entries for:
 
 - account ``hpcintern`` on partitions ``amd`` and ``intel``
-- account ``hpcintern`` on GPU partitions such as ``gpu-rtx40+``, ``gpu-l20``, and ``gpu-a30``
+- account ``hpcintern`` on GPU partitions such as ``gpu-rtx4090d``, ``gpu-rtx5880``, ``gpu-l20``, and ``gpu-a30``
 
 One tested CPU combination on one account was:
 
@@ -58,6 +66,9 @@ One tested script only succeeded after the account and partition values were cor
     #SBATCH --cpus-per-task=1
     #SBATCH --account=<your-account>
     #SBATCH --partition=amd
+
+    source /opt/shared/.spack-edge/dist/bin/setup-env.sh -y
+    module load python/3.13.2
 
     python my_script.py
 
@@ -92,6 +103,7 @@ MPI Batch Template
 Use this when your application launches multiple ranks.
 
 One tested HPC4 batch script used one node on ``amd`` with two tasks and ran ``srun -n 2 hostname``.
+On the edge Spack instance, load a compiler first so that the hierarchical Lmod tree exposes ``openmpi``.
 
 .. code-block:: bash
 
@@ -104,8 +116,9 @@ One tested HPC4 batch script used one node on ``amd`` with two tasks and ran ``s
     #SBATCH --account=<your-account>
     #SBATCH --partition=amd
 
-    module load intel-oneapi-compilers/2024.1.0-imjimv2
-    module load openmpi/5.0.3-65bzfqx
+    source /opt/shared/.spack-edge/dist/bin/setup-env.sh -y
+    module load intel-oneapi-compilers/2025.0.4
+    module load openmpi/5.0.6
 
     srun -n 2 hostname
 
@@ -161,7 +174,7 @@ Example output from one HPC4 login-node session while a cancel test job was stil
 .. code-block:: text
 
              JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
-           1405015       amd cancel-t wwyuenaa  R       0:04      1 cpu42
+           1405015       amd cancel-t <username>  R       0:04      1 cpu42
 
 Cancel a specific job:
 
@@ -174,7 +187,7 @@ Example output from one HPC4 login-node session immediately after ``scancel 1405
 .. code-block:: text
 
              JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
-           1405015       amd cancel-t wwyuenaa CG       0:04      1 cpu42
+           1405015       amd cancel-t <username> CG       0:04      1 cpu42
 
 Cancel all of your jobs only when you really mean to do so:
 
@@ -251,10 +264,10 @@ Example output from one HPC4 login-node session:
 
     srun: job 1404966 queued and waiting for resources
     srun: job 1404966 has been allocated resources
-    [wwyuenaa@cpu69 ~]$ hostname
+    [<username>@cpu69 ~]$ hostname
     cpu69
-    [wwyuenaa@cpu69 ~]$ pwd
-    /home/wwyuenaa
+    [<username>@cpu69 ~]$ pwd
+    /home/<username>
 
 If you requested a GPU, also check:
 
@@ -273,7 +286,7 @@ Example output from one HPC4 GPU interactive session:
     Thu Jun  4 16:10:31 2026
     | NVIDIA A30 |
     gpu01
-    /home/wwyuenaa
+    /home/<username>
 
 Leave the interactive session with:
 
@@ -312,3 +325,6 @@ See Also
 --------
 
 - :doc:`first-job-template`
+- :doc:`/software/software-support-overview`
+- :doc:`How to Submit and Run Batch Jobs with SLURM </kb/slurm/slurm-how-to-submit-and-run-batch-jobs-G75o-i>`
+- :doc:`How to Request Interactive Sessions </kb/slurm/slurm-how-to-request-interactive-sessi-HV7WS9>`

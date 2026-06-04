@@ -1,13 +1,21 @@
 Quick Start
 ===========
 
+.. meta::
+    :description: Quick-start onboarding path for new HPC4 users covering access, storage, software setup, and first SLURM jobs.
+    :keywords: HPC4, quick start, onboarding, SLURM, software environment, storage
+
+.. rst-class:: header
+
+    | Last updated: 2026-06-04
+
 Use this page as the main onboarding entry for new HPC4 users.
 
 Background
 ----------
 
 HPC4 is designed for CPU-intensive computational jobs and jobs requiring GPU coprocessor support.
-It is open to all approved university researchers, while School of Science and Engineering users have higher access priority.
+It is open to approved university researchers.
 
 Use the pages below as the main onboarding path.
 Each item includes a short description so readers can decide where to start.

@@ -1,6 +1,14 @@
 Data and Storage Guide
 ======================
 
+.. meta::
+    :description: Quick-start guide to choosing storage locations and transferring files to and from HPC4.
+    :keywords: HPC4, storage, data transfer, home, scratch, project, scp, sftp, rsync
+
+.. rst-class:: header
+
+    | Last updated: 2026-06-04
+
 This page helps new users decide where to place files on HPC4 and how to transfer files to and from the system.
 
 Environment

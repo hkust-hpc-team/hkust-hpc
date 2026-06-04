@@ -1,6 +1,14 @@
 Access and Authentication
 =========================
 
+.. meta::
+    :description: Access requirements and SSH login workflow for first-time HPC4 users.
+    :keywords: HPC4, access, authentication, SSH, Duo MFA, VPN
+
+.. rst-class:: header
+
+    | Last updated: 2026-06-04
+
 Environment
 -----------
 
