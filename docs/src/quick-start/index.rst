@@ -51,16 +51,21 @@ Slurm also enforces fair sharing: no single user can monopolise the cluster.
 Cluster vs your laptop
 ~~~~~~~~~~~~~~~~~~~~~~
 
-.. list-table::
-   :header-rows: 1
-
-   * -                        | Your laptop          | HPC4 cluster
-   * - Who uses it            | You alone            | Shared by hundreds of users
-   * - Starting work          | Open a terminal      | Submit a job via ``sbatch``
-   * - Getting results        | Immediately          | After the job runs (queued)
-   * - Software               | Install anything     | Load via ``module`` commands
-   * - File system            | Local SSD            | Network-mounted (NFS)
-   * - GPUs                   | Usually 0–1          | Many, shared via scheduler
++----------------------+----------------------+-----------------------------+
+|                      | Your laptop          | HPC4 cluster                |
++======================+======================+=============================+
+| Who uses it          | You alone            | Shared by hundreds of users |
++----------------------+----------------------+-----------------------------+
+| Starting work        | Open a terminal      | Submit a job via ``sbatch`` |
++----------------------+----------------------+-----------------------------+
+| Getting results      | Immediately          | After the job runs (queued) |
++----------------------+----------------------+-----------------------------+
+| Software             | Install anything     | Load via ``module`` commands|
++----------------------+----------------------+-----------------------------+
+| File system          | Local SSD            | Network-mounted (NFS)       |
++----------------------+----------------------+-----------------------------+
+| GPUs                 | Usually 0–1          | Many, shared via scheduler  |
++----------------------+----------------------+-----------------------------+
 
 Use the pages below as the main onboarding path.
 Each item includes a short description so readers can decide where to start.
