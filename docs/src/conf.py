@@ -42,6 +42,8 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx_copybutton",
     "sphinx_design",
+    "sphinx.ext.graphviz",
+    "sphinxcontrib.mermaid",
 ]
 
 intersphinx_mapping = {

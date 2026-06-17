@@ -9,6 +9,7 @@ dependencies = [
     "sphinx-copybutton~=0.5.2",
     "sphinx-design~=0.6.1",
     "sphinx-rtd-theme~=3.0.2",
+    "sphinxcontrib-mermaid>=2.0.2",
 ]
 license = {text = "MIT"}
 authors = [
@@ -62,6 +63,9 @@ ignore_directives = [
     "grid-item-card",
     "tab-set",
     "tab-item",
+    # Sphinx extension directives (unknown to rstcheck)
+    "graphviz",
+    "mermaid",
     # code-block content validation is skipped: rstcheck produces false
     # positives for Helm templates, bash placeholders (<name>), C headers,
     # and code-block directives without an explicit language specifier.
