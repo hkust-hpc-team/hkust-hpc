@@ -2,80 +2,123 @@ Data and Storage Guide
 ======================
 
 .. meta::
-    :description: Quick-start guide to choosing storage locations and transferring files to and from HPC4.
-    :keywords: HPC4, storage, data transfer, home, scratch, project, scp, sftp, rsync
+    :description: Quick-start guide to choosing storage locations and transferring files on HPC4 and SuperPOD.
+    :keywords: HPC4, SuperPOD, storage, data transfer, home, scratch, project, scp, sftp, rsync
 
 .. rst-class:: header
 
     | Last updated: 2026-06-04
 
-This page helps new users decide where to place files on HPC4 and how to transfer files to and from the system.
+This page helps new users decide where to place files on HPC4 or SuperPOD and how to transfer files to and from the system.
 
 Environment
 -----------
 
-    - Users who have already obtained HPC4 access
+    - Users who have already obtained HPC4 or SuperPOD access
     - Windows 10/11, macOS, or Linux
     - SSH client or file transfer tool with SSH support
 
-Directory Differentiation
--------------------------
+Directory Structure
+-------------------
 
-Before uploading or generating files on HPC4, identify the correct destination directory.
+Both HPC4 and SuperPOD provide three main storage tiers.
+The directory layout is similar, but quotas and retention policies differ.
 
-- ``/home/<username>``: Personal home directory for configuration files, small scripts, executables, container images, Conda environments, and small datasets. Default quota is 200 GB. Official HPC4 storage summary states that home directories have a 14-day backup window.
-- ``/scratch/<username>``: Per-user high-speed scratch space for temporary job input, intermediate files, and short-term job output. Default quota is 500 GB. Scratch is not backed up, and files without read or write access for 60 days are automatically purged.
-- ``/project/<groupname>``: Shared group storage for members of a PI research group. Default quota is 10 TB per research group. Use this for shared datasets, shared source code, and shared software packages.
+.. list-table::
+   :header-rows: 1
+   :widths: 20 40 40
+
+   * - Path
+     - HPC4
+     - SuperPOD
+   * - ``/home/<username>``
+     - 200 GB quota · backed up (14-day window)
+     - persistent · see welcome email
+   * - ``/scratch/<username>``
+     - 500 GB quota · auto-purged after 60 days of inactivity
+     - ``/scratch/<groupname>`` · 5 TB group quota · auto-purged after 30 days
+   * - ``/project/<groupname>``
+     - 10 TB per research group · not backed up
+     - shared group storage · see welcome email
 
 .. note::
 
-    Do not assume all directories have the same quota, retention policy, or backup policy.
-    On the official HPC4 storage page, home storage is backed up, while project and scratch storage are not.
+   ``/scratch`` is **temporary** high-speed storage.  Do not rely on it for
+   long-term retention.  Files without read or write access for the
+   retention period are automatically deleted.
 
-Recommended placement
+Recommended Placement
 ~~~~~~~~~~~~~~~~~~~~~
 
-- Put login scripts, dotfiles, small source trees, and personal Python environments in ``/home/<username>``.
-- Put large temporary datasets, intermediate results, and short-term job output in ``/scratch/<username>``.
-- Put shared project data, shared code, and shared software stacks in ``/project/<groupname>``.
-- Do not rely on ``/scratch/<username>`` for long-term retention.
+- **``/home/<username>``** — login scripts, dotfiles, small source trees, personal Python/Conda environments, container images.
+- **``/scratch/<username>``** (HPC4) or **``/scratch/<groupname>``** (SuperPOD) — large temporary datasets, intermediate results, short-term job output.
+- **``/project/<groupname>``** — shared datasets, shared source code, shared software stacks for your research group.
 
-Useful capacity check
-~~~~~~~~~~~~~~~~~~~~~
+Check Disk Usage
+~~~~~~~~~~~~~~~~
 
-The official HPC4 storage page recommends this command to inspect the three major storage types:
+Use ``df -h`` to inspect available space:
 
 .. code-block:: bash
 
-     df -h /home /project /scratch
+     df -h /home /scratch /project
 
 File Transfer
 -------------
 
-HPC4 file transfer is typically done over SSH-based tools.
-**File transfers should be initiated from the login node;**
-do not run ``rsync`` or ``scp`` from inside a compute job unless your
-workflow specifically requires it.
+**rsync is the recommended tool** for most file transfers.
+It supports directory sync, resume on failure, and delta transfers (only changed files).
 
-The examples below were tested with a user home directory on 2026-06-04.
-They are suitable as smoke tests before you start transferring project data.
+.. tip::
 
-Use the same HPC4 login hostname and username format as your SSH login:
+   Use ``rsync`` for all transfers.  It is more reliable than ``scp`` for
+   directories and large files, and it can resume interrupted transfers.
 
-- use your HKUST username only
-- do not append ``@ust.hk`` or ``@connect.ust.hk`` to the username
-- if you are off campus, connect through VPN before starting file transfer
+Use the same hostname and username format as your SSH login:
+
+- Use your HKUST username only (do not append ``@ust.hk``).
+- If you are off campus, connect through VPN before starting file transfer.
+
+Rsync Example (Recommended)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Upload a local directory to your home directory on the cluster:
+
+.. code-block:: bash
+
+    rsync -av local-folder/ <username>@hpc4.ust.hk:~/rsync-test/
+
+The ``-a`` flag preserves permissions and timestamps; ``-v`` shows progress.
+Add ``--progress`` for per-file transfer details.
+
+Download a directory from the cluster:
+
+.. code-block:: bash
+
+    rsync -av <username>@hpc4.ust.hk:~/rsync-test/ ./local-folder/
+
+Preview what would be transferred without copying:
+
+.. code-block:: bash
+
+    rsync -avn local-folder/ <username>@hpc4.ust.hk:~/rsync-test/
+
+For real project use:
+
+- Upload small personal scripts to ``/home/<username>``
+- Upload large temporary job input and output under ``/scratch/<username>`` (HPC4) or ``/scratch/<groupname>`` (SuperPOD)
+- Upload team-shared files under ``/project/<groupname>``
 
 SCP Example
 ~~~~~~~~~~~
 
-Upload a local file to your home directory on HPC4:
+Upload a single file:
 
 .. code-block:: bash
 
     scp local-file.txt <username>@hpc4.ust.hk:~/
 
-Download the same file back to your local machine:
+Download a single file:
 
 .. code-block:: bash
 
@@ -100,52 +143,10 @@ Example SFTP commands:
     get local-file.txt downloaded-via-sftp.txt
     bye
 
-Rsync Example
-~~~~~~~~~~~~~
-
-Use ``rsync`` when transferring directories or repeatedly syncing updated files.
-
-Create a small local test directory first:
-
-.. code-block:: bash
-
-    mkdir -p local-folder
-    echo "rsync test" > local-folder/test.txt
-
-Preview the transfer without copying files:
-
-.. code-block:: bash
-
-    rsync -avn local-folder/ <username>@hpc4.ust.hk:~/rsync-test/
-
-Run the actual transfer:
-
-.. code-block:: bash
-
-    rsync -av local-folder/ <username>@hpc4.ust.hk:~/rsync-test/
-
-For real project use after the smoke test:
-
-- upload small personal scripts to ``/home/<username>``
-- upload large temporary job input and output under ``/scratch/<username>``
-- upload team-shared files under ``/project/<groupname>``
-
 Verify the Transfer
 -------------------
 
-After uploading or syncing files, verify that they exist on HPC4.
-
-For SCP upload verification:
-
-.. code-block:: bash
-
-    ssh <username>@hpc4.ust.hk 'ls -l ~/local-file.txt'
-
-For SCP download verification:
-
-.. code-block:: bash
-
-    cat downloaded-file.txt
+After uploading or syncing files, verify that they exist on the cluster.
 
 For rsync verification:
 
@@ -154,14 +155,19 @@ For rsync verification:
     ssh <username>@hpc4.ust.hk 'ls -R ~/rsync-test'
     ssh <username>@hpc4.ust.hk 'cat ~/rsync-test/test.txt'
 
+For SCP verification:
+
+.. code-block:: bash
+
+    ssh <username>@hpc4.ust.hk 'ls -l ~/local-file.txt'
+
 Transfer Checklist
 ------------------
 
 - Confirm the target directory before uploading.
-- Avoid writing large temporary files into the wrong location.
+- Use ``rsync`` instead of repeated ``scp`` when updating many files.
 - Verify that the transfer completed successfully before starting a job.
-- Use ``rsync`` instead of repeated manual copies when updating many files.
-- Remember that ``/scratch/<username>`` is automatically purged after inactivity and is not a backup location.
+- Remember that ``/scratch`` is automatically purged after inactivity — it is not a backup location.
 
 References
 ----------

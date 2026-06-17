@@ -1,9 +1,9 @@
-Job Submission
-==============
+Job Templates and Control
+=========================
 
 .. meta::
-    :description: Quick-start SLURM guide for HPC4 users covering CPU, GPU, MPI, interactive sessions, and basic job control.
-    :keywords: HPC4, SLURM, sbatch, srun, squeue, scancel, GPU, MPI
+    :description: Quick-start SLURM guide for HPC4 and SuperPOD users covering CPU, GPU, MPI, interactive sessions, and basic job control.
+    :keywords: HPC4, SuperPOD, SLURM, sbatch, srun, squeue, scancel, GPU, MPI
 
 .. rst-class:: header
 
@@ -15,7 +15,7 @@ Use it after your first simple CPU batch job already works and you need GPU, MPI
 Environment
 -----------
 
-    - Users who can already log in to HPC4
+    - Users who can already log in to the cluster (HPC4 or SuperPOD)
     - Users who already know their available SLURM account and partition
     - Basic familiarity with shell commands and text editors
 
@@ -26,23 +26,26 @@ Before writing a job script, confirm your SLURM association and available partit
 
 .. code-block:: bash
 
-    sacctmgr show user <username> withassoc
+    sacctmgr show user $USER withassoc
+
+Example output (your account and partitions will differ):
+
+.. code-block:: text
+
+       User    Def Acct     Admin    Cluster    Account  Partition     Share   Priority  MaxJobs  MaxNodes  MaxCPUs  MaxSubmit  MaxWall  MaxCPUMins  QOS   Def QOS  GrpCPUs  GrpJobs  GrpNodes  GrpSubmit  GrpWall  GrpCPUMins
+    --------- ---------- --------- ---------- ---------- ---------- --------- --------- -------- --------- -------- ---------- -------- ---------- ----- -------- -------- -------- --------- ---------- -------- -----------
+       alice        itsc      None       hpc4        itsc        amd         1                                                      normal
+       alice        itsc      None       hpc4        itsc       intel        1                                                      normal
+       alice        itsc      None       hpc4        itsc     gpu-a30        1                                                      normal
+       alice        itsc      None       hpc4        itsc     gpu-l20        1                                                      normal
 
 Use your own account and partition values from that query.
 
-.. important::
+.. warning::
 
-    Replace placeholders such as ``<username>``, ``<your-account>``, ``<your-gpu-partition>``, and ``<job_id>`` before running the commands.
-    If you type the angle brackets literally, the shell will treat them as redirection syntax and the command will fail.
-
-Example output from one HPC4 account included entries for:
-
-- account ``hpcintern`` on partitions ``amd`` and ``intel``
-- account ``hpcintern`` on GPU partitions such as ``gpu-a30``, ``gpu-l20``, and ``gpu-rtx5880``
-
-One tested CPU combination on one account was:
-
-- ``--account=hpcintern`` with ``--partition=amd``
+   If ``sbatch`` reports ``Invalid account or account/partition combination specified``,
+   re-check your ``#SBATCH --account`` and ``#SBATCH --partition`` pair against the
+   output of ``sacctmgr show user $USER withassoc``.
 
 SLURM Templates
 ---------------
@@ -51,9 +54,6 @@ CPU Batch Template
 ~~~~~~~~~~~~~~~~~~
 
 Use this for a simple non-MPI CPU job.
-
-If ``sbatch`` reports ``Invalid account or account/partition combination specified``, re-check your ``#SBATCH --account`` and ``#SBATCH --partition`` pair against the output of ``sacctmgr show user <username> withassoc``.
-One tested script only succeeded after the account and partition values were corrected to a valid pair.
 
 .. code-block:: bash
 
@@ -72,12 +72,18 @@ One tested script only succeeded after the account and partition values were cor
 
     python my_script.py
 
+Create ``my_script.py`` alongside ``submit.sh``:
+
+.. code-block:: python
+
+    import platform
+    print(f"Hello from {platform.node()}")
+    print(f"Python {platform.python_version()}")
+
 GPU Batch Template
 ~~~~~~~~~~~~~~~~~~
 
 Use this when your application needs one GPU.
-
-One tested HPC4 batch script used ``--account=hpcintern``, ``--partition=gpu-a30``, and ``--gres=gpu:1``.
 
 .. code-block:: bash
 
@@ -90,19 +96,15 @@ One tested HPC4 batch script used ``--account=hpcintern``, ``--partition=gpu-a30
     #SBATCH --cpus-per-task=8
     #SBATCH --account=<your-account>
     #SBATCH --partition=<your-gpu-partition>
-    #SBATCH --gres=gpu:1
+    #SBATCH --gpus-per-node=1
 
     nvidia-smi
     hostname
-
-One tested submission returned ``Submitted batch job 1405013`` and produced output that included ``NVIDIA A30`` followed by ``gpu01``.
 
 MPI Batch Template
 ~~~~~~~~~~~~~~~~~~
 
 Use this when your application launches multiple ranks.
-
-One tested HPC4 batch script used one node on ``amd`` with two tasks and ran ``srun -n 2 hostname``.
 On the edge Spack instance, load a compiler first so that the hierarchical Lmod tree exposes ``openmpi``.
 
 .. code-block:: bash
@@ -122,13 +124,6 @@ On the edge Spack instance, load a compiler first so that the hierarchical Lmod 
 
     srun -n 2 hostname
 
-One tested submission returned ``Submitted batch job 1405014`` and produced:
-
-.. code-block:: text
-
-    cpu74
-    cpu74
-
 .. important::
 
    On HPC4, prefer ``srun`` in SLURM jobs.
@@ -143,62 +138,41 @@ Check all of your jobs:
 
 .. code-block:: bash
 
-    squeue -u $USER
+    squeue --me
 
-Example output from one HPC4 login-node session:
+Example output while a job is running:
 
 .. code-block:: text
 
-             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+              JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+            1405015       amd cpu-quick    alice  R       0:04      1 cpu42
 
-If no jobs are running or pending, you may only see the header line.
+If no jobs are running or pending, you see only the header line.
 
 Check one specific job:
 
 .. code-block:: bash
 
-    squeue -j <job_id>
+    squeue -j 1404973
 
-Remember to replace ``<job_id>`` with the actual numeric job ID returned by ``sbatch``.
-
-Example output from one HPC4 login-node session after a short CPU job completed:
-
-.. code-block:: text
-
-             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
-
-If the job is very short, it may already have finished before you run ``squeue -j <job_id>``.
-
-Example output from one HPC4 login-node session while a cancel test job was still running:
-
-.. code-block:: text
-
-             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
-           1405015       amd cancel-t <username>  R       0:04      1 cpu42
+If the job is very short, it may already have finished before you run ``squeue -j``.
 
 Cancel a specific job:
 
 .. code-block:: bash
 
-    scancel <job_id>
-
-Example output from one HPC4 login-node session immediately after ``scancel 1405015``:
-
-.. code-block:: text
-
-             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
-           1405015       amd cancel-t <username> CG       0:04      1 cpu42
+    scancel 1404973
 
 Cancel all of your jobs only when you really mean to do so:
 
 .. code-block:: bash
 
-    scancel -u $USER
+    scancel --me
 
 .. warning::
 
-    ``scancel -u $USER`` cancels all of your jobs, including an active interactive ``srun --pty bash`` session.
-    Use it only when you want to stop every running and pending job owned by your account.
+   ``scancel --me`` cancels all of your jobs, including an active interactive ``srun --pty bash`` session.
+   Use it only when you want to stop every running and pending job owned by your account.
 
 Minimal status interpretation:
 
@@ -233,23 +207,15 @@ GPU interactive session example:
          --nodes=1 \
          --ntasks=1 \
          --cpus-per-task=8 \
-         --gres=gpu:1 \
+         --gpus-per-node=1 \
          --time=00:10:00 \
          --pty bash
 
 .. important::
 
-    Do not request GPU resources together with a CPU-only partition such as ``amd``.
-    On one tested HPC4 account, ``--gpus-per-task=1`` and ``--gpus=1`` were both rejected on ``gpu-a30``.
-    The tested working form was ``--gres=gpu:1`` on ``--partition=gpu-a30``.
-
-One tested failure case requested GPU resources on ``--partition=amd`` and returned:
-
-.. code-block:: text
-
-    srun: error: Unable to allocate resources: Requested node configuration is not available
-
-One tested failure case requested ``--gpus-per-task=1`` on ``--partition=gpu-a30`` and returned a resource-limit error stating that 0 GPUs were requested.
+   Do not request GPU resources together with a CPU-only partition such as ``amd``.
+   On both HPC4 and SuperPOD, use ``--gpus-per-node=<n>`` to request GPUs.
+   ``--gpus-per-task`` and ``--gpus`` are not recommended on GPU partitions.
 
 Once the session starts, run a small check such as:
 
@@ -258,16 +224,16 @@ Once the session starts, run a small check such as:
     hostname
     pwd
 
-Example output from one HPC4 login-node session:
+Example output from an HPC4 CPU interactive session:
 
 .. code-block:: text
 
     srun: job 1404966 queued and waiting for resources
     srun: job 1404966 has been allocated resources
-    [<username>@cpu69 ~]$ hostname
+    [alice@cpu69 ~]$ hostname
     cpu69
-    [<username>@cpu69 ~]$ pwd
-    /home/<username>
+    [alice@cpu69 ~]$ pwd
+    /home/alice
 
 If you requested a GPU, also check:
 
@@ -277,7 +243,7 @@ If you requested a GPU, also check:
 
 If you are not actually on a GPU node, ``nvidia-smi`` may not be available.
 
-Example output from one HPC4 GPU interactive session:
+Example output from an HPC4 GPU interactive session:
 
 .. code-block:: text
 
@@ -286,7 +252,7 @@ Example output from one HPC4 GPU interactive session:
     Thu Jun  4 16:10:31 2026
     | NVIDIA A30 |
     gpu01
-    /home/<username>
+    /home/alice
 
 Leave the interactive session with:
 
@@ -301,25 +267,7 @@ Practical Notes
 - Keep output files named with ``%j`` so different runs do not overwrite each other.
 - Use batch jobs for unattended work and interactive sessions for short manual checks.
 - Avoid heavy compilation or long-running tasks on login nodes.
-- If a command example contains angle-bracket placeholders, replace them before pressing Enter.
 - A very short batch job may finish before ``squeue -j <job_id>`` shows anything useful.
-
-Minimal Successful Batch Example
---------------------------------
-
-One tested short CPU script was submitted successfully with ``sbatch`` and produced a normal output file.
-
-Example submission output:
-
-.. code-block:: text
-
-    Submitted batch job 1404973
-
-Example output file content:
-
-.. code-block:: text
-
-    Hello from cpu13
 
 See Also
 --------
@@ -328,3 +276,5 @@ See Also
 - :doc:`/software/software-support-overview`
 - :doc:`How to Submit and Run Batch Jobs with SLURM </kb/slurm/slurm-how-to-submit-and-run-batch-jobs-G75o-i>`
 - :doc:`How to Request Interactive Sessions </kb/slurm/slurm-how-to-request-interactive-sessi-HV7WS9>`
+- `HPC4 example scripts (CPU, GPU, MPI, interactive) <https://github.com/hkust-hpc-team/hkust-hpc/tree/main/examples/hpc4-hello-world>`__
+- `SuperPOD example scripts <https://github.com/hkust-hpc-team/hkust-hpc/tree/main/examples/superpod-hello-world>`__

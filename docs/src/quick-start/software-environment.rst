@@ -2,171 +2,119 @@ Software Environment
 ====================
 
 .. meta::
-    :description: Quick-start guide to software modules, edge Spack activation, Python environments, compilers, MPI, and uv on HPC4.
-    :keywords: HPC4, Spack, Lmod, Python, anaconda3, uv, compiler, openmpi, modules
+    :description: Quick-start guide to software modules, edge Spack activation, Python environments, compilers, MPI, and uv on HPC4 (SuperPOD: see container workflow).
+    :keywords: HPC4, SuperPOD, Spack, Lmod, Python, anaconda3, uv, compiler, openmpi, modules
 
 .. rst-class:: header
 
     | Last updated: 2026-06-04
 
-This page introduces the basic module commands on HPC4 and shows a few common environment setup patterns for new users.
+This page covers module-based software setup for HPC4.
+SuperPOD users typically use containers (Enroot/Pyxis) but can also use the Spack instance at ``/scratch/spack/2025``.
 
 Environment
 -----------
 
-    - Users who can already log in to HPC4
+    - Users who can already log in to HPC4 (or SuperPOD)
     - Shell access on a login node or inside a job session
-    - Basic familiarity with terminal commands
 
-Background
-----------
+Quick Reference: Common Environments
+-------------------------------------
 
-HPC4 provides software environments through environment modules.
-The software stack in hkust-hpc uses Spack and Lmod, so available modules depend on the active software environment.
-For new work on HPC4, use the edge Spack instance instead of relying on the deprecated default instance.
-In particular, a fresh login shell may not show the software you want with a direct filtered query such as ``module avail python`` until edge Spack is activated.
+.. list-table::
+   :header-rows: 1
+   :widths: 25 35 40
 
-Practical Notes
----------------
+   * - Environment
+     - Modules to load
+     - Use case
+   * - Python (standalone)
+     - ``python/3.13.2``
+     - Pure-Python scripts, uv-based workflows
+   * - Python (Conda)
+     - ``anaconda3/2025``
+     - Packages from conda ecosystem, mixed Python + C/C++
+   * - Compiler + MPI
+     - ``intel-oneapi-compilers/2025.0.4`` then ``openmpi/5.0.6``
+     - MPI parallel jobs, compiled code
 
-- For new quick-start workflows, begin with ``source /opt/shared/.spack-edge/dist/bin/setup-env.sh -y``.
-- On the default login-node environment, ``module avail python`` may return no match before edge Spack is activated.
-- After edge activation, direct modules such as ``python/<version>``, ``anaconda3/<version>``, and ``intel-oneapi-compilers/<version>`` become available.
-- On the edge Spack instance, ``openmpi`` is not a core module; load a compiler first and then load ``openmpi`` from the hierarchical Lmod tree.
-- For MPI jobs on HPC4, prefer ``srun`` in quick-start workflows.
+.. note::
+
+   All examples below require **edge Spack activation** first.
+   On a fresh login, ``module avail python`` may show nothing until edge is active.
 
 Basic Commands
 --------------
 
-The following commands are the minimum set most users need when starting on HPC4.
-
-Start from a clean shell and activate edge Spack:
+Every session starts the same way — activate edge Spack, then load what you need:
 
 .. code-block:: bash
 
     module purge
     source /opt/shared/.spack-edge/dist/bin/setup-env.sh -y
-    module avail
 
-Then use Lmod's broader search command when you need to find software:
+Then use these commands as needed:
 
-.. code-block:: bash
+.. list-table::
+   :header-rows: 1
+   :widths: 35 65
 
-    module spider python
-
-For example, load a tested edge Python module:
-
-.. code-block:: bash
-
-    module load python/3.13.2
-
-Unload all currently loaded modules:
-
-.. code-block:: bash
-
-    module purge
-
-Useful follow-up checks:
-
-.. code-block:: bash
-
-    module list
-    which python
-    python --version
-
-The exact module names and versions on your account may differ from the examples here.
-On HPC4, ``module avail python`` may print ``No module(s) or extension(s) found!`` on a fresh login session.
-After activating edge Spack, the module tree changes and direct Python or compiler modules become available.
-The command examples below include outputs observed during testing on one HPC4 account.
-Treat them as practical references rather than guaranteed output for every account.
-
-Common Environments
--------------------
+   * - Command
+     - Purpose
+   * - ``module avail``
+     - List all available modules
+   * - ``module spider <name>``
+     - Search for a module (broader search)
+   * - ``module load <name/version>``
+     - Load a specific module
+   * - ``module list``
+     - Show currently loaded modules
+   * - ``module purge``
+     - Unload all modules
 
 Python Environment
-~~~~~~~~~~~~~~~~~~
-
-For new quick-start workflows, use the edge Spack instance first and then load an explicit Python module.
-Do not assume that ``module avail python`` will work before the correct software instance is active.
+------------------
 
 .. code-block:: bash
 
     module purge
     source /opt/shared/.spack-edge/dist/bin/setup-env.sh -y
-    module spider python
     module load python/3.13.2
-    python --version
-    module list
-    which python
+    python --version        # Python 3.13.2
+    which python            # /opt/shared/.spack-edge/.../bin/python
 
-Example output from one HPC4 login-node session:
-
-- ``python --version`` reports ``Python 3.13.2``.
-- ``which python`` points into ``/opt/shared/.spack-edge/.../python-3.13.2.../bin/python``.
-- ``module list`` shows ``python/3.13.2`` loaded.
-
-If you prefer a Conda-based Python distribution on edge, use ``anaconda3`` after activating the same instance:
+For Conda-based Python:
 
 .. code-block:: bash
 
     module purge
     source /opt/shared/.spack-edge/dist/bin/setup-env.sh -y
-    module spider anaconda3
     module load anaconda3/2025
     python --version
     conda --version
-    module list
-    which python
 
-Example output from one HPC4 login-node session:
-
-- ``module list`` shows an ``anaconda3`` module from ``/opt/shared/.spack-edge`` loaded.
-- ``which python`` points into the shared Spack Anaconda installation under ``/opt/shared/.spack-edge/.../anaconda3.../bin/python``.
-
-Do not run ``module avail spider python``. That is not valid syntax.
-Use ``module spider python`` as a standalone command.
-
-If you specifically need another Python version, activate edge Spack first and then load an explicit versioned module.
+For a different Python version:
 
 .. code-block:: bash
 
     module purge
     source /opt/shared/.spack-edge/dist/bin/setup-env.sh -y
-    module spider python
     module load python/3.12.9
-    python --version
-    which python
-    module list
-
-Example output from one HPC4 login-node session:
-
-- ``python --version`` reports ``Python 3.12.9``.
-- ``which python`` points into ``/opt/shared/.spack-edge/.../python-3.12.9.../bin/python``.
-- ``module list`` shows ``python/3.12.9`` loaded.
 
 Using uv for Pure-Python Workflows
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-For pure-Python projects, `uv <https://docs.astral.sh/uv/>`__ is a fast,
-modern package manager that works in user space — no administrator access
-needed.  We also recommend `ruff <https://docs.astral.sh/ruff/>`__
-(a fast Python linter and formatter) as a companion tool.
+`uv <https://docs.astral.sh/uv/>`__ is a fast, modern package manager that works in user space.
 
-Install uv once on the login node:
+Install once:
 
 .. code-block:: bash
 
     curl -LsSf https://astral.sh/uv/install.sh | sh
-
-The installer places ``uv`` in ``~/.local/bin/uv``.  Add it to your
-``PATH`` for convenience:
-
-.. code-block:: bash
-
     echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
     source ~/.bashrc
 
-Basic workflow with edge Python + uv:
+Basic workflow:
 
 .. code-block:: bash
 
@@ -176,8 +124,6 @@ Basic workflow with edge Python + uv:
     uv venv
     source .venv/bin/activate
     uv pip install numpy pandas matplotlib
-    uv pip install ruff
-    python --version
 
 In a SLURM job script:
 
@@ -199,92 +145,34 @@ In a SLURM job script:
     source /path/to/project/.venv/bin/activate
     python my_script.py
 
-Use Conda-based modules (``anaconda3`` or ``miniconda3``) when you
-specifically need packages from the conda ecosystem that are not on
-PyPI, or when your project mixes Python with compiled C/C++/Fortran
-code.  For more complete Python workflow guidance, see
-:doc:`/software/python/python`.
+For more complete Python workflow guidance, see :doc:`/software/python/python`.
 
 Compiler and MPI Environment
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------------
 
-Use this pattern when you need a compiler toolchain and MPI libraries.
-The following sequence is a practical example for the edge Spack environment.
+Load a compiler first, then MPI — ``openmpi`` is only visible after a compiler is loaded on the edge instance.
 
 .. code-block:: bash
 
     module purge
     source /opt/shared/.spack-edge/dist/bin/setup-env.sh -y
-    module spider intel-oneapi-compilers
     module load intel-oneapi-compilers/2025.0.4
-    module spider openmpi
     module load openmpi/5.0.6
     module list
 
-Example output from one HPC4 login-node session:
-
-- ``module list`` shows both ``intel-oneapi-compilers/2025.0.4`` and ``openmpi/5.0.6`` loaded.
-
 .. important::
 
-    On the edge Spack instance, ``openmpi`` becomes visible after you load a compiler module.
-    On HPC4, this OpenMPI build warns that ``mpirun``/``mpiexec`` should not be treated as the default launcher path.
-    For quick-start job scripts and routine MPI runs, prefer ``srun``.
-
-Clean Environment Reset
-~~~~~~~~~~~~~~~~~~~~~~~
-
-If your shell environment becomes confusing, start from a clean module state.
-
-.. code-block:: bash
-
-    module purge
-    source /opt/shared/.spack-edge/dist/bin/setup-env.sh -y
-    module avail
-
-Edge Spack Environment
-~~~~~~~~~~~~~~~~~~~~~~
-
-The hkust-hpc documentation recommends the edge Spack instance for new work.
-Activate it explicitly, verify the active variant, and then load the software you need.
-
-.. code-block:: bash
-
-    module purge
-    source /opt/shared/.spack-edge/dist/bin/setup-env.sh -y
-    echo $SPACK_VARIANT
-    module avail
-    module spider python
-    module load python/3.12.9
-    python --version
-    which python
-    module list
-
-Example output from one HPC4 login-node session:
-
-- ``echo $SPACK_VARIANT`` reports ``edge``.
-- ``python --version`` reports ``Python 3.12.9``.
-- ``which python`` points into ``/opt/shared/.spack-edge/.../python-3.12.9.../bin/python``.
-- ``module list`` shows ``python/3.12.9`` loaded.
-
-For new quick-start workflows, prefer the edge instance instead of the deprecated default instance.
-
-.. warning::
-
-   Do not add Spack activation blindly to your shell startup files until you confirm that this is the recommended HPC4 practice for your account and workflow.
+    On HPC4, prefer ``srun`` over ``mpirun`` / ``mpiexec`` for MPI jobs.
 
 Verification Checklist
 ----------------------
 
-- Run ``module avail`` successfully.
-- Activate edge Spack with ``source /opt/shared/.spack-edge/dist/bin/setup-env.sh -y``.
-- If a filtered lookup fails, run ``module spider <name>`` before loading a module.
-- Load one module and verify the related executable is found.
-- Verify ``$SPACK_VARIANT`` if you need to confirm the active software instance.
-- Load ``openmpi`` only after loading a compiler module on the edge instance.
-- For MPI jobs on HPC4, prefer ``srun`` over ``mpirun`` in quick-start workflows.
-- Run ``module list`` to confirm the expected module is active.
-- Use ``module purge`` and confirm the environment resets cleanly.
+- ``module avail`` shows available modules after edge activation
+- ``module spider <name>`` finds the module you want
+- ``module load <name/version>`` loads successfully
+- ``which <command>`` points to the expected path
+- ``module list`` confirms loaded modules
+- ``$SPACK_VARIANT`` reports ``edge`` (optional check)
 
 References
 ----------

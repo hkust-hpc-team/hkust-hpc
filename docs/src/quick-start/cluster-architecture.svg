@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 620" font-family="Arial, Helvetica, sans-serif">
+  <rect width="820" height="620" fill="#fff"/>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#555"/>
+    </marker>
+  </defs>
+
+  <!-- Your Machine -->
+  <rect x="260" y="15" width="300" height="55" rx="8" fill="#e8f0fe" stroke="#4285f4" stroke-width="2"/>
+  <text x="410" y="40" text-anchor="middle" font-size="17" font-weight="700" fill="#1a56db">Your Machine</text>
+  <text x="410" y="58" text-anchor="middle" font-size="12" fill="#444">SSH client (terminal)</text>
+
+  <!-- Branch from Your Machine to two clusters -->
+  <line x1="410" y1="70" x2="410" y2="90" stroke="#555" stroke-width="2"/>
+  <line x1="180" y1="90" x2="640" y2="90" stroke="#555" stroke-width="2"/>
+  <line x1="180" y1="90" x2="180" y2="110" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="640" y1="90" x2="640" y2="110" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- ==================== HPC4 (left) ==================== -->
+  <rect x="20" y="108" width="330" height="490" rx="10" fill="#f9fbff" stroke="#4285f4" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="185" y="130" text-anchor="middle" font-size="15" font-weight="700" fill="#1a56db">HPC4 Cluster</text>
+  <text x="185" y="147" text-anchor="middle" font-size="11" fill="#555">hpc4.ust.hk</text>
+
+  <!-- HPC4 Login -->
+  <rect x="55" y="158" width="260" height="60" rx="8" fill="#fff3e0" stroke="#f57c00" stroke-width="2"/>
+  <text x="185" y="183" text-anchor="middle" font-size="15" font-weight="700" fill="#e65100">Login Nodes</text>
+  <text x="185" y="200" text-anchor="middle" font-size="11" fill="#555">edit files · submit jobs · transfer data</text>
+  <rect x="100" y="204" width="170" height="14" rx="7" fill="#ffd54f"/>
+  <text x="185" y="214" text-anchor="middle" font-size="10" font-weight="700" fill="#6d4c00">No heavy computation</text>
+
+  <!-- HPC4 arrow -->
+  <line x1="185" y1="218" x2="185" y2="240" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- HPC4 Slurm -->
+  <rect x="55" y="242" width="260" height="50" rx="8" fill="#fce4ec" stroke="#c62828" stroke-width="2"/>
+  <text x="185" y="265" text-anchor="middle" font-size="15" font-weight="700" fill="#b71c1c">Slurm Scheduler</text>
+  <text x="185" y="282" text-anchor="middle" font-size="11" fill="#555">queue · priority · allocation</text>
+
+  <!-- HPC4 branch to compute -->
+  <line x1="185" y1="292" x2="185" y2="315" stroke="#555" stroke-width="2"/>
+  <line x1="85" y1="315" x2="285" y2="315" stroke="#555" stroke-width="2"/>
+  <line x1="85" y1="315" x2="85" y2="335" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="285" y1="315" x2="285" y2="335" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- HPC4 CPU compute -->
+  <rect x="30" y="337" width="110" height="65" rx="8" fill="#e8f5e9" stroke="#388e3c" stroke-width="2"/>
+  <text x="85" y="360" text-anchor="middle" font-size="14" font-weight="700" fill="#1b5e20">CPU Nodes</text>
+  <text x="85" y="376" text-anchor="middle" font-size="11" fill="#444">amd / intel</text>
+  <text x="85" y="392" text-anchor="middle" font-size="10" fill="#666">partitions: amd, intel</text>
+
+  <!-- HPC4 GPU compute -->
+  <rect x="230" y="337" width="110" height="65" rx="8" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2"/>
+  <text x="285" y="360" text-anchor="middle" font-size="14" font-weight="700" fill="#4a148c">GPU Nodes</text>
+  <text x="285" y="376" text-anchor="middle" font-size="11" fill="#444">A30 / L20 / RTX</text>
+  <text x="285" y="392" text-anchor="middle" font-size="10" fill="#666">partitions: gpu-*</text>
+
+  <!-- HPC4 Storage -->
+  <rect x="30" y="420" width="310" height="75" rx="8" fill="#f8f9fa" stroke="#90a4ae" stroke-width="1.5"/>
+  <text x="185" y="442" text-anchor="middle" font-size="13" font-weight="700" fill="#455a64">Shared Storage</text>
+  <rect x="42" y="452" width="138" height="32" rx="5" fill="#fff8e1" stroke="#f9a825" stroke-width="1"/>
+  <text x="111" y="465" text-anchor="middle" font-size="12" font-weight="700" fill="#e65100">/scratch</text>
+  <text x="111" y="478" text-anchor="middle" font-size="10" fill="#555">500 GB · 60-day purge</text>
+  <rect x="190" y="452" width="138" height="32" rx="5" fill="#e8eaf6" stroke="#3949ab" stroke-width="1"/>
+  <text x="259" y="465" text-anchor="middle" font-size="12" font-weight="700" fill="#1a237e">/home /project</text>
+  <text x="259" y="478" text-anchor="middle" font-size="10" fill="#555">200 GB / 10 TB</text>
+
+  <!-- HPC4 dashed lines for storage -->
+  <line x1="85" y1="402" x2="85" y2="420" stroke="#4285f4" stroke-dasharray="4,3"/>
+  <line x1="285" y1="402" x2="285" y2="420" stroke="#4285f4" stroke-dasharray="4,3"/>
+
+  <!-- HPC4 note -->
+  <text x="185" y="516" text-anchor="middle" font-size="11" fill="#1565c0" font-style="italic">storage accessible from login + compute nodes</text>
+
+  <!-- ==================== SuperPOD (right) ==================== -->
+  <rect x="470" y="108" width="330" height="490" rx="10" fill="#fffbf5" stroke="#f57c00" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="635" y="130" text-anchor="middle" font-size="15" font-weight="700" fill="#e65100">SuperPOD Cluster</text>
+  <text x="635" y="147" text-anchor="middle" font-size="11" fill="#555">superpod.ust.hk</text>
+
+  <!-- SuperPOD Login -->
+  <rect x="505" y="158" width="260" height="60" rx="8" fill="#fff3e0" stroke="#f57c00" stroke-width="2"/>
+  <text x="635" y="183" text-anchor="middle" font-size="15" font-weight="700" fill="#e65100">Login Nodes</text>
+  <text x="635" y="200" text-anchor="middle" font-size="11" fill="#555">edit files · submit jobs · transfer data</text>
+  <rect x="550" y="204" width="170" height="14" rx="7" fill="#ffd54f"/>
+  <text x="635" y="214" text-anchor="middle" font-size="10" font-weight="700" fill="#6d4c00">No heavy computation</text>
+
+  <!-- SuperPOD arrow -->
+  <line x1="635" y1="218" x2="635" y2="240" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- SuperPOD Slurm -->
+  <rect x="505" y="242" width="260" height="50" rx="8" fill="#fce4ec" stroke="#c62828" stroke-width="2"/>
+  <text x="635" y="265" text-anchor="middle" font-size="15" font-weight="700" fill="#b71c1c">Slurm Scheduler</text>
+  <text x="635" y="282" text-anchor="middle" font-size="11" fill="#555">queue · priority · allocation</text>
+
+  <!-- SuperPOD branch to compute -->
+  <line x1="635" y1="292" x2="635" y2="315" stroke="#555" stroke-width="2"/>
+  <line x1="535" y1="315" x2="735" y2="315" stroke="#555" stroke-width="2"/>
+  <line x1="535" y1="315" x2="535" y2="335" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="735" y1="315" x2="735" y2="335" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- SuperPOD CPU compute -->
+  <rect x="480" y="337" width="110" height="65" rx="8" fill="#e8f5e9" stroke="#388e3c" stroke-width="2"/>
+  <text x="535" y="360" text-anchor="middle" font-size="14" font-weight="700" fill="#1b5e20">CPU Nodes</text>
+  <text x="535" y="376" text-anchor="middle" font-size="11" fill="#444">preprocessing</text>
+  <text x="535" y="392" text-anchor="middle" font-size="10" fill="#666">partition: cpu</text>
+
+  <!-- SuperPOD GPU compute -->
+  <rect x="680" y="337" width="110" height="65" rx="8" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2"/>
+  <text x="735" y="360" text-anchor="middle" font-size="14" font-weight="700" fill="#4a148c">GPU Nodes</text>
+  <text x="735" y="376" text-anchor="middle" font-size="11" fill="#444">H800</text>
+  <text x="735" y="392" text-anchor="middle" font-size="10" fill="#666">partition: normal</text>
+
+  <!-- SuperPOD Storage -->
+  <rect x="480" y="420" width="310" height="75" rx="8" fill="#f8f9fa" stroke="#90a4ae" stroke-width="1.5"/>
+  <text x="635" y="442" text-anchor="middle" font-size="13" font-weight="700" fill="#455a64">Shared Storage</text>
+  <rect x="492" y="452" width="138" height="32" rx="5" fill="#fff8e1" stroke="#f9a825" stroke-width="1"/>
+  <text x="561" y="465" text-anchor="middle" font-size="12" font-weight="700" fill="#e65100">/scratch</text>
+  <text x="561" y="478" text-anchor="middle" font-size="10" fill="#555">5 TB/group · 30-day purge</text>
+  <rect x="640" y="452" width="138" height="32" rx="5" fill="#e8eaf6" stroke="#3949ab" stroke-width="1"/>
+  <text x="709" y="465" text-anchor="middle" font-size="12" font-weight="700" fill="#1a237e">/home /project</text>
+  <text x="709" y="478" text-anchor="middle" font-size="10" fill="#555">persistent</text>
+
+  <!-- SuperPOD dashed lines for storage -->
+  <line x1="535" y1="402" x2="535" y2="420" stroke="#4285f4" stroke-dasharray="4,3"/>
+  <line x1="735" y1="402" x2="735" y2="420" stroke="#4285f4" stroke-dasharray="4,3"/>
+
+  <!-- SuperPOD note -->
+  <text x="635" y="516" text-anchor="middle" font-size="11" fill="#1565c0" font-style="italic">storage accessible from login + compute nodes</text>
+
+  <!-- Separator label -->
+  <line x1="410" y1="108" x2="410" y2="600" stroke="#bbb" stroke-width="1" stroke-dasharray="8,4"/>
+  <text x="410" y="610" text-anchor="middle" font-size="11" fill="#888">separate clusters · separate logins · separate schedulers</text>
+</svg>
