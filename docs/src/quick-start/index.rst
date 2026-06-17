@@ -84,15 +84,47 @@ details.
 
 **Workflow**
 
-.. mermaid:: slurm-flow.mmd
-   :alt: Slurm workflow: ① You → sbatch → ② Queue → schedule → ③ Scheduler → allocate → ④ Job runs → ⑤ Output files. Development loop: test small → check → debug/scale → resubmit.
+.. mermaid::
+   :alt: Slurm workflow: ① You → sbatch → ② Queue → schedule → ③ Scheduler → allocate → ④ Job runs → ⑤ Output files.
    :align: center
+
+   graph TD
+       you["① You<br/>write batch script<br/>request CPUs, GPUs,<br/>memory, walltime"]
+       queue["② Slurm Queue<br/>jobs wait in line<br/>for available resources"]
+       sched["③ Scheduler<br/>decides when and where<br/>your job runs"]
+       run["④ Job runs<br/>on compute node<br/>(you may log out)"]
+       out["⑤ Output files<br/>slurm-jobid.out<br/>in /scratch or /project"]
+
+       you -->|"sbatch"| queue
+       queue -->|"schedule"| sched
+       sched -->|"allocate"| run
+       run -.->|"async"| out
+
+       style you fill:#dbeafe,stroke:#2563eb,color:#1e3a8a
+       style queue fill:#ffedd5,stroke:#ea580c,color:#7c2d12
+       style sched fill:#fee2e2,stroke:#b91c1c,color:#7f1d1d
+       style run fill:#dcfce7,stroke:#15803d,color:#14532d
+       style out fill:#dcfce7,stroke:#15803d,color:#14532d
 
 **Recommended workflow: start small, then scale up**
 
-.. mermaid:: slurm-dev-loop.mmd
+.. mermaid::
    :alt: Development cycle: test with small job → inspect output → fix errors or scale up resources → repeat.
    :align: center
+
+   graph TD
+       test["Test small<br/>short walltime, few CPUs"]
+       check["Check output<br/>squeue / sacct<br/>debug errors"]
+       scale["Scale up<br/>request more<br/>resources"]
+
+       test -->|"inspect"| check
+       check -->|"if OK"| scale
+       scale -->|"resubmit"| test
+       check -.->|"fix error"| test
+
+       style test fill:#ede9fe,stroke:#7c3aed,color:#5b21b6
+       style check fill:#ede9fe,stroke:#7c3aed,color:#5b21b6
+       style scale fill:#ede9fe,stroke:#7c3aed,color:#5b21b6
 
 The most common beginner mistake is requesting too many resources.
 Start with a tiny test, inspect the output, and only scale up when
