@@ -7,6 +7,12 @@ Setting Up Git and GitHub
     :description: Set up Git and connect to GitHub over SSH
     :keywords: git, github, setup, configuration, ssh, hpc
 
+.. container::
+    :name: header
+
+    | Last updated: 2026-10-27
+    | *Solution verified: 2026-10-27*
+
 This guide covers installing Git, setting basic configuration, and connecting to GitHub over SSH on a local workstation or an HPC cluster.
 
 Install Git
