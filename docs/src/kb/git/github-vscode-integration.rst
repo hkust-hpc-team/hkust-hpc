@@ -12,43 +12,44 @@ Run VS Code on the cluster with Remote-SSH
     | Last updated: 2026-10-27
     | *Guide verified: 2026-10-27*
 
-This guide covers installing **Remote - SSH**, connecting to the cluster, setting your Git identity in the VS Code UI, and cloning a GitHub repository onto the HPC host.
+Use the **Remote - SSH** extension to edit files and run Git commands directly on the cluster from your local VS Code window.
 
 Install Remote-SSH
 ------------------
 
-On your **local** machine:
+On your local machine:
 
 1. Open VS Code.
-2. Open Extensions (``Ctrl+Shift+X`` or ``Cmd+Shift+X`` on macOS).
-3. Search for ``Remote - SSH`` (publisher: Microsoft) and install it.
+2. Open the Extensions view (``Ctrl+Shift+X`` on Windows/Linux, ``Cmd+Shift+X`` on macOS).
+3. Search for ``Remote - SSH`` (published by Microsoft) and click **Install**.
 
 Connect to the cluster
 ----------------------
 
 1. Open the Command Palette (``Ctrl+Shift+P`` or ``Cmd+Shift+P`` on macOS).
 2. Run ``Remote-SSH: Connect to Host...``.
-3. Enter ``<username>@hpc4.ust.hk`` (use your HPC username).
-4. Choose the platform if asked (usually Linux) and wait for the remote window to open.
+3. Enter ``<username>@hpc4.ust.hk``, replacing ``<username>`` with your HPC account name.
+4. If prompted for the remote platform, select **Linux**.
+5. Enter your password or passphrase when prompted and wait for the new window to connect.
 
-The status bar should show ``SSH: hpc4.ust.hk`` (or similar). New terminals and extensions in that window run on the cluster.
+Check the bottom-left corner of the window. Once connected, the status bar shows ``SSH: hpc4.ust.hk``. Any terminal or folder you open in this window runs on the cluster.
 
 Set your Git identity in VS Code
 --------------------------------
 
-With the remote window open, set your name and email so commits on the cluster are attributed correctly.
+Git needs your name and email before you can create commits on the cluster. You can set both in VS Code Settings while connected to the remote host.
 
-**In the VS Code UI**
+**In VS Code Settings**
 
 1. Open Settings (``Ctrl+,`` or ``Cmd+,`` on macOS).
 2. Search for ``git user``.
-3. Set **Git: User Name** and **Git: User Email** (these map to ``user.name`` and ``user.email``).
+3. Fill in **Git: User Name** and **Git: User Email**. These write ``user.name`` and ``user.email`` to your Git configuration.
 
-If those settings are empty, VS Code may also prompt for name and email the first time you commit.
+If you leave these blank, VS Code prompts for them the first time you commit.
 
-**Optional: terminal**
+**Optional: from the terminal**
 
-In the remote integrated terminal you can still run:
+You can also set your identity in the remote integrated terminal:
 
 .. code-block:: bash
 
@@ -58,15 +59,15 @@ In the remote integrated terminal you can still run:
 Clone a GitHub repository
 -------------------------
 
-Stay connected over Remote-SSH so the clone lands on the cluster, not your laptop.
+Make sure you are in the ``SSH: hpc4.ust.hk`` window so the repository clones to your cluster storage instead of your local disk.
 
-1. Open the Command Palette.
+1. Open the Command Palette (``Ctrl+Shift+P`` or ``Cmd+Shift+P`` on macOS).
 2. Run ``Git: Clone``.
-3. Paste the repository URL (for example ``https://github.com/hkust-hpc-team/hkust-hpc.git``) and press Enter.
-4. Choose a directory on the cluster (for example ``~/projects``).
-5. Click **Open** when VS Code offers to open the folder.
+3. Paste the repository URL (such as ``https://github.com/hkust-hpc-team/hkust-hpc.git``) and press Enter.
+4. Pick a target directory on the cluster, such as ``~/projects``.
+5. Click **Open** when prompted to open the cloned repository.
 
-From the remote terminal you can instead run ``git clone <url>`` and open the folder with **File → Open Folder**.
+You can also run ``git clone <url>`` in the remote terminal and open the directory with **File > Open Folder**.
 
 References
 ----------
