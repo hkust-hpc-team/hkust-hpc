@@ -7,4 +7,3 @@ Git and GitHub
     :titlesonly:
 
     *
-
