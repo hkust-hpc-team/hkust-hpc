@@ -6,4 +6,5 @@ Git and GitHub
     :maxdepth: 1
     :titlesonly:
 
-    git-setting-up-git-and-github-UFSWbB
+    *
+
