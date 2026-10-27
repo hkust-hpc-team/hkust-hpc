@@ -33,38 +33,38 @@ Resolution
 
 #. Create container directory:
 
-.. code-block:: console
+    .. code-block:: console
 
-    $ mkdir -p $HOME/containers
+        $ mkdir -p $HOME/containers
 
 #. Run container with correct save path:
 
-.. code-block:: console
+    .. code-block:: console
 
-    $ srun --account=YOUR_ACCOUNT \
-        --nodes=1 \
-        --gpus-per-node=1 \
-        --container-writable \
-        --container-save $HOME/containers/nvhpc.sqsh \
-        --container-image nvcr.io#nvidia/nvhpc:24.3-devel-cuda12.3-ubuntu22.04 \
-        --pty bash
+        $ srun --account=YOUR_ACCOUNT \
+            --nodes=1 \
+            --gpus-per-node=1 \
+            --container-writable \
+            --container-save $HOME/containers/nvhpc.sqsh \
+            --container-image nvcr.io#nvidia/nvhpc:24.3-devel-cuda12.3-ubuntu22.04 \
+            --pty bash
 
-.. warning::
+    .. warning::
 
-    - Ensure sufficient disk quota before saving large containers
-    - Container names should not contain special characters
+        - Ensure sufficient disk quota before saving large containers
+        - Container names should not contain special characters
 
 #. Verify saved container:
 
-.. code-block:: console
+    .. code-block:: console
 
-    $ ls -l $HOME/containers/nvhpc.sqsh
+        $ ls -l $HOME/containers/nvhpc.sqsh
 
-.. note::
+    .. note::
 
-    - Parent directory must exist before running container
-    - Use absolute paths for --container-save
-    - Saved container can be used with --container-image /path/to/container.sqsh
+        - Parent directory must exist before running container
+        - Use absolute paths for --container-save
+        - Saved container can be used with --container-image /path/to/container.sqsh
 
 Root Cause
 ----------

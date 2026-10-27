@@ -40,46 +40,46 @@ Installation
 
 #. Install fpart package on your local machine:
 
-.. code-block:: shell-session
+    .. code-block:: shell-session
 
-    # Ubuntu/Debian:
-    $ sudo apt install fpart
+        # Ubuntu/Debian:
+        $ sudo apt install fpart
 
-    # macOS:
-    $ brew install fpart
+        # macOS:
+        $ brew install fpart
 
-    # CentOS/RHEL:
-    $ sudo yum install fpart
+        # CentOS/RHEL:
+        $ sudo yum install fpart
 
 Basic Usage
 ~~~~~~~~~~~
 
 #. Transfer a directory to cluster:
 
-.. code-block:: shell-session
+    .. code-block:: shell-session
 
-    $ fpsync -n 8 ~/local_directory username@hpc.university.edu:~/remote_directory
+        $ fpsync -n 8 ~/local_directory username@[hpc_hostname]:~/remote_directory
 
 #. Transfer with specific options:
 
-.. code-block:: shell-session
+    .. code-block:: shell-session
 
-    $ fpsync -n 8 -v -x -o "-a" ~/local_directory username@hpc.university.edu:~/remote_directory
+        $ fpsync -n 8 -v -x -o "-a" ~/local_directory username@[hpc_hostname]:~/remote_directory
 
-Options Explained:
-    - ``-n 8``: Use 8 parallel transfer processes
-    - ``-v``: Verbose output
-    - ``-x``: Cross filesystem boundaries
-    - ``-o "-a"``: Pass rsync archive option
+    Options Explained:
+        - ``-n 8``: Use 8 parallel transfer processes
+        - ``-v``: Verbose output
+        - ``-x``: Cross filesystem boundaries
+        - ``-o "-a"``: Pass rsync archive option
 
-.. note::
+    .. note::
 
-    Choose number of parallel processes (``-n``) based on your network connection and system capabilities
+        Choose number of parallel processes (``-n``) based on your network connection and system capabilities
 
-.. warning::
+    .. warning::
 
-    - Large number of parallel processes may overload the network or system
-    - Always test with small directories first
+        - Large number of parallel processes may overload the network or system
+        - Always test with small directories first
 
 Root Cause
 ----------
