@@ -6,4 +6,4 @@ Git and GitHub
     :maxdepth: 1
     :titlesonly:
 
-    github-vscode-integration
+    *
