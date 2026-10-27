@@ -9,8 +9,8 @@ Using GitHub Copilot in VS Code
 .. container::
     :name: header
 
-    | Last updated: 2025-07-02
-    | *Solution verified: 2025-07-02*
+    | Last updated: 2026-10-27
+    | *Solution verified: 2026-10-27*
 
 Prerequisites
 -------------
