@@ -37,8 +37,8 @@ Resolution
 ----------
 
 To enable headless GPU Vulkan rendering in an Enroot/Pyxis container, bind-mount the host NVIDIA Vulkan ICD and GLVND
-EGL vendor manifests into the container, install the userspace Vulkan/EGL loader packages, and explicitly set
-``VK_ICD_FILENAMES`` to force the NVIDIA driver.
+EGL vendor manifests into the container, install the userspace Vulkan/EGL loader packages, and set
+``VK_ICD_FILENAMES`` to restrict ICD discovery to the mounted NVIDIA manifest.
 
 1. Launch a Container with Host ICD and EGL Mounts
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -48,7 +48,7 @@ session from a CUDA Ubuntu base image with ``nvidia_icd.json`` and ``10_nvidia.j
 
 .. code-block:: bash
 
-   mkdir -p /scratch/<your_account>/containers
+   mkdir -p <your_scratch_dir>/containers
 
    srun \
      --account=<your_account> \
@@ -60,13 +60,16 @@ session from a CUDA Ubuntu base image with ``nvidia_icd.json`` and ``10_nvidia.j
      --container-remap-root \
      --no-container-mount-home \
      --container-image=nvidia/cuda:12.8.1-devel-ubuntu22.04 \
-     --container-save=/scratch/<your_account>/containers/vulkan_cuda_12.8.sqsh \
-     --container-mounts=/usr/share/vulkan/icd.d/nvidia_icd.json:/usr/share/vulkan/icd.d/nvidia_icd.json,/usr/share/glvnd/egl_vendor.d/10_nvidia.json:/usr/share/glvnd/egl_vendor.d/10_nvidia.json,/scratch/<your_account>:/scratch/<your_account> \
+     --container-save=<your_scratch_dir>/containers/vulkan_cuda_12.8.sqsh \
+     --container-mounts=/usr/share/vulkan/icd.d/nvidia_icd.json:/usr/share/vulkan/icd.d/nvidia_icd.json,/usr/share/glvnd/egl_vendor.d/10_nvidia.json:/usr/share/glvnd/egl_vendor.d/10_nvidia.json,<your_scratch_dir>:<your_scratch_dir> \
      --pty bash
 
 .. note::
 
    - Replace ``<your_account>`` and ``<your_partition>`` with your Slurm project account and GPU partition.
+   - Replace ``<your_scratch_dir>`` with your scratch or project storage path — ``/scratch/<groupname>`` on SuperPOD,
+     ``/scratch/<username>`` on HPC4, or ``/project/<groupname>``. Note that the directory owner or group name need not
+     match your Slurm ``--account`` name; see :doc:`/quick-start/data-and-storage`.
    - Store saved ``.sqsh`` container images and large simulation assets under ``/scratch`` or ``/project`` rather than
      ``$HOME`` to avoid exceeding home quota limits, and mount that directory via ``--container-mounts``.
    - The parent directory passed to ``--container-save`` must exist before launching ``srun``; see
@@ -84,11 +87,12 @@ Inside the interactive container session, install the Vulkan loader, diagnostic 
    apt-get update
    apt-get install -y libvulkan1 vulkan-tools libegl1 libxext6
 
-3. Force the NVIDIA Vulkan ICD and Verify GPU Detection
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+3. Restrict ICD Discovery to NVIDIA and Verify GPU Detection
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Explicitly set ``VK_ICD_FILENAMES`` to the mounted NVIDIA ICD manifest so the Vulkan loader ignores software fallback
-drivers or conflicting Conda ICD configurations, then verify with ``vulkaninfo --summary``:
+Set ``VK_ICD_FILENAMES`` to restrict Vulkan loader discovery exclusively to the mounted NVIDIA ICD manifest (so
+software ICDs such as Mesa ``llvmpipe`` are not enumerated and Conda-bundled Vulkan loaders locate the system
+manifest), then verify with ``vulkaninfo --summary``:
 
 .. code-block:: shell-session
 
@@ -121,7 +125,7 @@ same environment:
    python your_simulation_script.py
 
 Exit the shell when setup is complete so Pyxis saves the container filesystem to
-``/scratch/<your_account>/containers/vulkan_cuda_12.8.sqsh``:
+``<your_scratch_dir>/containers/vulkan_cuda_12.8.sqsh``:
 
 .. code-block:: bash
 
@@ -147,8 +151,8 @@ Exit the shell when setup is complete so Pyxis saves the container filesystem to
      --ntasks-per-node=1 \
      --gpus-per-node=1 \
      --no-container-mount-home \
-     --container-image=/scratch/<your_account>/containers/vulkan_cuda_12.8.sqsh \
-     --container-mounts=/usr/share/vulkan/icd.d/nvidia_icd.json:/usr/share/vulkan/icd.d/nvidia_icd.json,/usr/share/glvnd/egl_vendor.d/10_nvidia.json:/usr/share/glvnd/egl_vendor.d/10_nvidia.json,/scratch/<your_account>:/scratch/<your_account> \
+     --container-image=<your_scratch_dir>/containers/vulkan_cuda_12.8.sqsh \
+     --container-mounts=/usr/share/vulkan/icd.d/nvidia_icd.json:/usr/share/vulkan/icd.d/nvidia_icd.json,/usr/share/glvnd/egl_vendor.d/10_nvidia.json:/usr/share/glvnd/egl_vendor.d/10_nvidia.json,<your_scratch_dir>:<your_scratch_dir> \
      --pty bash -c "export VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/nvidia_icd.json && exec bash"
 
 **Batch job script** (``sbatch``):
@@ -175,9 +179,9 @@ For non-interactive training or rendering jobs (see :doc:`enroot-running-contain
 
    srun \
      --no-container-mount-home \
-     --container-image=/scratch/<your_account>/containers/vulkan_cuda_12.8.sqsh \
-     --container-mounts=/usr/share/vulkan/icd.d/nvidia_icd.json:/usr/share/vulkan/icd.d/nvidia_icd.json,/usr/share/glvnd/egl_vendor.d/10_nvidia.json:/usr/share/glvnd/egl_vendor.d/10_nvidia.json,/scratch/<your_account>:/scratch/<your_account> \
-     python /scratch/<your_account>/project/train_rgb.py
+     --container-image=<your_scratch_dir>/containers/vulkan_cuda_12.8.sqsh \
+     --container-mounts=/usr/share/vulkan/icd.d/nvidia_icd.json:/usr/share/vulkan/icd.d/nvidia_icd.json,/usr/share/glvnd/egl_vendor.d/10_nvidia.json:/usr/share/glvnd/egl_vendor.d/10_nvidia.json,<your_scratch_dir>:<your_scratch_dir> \
+     python <your_scratch_dir>/project/train_rgb.py
 
 Diagnosis
 ---------
@@ -194,10 +198,11 @@ If Vulkan rendering still fails inside the container, check the following inside
       cat /usr/share/vulkan/icd.d/nvidia_icd.json
       cat /usr/share/glvnd/egl_vendor.d/10_nvidia.json
 
-#. **Check for competing Vulkan ICDs:**
+#. **Check ICD discovery paths and enumerated software devices:**
 
-   Inspect ``/usr/share/vulkan/icd.d/`` and ``/etc/vulkan/icd.d/`` for Mesa software ICDs (such as ``lvp_icd.*.json``)
-   and confirm ``VK_ICD_FILENAMES`` is set in the shell running your script:
+   Inspect ``/usr/share/vulkan/icd.d/`` and ``/etc/vulkan/icd.d/`` (and ``$CONDA_PREFIX/share/vulkan/icd.d/`` if using
+   Conda) for software ICDs such as ``lvp_icd.*.json``, and confirm ``VK_ICD_FILENAMES`` is exported in the shell
+   running your script:
 
    .. code-block:: bash
 
@@ -216,16 +221,22 @@ If Vulkan rendering still fails inside the container, check the following inside
 Root Cause
 ----------
 
-- **Missing vendor discovery manifests and loader libraries in CUDA base images**: On headless compute nodes (such as
-  NVIDIA H800 nodes on SuperPOD), Enroot's NVIDIA container hook injects the host driver shared libraries
-  (``libGLX_nvidia.so.*``, ``libEGL_nvidia.so.*``) into the container, but standard ``nvidia/cuda`` base images only
-  ship CUDA compute packages. They omit the userspace Vulkan/EGL loaders (``libvulkan1``, ``libegl1``) as well as the
-  JSON vendor manifests (``nvidia_icd.json`` and ``10_nvidia.json``) required by the Vulkan loader and GLVND to locate
-  the NVIDIA driver implementation instead of falling back to generic OpenGL stubs.
-- **ICD selection conflicts in simulation and Conda environments**: Installing graphics dependencies via ``apt`` or
-  Conda frequently pulls in Mesa Vulkan packages (e.g., ``llvmpipe``) or alters Vulkan search paths. Without explicitly
-  exporting ``VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/nvidia_icd.json``, the Vulkan loader may probe an incompatible
-  driver first and fail with ``vk::createInstanceUnique: ErrorIncompatibleDriver``.
+- **No usable Vulkan ICD discovered** (``ErrorIncompatibleDriver``): On headless compute nodes (such as NVIDIA H800 nodes
+  on SuperPOD), Enroot's NVIDIA container hook injects the host driver shared libraries (``libGLX_nvidia.so.*``,
+  ``libEGL_nvidia.so.*``) into the container, but standard ``nvidia/cuda`` base images only ship CUDA compute packages.
+  They omit the userspace Vulkan/EGL loaders (``libvulkan1``, ``libegl1``) as well as the JSON vendor manifests
+  (``nvidia_icd.json`` and ``10_nvidia.json``) required by the Vulkan loader and GLVND to locate the NVIDIA driver
+  implementation. Similarly, Conda environments that bundle their own ``vulkan-loader`` search under
+  ``$CONDA_PREFIX/share/vulkan/icd.d`` by default rather than ``/usr/share/vulkan/icd.d``. When the loader finds no
+  working ICD across its search paths, instance creation fails with ``VK_ERROR_INCOMPATIBLE_DRIVER``
+  (``vk::createInstanceUnique: ErrorIncompatibleDriver``).
+- **Software device selection when multiple ICDs are installed**: The Vulkan loader supports multiple ICDs and skips
+  individual drivers that report incompatibility during enumeration rather than failing instance creation. However, if
+  Mesa Vulkan packages (such as ``lvp_icd`` for CPU ``llvmpipe``) are installed via ``apt`` or Conda, the loader
+  exposes those software ``VkPhysicalDevice`` entries alongside (or instead of) the NVIDIA GPU. Simulation frameworks
+  may then select ``llvmpipe`` or fail later during logical device creation when required NVIDIA GPU extensions are
+  missing. Exporting ``VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/nvidia_icd.json`` restricts ICD discovery strictly to
+  the host-mounted NVIDIA manifest across both system and Conda Vulkan loaders.
 
 References
 ----------
